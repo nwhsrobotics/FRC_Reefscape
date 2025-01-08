@@ -24,10 +24,6 @@ import java.util.List;
 public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
     public final ScoringSubsystem scoringSubsystem = new ScoringSubsystem();
-    public final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
-    //public final ArmSubsystem armSubsystem = new ArmSubsystem(); //arm removed =[
-    //public final WristSubsystem wristSubsystem = new WristSubsystem();
-    //public final WristIntakeSubsystem wristIntakeSubsystem = new WristIntakeSubsystem();
 
     private final SendableChooser<Command> autoChooser;
 
@@ -35,14 +31,10 @@ public class RobotContainer {
     public static XboxController gunner = new XboxController(1);
 
     public RobotContainer() {
-        SetScoringStateCommand commandShoot = new SetScoringStateCommand(scoringSubsystem, ScoringSubsystem.ScoringState.FIRE, 3);
-        SetScoringStateCommand commandLoad = new SetScoringStateCommand(scoringSubsystem, ScoringSubsystem.ScoringState.LOADING, 2);
-        SetScoringStateCommand commandUnload = new SetScoringStateCommand(scoringSubsystem, ScoringSubsystem.ScoringState.UNLOADING, 2);
-        SetScoringStateCommand autoShoot = new SetScoringStateCommand(scoringSubsystem, ScoringSubsystem.ScoringState.FIRE, ScoringSubsystem.ScoringState.LOADING, 2);
 
         ParallelCommandGroup autoInit = new ParallelCommandGroup(); // new ParallelCommandGroup((new InstantCommand(() -> wristSubsystem.ampPreset(), wristSubsystem), (new InstantCommand(() -> armSubsystem.underStage(), armSubsystem));
 
-        NamedCommands.registerCommand("shoot", autoShoot);
+        NamedCommands.registerCommand("shoot", autoInit);
         NamedCommands.registerCommand("autoInit", autoInit);
 
         //INIT after registering named commands
@@ -60,10 +52,10 @@ public class RobotContainer {
         //ParallelCommandGroup toSource = new ParallelCommandGroup(armLockSource, wristLockSource);
         //ParallelCommandGroup toUnderStage = new ParallelCommandGroup(armLockUnderStage, wristLockUnderStage);
 
-        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onTrue(commandShoot);
+        //new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onTrue(commandShoot);
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new Auto(swerveSubsystem, scoringSubsystem, new ArrayList<>(List.of(Positions.FRONTLEFT, Positions.FRONTLEFTMOST, Positions.FRONTRIGHT, Positions.FRONTRIGHTMOST)), 4, Positions.SPEAKER));
-        new JoystickButton(gunner, Buttons.A).onTrue(commandLoad);
-        new JoystickButton(gunner, Buttons.B).onTrue(commandUnload);
+        //new JoystickButton(gunner, Buttons.A).onTrue(commandLoad);
+        //new JoystickButton(gunner, Buttons.B).onTrue(commandUnload);
         new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(scoringSubsystem::increaseRPM));
         new JoystickButton(gunner, Buttons.LEFT_STICK_BUTTON).onTrue(new InstantCommand(scoringSubsystem::decreaseRPM));
         //new POVButton(gunner, Buttons.POV_UP).onTrue(toAmp);
@@ -85,10 +77,6 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         swerveSubsystem.setDefaultCommand(new SwerveJoystickDefaultCmd(swerveSubsystem, driver));
-        climbSubsystem.setDefaultCommand(new ClimbCmd(climbSubsystem, gunner));
-        //wristSubsystem.setDefaultCommand(new WristAdjustCmd(wristSubsystem, gunner));
-        //armSubsystem.setDefaultCommand(new ArmAdjustCmd(armSubsystem, gunner));
-        //wristIntakeSubsystem.setDefaultCommand(new WristIntakeCmd(wristIntakeSubsystem, gunner));
     }
 
     public Command getAutonomousCommand() {
