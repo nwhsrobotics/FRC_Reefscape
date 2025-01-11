@@ -18,6 +18,7 @@ import java.util.List;
 
 public final class Constants {
     public static final class CANAssignments {
+        //TODO: This year, lets organise CAN IDs, as a resault, we def need to re flash motor controllors 
         public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6;
         public static final int BACK_LEFT_DRIVE_MOTOR_ID = 1;
         public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 10;
@@ -33,23 +34,11 @@ public final class Constants {
         public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 21;
         public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 23;
 
-        public static final int CLIMB_LEFT_MOTOR_ID = 32;
-        public static final int CLIMB_RIGHT_MOTOR_ID = 30;
-
-        public static final int FLYWHEEL_MOTOR_ID = 7;
-        public static final int INDEX_MOTOR_ID = 13;
-        public static final int SECONDARY_FLYWHEEL_MOTOR_ID = 41;
-        public static final int SECONDARY_INDEX_MOTOR_ID = 42;
-
         public static final int INTAKE_MOTOR_ID = 15;
 
         // shoulder/wrist not used.
         // DO NOT INITIALIZE THEIR SUBSYSTEMS.
-        public static final int RIGHT_SHOULDER_MOTOR_ID = 19;
-        public static final int LEFT_SHOULDER_MOTOR_ID = 17;
-        public static final int WRIST_MOTOR_ID = 16;
-        public static final int WRIST_INTAKE_ID = 18;
-
+        
         public static final int PDU_ID = 24;
 
         /**
