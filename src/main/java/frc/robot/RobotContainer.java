@@ -10,7 +10,6 @@ package frc.robot;
        ░▒▓█▓▒░░▒▓██████▓▒░░▒▓███████▓▒░ ░▒▓██████▓▒░  
 */                                                    
                                                       
-//test
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -34,7 +33,6 @@ import java.util.List;
 
 public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-    public final ScoringSubsystem scoringSubsystem = new ScoringSubsystem();
 
     private final SendableChooser<Command> autoChooser;
 
@@ -51,39 +49,10 @@ public class RobotContainer {
         //INIT after registering named commands
         autoChooser = AutoBuilder.buildAutoChooser("[B]");
 
-        //InstantCommand armLockAmp = new InstantCommand(armSubsystem::ampPreset, armSubsystem);
-        //InstantCommand armLockSource = new InstantCommand(armSubsystem::sourcePreset, armSubsystem);
-        //InstantCommand armLockUnderStage = new InstantCommand(armSubsystem::underStage, armSubsystem);
-        //InstantCommand wristLockAmp = new InstantCommand(wristSubsystem::ampPreset, wristSubsystem);
-        //InstantCommand wristLockSource = new InstantCommand(wristSubsystem::sourcePreset, wristSubsystem);
-        //InstantCommand wristLockUnderStage = new InstantCommand(wristSubsystem::underStage, wristSubsystem);
 
-        //InstantCommand resetArmEncoders = new InstantCommand(armSubsystem::resetArmEncoders, armSubsystem);
-        //ParallelCommandGroup toAmp = new ParallelCommandGroup(armLockAmp, wristLockAmp);
-        //ParallelCommandGroup toSource = new ParallelCommandGroup(armLockSource, wristLockSource);
-        //ParallelCommandGroup toUnderStage = new ParallelCommandGroup(armLockUnderStage, wristLockUnderStage);
-
-        //new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onTrue(commandShoot);
-        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new Auto(swerveSubsystem, scoringSubsystem, new ArrayList<>(List.of(Positions.FRONTLEFT, Positions.FRONTLEFTMOST, Positions.FRONTRIGHT, Positions.FRONTRIGHTMOST)), 4, Positions.SPEAKER));
-        //new JoystickButton(gunner, Buttons.A).onTrue(commandLoad);
-        //new JoystickButton(gunner, Buttons.B).onTrue(commandUnload);
-        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(scoringSubsystem::increaseRPM));
-        new JoystickButton(gunner, Buttons.LEFT_STICK_BUTTON).onTrue(new InstantCommand(scoringSubsystem::decreaseRPM));
-        //new POVButton(gunner, Buttons.POV_UP).onTrue(toAmp);
-        //new POVButton(gunner, Buttons.POV_LEFT).onTrue(toSource);
-        //new POVButton(gunner, Buttons.POV_DOWN).onTrue(toUnderStage);
-        //new POVButton(gunner, Buttons.POV_RIGHT).onTrue(resetArmEncoders);
 
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::zeroGyro, swerveSubsystem));
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
-        //new JoystickButton(driver, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(swerveSubsystem.autonavigator::toggle, swerveSubsystem));
-        //new JoystickButton(driver, Buttons.X).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.AMP), swerveSubsystem));
-        //new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.SOURCE), swerveSubsystem));
-        //new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.SPEAKER), swerveSubsystem));
-        //new JoystickButton(driver, XboxControllerButtons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(swerveSubsystem.odometer.getEstimatedPosition().nearest(Constants.FavoritePositions.allPoses)), swerveSubsystem));
-        //new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Vision.visionTargetLocation), swerveSubsystem));
-        //new POVButton(driver, Buttons.POV_UP).onTrue(new InstantCommand(() -> new PathPlannerAuto("Starting Point").schedule()));
-        //new POVButton(driver, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> Vision.nextPipeline(LimelightConstants.llObjectDetectionName)));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
