@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -224,7 +225,7 @@ public final class Constants {
         public static final double kPXController = 5;
         public static final double kPThetaController = 5;
 
-        public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
+        public static final PPHolonomicDriveController pathFollowerConfig = new HolonomicPathFollowerConfig(
                 new PIDConstants(AutoConstants.kPXController, 0, 0), // Translation constants
                 new PIDConstants(AutoConstants.kPThetaController, 0, 0), // Rotation constants
                 DriveConstants.kPhysicalMaxSpeedMetersPerSecond,
