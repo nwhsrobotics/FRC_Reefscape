@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.VecBuilder;
@@ -116,36 +117,44 @@ public class SwerveSubsystem extends SubsystemBase {
      * Configures the AutoBuilder for holonomic/swerve path planning and initializes the gyro.
      */
     public SwerveSubsystem() {
-        // Configure AutoBuilder for holonomic/swerve path planning & paths
-        AutoBuilder.configureHolonomic(
-                this::getPose,               // Supplier for getting the robot's pose
-                this::resetOdometry,         // Runnable for resetting odometry
-                this::getSpeeds,             // Supplier for getting the robot's speeds
-                this::driveRobotRelative,    // Consumer for driving the robot relative to its orientation
-                AutoConstants.pathFollowerConfig, // Path follower configuration
-                () -> {
-                    // Boolean supplier that controls when the path will be mirrored for the red alliance
-                    // This will flip the path being followed to the red side of the field.
-                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+        RobotConfig config;
+        try{
+            config = RobotConfig.fromGUISettings();
 
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
-                },
-                this
-        );
+                // Configure AutoBuilder for holonomic/swerve path planning & paths
+                AutoBuilder.configure(
+                    this::getPose,               // Supplier for getting the robot's pose
+                    this::resetOdometry,         // Runnable for resetting odometry
+                    this::getSpeeds,             // Supplier for getting the robot's speeds
+                    this::driveRobotRelative,    // Consumer for driving the robot relative to its orientation
+                    AutoConstants.pathFollowerConfig, // Path follower configuration
+                    config,                     // Robot configuration
+                    () -> {
+                        // Boolean supplier that controls when the path will be mirrored for the red alliance
+                        // This will flip the path being followed to the red side of the field.
+                        // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-        this.autonavigator = new AutoNavigation(this);
+                        var alliance = DriverStation.getAlliance();
+                        if (alliance.isPresent()) {
+                            return alliance.get() == DriverStation.Alliance.Red;
+                        }
+                        return false;
+                    },
+                    this
+            );
 
-        // Pause for 500 milliseconds to allow the gyro to stabilize.
-        // Set the yaw of the gyro to 0 afterwards.
-        // TODO: Do we need this anymore? Might cause conflicts with path planner
-        //gyro.reset();
-        Commands.waitUntil(() -> !gyro.isCalibrating()).andThen(new InstantCommand(() -> gyro.zeroYaw()));
-        /*Commands.waitSeconds(0.5)
-                .andThen(new RunCommand(() -> gyro.zeroYaw()));*/
+            this.autonavigator = new AutoNavigation(this);
+
+            // Pause for 500 milliseconds to allow the gyro to stabilize.
+            // Set the yaw of the gyro to 0 afterwards.
+            // TODO: Do we need this anymore? Might cause conflicts with path planner
+            //gyro.reset();
+            Commands.waitUntil(() -> !gyro.isCalibrating()).andThen(new InstantCommand(() -> gyro.zeroYaw()));
+            /*Commands.waitSeconds(0.5)
+                    .andThen(new RunCommand(() -> gyro.zeroYaw()));*/
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -287,22 +296,24 @@ public class SwerveSubsystem extends SubsystemBase {
     public void pathFindThenFollowPath(String pathName) {
         Command pathfindingCommand;
         // Load the path we want to pathfind to and follow
-        PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+        PathPlannerPath path;
+        try {
+            path = PathPlannerPath.fromPathFile(pathName);
 
-        // Create the constraints to use while pathfinding. The constraints defined in the path will only be used for the path.
-        PathConstraints constraints = new PathConstraints(
-                DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 8.0, AutoConstants.kMaxAccelerationMetersPerSecondSquared / 8.0,
-                AutoConstants.kMaxAngularSpeedRadiansPerSecond, AutoConstants.kMaxAngularAccelerationRadiansPerSecondSquared / 2.0);
+            // Create the constraints to use while pathfinding. The constraints defined in the path will only be used for the path.
+            PathConstraints constraints = new PathConstraints(
+                    DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 8.0, AutoConstants.kMaxAccelerationMetersPerSecondSquared / 8.0,
+                    AutoConstants.kMaxAngularSpeedRadiansPerSecond, AutoConstants.kMaxAngularAccelerationRadiansPerSecondSquared / 2.0);
 
-        // What pathfinding does is pathfind to the start of a path and then continue along that path.
-        // If you don't want to continue along the path, you can make it pathfind to a specific location.
+            // What pathfinding does is pathfind to the start of a path and then continue along that path.
+            // If you don't want to continue along the path, you can make it pathfind to a specific location.
 
-        pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
-                path,
-                constraints,
-                0.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
-        );
-        pathfindingCommand.schedule();
+            pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
+                    path,
+                    constraints
+            );
+            pathfindingCommand.schedule();
+        } catch (Exception ignored) {}
 
     }
 
@@ -316,8 +327,7 @@ public class SwerveSubsystem extends SubsystemBase {
         Command command = AutoBuilder.pathfindToPoseFlipped(
                 position,
                 AutoConstants.kPathfindingConstraints,
-                0.0, // Goal end velocity in meters/sec
-                0.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
+                0.0 // Goal end velocity in meters/sec
         );
         command.addRequirements(this);
         command.schedule();
