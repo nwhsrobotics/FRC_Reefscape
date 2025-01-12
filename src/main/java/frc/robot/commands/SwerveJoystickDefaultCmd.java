@@ -28,7 +28,7 @@ public class SwerveJoystickDefaultCmd extends Command {
     @Override
     public void execute() {
         //assuming 2 limelights
-        if (xbox.getLeftBumper()) {  //for object detection alligning
+        if (xbox.getLeftBumperButton()) {  //for object detection alligning
             //while using Limelight, turn off field-relative driving.
             fieldRelative = false;
             swerveSubsystem.drive(
@@ -37,7 +37,7 @@ public class SwerveJoystickDefaultCmd extends Command {
                     Vision.limelight_aim_proportional(LimelightConstants.llObjectDetectionName),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
 
-        } else if (xbox.getRightBumper()) { //for april tag allign
+        } else if (xbox.getRightBumperButton()) { //for april tag allign
             fieldRelative = false;
             swerveSubsystem.drive(
                     Vision.limelight_range_proportional(LimelightConstants.llLocalizationName),
