@@ -2,9 +2,6 @@ package frc.robot;
 
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
-//import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-//import com.pathplanner.lib.util.PIDConstants;
-//import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -39,7 +36,7 @@ public final class Constants {
 
         // shoulder/wrist not used.
         // DO NOT INITIALIZE THEIR SUBSYSTEMS.
-        
+
         public static final int PDU_ID = 24;
 
         /**

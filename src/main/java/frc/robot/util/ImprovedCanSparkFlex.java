@@ -1,7 +1,6 @@
 package frc.robot.util;
 
 import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class ImprovedCanSparkFlex extends CANSparkFlex {
@@ -17,7 +16,7 @@ public class ImprovedCanSparkFlex extends CANSparkFlex {
         clearFaults();
         setIdleMode(mode);
         setVoltage(volComp);
-        switch(motor){
+        switch (motor) {
             case NEO -> setSmartCurrentLimit(80);
             case NEO550 -> setSmartCurrentLimit(20);
         }
@@ -31,7 +30,7 @@ public class ImprovedCanSparkFlex extends CANSparkFlex {
         restoreFactoryDefaults();
         clearFaults();
         setIdleMode(mode);
-        switch(neo){
+        switch (neo) {
             case NEO -> setSmartCurrentLimit(80);
             case NEO550 -> setSmartCurrentLimit(20);
         }

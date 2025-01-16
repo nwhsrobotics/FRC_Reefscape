@@ -16,7 +16,7 @@ public class ImprovedCanSpark extends CANSparkMax {
         clearFaults();
         setIdleMode(mode);
         setVoltage(volComp);
-        switch(motor){
+        switch (motor) {
             case NEO -> setSmartCurrentLimit(80);
             case NEO550 -> setSmartCurrentLimit(20);
         }
@@ -30,7 +30,7 @@ public class ImprovedCanSpark extends CANSparkMax {
         restoreFactoryDefaults();
         clearFaults();
         setIdleMode(mode);
-        switch(motor){
+        switch (motor) {
             case NEO -> setSmartCurrentLimit(80);
             case NEO550 -> setSmartCurrentLimit(20);
         }

@@ -31,7 +31,7 @@ public class Vision {
             double kP = 0.035;
             double angleErrorDegrees = LimelightHelpers.getTX(limelightName) + LimelightConstants.thethaFromCenter;
             double targetingAngularVelocity = angleErrorDegrees * kP;
-            targetingAngularVelocity *= 0.5; 
+            targetingAngularVelocity *= 0.5;
             targetingAngularVelocity *= -1.0;
             return targetingAngularVelocity;
         }
@@ -52,9 +52,9 @@ public class Vision {
             if (isAprilTagPipeline(limelightName)) {
                 var fiducials = LimelightHelpers.getRawFiducials(limelightName);
                 if (fiducials.length > 0) {
-                    double distToRobot = fiducials[0].distToRobot; 
+                    double distToRobot = fiducials[0].distToRobot;
                     // Negative sign to move forward (assuming positive dist is forward)
-                    return -distToRobot * kP; 
+                    return -distToRobot * kP;
                 } else {
                     // If no fiducials, fallback to a safe default
                     return 0.0;
@@ -124,7 +124,7 @@ public class Vision {
         return 0.0;
     }
 
-    
+
     /**
      * Calculates how far left or right the target is from the camera's forward line.
      *

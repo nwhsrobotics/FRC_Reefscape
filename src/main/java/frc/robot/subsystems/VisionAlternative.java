@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.util.LimelightHelpers;
 import org.littletonrobotics.junction.Logger;
@@ -41,8 +40,8 @@ public class VisionAlternative {
             if (isAprilTagPipeline(limelightName)) {
                 // Use distance from AprilTag estimation
                 double distanceToTarget = LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ();
-                return -distanceToTarget * 0.345; 
+                        .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ();
+                return -distanceToTarget * 0.345;
             } else {
                 // Use Z-axis distance from retro-reflective target
                 double zDistance = LimelightHelpers.getLatestResults(limelightName)
