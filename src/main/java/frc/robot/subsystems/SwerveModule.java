@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -237,7 +236,7 @@ public class SwerveModule {
         turningMotor.set(0);
     }
 
-    public void straighten(){
+    public void straighten() {
         turningMotor.set(turningPidController.calculate(getAbsoluteEncoderRad(), 0)); // use PID control to turn to the desired angle
         turningMotor.set(0); // Stop turning once the desired angle is reached
     }

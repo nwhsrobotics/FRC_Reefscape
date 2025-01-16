@@ -1,9 +1,8 @@
 package frc.robot;
 
-                                                
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,16 +10,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.Constants.LimelightConstants;
-import frc.robot.Constants.Positions;
-import frc.robot.autos.Auto;
-import frc.robot.commands.*;
-import frc.robot.subsystems.*;
+import frc.robot.commands.SwerveJoystickDefaultCmd;
+import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.Buttons;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
@@ -39,7 +31,6 @@ public class RobotContainer {
 
         //INIT after registering named commands
         autoChooser = AutoBuilder.buildAutoChooser("[B]");
-
 
 
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::zeroGyro, swerveSubsystem));
