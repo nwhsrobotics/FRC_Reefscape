@@ -32,10 +32,6 @@ public final class Constants {
         public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 21;
         public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 23;
 
-        public static final int INTAKE_MOTOR_ID = 15;
-
-        // shoulder/wrist not used.
-        // DO NOT INITIALIZE THEIR SUBSYSTEMS.
 
         public static final int PDU_ID = 24;
 
@@ -138,81 +134,7 @@ public final class Constants {
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = kPhysicalMaxSpeedMetersPerSecond / Math.hypot(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0); //adapted from SDS
     }
 
-    public static final class ClimbConstants {
-        private static final double SPOOL_DIAMETER_METERS = 0.787 * 0.0254;
-        private static final double GEAR_RATIO = Math.pow(7, 2);
-        public static final double CLIMB_DISTANCE_PER_ROTATION = SPOOL_DIAMETER_METERS / GEAR_RATIO;
 
-        public static final double CLIMB_TRAVEL_DISTANCE_METERS = 12 * 0.0254;
-        public static final double TOLERANCE_DISTANCE_METERS = 0.25 * 0.0254;
-    }
-
-    public static final class ArmConstants {
-        public static final double SHOULDER_PID_P = 0.1;
-        public static final double SHOULDER_GEAR_RATIO = 112.0;
-        public static final double SHOULDER_ABS_ENCODER_ROTATION_OFFSET = -0.161;
-        public static final double SHOULDER_OUTPUT_LIMIT = 0.2;
-
-        public static final int ABSOLUTE_ENCODER_DIO_CHANNEL = 0;
-    }
-
-    public static final class WristConstants {
-        public static final double WRIST_PID_P = 0.5;
-        public static final double WRIST_GEAR_RATIO = 100.0;
-        public static final double absOffset = 0;
-
-        public static final int ABSOLUTE_ENCODER_DIO_CHANNEL = 1;
-    }
-
-    public static final class ScoringConstants {
-        /**
-         * This adds +/- tolerance to the target RPM for the flywheel.
-         * <p>
-         * If the flywheel spins within the tolerance,
-         * then it is considered up-to-speed for firing.
-         */
-        public static final double FLYWHEEL_TARGET_RPM_TOLERANCE = 600.0;
-
-        public static final double FLYWHEEL_PID_FF = 0.0005;
-        public static final double FLYWHEEL_PID_P = 0.00001;
-        public static final double INDEX_PID_FF = 0.0005;
-        public static final double INTAKE_PID_FF = 0.0005;
-
-        /**
-         * This controls the intake RPM when it is activated.
-         *
-         * <p>
-         * <p>
-         * If the intake is told to be driven backwards,
-         * this value still is applied, and simply made negative.
-         */
-        public static final double INTAKE_RPM = 1650;  // TODO requires tuning.
-        /**
-         * This controls the indexer RPM when the intake is activated in the forwards direction.
-         *
-         * <p>
-         * <p>
-         * The indexer aids in ingesting the game piece,
-         * elastically deforming it to be pressed firmly against the flywheel.
-         */
-        public static final double INDEX_INTAKE_COOP_RPM = 0;
-        /**
-         * This controls the indexer RPM when the intake is activated in the reverse direction.
-         *
-         * <p>
-         * <p>
-         * The indexer is responsible for initially dislodging the game piece
-         * from its resting position against the flywheel.
-         * Once displaced far enough, the intake wheels can engage with the game piece
-         * and eject it completely out of the scoring assembly.
-         */
-        public static final double INDEX_INTAKE_UNLOAD_RPM = 800; // TODO requires tuning.
-
-        public static final double FLYWHEEL_SPEAKER_RPM = 4750.0; //it was 4250 during second comp, increased it because does it even matter anymore?
-        public static final double FLYWHEEL_AMP_RPM = 450.0;
-        public static final double FLYWHEEL_IDLE_RPM = 0;
-        public static final double INDEX_FLYWHEEL_COOP_RPM = 4750.0;
-    }
 
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 2;
