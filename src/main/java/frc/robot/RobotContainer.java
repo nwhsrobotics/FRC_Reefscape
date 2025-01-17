@@ -20,6 +20,8 @@ public class RobotContainer {
 
     public final ClimbSubsystem climbSubsystem = new ClimbSubsystem(); 
 
+    public final IntakeOuttake intakeoutake = new IntakeOuttake();
+
     private final SendableChooser<Command> autoChooser;
 
     public XboxController driver = new XboxController(0);
