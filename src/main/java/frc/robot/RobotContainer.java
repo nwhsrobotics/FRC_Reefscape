@@ -11,11 +11,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.Buttons;
 
 public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+
+    public final ClimbSubsystem climbSubsystem = new ClimbSubsystem(); 
 
     private final SendableChooser<Command> autoChooser;
 
