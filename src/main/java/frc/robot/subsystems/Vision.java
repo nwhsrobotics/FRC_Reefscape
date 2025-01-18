@@ -95,15 +95,19 @@ public class Vision {
      * @param limelightName The name of the limelight.
      * @return Hypotenuse distance (meters) to the target.
      */
-    public static double lineOfSightDistance(String limelightName) {
+    public static double horizontalOffestDistance(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
-            double legLength = verticalPlaneDistance(limelightName);
+            double legLength = lineOfSightDistance(limelightName);
             double txRadians = Math.toRadians(LimelightHelpers.getTX(limelightName));
+            // double theta = LimelightHelpers.getTX(limelightName);
+            return legLength*Math.atan(txRadians);
+            /* 
             double cosTheta = Math.cos(txRadians);
             if (cosTheta == 0.0) {
                 return 0.0;
             }
             return legLength / cosTheta;
+            */
         }
         return 0.0;
     }
@@ -131,7 +135,7 @@ public class Vision {
      * @param limelightName The name of the limelight.
      * @return Horizontal offset distance (meters) from the target.
      */
-    public static double horizontalOffestDistance(String limelightName) {
+    public static double lineOfSightDistance(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             double legLength = verticalPlaneDistance(limelightName);
             double txRadians = Math.toRadians(LimelightHelpers.getTX(limelightName));
