@@ -32,7 +32,6 @@ public class RobotContainer {
 
         ParallelCommandGroup autoInit = new ParallelCommandGroup(); // new ParallelCommandGroup((new InstantCommand(() -> wristSubsystem.ampPreset(), wristSubsystem), (new InstantCommand(() -> armSubsystem.underStage(), armSubsystem));
 
-        NamedCommands.registerCommand("shoot", autoInit);
         NamedCommands.registerCommand("autoInit", autoInit);
 
         //INIT after registering named commands
