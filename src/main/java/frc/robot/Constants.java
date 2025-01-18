@@ -164,32 +164,26 @@ public final class Constants {
     }
 
     public static final class Positions {
-        public static final Pose2d SOURCE = new Pose2d(15.39, 0.94, Rotation2d.fromDegrees(-60.00));
-        public static final Pose2d AMP = new Pose2d(1.83, 7.70, Rotation2d.fromDegrees(-90.00));
-        public static final Pose2d SPEAKER = new Pose2d(1.54, 5.54, Rotation2d.fromDegrees(0.00));
 
-        public static final Pose2d MIDSTAGE = new Pose2d(5.85, 4.12, Rotation2d.fromDegrees(-180.00));
-        //not near amp
-        public static final Pose2d BOTTOMSTAGE = new Pose2d(4.37, 3.27, Rotation2d.fromDegrees(60.00));
-        //same area as amp
-        public static final Pose2d TOPSTAGE = new Pose2d(4.38, 4.89, Rotation2d.fromDegrees(-60.00));
-        //0.49, 7.69 for odometry reset corner
-        //same area as amp
-        public static final Pose2d TOPSPEAKER = new Pose2d(0.71, 6.68, Rotation2d.fromDegrees(60));
-        //away from amp
-        public static final Pose2d BOTTOMSPEAKER = new Pose2d(0.71, 4.285, Rotation2d.fromDegrees(-60.00));
-        //list of all positions (POI) to pathfind to allow closest pathfinding
-        public static final List<Pose2d> allPoses = new ArrayList<Pose2d>(List.of(SOURCE, AMP, SPEAKER, MIDSTAGE, BOTTOMSTAGE, TOPSTAGE, TOPSPEAKER, BOTTOMSPEAKER));
+        public static final Pose2d LEFT_GROUND_START_PIECES = new Pose2d(1.219, 5.855, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
+        public static final Pose2d MID_GROUND_START_PIECES = new Pose2d(1.219, 4.022, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
+        public static final Pose2d RIGHT_GROUND_START_PIECES = new Pose2d(1.219, 2.189, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
 
-        public static final Pose2d BACKRIGHT = new Pose2d(2.90, 4.10, Rotation2d.fromDegrees(0.00));
-        public static final Pose2d BACKCENTER = new Pose2d(2.90, 5.55, Rotation2d.fromDegrees(0.00));
-        public static final Pose2d BACKLEFT = new Pose2d(2.90, 7.00, Rotation2d.fromDegrees(0.00));
-        public static final Pose2d FRONTRIGHTMOST = new Pose2d(8.29, 7.44, Rotation2d.fromDegrees(0.00));
-        public static final Pose2d FRONTRIGHT = new Pose2d(8.29, 5.78, Rotation2d.fromDegrees(0.00));
-        public static final Pose2d FRONTCENTER = new Pose2d(8.29, 4.10, Rotation2d.fromDegrees(0.00));
-        public static final Pose2d FRONTLEFTMOST = new Pose2d(8.29, 2.44, Rotation2d.fromDegrees(0.00));
-        public static final Pose2d FRONTLEFT = new Pose2d(8.29, 0.77, Rotation2d.fromDegrees(0.00));
-        public static final List<Pose2d> allNotes = new ArrayList<Pose2d>(List.of(BACKRIGHT, BACKCENTER, BACKLEFT, FRONTRIGHTMOST, FRONTRIGHT, FRONTCENTER, FRONTLEFT, FRONTLEFTMOST));
+        public static final Pose2d RIGHT_CAGE = new Pose2d(8.777, 7.267, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
+        public static final Pose2d RIGHT_MID = new Pose2d(8.777, 6.173, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
+        public static final Pose2d RIGHT_LEFT = new Pose2d(8.777, 5.075, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
+
+        public static final Pose2d FRONT_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60)); 
+        public static final Pose2d FRONT_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(0)); 
+        public static final Pose2d FRONT_RIGHT_REEF = new Pose2d(3.614, 2.613, Rotation2d.fromDegrees(60)); 
+        public static final Pose2d BACK_LEFT_REEF = new Pose2d(5.352, 5.444, Rotation2d.fromDegrees(-120)); 
+        public static final Pose2d BACK_MID_REEF = new Pose2d(6.152, 4.026, Rotation2d.fromDegrees(180)); 
+        public static final Pose2d BACK_RIGHT_REEF = new Pose2d(5.310, 2.582, Rotation2d.fromDegrees(120)); 
+
+        public static final Pose2d SOURCE_LEFT = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(125)); //this is for the center of the source 
+        public static final Pose2d SOURCE_RIGHT = new Pose2d(1.149, 1.043, Rotation2d.fromDegrees(-125)); //this is for the center of the source 
+        
+        public static final List<Pose2d> allNotes = new ArrayList<Pose2d>(); //temp fix 
     }
 
     public static final class LimelightConstants {
