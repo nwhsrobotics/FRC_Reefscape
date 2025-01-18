@@ -12,7 +12,7 @@ import java.util.List;
 public class AutoSelector {
     public AutoSelector(SwerveSubsystem swerve) {
         SendableChooser<Command> autoChooser = new SendableChooser<>();
-        autoChooser.addOption("B [5 NOTE]", new Auto(swerve, new ArrayList<>(List.of(Positions.FRONTLEFT, Positions.FRONTLEFTMOST, Positions.FRONTRIGHT, Positions.FRONTRIGHTMOST)), 4, Positions.SPEAKER));
+        //autoChooser.addOption("B [5 NOTE]", new Auto(swerve, new ArrayList<>(List.of(Positions.FRONTLEFT, Positions.FRONTLEFTMOST, Positions.FRONTRIGHT, Positions.FRONTRIGHTMOST)), 4, Positions.SPEAKER));
         SmartDashboard.putData(autoChooser);
     }
 }
