@@ -1,17 +1,22 @@
 package frc.robot.util;
 
-import com.revrobotics.CANSparkFlex;
+import com.revrobotics.sim.SparkFlexExternalEncoderSim;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 import edu.wpi.first.wpilibj.DriverStation;
 
-public class ImprovedCanSparkFlex extends CANSparkFlex {
+public class ImprovedCanSparkFlex extends SparkFlex {
 
     public enum MotorKind {
         NEO550,
-        NEO
+        NEO,
+        VORTEX
     }
 
     public ImprovedCanSparkFlex(int id, MotorKind motor, IdleMode mode, double volComp) {
         super(id, MotorType.kBrushless);
+        SparkFlex
         restoreFactoryDefaults();
         clearFaults();
         setIdleMode(mode);
@@ -19,6 +24,7 @@ public class ImprovedCanSparkFlex extends CANSparkFlex {
         switch (motor) {
             case NEO -> setSmartCurrentLimit(80);
             case NEO550 -> setSmartCurrentLimit(20);
+            case VORTEX -> setSmartCurrentLimit(80);
         }
         if (DriverStation.isFMSAttached()) {
             burnFlash();
@@ -33,6 +39,7 @@ public class ImprovedCanSparkFlex extends CANSparkFlex {
         switch (neo) {
             case NEO -> setSmartCurrentLimit(80);
             case NEO550 -> setSmartCurrentLimit(20);
+            case VORTEX -> setSmartCurrentLimit(80);
         }
         if (DriverStation.isFMSAttached()) {
             burnFlash();
