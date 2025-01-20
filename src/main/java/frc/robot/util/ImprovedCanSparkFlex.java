@@ -16,7 +16,6 @@ public class ImprovedCanSparkFlex extends SparkFlex {
 
     public ImprovedCanSparkFlex(int id, MotorKind motor, IdleMode mode, double volComp) {
         super(id, MotorType.kBrushless);
-        SparkFlex
         restoreFactoryDefaults();
         clearFaults();
         setIdleMode(mode);
