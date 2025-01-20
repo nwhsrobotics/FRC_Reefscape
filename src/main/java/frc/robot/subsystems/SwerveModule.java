@@ -1,9 +1,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkFlex;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -18,8 +19,8 @@ import frc.robot.util.ImprovedCanSparkFlex;
  */
 public class SwerveModule {
     // Drive and Turning Motors
-    private final CANSparkFlex driveMotor;
-    private final CANSparkFlex turningMotor;
+    private final SparkFlex driveMotor;
+    private final SparkFlex turningMotor;
 
     // Encoders
     private final RelativeEncoder driveEncoder;
@@ -54,8 +55,8 @@ public class SwerveModule {
         absoluteEncoder = new CANcoder(absoluteEncoderId);
 
         // Initialize the drive and turning motors using the given ids
-        driveMotor = new ImprovedCanSparkFlex(driveMotorId, ImprovedCanSpark.MotorKind.NEO, CANSparkBase.IdleMode.kBrake);
-        turningMotor = new ImprovedCanSparkFlex(turningMotorId, ImprovedCanSpark.MotorKind.NEO, CANSparkBase.IdleMode.kBrake);
+        driveMotor = new ImprovedCanSparkFlex(driveMotorId, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake);
+        turningMotor = new ImprovedCanSparkFlex(turningMotorId, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake);
 
         // Set the inversion of the drive and turning motors based on the given values
         driveMotor.setInverted(driveMotorReversed);
