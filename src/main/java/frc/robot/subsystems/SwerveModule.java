@@ -2,7 +2,14 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.sim.SparkRelativeEncoderSim;
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.config.EncoderConfig;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkBaseConfigAccessor;
+import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -21,6 +28,9 @@ public class SwerveModule {
     // Drive and Turning Motors
     private final SparkFlex driveMotor;
     private final SparkFlex turningMotor;
+
+    private final SparkBaseConfig driveMotorConfig;
+    private final SparkBaseConfig turningMotorConfig;
 
     // Encoders
     private final RelativeEncoder driveEncoder;
@@ -55,12 +65,23 @@ public class SwerveModule {
         absoluteEncoder = new CANcoder(absoluteEncoderId);
 
         // Initialize the drive and turning motors using the given ids
-        driveMotor = new ImprovedCanSparkFlex(driveMotorId, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake);
-        turningMotor = new ImprovedCanSparkFlex(turningMotorId, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake);
+        
+        
 
         // Set the inversion of the drive and turning motors based on the given values
-        driveMotor.setInverted(driveMotorReversed);
-        turningMotor.setInverted(turningMotorReversed);
+        driveMotorConfig = new SparkFlexConfig();
+        driveMotorConfig.inverted(driveMotorReversed);
+        driveMotorConfig.encoder.positionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
+        driveMotorConfig.encoder.velocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
+        driveMotor = new ImprovedCanSparkFlex(driveMotorId, ImprovedCanSparkFlex.MotorKind.NEO, driveMotorConfig, IdleMode.kBrake);
+        //driveMotor.configure(driveMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+        
+        turningMotorConfig = new SparkFlexConfig();
+        turningMotorConfig.inverted(driveMotorReversed);
+        turningMotorConfig.encoder.positionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad);
+        turningMotorConfig.encoder.velocityConversionFactor(ModuleConstants.kTurningEncoderRPM2RadPerSec);
+        turningMotor = new ImprovedCanSparkFlex(turningMotorId, ImprovedCanSparkFlex.MotorKind.NEO, turningMotorConfig, IdleMode.kBrake);
+        //turningMotor.configure(driveMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
         // Initialize the drive and turning encoders
         driveEncoder = driveMotor.getEncoder();
@@ -68,12 +89,9 @@ public class SwerveModule {
 
         // Set the position of the turning encoder based on the absolute encoder value
         turningEncoder.setPosition(getAbsoluteEncoderRad());
-
+        
         // Set the conversion factors for the drive and turning encoders
-        driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
-        driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
-        turningEncoder.setPositionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad);
-        turningEncoder.setVelocityConversionFactor(ModuleConstants.kTurningEncoderRPM2RadPerSec);
+
 
         // Initialize the turning PID controller with the given values
         turningPidController = new PIDController(ModuleConstants.kPTurning, ModuleConstants.kITurning, 0);
