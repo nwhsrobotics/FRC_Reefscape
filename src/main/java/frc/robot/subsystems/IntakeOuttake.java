@@ -12,7 +12,7 @@ public class IntakeOuttake extends SubsystemBase {
   /** Creates a new IntakeOuttake. */
   public IntakeOuttake() {
     servoMoter = new Servo(0); // Initialize servo on PWM port 0
-    servoMoter.setBoundsMicroseconds(1500, 1250, 1000);
+    servoMoter.setBoundsMicroseconds(1500, 0, 1250, 0, 1000);
   }
   /** Opens the outake mechanism toa present position */
 
