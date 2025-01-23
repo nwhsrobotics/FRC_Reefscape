@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Servo;
 
 public class IntakeOuttake extends SubsystemBase {
-  private Servo servoMoter;
+  private Servo servoMoter; //Initiative variable for Servo object
   /** Creates a new IntakeOuttake. */
   public IntakeOuttake() {
     servoMoter = new Servo(0); // Initialize servo on PWM port 0
