@@ -7,17 +7,16 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 
-import com.ctre.phoenix6.SignalLogger;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
 
 public class SysId extends SubsystemBase {
-  private CANSparkMax Sysmotor;
+  private SparkMax Sysmotor;
   private SysIdRoutine m_sysIdRoutine;
   /** Creates a new SysIdRoutine. */
   public SysId() {
-    this.Sysmotor = new CANSparkMax(1, MotorType.kBrushless);
+    this.Sysmotor = new SparkMax(1, MotorType.kBrushless);
 //creates sysid routine in the actual code
     m_sysIdRoutine = new SysIdRoutine(
       //set ramp rate voltage and duration
