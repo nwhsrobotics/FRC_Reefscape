@@ -77,6 +77,15 @@ public class SwerveJoystickDefaultCmd extends Command {
                 -MathUtil.applyDeadband(Driver1.getRawAxis(4), OIConstants.kDriveDeadband),
                 true, true),
                 swerveSubsystem)); */
+        /*
+         *         if (robotContainer.swerveSubsystem.autonavigator.isEnabled()) {
+            if (MathUtil.applyDeadband(robotContainer.driver.getLeftX(), OIConstants.kDriveDeadband) != 0 || MathUtil.applyDeadband(robotContainer.driver.getLeftY(), OIConstants.kDriveDeadband) != 0 || MathUtil.applyDeadband(robotContainer.driver.getRightX(), OIConstants.kDriveDeadband) != 0) {
+                robotContainer.swerveSubsystem.autonavigator.pauseNavigation();
+            } else {
+                robotContainer.swerveSubsystem.autonavigator.resumeNavigation();
+            }
+        }
+         */
     }
 
     @Override
