@@ -101,19 +101,6 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
-        Logger.recordOutput("ll.straightLineDist", VisionGamePiece.hypotenuseDistanceXandZ("limelight"));
-        Logger.recordOutput("ll.verticalDist", VisionGamePiece.straightLineZDistance("limelight"));
-        Logger.recordOutput("ll.horizontalDist", VisionGamePiece.horizontalOffestXDistance("limelight"));
-        Logger.recordOutput("ll.3dHypotnuese", VisionGamePiece.full3DDistance("limelight"));
-        Logger.recordOutput("ll.detect", LimelightHelpers.getTY(""));
-        //1, 1, Rotation2d.fromDegrees(60)
-        Logger.recordOutput("ll.target", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").toString());
-        Logger.recordOutput("ll.targetX", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getX());
-        Logger.recordOutput("ll.targetY", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getY());
-        Logger.recordOutput("ll.targetDegrees", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getRotation().getDegrees());
-        Logger.recordOutput("ll.targetRadians", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getRotation().getRadians());
-        Logger.recordOutput("ll.targetRotation", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getRotation().getRotations());
-        Logger.recordOutput("ll.getOriginDistance", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getTranslation().getNorm());
     }
 
     /**
@@ -154,30 +141,6 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        if (robotContainer.swerveSubsystem.autonavigator.isEnabled()) {
-            if (MathUtil.applyDeadband(robotContainer.driver.getLeftX(), OIConstants.kDriveDeadband) != 0 || MathUtil.applyDeadband(robotContainer.driver.getLeftY(), OIConstants.kDriveDeadband) != 0 || MathUtil.applyDeadband(robotContainer.driver.getRightX(), OIConstants.kDriveDeadband) != 0) {
-                robotContainer.swerveSubsystem.autonavigator.pauseNavigation();
-            } else {
-                robotContainer.swerveSubsystem.autonavigator.resumeNavigation();
-            }
-        }
-        /* 
-        String llname = LimelightConstants.llObjectDetectionName; 
-        Vision.visionTargetLocation = Vision.transformTargetLocation(robotContainer.swerveSubsystem.getPose(), llname); 
-        HashSet<Integer> tagsFound = new HashSet<>();
-        for (int i = 0; i < LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llLocalizationName).tagCount; i++) {
-            tagsFound.add(LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llLocalizationName).rawFiducials[i].id);
-        }
-        Vision.tagIds.removeIf(tagId -> !tagsFound.contains(tagId));
-        tagsFound.forEach(tagId -> {
-            if(!Vision.tagIds.contains(tagId)){
-                Vision.tagIds.add(tagId);
-            }
-        });
-        //Logger.recordOutput(llname + ".pipelineIndex", LimelightHelpers.getCurrentPipelineIndex(llname));
-        //Logger.recordOutput(llname + ".pipelineName", Vision.getPipelineName(llname));
-        //Logger.recordOutput(llname + ".objectDetected", LimelightHelpers.getTV(llname));
-        */
     }
 
     @Override
