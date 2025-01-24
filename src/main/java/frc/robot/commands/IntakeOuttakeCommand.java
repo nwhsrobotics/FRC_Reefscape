@@ -24,7 +24,15 @@ public class IntakeOuttakeCommand extends Command {
 
   
   @Override
-  public void execute() {}
+  public void execute() {
+    if (gunner.getAButton()) {
+      IntakeOuttake.outtakeOpen();
+    }
+
+    else if (gunner.getBButton()) {
+      IntakeOuttake.outtakeClose();
+    }
+  }
 
 
   @Override

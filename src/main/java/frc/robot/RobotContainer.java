@@ -47,6 +47,7 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         swerveSubsystem.setDefaultCommand(new SwerveJoystickDefaultCmd(swerveSubsystem, driver));
+        IntakeOuttake.setDefaultCommand(new IntakeOuttakeCommand(intakeOuttake, gunner));
     }
 
     public Command getAutonomousCommand() {
