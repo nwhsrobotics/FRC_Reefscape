@@ -45,7 +45,7 @@ public class VisionAprilTag {
                     double distToRobot = fiducials[0].distToRobot;
              */
             // Use distance from AprilTag estimation
-            return -distanceZFromLimelight(limelightName) * 0.345;
+            return -straightLineZDistance(limelightName) * 0.345;
         }
         return 0.0;
     }
@@ -55,7 +55,7 @@ public class VisionAprilTag {
      *
      * @return The calculated distance from the Limelight to the target.
      */
-    public static double distanceZFromLimelight(String limelightName) {
+    public static double straightLineZDistance(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             // Use Z-axis distance to the target
             return LimelightHelpers.getLatestResults(limelightName)
@@ -69,10 +69,18 @@ public class VisionAprilTag {
      *
      * @return The calculated hypotenuse length (actual distance) to the target.
      */
-    public static double hypotenuseLengthXandZ(String limelightName) {
+    public static double hypotenuseDistanceXandZ(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             return LimelightHelpers.getLatestResults(limelightName)
                     .targets_Fiducials[0].getTargetPose_CameraSpace2D().getTranslation().getNorm();
+        }
+        return 0.0;
+    }
+
+    public static double full3DDistance(String limelightName) {
+        if (LimelightHelpers.getTV(limelightName)) {
+            return LimelightHelpers.getLatestResults(limelightName)
+                    .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getNorm();
         }
         return 0.0;
     }
