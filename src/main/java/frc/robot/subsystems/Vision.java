@@ -34,10 +34,10 @@ public class Vision extends SubsystemBase {
 
 
 
-    Logger.recordOutput("lla.straightLineDist", VisionAprilTag.distanceZFromLimelight("limelight"));
+    Logger.recordOutput("lla.straightLineDist", VisionAprilTag.straightLineZDistance("limelight"));
     Logger.recordOutput("lla.verticalDist", VisionAprilTag.verticalYOffsetDistance("limelight"));
     Logger.recordOutput("lla.horizontalDist", VisionAprilTag.horizontalOffsetXDistance("limelight"));
-    Logger.recordOutput("lla.3dHypotnuese", VisionAprilTag.hypotenuseLengthXandZ("limelight"));
+    Logger.recordOutput("lla.3dHypotnuese", VisionAprilTag.hypotenuseDistanceXandZ("limelight"));
     Logger.recordOutput("lla.detect", LimelightHelpers.getTY(""));
     //1, 1, Rotation2d.fromDegrees(60)
     Logger.recordOutput("lla.target", VisionAprilTag.transformTargetLocation(new Pose2d(), "limelight").toString());
