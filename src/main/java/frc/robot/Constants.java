@@ -196,7 +196,7 @@ public final class Constants {
         public static final double thethaFromCenter = -32; //this might be needed for angle offset
         public static String llObjectDetectionName = "limelight";
         public static String llLocalizationName = "limelightLoc";
-        public static double targetHeight;
+        public static double targetHeight = 0;
     }
 
     public enum RuntimeEnvironment {

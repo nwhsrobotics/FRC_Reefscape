@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.Positions;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.VisionGamePiece;
 import frc.robot.util.LimelightHelpers;
 
 import java.util.List;
@@ -71,7 +71,7 @@ public class Auto extends SequentialCommandGroup {
                     // Navigate the robot to the closest location without considering vision targeting.
                     swerve.pathfindToPosition(getClosestLocation()).onlyWhile(() -> !LimelightHelpers.getTV(LimelightConstants.llObjectDetectionName)),
                     // Navigate the robot to a specific location based on vision targeting.
-                    swerve.pathfindToPosition(Vision.visionTargetLocation),
+                    swerve.pathfindToPosition(VisionGamePiece.visionTargetLocation),
                     //new PathFindVision(swerve, score, possibleLocations, getClosestLocation()),
                     //or command.repeatedly also works for single command
                     //Commands.repeatingSequence(new PathFindVision(swerve, score, possibleLocations, getClosestLocation()).until(() -> score.isNoteInside())),

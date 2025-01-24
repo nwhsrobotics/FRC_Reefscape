@@ -7,7 +7,7 @@ import org.littletonrobotics.junction.Logger;
 
 import java.util.ArrayList;
 
-public class VisionAlternative {
+public class VisionAprilTag {
 
     public static Pose2d visionTargetLocation = new Pose2d();
     public static double tagDist;

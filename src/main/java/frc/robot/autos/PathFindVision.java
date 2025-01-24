@@ -8,7 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.VisionGamePiece;
 import frc.robot.util.LimelightHelpers;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class PathFindVision extends Command {
         addRequirements(swerve);
         possibleLocations = locations;
         this.pathFindLoc = pathFindLoc;
-        pathFind = swerve.pathfindToPosition(Vision.visionTargetLocation);
+        pathFind = swerve.pathfindToPosition(VisionGamePiece.visionTargetLocation);
         // Use addRequirements() here to declare subsystem dependencies.
     }
 
@@ -44,7 +44,7 @@ public class PathFindVision extends Command {
             if (LimelightHelpers.getTV(LimelightConstants.llObjectDetectionName)) {
                 //basically if note was pushed while intaking and never came inside then go pathfind again
                 pathFind = null;
-                pathFind = swerve.pathfindToPosition(Vision.visionTargetLocation);
+                pathFind = swerve.pathfindToPosition(VisionGamePiece.visionTargetLocation);
                 pathFind.schedule();
             } else {
                 //if note was taken by opponent from center say for example

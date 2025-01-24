@@ -13,7 +13,8 @@ import java.util.ArrayList;
  * This class uses a Limelight camera to track targets, measure distance, and aid in aiming.
  * Each method returns simple, direct values to help you steer and drive toward a target.
  */
-public class Vision {
+public class VisionGamePiece {
+    //TODO: Streamline code, add more comments and reuse methods instead of creating new ones and match method names to explanations
 
     public static Pose2d visionTargetLocation = new Pose2d();
     public static double tagDist;
@@ -29,10 +30,10 @@ public class Vision {
     public static double limelight_aim_proportional(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             double kP = 0.035;
-            double angleErrorDegrees = LimelightHelpers.getTX(limelightName) + LimelightConstants.thethaFromCenter;
+            //  + LimelightConstants.thethaFromCenter
+            double angleErrorDegrees = LimelightHelpers.getTX(limelightName);
             double targetingAngularVelocity = angleErrorDegrees * kP;
-            targetingAngularVelocity *= 0.5;
-            targetingAngularVelocity *= -1.0;
+            targetingAngularVelocity *= -0.5;
             return targetingAngularVelocity;
         }
         return 0.0;
@@ -62,7 +63,7 @@ public class Vision {
             } else {
                 // For non-AprilTag pipelines, estimate distance using the camera angle.
                 // Negative sign to move forward as angle increases
-                double dist = verticalPlaneDistance(limelightName);
+                double dist = straightLineZDistance(limelightName);
                 return -dist * kP;
             }
         }
@@ -76,7 +77,7 @@ public class Vision {
      * @param limelightName The name of the limelight.
      * @return Distance (meters) from the Limelight lens to the target.
      */
-    public static double verticalPlaneDistance(String limelightName) {
+    public static double straightLineZDistance(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             double limelightMountAngleDegrees = LimelightConstants.mountAngle;
             double limelightLensHeightMeters = LimelightConstants.mountHeight;
@@ -95,19 +96,11 @@ public class Vision {
      * @param limelightName The name of the limelight.
      * @return Hypotenuse distance (meters) to the target.
      */
-    public static double horizontalOffestDistance(String limelightName) {
+    public static double hypotenuseDistanceXandZ(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
-            double legLength = lineOfSightDistance(limelightName);
-            double txRadians = Math.toRadians(LimelightHelpers.getTX(limelightName));
-            // double theta = LimelightHelpers.getTX(limelightName);
-            return legLength*Math.atan(txRadians);
-            /* 
-            double cosTheta = Math.cos(txRadians);
-            if (cosTheta == 0.0) {
-                return 0.0;
-            }
-            return legLength / cosTheta;
-            */
+            double zDistance = straightLineZDistance(limelightName);
+            double xDistance = horizontalOffestXDistance(limelightName);
+            return Math.sqrt(Math.pow(zDistance, 2) + Math.pow(xDistance, 2));
         }
         return 0.0;
     }
@@ -120,10 +113,10 @@ public class Vision {
      */
     public static double full3DDistance(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
-            double verticalDistance = verticalPlaneDistance(limelightName);
-            double horizontalDistance = horizontalOffestDistance(limelightName);
-            double zOffset = LimelightConstants.targetHeight - LimelightConstants.mountHeight;
-            return Math.sqrt(Math.pow(verticalDistance, 2) + Math.pow(horizontalDistance, 2) + Math.pow(zOffset, 2));
+            double zDistance = straightLineZDistance(limelightName);
+            double xDistance = horizontalOffestXDistance(limelightName);
+            double yDistance = LimelightConstants.targetHeight - LimelightConstants.mountHeight;
+            return Math.sqrt(Math.pow(zDistance, 2) + Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
         }
         return 0.0;
     }
@@ -135,9 +128,9 @@ public class Vision {
      * @param limelightName The name of the limelight.
      * @return Horizontal offset distance (meters) from the target.
      */
-    public static double lineOfSightDistance(String limelightName) {
+    public static double horizontalOffestXDistance(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
-            double legLength = verticalPlaneDistance(limelightName);
+            double legLength = straightLineZDistance(limelightName);
             double txRadians = Math.toRadians(LimelightHelpers.getTX(limelightName));
             double tanTheta = Math.tan(txRadians);
             return legLength * tanTheta;
@@ -165,7 +158,7 @@ public class Vision {
      */
     public static Pose2d transformTargetLocation(Pose2d pos, String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
-            double distance = Math.abs(lineOfSightDistance(limelightName));
+            double distance = Math.abs(hypotenuseDistanceXandZ(limelightName));
             Translation2d translation = pos.getTranslation();
             Rotation2d targetRotation = pos.getRotation().plus(Rotation2d.fromDegrees(LimelightHelpers.getTX(limelightName)));
 
