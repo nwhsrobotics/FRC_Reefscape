@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.util.LimelightHelpers;
 import org.littletonrobotics.junction.Logger;
 
@@ -23,7 +25,7 @@ public class VisionAprilTag {
         if (LimelightHelpers.getTV(limelightName)) {
             double kP = 0.035;
             double horizontalError = LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Retro[0].getTargetPose_CameraSpace2D().getRotation().getDegrees();
+                    .targets_Fiducials[0].getTargetPose_CameraSpace2D().getRotation().getDegrees();
             return -kP * horizontalError;
         }
         return 0.0;
@@ -43,9 +45,7 @@ public class VisionAprilTag {
                     double distToRobot = fiducials[0].distToRobot;
              */
             // Use distance from AprilTag estimation
-            double distanceToTarget = LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ();
-            return -distanceToTarget * 0.345;
+            return -distanceZFromLimelight(limelightName) * 0.345;
         }
         return 0.0;
     }
@@ -59,7 +59,7 @@ public class VisionAprilTag {
         if (LimelightHelpers.getTV(limelightName)) {
             // Use Z-axis distance to the target
             return LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Retro[0].getTargetPose_CameraSpace().getTranslation().getZ();
+                    .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ();
         }
         return 0.0;
     }
@@ -71,9 +71,8 @@ public class VisionAprilTag {
      */
     public static double hypotenuseLengthXandZ(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
-            Pose2d cameraPose = LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Retro[0].getTargetPose_CameraSpace2D();
-            return cameraPose.getTranslation().getNorm();
+            return LimelightHelpers.getLatestResults(limelightName)
+                    .targets_Fiducials[0].getTargetPose_CameraSpace2D().getTranslation().getNorm();
         }
         return 0.0;
     }
@@ -85,9 +84,16 @@ public class VisionAprilTag {
      */
     public static double horizontalOffsetXDistance(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
-            Translation2d cameraTranslation = LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Retro[0].getTargetPose_CameraSpace2D().getTranslation();
-            return cameraTranslation.getX();
+            return LimelightHelpers.getLatestResults(limelightName)
+                    .targets_Fiducials[0].getTargetPose_CameraSpace2D().getTranslation().getX();
+        }
+        return 0.0;
+    }
+
+    public static double verticalYOffsetDistance(String limelightName){
+        if (LimelightHelpers.getTV(limelightName)) {
+            return LimelightHelpers.getLatestResults(limelightName)
+                    .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getY();
         }
         return 0.0;
     }
@@ -102,7 +108,7 @@ public class VisionAprilTag {
     public static Pose2d transformTargetLocation(Pose2d pos, String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             Pose2d cameraPose = LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Retro[0].getTargetPose_CameraSpace2D();
+                    .targets_Fiducials[0].getTargetPose_CameraSpace2D();
             double actualX = pos.getX() + cameraPose.getTranslation().getX();
             double actualY = pos.getY() + cameraPose.getTranslation().getY();
 

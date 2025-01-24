@@ -15,6 +15,7 @@ import java.util.ArrayList;
  */
 public class VisionGamePiece {
     //TODO: Streamline code, add more comments and reuse methods instead of creating new ones and match method names to explanations
+    //TODO: Stablizing algorithm 
 
     public static Pose2d visionTargetLocation = new Pose2d();
     public static double tagDist;
@@ -68,11 +69,9 @@ public class VisionGamePiece {
     public static double straightLineZDistance(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             double limelightMountAngleDegrees = LimelightConstants.mountAngle;
-            double limelightLensHeightMeters = LimelightConstants.mountHeight;
-            double goalHeightMeters = LimelightConstants.targetHeight;
             double angleToGoalDegrees = limelightMountAngleDegrees + LimelightHelpers.getTY(limelightName);
             double angleToGoalRadians = Math.toRadians(angleToGoalDegrees);
-            return (goalHeightMeters - limelightLensHeightMeters) / Math.tan(angleToGoalRadians);
+            return (verticalYOffsetDistance(limelightName)) / Math.tan(angleToGoalRadians);
         }
         return 0.0;
     }
@@ -91,6 +90,12 @@ public class VisionGamePiece {
             return Math.sqrt(Math.pow(zDistance, 2) + Math.pow(xDistance, 2));
         }
         return 0.0;
+    }
+
+    public static double verticalYOffsetDistance(String limelightName){
+        double limelightLensHeightMeters = LimelightConstants.mountHeight;
+        double goalHeightMeters = LimelightConstants.targetHeight;
+        return goalHeightMeters - limelightLensHeightMeters;
     }
 
     /**
