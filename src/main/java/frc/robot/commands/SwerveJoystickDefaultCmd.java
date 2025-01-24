@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.VisionAprilTag;
 import frc.robot.subsystems.VisionGamePiece;
 
 public class SwerveJoystickDefaultCmd extends Command {
@@ -32,17 +33,17 @@ public class SwerveJoystickDefaultCmd extends Command {
             //while using Limelight, turn off field-relative driving.
             fieldRelative = false;
             swerveSubsystem.drive(
-                    VisionGamePiece.limelight_range_proportional(LimelightConstants.llObjectDetectionName),
+                    VisionGamePiece.limelight_rangeZ_proportional(LimelightConstants.llObjectDetectionName),
                     0,
-                    VisionGamePiece.limelight_aim_proportional(LimelightConstants.llObjectDetectionName),
+                    VisionGamePiece.limelight_aimX_proportional(LimelightConstants.llObjectDetectionName),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
 
         } else if (xbox.getRightBumperButton()) { //for april tag allign
             fieldRelative = false;
             swerveSubsystem.drive(
-                    VisionGamePiece.limelight_range_proportional(LimelightConstants.llLocalizationName),
+                    VisionAprilTag.limelight_rangeZ_proportional(LimelightConstants.llLocalizationName),
                     0,
-                    VisionGamePiece.limelight_aim_proportional(LimelightConstants.llLocalizationName),
+                    VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationName),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
 
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if booster not pressed
