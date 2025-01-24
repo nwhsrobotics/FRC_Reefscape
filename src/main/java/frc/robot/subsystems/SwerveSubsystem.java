@@ -429,7 +429,7 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
-        if (Vision.isAprilTagPipeline("limelight")) {
+        if (VisionGamePiece.isAprilTagPipeline("limelight")) {
 
             boolean useMegaTag2 = true; //set to false to use MegaTag1
             // we might use megatag1 when disabled to auto orient and megatag2 when enable

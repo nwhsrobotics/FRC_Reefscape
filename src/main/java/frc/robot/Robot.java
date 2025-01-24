@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.VisionGamePiece;
 import frc.robot.util.ImprovedPowerDistribution;
 import frc.robot.util.LimelightHelpers;
 
@@ -101,19 +101,19 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
-        Logger.recordOutput("ll.straightLineDist", Vision.lineOfSightDistance("limelight"));
-        Logger.recordOutput("ll.verticalDist", Vision.verticalPlaneDistance("limelight"));
-        Logger.recordOutput("ll.horizontalDist", Vision.horizontalOffestDistance("limelight"));
-        Logger.recordOutput("ll.3dHypotnuese", Vision.full3DDistance("limelight"));
+        Logger.recordOutput("ll.straightLineDist", VisionGamePiece.hypotenuseDistanceXandZ("limelight"));
+        Logger.recordOutput("ll.verticalDist", VisionGamePiece.straightLineZDistance("limelight"));
+        Logger.recordOutput("ll.horizontalDist", VisionGamePiece.horizontalOffestXDistance("limelight"));
+        Logger.recordOutput("ll.3dHypotnuese", VisionGamePiece.full3DDistance("limelight"));
         Logger.recordOutput("ll.detect", LimelightHelpers.getTY(""));
         //1, 1, Rotation2d.fromDegrees(60)
-        Logger.recordOutput("ll.target", Vision.transformTargetLocation(new Pose2d(), "limelight").toString());
-        Logger.recordOutput("ll.targetX", Vision.transformTargetLocation(new Pose2d(), "limelight").getX());
-        Logger.recordOutput("ll.targetY", Vision.transformTargetLocation(new Pose2d(), "limelight").getY());
-        Logger.recordOutput("ll.targetDegrees", Vision.transformTargetLocation(new Pose2d(), "limelight").getRotation().getDegrees());
-        Logger.recordOutput("ll.targetRadians", Vision.transformTargetLocation(new Pose2d(), "limelight").getRotation().getRadians());
-        Logger.recordOutput("ll.targetRotation", Vision.transformTargetLocation(new Pose2d(), "limelight").getRotation().getRotations());
-        Logger.recordOutput("ll.getOriginDistance", Vision.transformTargetLocation(new Pose2d(), "limelight").getTranslation().getNorm());
+        Logger.recordOutput("ll.target", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").toString());
+        Logger.recordOutput("ll.targetX", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getX());
+        Logger.recordOutput("ll.targetY", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getY());
+        Logger.recordOutput("ll.targetDegrees", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getRotation().getDegrees());
+        Logger.recordOutput("ll.targetRadians", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getRotation().getRadians());
+        Logger.recordOutput("ll.targetRotation", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getRotation().getRotations());
+        Logger.recordOutput("ll.getOriginDistance", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getTranslation().getNorm());
     }
 
     /**
