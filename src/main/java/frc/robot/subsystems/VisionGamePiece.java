@@ -27,7 +27,7 @@ public class VisionGamePiece {
      * @param limelightName The name of the limelight.
      * @return Angular velocity in radians per second, proportional to horizontal angle error.
      */
-    public static double limelight_aim_proportional(String limelightName) {
+    public static double limelight_aimX_proportional(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             double kP = 0.035;
             //  + LimelightConstants.thethaFromCenter
@@ -47,25 +47,13 @@ public class VisionGamePiece {
      * @param limelightName The name of the limelight.
      * @return Forward speed (m/s) proportional to distance error.
      */
-    public static double limelight_range_proportional(String limelightName) {
+    public static double limelight_rangeZ_proportional(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             double kP = 0.1;
-            if (isAprilTagPipeline(limelightName)) {
-                var fiducials = LimelightHelpers.getRawFiducials(limelightName);
-                if (fiducials.length > 0) {
-                    double distToRobot = fiducials[0].distToRobot;
-                    // Negative sign to move forward (assuming positive dist is forward)
-                    return -distToRobot * kP;
-                } else {
-                    // If no fiducials, fallback to a safe default
-                    return 0.0;
-                }
-            } else {
-                // For non-AprilTag pipelines, estimate distance using the camera angle.
-                // Negative sign to move forward as angle increases
-                double dist = straightLineZDistance(limelightName);
-                return -dist * kP;
-            }
+            // For non-AprilTag pipelines, estimate distance using the camera angle.
+            // Negative sign to move forward as angle increases
+            double dist = straightLineZDistance(limelightName);
+            return -dist * kP;
         }
         return 0.0;
     }

@@ -19,7 +19,7 @@ public class VisionAprilTag {
      *
      * @return The angular velocity proportional to the horizontal angle error.
      */
-    public static double limelight_aim_proportional(String limelightName) {
+    public static double limelight_aimX_proportional(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             double kP = 0.035;
             double horizontalError = LimelightHelpers.getLatestResults(limelightName)
@@ -35,19 +35,17 @@ public class VisionAprilTag {
      *
      * @return The forward speed proportional to the target's distance.
      */
-    public static double limelight_range_proportional(String limelightName) {
+    public static double limelight_rangeZ_proportional(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
-            if (isAprilTagPipeline(limelightName)) {
-                // Use distance from AprilTag estimation
-                double distanceToTarget = LimelightHelpers.getLatestResults(limelightName)
-                        .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ();
-                return -distanceToTarget * 0.345;
-            } else {
-                // Use Z-axis distance from retro-reflective target
-                double zDistance = LimelightHelpers.getLatestResults(limelightName)
-                        .targets_Retro[0].getTargetPose_CameraSpace().getTranslation().getZ();
-                return -zDistance * 0.1;
-            }
+            /*
+                 var fiducials = LimelightHelpers.getRawFiducials(limelightName);
+                if (fiducials.length > 0) {
+                    double distToRobot = fiducials[0].distToRobot;
+             */
+            // Use distance from AprilTag estimation
+            double distanceToTarget = LimelightHelpers.getLatestResults(limelightName)
+                    .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ();
+            return -distanceToTarget * 0.345;
         }
         return 0.0;
     }
@@ -57,7 +55,7 @@ public class VisionAprilTag {
      *
      * @return The calculated distance from the Limelight to the target.
      */
-    public static double distanceFromLimelight(String limelightName) {
+    public static double distanceZFromLimelight(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             // Use Z-axis distance to the target
             return LimelightHelpers.getLatestResults(limelightName)
@@ -71,7 +69,7 @@ public class VisionAprilTag {
      *
      * @return The calculated hypotenuse length (actual distance) to the target.
      */
-    public static double hypotenuseLength(String limelightName) {
+    public static double hypotenuseLengthXandZ(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             Pose2d cameraPose = LimelightHelpers.getLatestResults(limelightName)
                     .targets_Retro[0].getTargetPose_CameraSpace2D();
@@ -85,7 +83,7 @@ public class VisionAprilTag {
      *
      * @return The calculated horizontal offset distance from the target.
      */
-    public static double horizontalOffsetDistance(String limelightName) {
+    public static double horizontalOffsetXDistance(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             Translation2d cameraTranslation = LimelightHelpers.getLatestResults(limelightName)
                     .targets_Retro[0].getTargetPose_CameraSpace2D().getTranslation();
