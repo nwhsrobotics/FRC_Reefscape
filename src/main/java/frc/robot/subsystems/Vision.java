@@ -165,8 +165,8 @@ public Pose2d scootRight (Pose2d adjustedPos, double scootDist){
     double initialY= adjustedPos.getY();
     double initialRot = adjustedPos.getRotation().getRadians();
 
-    double scootedX = initialX-Math.sin(initialRot);
-    double scootedY = initialY+Math.cos(initialRot);
+    double scootedX = initialX-Math.sin(scootDist);
+    double scootedY = initialY+Math.cos(scootDist);
 
     Pose2d scootingRight = new Pose2d(scootedX,scootedY,Rotation2d.fromRadians(initialRot));
 
@@ -178,8 +178,8 @@ public Pose2d scootLeft (Pose2d adjustedPos, double scootDist){
     double initialY= adjustedPos.getY();
     double initialRot = adjustedPos.getRotation().getRadians();
 
-    double scootedX = initialX+Math.sin(initialRot);
-    double scootedY = initialY-Math.cos(initialRot);
+    double scootedX = initialX+Math.sin(scootDist);
+    double scootedY = initialY-Math.cos(scootDist);
 
     Pose2d scootingRight = new Pose2d(scootedX,scootedY,Rotation2d.fromRadians(initialRot));
 
