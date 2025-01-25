@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.LimelightHelpers;
 
@@ -138,5 +140,49 @@ public boolean isRedAllianceBarge(int id){
     }
     return false;
 
+}
+
+// adjusts the robot position based on april tag position and a preset offset
+public Pose2d transformPosition (Pose2d originalPos,double offsetDistance){
+    
+    double givenX = originalPos.getX();
+    double givenY= originalPos.getY();
+    double givenRot = originalPos.getRotation().getRadians();
+    
+    Pose2d transformedPose = new Pose2d(new Translation2d(givenX, givenY),
+        originalPos.getRotation().plus(originalPos.getRotation()));
+    
+    double adjustedX = givenX * offsetDistance*Math.cos(givenRot);
+    double adjustedY = givenY * offsetDistance*Math.sin(givenRot);
+
+    Pose2d endResult = new Pose2d(adjustedX,adjustedY,Rotation2d.fromRadians(givenRot));
+
+    return endResult;
+    
+}
+public Pose2d scootRight (Pose2d adjustedPos, double scootDist){
+    double initialX = adjustedPos.getX();
+    double initialY= adjustedPos.getY();
+    double initialRot = adjustedPos.getRotation().getRadians();
+
+    double scootedX = initialX-Math.sin(scootDist);
+    double scootedY = initialY+Math.cos(scootDist);
+
+    Pose2d scootingRight = new Pose2d(scootedX,scootedY,Rotation2d.fromRadians(initialRot));
+
+    return scootingRight;
+}
+
+public Pose2d scootLeft (Pose2d adjustedPos, double scootDist){
+    double initialX = adjustedPos.getX();
+    double initialY= adjustedPos.getY();
+    double initialRot = adjustedPos.getRotation().getRadians();
+
+    double scootedX = initialX+Math.sin(scootDist);
+    double scootedY = initialY-Math.cos(scootDist);
+
+    Pose2d scootingRight = new Pose2d(scootedX,scootedY,Rotation2d.fromRadians(initialRot));
+
+    return scootingRight;
 }
 }
