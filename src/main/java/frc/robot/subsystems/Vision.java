@@ -64,8 +64,41 @@ public class Vision extends SubsystemBase {
         //Logger.recordOutput(llname + ".pipelineName", Vision.getPipelineName(llname));
         //Logger.recordOutput(llname + ".objectDetected", LimelightHelpers.getTV(llname));
         */
-  }
-}
+        
+      }
+    
+      //This method takes in blue alliance april tags and checks if it is the coral station
+      public boolean isBlueAllianceCoralStation(int id) {
+        if (id == 12 || id == 13)  {
+            return true;
+        }
+        return false;
+      }
+      // This method takes in blue alliance april tags and checks if it is the processor
+        public boolean isBlueAllianceProcessor(int id) {
+            if (id == 4) {
+                return true;
+            }
+            return false;
+        }
+
+        //This method takes in blue alliance april tags and checks if it is the reef
+        public boolean isBlueAllianceReef(int id) {
+            if (id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22) {
+                return true;
+            }
+            return false;
+        }
+        // This method takes in blue alliance april tags and checks if it is the barge
+        public boolean isBlueAllianceBarge(int id) {
+            if (id == 4 || id == 14) {
+                return true;
+            }
+            return false;
+        
+        }
+         
+
 
 // this method takes in a parameter of the april tag and checks if it is at the coral station
 
