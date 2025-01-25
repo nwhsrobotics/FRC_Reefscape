@@ -77,8 +77,8 @@ public class SwerveModule {
         driveMotor = new ImprovedCanSpark(driveMotorId, ImprovedCanSpark.MotorKind.NEO, driveMotorConfig, IdleMode.kBrake);
         //driveMotor.configure(driveMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
         
-        turningMotorConfig = new SparkFlexConfig();
-        turningMotorConfig.inverted(driveMotorReversed);
+        turningMotorConfig = new SparkMaxConfig();
+        turningMotorConfig.inverted(turningMotorReversed);
         turningMotorConfig.encoder.positionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad);
         turningMotorConfig.encoder.velocityConversionFactor(ModuleConstants.kTurningEncoderRPM2RadPerSec);
         turningMotor = new ImprovedCanSpark(turningMotorId, ImprovedCanSpark.MotorKind.NEO, turningMotorConfig, IdleMode.kBrake);

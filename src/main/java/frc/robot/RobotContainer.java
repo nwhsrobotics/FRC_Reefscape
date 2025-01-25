@@ -42,7 +42,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("autoInit", autoInit);
 
         //INIT after registering named commands
-        autoChooser = AutoBuilder.buildAutoChooser("[B]");
+        autoChooser = AutoBuilder.buildAutoChooser();
 
 
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::zeroGyro, swerveSubsystem));
