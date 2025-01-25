@@ -210,7 +210,8 @@ public final class Constants {
         public static final Pose2d ID_20 = new Pose2d(4.905, 4.745, Rotation2d.fromDegrees(0));
         public static final Pose2d ID_21 = new Pose2d(5.321, 4.026, Rotation2d.fromDegrees(0));
         public static final Pose2d ID_22 = new Pose2d(4.905, 3.306, Rotation2d.fromDegrees(0));
-        
+        public static final List<Pose2d> aprilTags = new ArrayList<Pose2d>(List.of(ID_1,ID_2,ID_3,ID_4,ID_5,ID_6,ID_7,ID_8,ID_9,ID_10,ID_11,ID_12,ID_13,ID_14,ID_15,ID_16,ID_17,ID_18,ID_19,ID_20,ID_21,ID_22));
+
     }
 
     public static final class LimelightConstants {
