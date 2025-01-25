@@ -187,6 +187,32 @@ public final class Constants {
         public static final List<Pose2d> allNotes = new ArrayList<Pose2d>(); //temp fix 
     }
 
+    public static final class aprilTags{
+        public static final Pose2d ID_1 = new Pose2d(16.697, 0.655, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_2 = new Pose2d(16.697, 7.396, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_3 = new Pose2d(11.561, 8.056, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_4 = new Pose2d(9.276, 6.137, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_5 = new Pose2d(9.276, 1.915, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_6 = new Pose2d(13.474, 3.306, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_7 = new Pose2d(13.890, 4.026, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_8 = new Pose2d(13.474, 4.745, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_9 = new Pose2d(12.643, 4.745, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_10 = new Pose2d(12.227, 4.026, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_11 = new Pose2d(12.643, 3.306, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_12 = new Pose2d(0.851, 0.655, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_13 = new Pose2d(0.851, 7.396, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_14 = new Pose2d(8.272, 6.137, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_15 = new Pose2d(8.272, 1.915, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_16 = new Pose2d(5.987, 0, Rotation2d.fromDegrees(0)); //y-value reported as ~ -0.004
+        public static final Pose2d ID_17 = new Pose2d(4.073, 3.306, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_18 = new Pose2d(3.657, 4.026, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_19 = new Pose2d(4.074, 4.745, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_20 = new Pose2d(4.905, 4.745, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_21 = new Pose2d(5.321, 4.026, Rotation2d.fromDegrees(0));
+        public static final Pose2d ID_22 = new Pose2d(4.905, 3.306, Rotation2d.fromDegrees(0));
+        
+    }
+
     public static final class LimelightConstants {
         public static final double mountHeight = 1.32; //in meters
         public static final double mountAngle = 1.5; //in degrees with straight being 0 up being 90 and down being -90
