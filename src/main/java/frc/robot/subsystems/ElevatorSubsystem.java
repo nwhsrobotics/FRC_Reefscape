@@ -15,8 +15,8 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 public class ElevatorSubsystem extends SubsystemBase {
   
   // BREAKING CHANGE: null parameter is a bandaid fix - FIND OUT WHAT IT DOES
-  private final SparkMax leftElevatorMotor = new ImprovedCanSpark(1, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
-  private final SparkMax rightElevatorMotor = new ImprovedCanSpark(2, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
+  //private final SparkMax leftElevatorMotor = new ImprovedCanSpark(1, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
+  //private final SparkMax rightElevatorMotor = new ImprovedCanSpark(2, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
 
 
   public ElevatorSubsystem() {
