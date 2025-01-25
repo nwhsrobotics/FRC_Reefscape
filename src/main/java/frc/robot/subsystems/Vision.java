@@ -160,4 +160,29 @@ public Pose2d transformPosition (Pose2d originalPos,double offsetDistance){
     return endResult;
     
 }
+public Pose2d scootRight (Pose2d adjustedPos, double scootDist){
+    double initialX = adjustedPos.getX();
+    double initialY= adjustedPos.getY();
+    double initialRot = adjustedPos.getRotation().getRadians();
+
+    double scootedX = initialX-Math.sin(initialRot);
+    double scootedY = initialY+Math.cos(initialRot);
+
+    Pose2d scootingRight = new Pose2d(scootedX,scootedY,Rotation2d.fromRadians(initialRot));
+
+    return scootingRight;
+}
+
+public Pose2d scootLeft (Pose2d adjustedPos, double scootDist){
+    double initialX = adjustedPos.getX();
+    double initialY= adjustedPos.getY();
+    double initialRot = adjustedPos.getRotation().getRadians();
+
+    double scootedX = initialX+Math.sin(initialRot);
+    double scootedY = initialY-Math.cos(initialRot);
+
+    Pose2d scootingRight = new Pose2d(scootedX,scootedY,Rotation2d.fromRadians(initialRot));
+
+    return scootingRight;
+}
 }
