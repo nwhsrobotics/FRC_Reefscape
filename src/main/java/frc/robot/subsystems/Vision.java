@@ -66,3 +66,44 @@ public class Vision extends SubsystemBase {
         */
   }
 }
+
+// this method takes in a parameter of the april tag and checks if it is at the coral station
+
+public boolean isRedAllianceCoralStation(int id){
+    if(id == 1 || id == 2){
+        return true;
+    }
+    return false;
+
+}
+
+// this method takes in a parameter of the april tag and checks if it is at the processor
+
+public boolean isRedAllianceProcessor(int id){
+    if(id == 3){
+        return true;
+    }
+    return false;
+
+}
+
+// this method takes in a parameter of the april tag and checks if it is at the reef
+
+public boolean isRedAllianceReef(int id){
+    if(id == 6 || id == 7 || id == 8 || id == 9 || id == 10 || id == 11){
+        return true;
+    }
+    return false;
+
+}
+
+// this method takes in a parameter of the april tag and checks if it is at the barge
+
+public boolean isRedAllianceBarge(int id){
+    if(id == 5){
+        return true;
+    }
+    return false;
+
+}
+}
