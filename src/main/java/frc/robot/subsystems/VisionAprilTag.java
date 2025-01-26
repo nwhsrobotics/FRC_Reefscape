@@ -17,6 +17,15 @@ public class VisionAprilTag {
     public static double tagDist;
     public static ArrayList<Integer> tagIds = new ArrayList<>();
 
+    /*
+     * fiducial.getRobotPoseTargetSpace(); // Robot pose relative it the AprilTag Coordinate System (Most Useful) where April tag is 0, 0
+        fiducial.getCameraPoseTargetSpace(); // Camera pose relative to the AprilTag (useful) (never use camera tbh)
+        fiducial.getRobotPoseFieldSpace(); // Robot pose in the field coordinate system based on this tag alone (useful) (we already use this to correct swerve odometry) 0,0 at field corner
+        fiducial.getTargetPoseCameraSpace(); // AprilTag pose in the camera's coordinate system (not very useful) (never use camera tbh)
+        fiducial.getTargetPoseRobotSpace(); // AprilTag pose in the robot's coordinate system (not very useful) (this is like VisionGamePiece.java but for AprilTags)
+     */
+
+
     /**
      * Implements simple proportional turning control with the Limelight.
      * Adjusts output based on the horizontal alignment error.
@@ -27,7 +36,17 @@ public class VisionAprilTag {
         if (LimelightHelpers.getTV(limelightName)) {
             double kP = 0.035;
             double horizontalError = LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Fiducials[0].getTargetPose_CameraSpace2D().getRotation().getDegrees();
+                    .targets_Fiducials[0].getTargetPose_RobotSpace2D().getRotation().getDegrees();
+            return -kP * horizontalError;
+        }
+        return 0.0;
+    }
+
+    public static double limelight_aimX_aprilTag(String limelightName) {
+        if (LimelightHelpers.getTV(limelightName)) {
+            double kP = 0.035;
+            double horizontalError = LimelightHelpers.getLatestResults(limelightName)
+                    .targets_Fiducials[0].getRobotPose_TargetSpace2D().getRotation().getDegrees();
             return -kP * horizontalError;
         }
         return 0.0;
@@ -52,6 +71,19 @@ public class VisionAprilTag {
         return 0.0;
     }
 
+    public static double limelight_rangeZ_aprilTag(String limelightName) {
+        if (LimelightHelpers.getTV(limelightName)) {
+            /*
+                 var fiducials = LimelightHelpers.getRawFiducials(limelightName);
+                if (fiducials.length > 0) {
+                    double distToRobot = fiducials[0].distToRobot;
+             */
+            // Use distance from AprilTag estimation
+            return -straightLineZAprilTag(limelightName) * 0.345;
+        }
+        return 0.0;
+    }
+
     /**
      * Calculates the distance from the Limelight to the target using prebuilt methods.
      *
@@ -61,7 +93,16 @@ public class VisionAprilTag {
         if (LimelightHelpers.getTV(limelightName)) {
             // Use Z-axis distance to the target
             return LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ();
+                    .targets_Fiducials[0].getTargetPose_RobotSpace().getTranslation().getZ();
+        }
+        return 0.0;
+    }
+
+    public static double straightLineZAprilTag(String limelightName) {
+        if (LimelightHelpers.getTV(limelightName)) {
+            // Use Z-axis distance to the target
+            return LimelightHelpers.getLatestResults(limelightName)
+                    .targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getZ();
         }
         return 0.0;
     }
@@ -74,7 +115,15 @@ public class VisionAprilTag {
     public static double hypotenuseDistanceXandZ(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             return LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Fiducials[0].getTargetPose_CameraSpace2D().getTranslation().getNorm();
+                    .targets_Fiducials[0].getTargetPose_RobotSpace2D().getTranslation().getNorm();
+        }
+        return 0.0;
+    }
+
+    public static double hypotenuseDistanceXandZAprilTag(String limelightName) {
+        if (LimelightHelpers.getTV(limelightName)) {
+            return LimelightHelpers.getLatestResults(limelightName)
+                    .targets_Fiducials[0].getRobotPose_TargetSpace2D().getTranslation().getNorm();
         }
         return 0.0;
     }
@@ -82,10 +131,19 @@ public class VisionAprilTag {
     public static double full3DDistance(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             return LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getNorm();
+                    .targets_Fiducials[0].getTargetPose_RobotSpace().getTranslation().getNorm();
         }
         return 0.0;
     }
+
+    public static double full3DDistanceAprilTag(String limelightName) {
+        if (LimelightHelpers.getTV(limelightName)) {
+            return LimelightHelpers.getLatestResults(limelightName)
+                    .targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getNorm();
+        }
+        return 0.0;
+    }
+
 
     /**
      * Calculates the horizontal offset distance from the target.
@@ -95,7 +153,15 @@ public class VisionAprilTag {
     public static double horizontalOffsetXDistance(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             return LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getX();
+                    .targets_Fiducials[0].getTargetPose_RobotSpace().getTranslation().getX();
+        }
+        return 0.0;
+    }
+
+    public static double horizontalOffsetXAprilTag(String limelightName) {
+        if (LimelightHelpers.getTV(limelightName)) {
+            return LimelightHelpers.getLatestResults(limelightName)
+                    .targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getX();
         }
         return 0.0;
     }
@@ -103,7 +169,15 @@ public class VisionAprilTag {
     public static double verticalYOffsetDistance(String limelightName){
         if (LimelightHelpers.getTV(limelightName)) {
             return LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getY();
+                    .targets_Fiducials[0].getTargetPose_RobotSpace().getTranslation().getY();
+        }
+        return 0.0;
+    }
+
+    public static double verticalYOffsetAprilTag(String limelightName){
+        if (LimelightHelpers.getTV(limelightName)) {
+            return LimelightHelpers.getLatestResults(limelightName)
+                    .targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getY();
         }
         return 0.0;
     }
@@ -127,7 +201,7 @@ public class VisionAprilTag {
                 new Rotation2d(0) 
             );
 
-            Pose2d targetInCameraCoords = LimelightHelpers.getLatestResults(limelightName).targets_Fiducials[0].getTargetPose_CameraSpace2D();
+            Pose2d targetInCameraCoords = LimelightHelpers.getLatestResults(limelightName).targets_Fiducials[0].getTargetPose_RobotSpace2D();
 
             Pose2d targetInRobotCoords = cameraPoseOnRobot.transformBy(
                 new Transform2d(

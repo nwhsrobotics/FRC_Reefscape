@@ -129,6 +129,14 @@ public class Vision extends SubsystemBase {
 
         return endResult;
 
+        /* is no math fun?
+            Transform2d dist = new Transform2d(
+            new Translation2d(-offsetDistance, 0.0), 
+            new Rotation2d(0.0)           
+            );
+            return originalPos.transformBy(dist);
+         */
+
     }
 
     public Pose2d scootRight(Pose2d adjustedPos, double scootDist) {
@@ -142,6 +150,14 @@ public class Vision extends SubsystemBase {
         Pose2d scootingRight = new Pose2d(scootedX, scootedY, Rotation2d.fromRadians(initialRot));
 
         return scootingRight;
+
+        /* is no math fun?
+            Transform2d right = new Transform2d(
+                new Translation2d(0.0, -scootDist), 
+                new Rotation2d(0.0)
+            );
+            return originalPos.transformBy(right);
+         */
     }
 
     public Pose2d scootLeft(Pose2d adjustedPos, double scootDist) {
@@ -155,5 +171,13 @@ public class Vision extends SubsystemBase {
         Pose2d scootingRight = new Pose2d(scootedX, scootedY, Rotation2d.fromRadians(initialRot));
 
         return scootingRight;
+
+        /* is no math fun?
+            Transform2d left = new Transform2d(
+                new Translation2d(0.0, scootDist), 
+                new Rotation2d(0.0)
+            );
+            return originalPos.transformBy(left);
+         */
     }
 }
