@@ -115,8 +115,6 @@ public class Vision extends SubsystemBase {
 
     }
 
-    //TODO: For all the methods below double check the signs and angle relative to the robot and field
-
     // adjusts the robot position based on april tag position and a preset offset
     public Pose2d transformPosition(Pose2d originalPos, double offsetDistance) {
 
@@ -124,8 +122,8 @@ public class Vision extends SubsystemBase {
         double givenY = originalPos.getY();
         double givenRot = originalPos.getRotation().getRadians();
 
-        double adjustedX = givenX - offsetDistance * Math.cos(givenRot);
-        double adjustedY = givenY - offsetDistance * Math.sin(givenRot);
+        double adjustedX = givenX + offsetDistance * Math.cos(givenRot);
+        double adjustedY = givenY + offsetDistance * Math.sin(givenRot);
 
         Pose2d endResult = new Pose2d(adjustedX, adjustedY, Rotation2d.fromRadians(givenRot));
 
@@ -138,8 +136,8 @@ public class Vision extends SubsystemBase {
         double initialY = adjustedPos.getY();
         double initialRot = adjustedPos.getRotation().getRadians();
 
-        double scootedX = initialX - scootDist * Math.sin(initialRot);
-        double scootedY = initialY + scootDist * Math.cos(initialRot);
+        double scootedX = initialX + scootDist * Math.sin(initialRot);
+        double scootedY = initialY - scootDist * Math.cos(initialRot);
 
         Pose2d scootingRight = new Pose2d(scootedX, scootedY, Rotation2d.fromRadians(initialRot));
 
@@ -151,8 +149,8 @@ public class Vision extends SubsystemBase {
         double initialY = adjustedPos.getY();
         double initialRot = adjustedPos.getRotation().getRadians();
 
-        double scootedX = initialX + scootDist * Math.sin(initialRot);
-        double scootedY = initialY - scootDist * Math.cos(initialRot);
+        double scootedX = initialX - scootDist * Math.sin(initialRot);
+        double scootedY = initialY + scootDist * Math.cos(initialRot);
 
         Pose2d scootingRight = new Pose2d(scootedX, scootedY, Rotation2d.fromRadians(initialRot));
 
