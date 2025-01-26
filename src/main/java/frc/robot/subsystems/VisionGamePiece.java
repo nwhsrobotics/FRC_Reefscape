@@ -153,6 +153,7 @@ public class VisionGamePiece {
         if (LimelightHelpers.getTV(limelightName)) {
             double distance = Math.abs(hypotenuseDistanceXandZ(limelightName));
             Translation2d translation = pos.getTranslation();
+            //minus instead?
             Rotation2d targetRotation = pos.getRotation().plus(Rotation2d.fromDegrees(LimelightHelpers.getTX(limelightName)));
 
             double cosVal = Math.cos(targetRotation.getRadians());
