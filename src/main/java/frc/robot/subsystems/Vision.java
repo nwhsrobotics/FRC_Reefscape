@@ -67,7 +67,7 @@ public class Vision extends SubsystemBase {
         //Logger.recordOutput(llname + ".pipelineName", Vision.getPipelineName(llname));
         //Logger.recordOutput(llname + ".objectDetected", LimelightHelpers.getTV(llname));
         */
-
+        VisionGamePiece.stabilize("limelight");
     }
 
     //This method takes in blue alliance april tags and checks if it is the coral station

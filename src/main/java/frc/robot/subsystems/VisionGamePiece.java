@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.util.LimelightHelpers;
@@ -9,85 +10,84 @@ import org.littletonrobotics.junction.Logger;
 
 import java.util.ArrayList;
 
-/**
- * This class uses a Limelight camera to track targets, measure distance, and aid in aiming.
- * Each method returns simple, direct values to help you steer and drive toward a target.
- */
 public class VisionGamePiece {
-    //TODO: Streamline code, add more comments and reuse methods instead of creating new ones and match method names to explanations
-    //TODO: Stablizing algorithm 
+
+    // TODO: READD/REDO COMMENTS, But much better and self explanatory so you can understand the math just by reading comments
 
     public static Pose2d visionTargetLocation = new Pose2d();
     public static double tagDist;
     public static ArrayList<Integer> tagIds = new ArrayList<>();
 
-    /**
-     * This returns an angular velocity based on how far off-center the target is in the camera view.
-     * It uses proportional control. If the target appears to the right, the robot turns right, and vice versa.
-     *
-     * @param limelightName The name of the limelight.
-     * @return Angular velocity in radians per second, proportional to horizontal angle error.
-     */
-    public static double limelight_aimX_proportional(String limelightName) {
+    private static final long DETECTION_HOLD = 200; 
+    private static long timeDetected = 0;
+    private static boolean isStableTv = false;
+
+    private static double stableTx = 0.0;
+    private static double stableTy = 0.0;
+
+    static boolean stabilize(String limelightName) {
+        long now = System.currentTimeMillis();
+
         if (LimelightHelpers.getTV(limelightName)) {
+            timeDetected = now;
+            isStableTv = true;
+
+            stableTx = LimelightHelpers.getTX(limelightName);
+            stableTy = LimelightHelpers.getTY(limelightName);
+        } else {
+            long time = now - timeDetected;
+            if (time < DETECTION_HOLD) {
+            } else {
+                isStableTv = false;
+            }
+        }
+        return isStableTv;
+    }
+
+    private static double getStabilizedTx(String limelightName) {
+        stabilize(limelightName);
+        return stableTx;
+    }
+
+    private static double getStabilizedTy(String limelightName) {
+        stabilize(limelightName);
+        return stableTy;
+    }
+
+    public static double limelight_aimX_proportional(String limelightName) {
+        if (stabilize(limelightName)) {
             double kP = 0.035;
-            //  + LimelightConstants.thethaFromCenter
-            double angleErrorDegrees = LimelightHelpers.getTX(limelightName);
-            double targetingAngularVelocity = angleErrorDegrees * kP;
-            targetingAngularVelocity *= -0.5;
+            double angleErrorDegrees = getStabilizedTx(limelightName);
+            double targetingAngularVelocity = angleErrorDegrees * kP * -0.5;
             return targetingAngularVelocity;
         }
         return 0.0;
     }
 
-    /**
-     * This returns a forward speed command based on how far away the target is.
-     * If using an AprilTag pipeline, it uses known 3D data for higher accuracy.
-     * If using a standard pipeline, it estimates distance using vertical angle.
-     *
-     * @param limelightName The name of the limelight.
-     * @return Forward speed (m/s) proportional to distance error.
-     */
     public static double limelight_rangeZ_proportional(String limelightName) {
-        if (LimelightHelpers.getTV(limelightName)) {
+        if (stabilize(limelightName)) {
             double kP = 0.1;
-            // For non-AprilTag pipelines, estimate distance using the camera angle.
-            // Negative sign to move forward as angle increases
             double dist = straightLineZDistance(limelightName);
             return -dist * kP;
         }
         return 0.0;
     }
 
-    /**
-     * Calculates the distance from the Limelight to the target based on vertical angle.
-     * Uses geometry: distance = (targetHeight - lensHeight) / tan(mountAngle + ty).
-     *
-     * @param limelightName The name of the limelight.
-     * @return Distance (meters) from the Limelight lens to the target.
-     */
     public static double straightLineZDistance(String limelightName) {
-        if (LimelightHelpers.getTV(limelightName)) {
+        if (stabilize(limelightName)) {
             double limelightMountAngleDegrees = LimelightConstants.mountAngle;
-            double angleToGoalDegrees = limelightMountAngleDegrees + LimelightHelpers.getTY(limelightName);
+            double angleToGoalDegrees = limelightMountAngleDegrees + getStabilizedTy(limelightName);
             double angleToGoalRadians = Math.toRadians(angleToGoalDegrees);
-            return (verticalYOffsetDistance(limelightName)) / Math.tan(angleToGoalRadians);
+            return verticalYOffsetDistance(limelightName) / Math.tan(angleToGoalRadians);
         }
         return 0.0;
     }
 
-    /**
-     * Calculates the straight-line distance to the target considering horizontal offset.
-     * This uses the leg length from distanceFromLimelight and the horizontal angle to find the actual line of sight distance.
-     *
-     * @param limelightName The name of the limelight.
-     * @return Hypotenuse distance (meters) to the target.
-     */
     public static double hypotenuseDistanceXandZ(String limelightName) {
-        if (LimelightHelpers.getTV(limelightName)) {
+        if (stabilize(limelightName)) {
             double zDistance = straightLineZDistance(limelightName);
             double xDistance = horizontalOffestXDistance(limelightName);
-            return Math.sqrt(Math.pow(zDistance, 2) + Math.pow(xDistance, 2));
+            return Math.sqrt(zDistance * zDistance + xDistance * xDistance);
         }
         return 0.0;
     }
@@ -98,63 +98,34 @@ public class VisionGamePiece {
         return goalHeightMeters - limelightLensHeightMeters;
     }
 
-    /**
-     * Calculates the full 3D distance (hypotenuse) to the target.
-     *
-     * @param limelightName The name of the limelight.
-     * @return Full 3D distance (meters) from the Limelight lens to the target.
-     */
     public static double full3DDistance(String limelightName) {
-        if (LimelightHelpers.getTV(limelightName)) {
+        if (stabilize(limelightName)) {
             double zDistance = straightLineZDistance(limelightName);
             double xDistance = horizontalOffestXDistance(limelightName);
             double yDistance = LimelightConstants.targetHeight - LimelightConstants.mountHeight;
-            return Math.sqrt(Math.pow(zDistance, 2) + Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+            return Math.sqrt(zDistance * zDistance + xDistance * xDistance + yDistance * yDistance);
         }
         return 0.0;
     }
 
-
-    /**
-     * Calculates how far left or right the target is from the camera's forward line.
-     *
-     * @param limelightName The name of the limelight.
-     * @return Horizontal offset distance (meters) from the target.
-     */
     public static double horizontalOffestXDistance(String limelightName) {
-        if (LimelightHelpers.getTV(limelightName)) {
+        if (stabilize(limelightName)) {
             double legLength = straightLineZDistance(limelightName);
-            double txRadians = Math.toRadians(LimelightHelpers.getTX(limelightName));
-            double tanTheta = Math.tan(txRadians);
-            return legLength * tanTheta;
+            double txRadians = Math.toRadians(getStabilizedTx(limelightName));
+            return legLength * Math.tan(txRadians);
         }
         return 0.0;
     }
 
-    /**
-     * Checks if we are currently using an AprilTag pipeline.
-     *
-     * @param limelightName The name of the limelight.
-     * @return True if AprilTag pipeline is active, else false.
-     */
     public static boolean isAprilTagPipeline(String limelightName) {
         return LimelightHelpers.getCurrentPipelineIndex(limelightName) == 0.0;
     }
 
-    /**
-     * Transforms the given pose based on the camera's detected angle and distance to the target.
-     * This tries to place the target on the field based on the robot's known position and camera angle.
-     *
-     * @param pos           The current pose.
-     * @param limelightName The name of the limelight.
-     * @return A new Pose2d representing the transformed target location.
-     */
     public static Pose2d transformTargetLocation(Pose2d pos, String limelightName) {
-        if (LimelightHelpers.getTV(limelightName)) {
+        if (stabilize(limelightName)) {
             double distance = Math.abs(hypotenuseDistanceXandZ(limelightName));
             Translation2d translation = pos.getTranslation();
-            //minus instead?
-            Rotation2d targetRotation = pos.getRotation().plus(Rotation2d.fromDegrees(LimelightHelpers.getTX(limelightName)));
+            Rotation2d targetRotation = pos.getRotation().plus(Rotation2d.fromDegrees(getStabilizedTx(limelightName)));
 
             double cosVal = Math.cos(targetRotation.getRadians());
             double sinVal = Math.sin(targetRotation.getRadians());
@@ -170,11 +141,6 @@ public class VisionGamePiece {
         return pos;
     }
 
-    /**
-     * Switches to the next pipeline. If at the end, it cycles back.
-     *
-     * @param limelightName The name of the limelight.
-     */
     public static void nextPipeline(String limelightName) {
         int currentIndex = (int) LimelightHelpers.getCurrentPipelineIndex(limelightName);
         if (currentIndex < 1) {
@@ -184,12 +150,6 @@ public class VisionGamePiece {
         }
     }
 
-    /**
-     * Returns the name of the current pipeline based on its index.
-     *
-     * @param limelightName The name of the limelight.
-     * @return The pipeline name.
-     */
     public static String getPipelineName(String limelightName) {
         int currentIndex = (int) LimelightHelpers.getCurrentPipelineIndex(limelightName);
         switch (currentIndex) {

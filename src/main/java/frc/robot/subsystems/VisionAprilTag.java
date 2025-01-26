@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.Constants.LimelightConstants;
@@ -93,7 +95,7 @@ public class VisionAprilTag {
     public static double horizontalOffsetXDistance(String limelightName) {
         if (LimelightHelpers.getTV(limelightName)) {
             return LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Fiducials[0].getTargetPose_CameraSpace2D().getTranslation().getX();
+                    .targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getX();
         }
         return 0.0;
     }
@@ -114,19 +116,40 @@ public class VisionAprilTag {
      * @return The transformed position of the target.
      */
     public static Pose2d transformTargetLocation(Pose2d pos, String limelightName) {
+        // we could just use transform, but come on thats not fun like the normal math it does all the trig under the hood for us :(
         if (LimelightHelpers.getTV(limelightName)) {
-            Pose2d cameraPose = LimelightHelpers.getLatestResults(limelightName)
-                    .targets_Fiducials[0].getTargetPose_CameraSpace2D();
-            double actualX = pos.getX() + cameraPose.getTranslation().getX();
-            double actualY = pos.getY() + cameraPose.getTranslation().getY();
 
-            Pose2d transformedPose = new Pose2d(new Translation2d(actualX, actualY),
-                    pos.getRotation().plus(cameraPose.getRotation()));
-            Logger.recordOutput("limelight.objectPos", transformedPose);
-            return transformedPose;
+            Pose2d cameraPoseOnRobot = new Pose2d(
+                new Translation2d(
+                    LimelightConstants.distanceFromCenter,  
+                    LimelightConstants.horizontalOffset      
+                ),
+                new Rotation2d(0) 
+            );
+
+            Pose2d targetInCameraCoords = LimelightHelpers.getLatestResults(limelightName).targets_Fiducials[0].getTargetPose_CameraSpace2D();
+
+            Pose2d targetInRobotCoords = cameraPoseOnRobot.transformBy(
+                new Transform2d(
+                    targetInCameraCoords.getTranslation(),
+                    targetInCameraCoords.getRotation()
+                )
+            );
+
+            Pose2d targetOnField = pos.transformBy(
+                new Transform2d(
+                    targetInRobotCoords.getTranslation(),
+                    targetInRobotCoords.getRotation()
+                )
+            );
+
+            Logger.recordOutput("limelight.objectPos", targetOnField);
+            return targetOnField;
         }
+
         return pos;
     }
+
 
     /**
      * Switches to the next pipeline.
