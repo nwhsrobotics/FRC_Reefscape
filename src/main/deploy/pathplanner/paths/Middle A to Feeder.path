@@ -3,6 +3,7 @@
   "waypoints": [
     {
       "anchor": {
+<<<<<<<< Updated upstream:src/main/deploy/pathplanner/paths/Middle A to Feeder.path
         "x": 5.648,
         "y": 5.305
       },
@@ -10,18 +11,36 @@
       "nextControl": {
         "x": 5.900737179487179,
         "y": 7.358525641025641
+========
+        "x": 5.003,
+        "y": 2.338
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.461025641030883,
+        "y": 1.656442307694789
+>>>>>>>> Stashed changes:src/main/deploy/pathplanner/paths/Lower A to Lower Feeder.path
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
+<<<<<<<< Updated upstream:src/main/deploy/pathplanner/paths/Middle A to Feeder.path
         "x": 1.205,
         "y": 6.992
       },
       "prevControl": {
         "x": 2.608589636968053,
         "y": 7.549307960836323
+========
+        "x": 1.5145192307692303,
+        "y": 0.908205128205127
+      },
+      "prevControl": {
+        "x": 1.989262820518063,
+        "y": 1.4448717948742773
+>>>>>>>> Stashed changes:src/main/deploy/pathplanner/paths/Lower A to Lower Feeder.path
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +61,21 @@
   },
   "goalEndState": {
     "velocity": 0,
+<<<<<<<< Updated upstream:src/main/deploy/pathplanner/paths/Middle A to Feeder.path
     "rotation": -54.605
+========
+    "rotation": 53.714732874861234
+>>>>>>>> Stashed changes:src/main/deploy/pathplanner/paths/Lower A to Lower Feeder.path
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
+<<<<<<<< Updated upstream:src/main/deploy/pathplanner/paths/Middle A to Feeder.path
     "rotation": -121.23200000000001
+========
+    "rotation": 118.99599999999998
+>>>>>>>> Stashed changes:src/main/deploy/pathplanner/paths/Lower A to Lower Feeder.path
   },
   "useDefaultConstraints": true
 }
