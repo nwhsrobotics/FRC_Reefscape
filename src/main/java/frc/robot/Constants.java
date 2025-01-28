@@ -187,6 +187,15 @@ public final class Constants {
         public static final List<Pose2d> allNotes = new ArrayList<Pose2d>(); //temp fix 
     }
 
+    public static final class SysIdConstants {
+        //Place holder ratio
+        public static final double SYSIDMOTORGEARRATIO = 99;
+        //equation needs to be reviewed
+        public static final double SYSIDENCODERMETERPERSECONDS = (SYSIDMOTORGEARRATIO * Math.PI * 2)/2;
+
+
+    }
+
     public static final class AprilTags{
         //degress are facing inwards towards the tags
         //https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/2025FieldDrawings-FieldLayoutAndMarking.pdf
