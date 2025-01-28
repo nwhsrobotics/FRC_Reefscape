@@ -36,7 +36,7 @@ public class Vision extends SubsystemBase {
         Logger.recordOutput("ll.targetRotation", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getRotation().getRotations());
         Logger.recordOutput("ll.getOriginDistance", VisionGamePiece.transformTargetLocation(new Pose2d(), "limelight").getTranslation().getNorm());
 
-
+        
         Logger.recordOutput("lla.straightLineDist", VisionAprilTag.straightLineZDistance("limelight"));
         Logger.recordOutput("lla.verticalDist", VisionAprilTag.verticalYOffsetDistance("limelight"));
         Logger.recordOutput("lla.horizontalDist", VisionAprilTag.horizontalOffsetXDistance("limelight"));
@@ -50,7 +50,7 @@ public class Vision extends SubsystemBase {
         Logger.recordOutput("lla.targetRadians", VisionAprilTag.transformTargetLocation(new Pose2d(), "limelight").getRotation().getRadians());
         Logger.recordOutput("lla.targetRotation", VisionAprilTag.transformTargetLocation(new Pose2d(), "limelight").getRotation().getRotations());
         Logger.recordOutput("lla.getOriginDistance", VisionAprilTag.transformTargetLocation(new Pose2d(), "limelight").getTranslation().getNorm());
-            /* 
+        /* 
         String llname = LimelightConstants.llObjectDetectionName; 
         Vision.visionTargetLocation = Vision.transformTargetLocation(robotContainer.swerveSubsystem.getPose(), llname); 
         HashSet<Integer> tagsFound = new HashSet<>();
@@ -63,10 +63,11 @@ public class Vision extends SubsystemBase {
                 Vision.tagIds.add(tagId);
             }
         });
+        */
         //Logger.recordOutput(llname + ".pipelineIndex", LimelightHelpers.getCurrentPipelineIndex(llname));
         //Logger.recordOutput(llname + ".pipelineName", Vision.getPipelineName(llname));
         //Logger.recordOutput(llname + ".objectDetected", LimelightHelpers.getTV(llname));
-        */
+
         VisionGamePiece.stabilize("limelight");
     }
 
