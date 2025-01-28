@@ -110,19 +110,6 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
-        Logger.recordOutput("lla.straightLineDist", VisionAprilTag.straightLineZDistance("limelight"));
-        Logger.recordOutput("lla.verticalDist", VisionAprilTag.verticalYOffsetDistance("limelight"));
-        Logger.recordOutput("lla.horizontalDist", VisionAprilTag.horizontalOffsetXDistance("limelight"));
-        Logger.recordOutput("lla.3dHypotnuese", VisionAprilTag.hypotenuseDistanceXandZ("limelight"));
-        Logger.recordOutput("lla.detect", LimelightHelpers.getTY("limelight"));
-        //1, 1, Rotation2d.fromDegrees(60)
-        //Logger.recordOutput("lla.target", VisionAprilTag.transformTargetLocation(new Pose2d(), "limelight").toString());
-        //Logger.recordOutput("lla.targetX", VisionAprilTag.transformTargetLocation(new Pose2d(), "limelight").getX());
-        //Logger.recordOutput("lla.targetY", VisionAprilTag.transformTargetLocation(new Pose2d(), "limelight").getY());
-        //Logger.recordOutput("lla.targetDegrees", VisionAprilTag.transformTargetLocation(new Pose2d(), "limelight").getRotation().getDegrees());
-        //Logger.recordOutput("lla.targetRadians", VisionAprilTag.transformTargetLocation(new Pose2d(), "limelight").getRotation().getRadians());
-        //Logger.recordOutput("lla.targetRotation", VisionAprilTag.transformTargetLocation(new Pose2d(), "limelight").getRotation().getRotations());
-        //Logger.recordOutput("lla.getOriginDistance", VisionAprilTag.transformTargetLocation(new Pose2d(), "limelight").getTranslation().getNorm());
     }
 
     /**

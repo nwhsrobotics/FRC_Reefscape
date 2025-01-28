@@ -25,6 +25,8 @@ public class VisionAprilTag {
     public static double tagDist;
     public static ArrayList<Integer> tagIds = new ArrayList<>();
 
+    //TODO: ADD STABALIZING ALGORITHM
+
     /*
      * fiducial.getRobotPoseTargetSpace(); // Robot pose relative it the AprilTag Coordinate System (Most Useful) where April tag is 0, 0
         fiducial.getCameraPoseTargetSpace(); // Camera pose relative to the AprilTag (useful) (never use camera tbh)
@@ -196,7 +198,8 @@ public class VisionAprilTag {
      */
     public static Pose2d transformTargetLocation(Pose2d pos, String limelightName) {
         // we could just use transform, but come on thats not fun like the normal math it does all the trig under the hood for us :(
-        if (LimelightHelpers.getTV(limelightName)) {
+        LimelightResults llr = isValid(limelightName);
+        if (llr != null) {
 
             Pose2d cameraPoseOnRobot = new Pose2d(
                 new Translation2d(
@@ -206,7 +209,7 @@ public class VisionAprilTag {
                 new Rotation2d(0) 
             );
 
-            Pose2d targetInCameraCoords = LimelightHelpers.getLatestResults(limelightName).targets_Fiducials[0].getTargetPose_RobotSpace2D();
+            Pose2d targetInCameraCoords = llr.targets_Fiducials[0].getTargetPose_RobotSpace2D();
 
             Pose2d targetInRobotCoords = cameraPoseOnRobot.transformBy(
                 new Transform2d(
