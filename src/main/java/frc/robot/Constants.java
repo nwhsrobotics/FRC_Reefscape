@@ -228,7 +228,7 @@ public final class Constants {
 
     public static final class LimelightConstants {
         public static final double mountHeight = 1.32; //in meters
-        public static final double mountAngle = 1.5; //in degrees with straight being 0 up being 90 and down being -90
+        public static final double mountAngle = 0.0; //in degrees with straight being 0 up being 90 and down being -90
         public static final double horizontalOffset = -0.18; //in meters, this offset is how far left or right LL3 is mounted from center (negative is left, positive right)
         //this might not be needed but doesn't hurt us
         public static final double distanceFromCenter = 0.3; //in meters, straight distance to the camera from middle
