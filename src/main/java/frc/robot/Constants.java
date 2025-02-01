@@ -190,8 +190,12 @@ public final class Constants {
     public static final class SysIdConstants {
         //Place holder ratio
         public static final double SYSIDMOTORGEARRATIO = 99;
+        public static final double SYSIDSUBSYSTEMDIAMETER = 100;
         //equation needs to be reviewed
-        public static final double SYSIDENCODERMETERPERSECONDS = (SYSIDMOTORGEARRATIO * Math.PI * 2)/2;
+        
+        public static final double SYSIDENCOCERROT2METER = SYSIDMOTORGEARRATIO * Math.PI * SYSIDSUBSYSTEMDIAMETER;
+        public static final double SYSIDENCODERMETERPERSECONDS = SYSIDENCOCERROT2METER/60;
+    
 
 
     }
