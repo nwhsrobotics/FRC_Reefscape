@@ -17,21 +17,21 @@ import java.util.List;
 
 public final class Constants {
     public static final class CANAssignments {
-        //TODO: This year, lets organise CAN IDs, as a resault, we def need to re flash motor controllors 
-        public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6;
-        public static final int BACK_LEFT_DRIVE_MOTOR_ID = 1;
-        public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 10;
-        public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 3;
+        //TODO: FIX THESE IDs
+        public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
+        public static final int BACK_LEFT_DRIVE_MOTOR_ID = 3;
+        public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 5;
+        public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 7;
 
-        public static final int FRONT_LEFT_STEER_MOTOR_ID = 8;
-        public static final int BACK_LEFT_STEER_MOTOR_ID = 2;
-        public static final int FRONT_RIGHT_STEER_MOTOR_ID = 11;
-        public static final int BACK_RIGHT_STEER_MOTOR_ID = 4;
+        public static final int FRONT_LEFT_STEER_MOTOR_ID = 2;
+        public static final int BACK_LEFT_STEER_MOTOR_ID = 4;
+        public static final int FRONT_RIGHT_STEER_MOTOR_ID = 6;
+        public static final int BACK_RIGHT_STEER_MOTOR_ID = 8;
 
-        public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 22;
-        public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 20;
-        public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 21;
-        public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 23;
+        public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 9;
+        public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 10;
+        public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 11;
+        public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 12;
 
 
         public static final int PDU_ID = 24;
@@ -96,9 +96,9 @@ public final class Constants {
 
     public static final class DriveConstants {
         // left-to-right distance between the drivetrain wheels, should be measured from center to center AND IN METERS
-        public static final double kTrackWidth = 0.597;
+        public static final double kTrackWidth = 0.5715;
         // front-back distance between drivetrain wheels, should be measured from center to center AND IN METERS 
-        public static final double kWheelBase = 0.546;
+        public static final double kWheelBase = 0.5715;
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
                 new Translation2d(kWheelBase / 2, kTrackWidth / 2), //front left
                 new Translation2d(kWheelBase / 2, -kTrackWidth / 2), //front right
