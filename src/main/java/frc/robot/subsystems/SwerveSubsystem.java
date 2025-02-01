@@ -1,10 +1,12 @@
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -85,7 +87,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveModule[] swerveMods = {frontLeft, frontRight, backLeft, backRight};
 
     // create an AHRS object for gyro
-    private final AHRS gyro = new AHRS(Port.kUSB);
+    private final AHRS gyro = new AHRS(NavXComType.kUSB1);
 
     //odometry is a system to keep track of robots current position and rotation on the fields based on the coordinate system
     private final SwerveDrivePoseEstimator odometer = new SwerveDrivePoseEstimator(
