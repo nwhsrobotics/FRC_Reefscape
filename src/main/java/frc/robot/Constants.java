@@ -184,7 +184,8 @@ public final class Constants {
         public static final Pose2d STATION_LEFT = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(126)); //this is for the center of the source 
         public static final Pose2d STATION_RIGHT = new Pose2d(1.149, 1.043, Rotation2d.fromDegrees(-126)); //this is for the center of the source 
         
-        public static final List<Pose2d> allNotes = new ArrayList<Pose2d>(); //temp fix 
+        //public static final List<Pose2d> allNotes = new ArrayList<Pose2d>(); 
+        // get rid of temp fix
     }
 
     public static final class SysIdConstants {
