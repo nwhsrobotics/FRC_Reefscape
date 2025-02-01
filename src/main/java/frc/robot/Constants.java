@@ -196,8 +196,6 @@ public final class Constants {
         
         public static final double SYSIDENCOCERROT2METER = SYSIDMOTORGEARRATIO * Math.PI * SYSIDSUBSYSTEMDIAMETER;
         public static final double SYSIDENCODERMETERPERSECONDS = SYSIDENCOCERROT2METER/60;
-    
-
 
     }
 
