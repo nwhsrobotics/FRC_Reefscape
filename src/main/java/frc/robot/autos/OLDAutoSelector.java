@@ -9,8 +9,8 @@ import frc.robot.subsystems.SwerveSubsystem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutoSelector {
-    public AutoSelector(SwerveSubsystem swerve) {
+public class OLDAutoSelector {
+    public OLDAutoSelector(SwerveSubsystem swerve) {
         SendableChooser<Command> autoChooser = new SendableChooser<>();
         //autoChooser.addOption("B [5 NOTE]", new Auto(swerve, new ArrayList<>(List.of(Positions.FRONTLEFT, Positions.FRONTLEFTMOST, Positions.FRONTRIGHT, Positions.FRONTRIGHTMOST)), 4, Positions.SPEAKER));
         SmartDashboard.putData(autoChooser);
