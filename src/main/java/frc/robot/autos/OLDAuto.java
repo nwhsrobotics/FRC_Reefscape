@@ -23,7 +23,7 @@ import java.util.List;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 
 // This class represents an autonomous routine for an FRC robot.
-public class Auto extends SequentialCommandGroup {
+public class OLDAuto extends SequentialCommandGroup {
     private final SwerveSubsystem swerve;
     private final List<Pose2d> possibleLocations;
     private final int noteLimit;
@@ -37,7 +37,7 @@ public class Auto extends SequentialCommandGroup {
      * @param noteLimit          The limit on the number of notes to be obtained during autonomous + 1 preloaded.
      * @param initialPos         The initial position to reset the robot odometry to.
      */
-    public Auto(SwerveSubsystem swerve, List<Pose2d> blackListLocations, int noteLimit, Pose2d initialPos) {
+    public OLDAuto(SwerveSubsystem swerve, List<Pose2d> blackListLocations, int noteLimit, Pose2d initialPos) {
         this.swerve = swerve;
         possibleLocations = Positions.allNotes;
         blackList(blackListLocations);
