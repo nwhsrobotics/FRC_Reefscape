@@ -16,6 +16,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionGamePiece;
 import frc.robot.util.LimelightHelpers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -39,7 +40,8 @@ public class OLDAuto extends SequentialCommandGroup {
      */
     public OLDAuto(SwerveSubsystem swerve, List<Pose2d> blackListLocations, int noteLimit, Pose2d initialPos) {
         this.swerve = swerve;
-        possibleLocations = Positions.allNotes;
+        // Positions.allNotes;
+        possibleLocations = new ArrayList<>();
         blackList(blackListLocations);
         this.noteLimit = noteLimit;
         this.initialPos = initialPos;
