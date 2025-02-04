@@ -1,4 +1,5 @@
 package frc.robot.autos;
+import com.google.flatbuffers.FlexBuffers.Map;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -10,10 +11,13 @@ import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.Positions;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.VisionAprilTag;
 import frc.robot.subsystems.VisionGamePiece;
 import frc.robot.util.LimelightHelpers;
+import frc.robot.util.LimelightHelpers.LimelightResults;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Auto extends SequentialCommandGroup {
@@ -24,8 +28,13 @@ public class Auto extends SequentialCommandGroup {
     private final Pose2d initialPos;
     
     //private ArrayList allPaths = new ArrayList<String>(List.of("[B][1A]","[1A] [S1]","[1B] [S1]","[2] [S1]","[2A] [S2]","[2B] [S2]",));
+    // add the dictionaries for red and blue alliance with respective tag IDs for locations
+    private HashMap<String, Integer> blueAllianceIds = new HashMap<String, Integer>();
+    
     private ArrayList<String> occupiedStations = new ArrayList<String>();
 
+
+    // 
     /**
      * Creates a new instance of the Auto class.
      *
@@ -35,13 +44,16 @@ public class Auto extends SequentialCommandGroup {
      * @param initialPos         The initial position to reset the robot odometry to.
      */
     
-    public Auto(SwerveSubsystem swerve, Vision vision, List<Pose2d> blackListLocations, int coralLimit, Pose2d initialPos) {
+    public Auto(SwerveSubsystem swerve, Vision vision, List<Pose2d> blackListLocations, List<String> posToGo, int coralLimit, Pose2d initialPos) {
         this.swerve = swerve;
         this.vision = vision;
         possibleLocations = Constants.AprilTags.aprilTags;
         blackList(blackListLocations);
         this.coralLimit = coralLimit;
         this.initialPos = initialPos;
+        blueAllianceIds.put("1", 1);
+        String s = "[1a]";
+        s.substring(0, 1);
         addCommands(
                 // Reset robot odometry to a initial position.
                 new InstantCommand(() -> flipResetOdometry(initialPos)),
@@ -52,6 +64,9 @@ public class Auto extends SequentialCommandGroup {
         );
     }
 
+    // Contructs a sequential command group, essentially a set of actions (commands) the robot will perform 
+    // Checks how many corals (for-loop) it needs to get and adds that many necessary actions (commands)
+    // Depending on the start location (A,B,C) you have conditionals to make or follow a specific path
     /**
      * Generates a SequentialCommandGroup to get notes during autonomous.
      *
@@ -59,8 +74,18 @@ public class Auto extends SequentialCommandGroup {
      */
     public SequentialCommandGroup scoreCoral() {
         SequentialCommandGroup exitReturnCommands = new SequentialCommandGroup();
-
+        LimelightResults llr = VisionAprilTag.isValid("limelight");
+        if (llr != null){
+            double id = llr.targets_Fiducials[0].fiducialID;
+        }
         for (int i = 0; i < coralLimit; i++) {  //amount of notes to get + 1 preloaded
+            if (swerve.getPose().getY() > 7){
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] [1A]").onlyWhile(() -> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[1A]")));
+            }
+
+            if (swerve.getPose().getY() > 7){
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(""));
+            }
             exitReturnCommands.addCommands(
                     //currently only using 1 limelight
                     // Set the limelight pipeline index to 1 for vision processing.
@@ -100,6 +125,7 @@ public class Auto extends SequentialCommandGroup {
                 
             );
         }
+        exitReturnCommands.addCommands();
 
         return exitReturnCommands;
     }
