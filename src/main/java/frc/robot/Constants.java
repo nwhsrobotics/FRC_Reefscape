@@ -19,19 +19,19 @@ public final class Constants {
     public static final class CANAssignments {
         //TODO: FIX THESE IDs
         public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
-        public static final int BACK_LEFT_DRIVE_MOTOR_ID = 3;
-        public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 5;
-        public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 7;
+        public static final int BACK_LEFT_DRIVE_MOTOR_ID = 7;
+        public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
+        public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 5;
 
         public static final int FRONT_LEFT_STEER_MOTOR_ID = 2;
-        public static final int BACK_LEFT_STEER_MOTOR_ID = 4;
-        public static final int FRONT_RIGHT_STEER_MOTOR_ID = 6;
-        public static final int BACK_RIGHT_STEER_MOTOR_ID = 8;
+        public static final int BACK_LEFT_STEER_MOTOR_ID = 8;
+        public static final int FRONT_RIGHT_STEER_MOTOR_ID = 4;
+        public static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
 
         public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 9;
-        public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 10;
-        public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 11;
-        public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 12;
+        public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 12;
+        public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 10;
+        public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 11;
 
 
         public static final int PDU_ID = 24;
@@ -126,10 +126,23 @@ public final class Constants {
 
         //FOR ALL OFFSETS: turn wheels until they become straight, replace with the value of encoders
         //THE BLACK GEAR SHOULD BE ON THE OUTSIDE FOR ALL WHEELS, regardless of side
+
+        
+
+        //THESE ONES ARE FOR THE 2025 ROBOT 
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 0.6212622190936846;//2.66 + Math.PI;
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = -0.679553489033339;//5.24 - Math.PI;
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 2.103087660191214;//0.61 + Math.PI;
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = -2.2534177774040067;//5.20 - Math.PI;
+
+
+        //2024 ROBOT
+        /*
         public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = -1.0998642249140047;//2.66 + Math.PI;
         public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 2.1475731030398975;//5.24 - Math.PI;
         public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = -1.0829904362472627;//0.61 + Math.PI;
         public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 1.0737865515199487;//5.20 - Math.PI;
+        */
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = 6380.0 / 60.0 * (ModuleConstants.kDriveMotorGearRatio) * ModuleConstants.kWheelDiameterMeters * Math.PI; // set up for NEOs to drive
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = kPhysicalMaxSpeedMetersPerSecond / Math.hypot(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0); //adapted from SDS
@@ -184,7 +197,7 @@ public final class Constants {
         public static final Pose2d STATION_LEFT = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(126)); //this is for the center of the source 
         public static final Pose2d STATION_RIGHT = new Pose2d(1.149, 1.043, Rotation2d.fromDegrees(-126)); //this is for the center of the source 
         
-        //public static final List<Pose2d> allNotes = new ArrayList<Pose2d>(); 
+        public static final List<Pose2d> allNotes = new ArrayList<Pose2d>(); 
         // get rid of temp fix
     }
 
