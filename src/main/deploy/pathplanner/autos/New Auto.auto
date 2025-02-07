@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "[B] [2A]"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "[2A] [S2]"
+            "pathName": null
           }
         }
       ]
