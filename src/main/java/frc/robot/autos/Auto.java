@@ -29,7 +29,7 @@ public class Auto extends SequentialCommandGroup {
     
     //private ArrayList allPaths = new ArrayList<String>(List.of("[B][1A]","[1A] [S1]","[1B] [S1]","[2] [S1]","[2A] [S2]","[2B] [S2]",));
     // add the dictionaries for red and blue alliance with respective tag IDs for locations
-    private HashMap<String, Integer> blueAllianceIds = new HashMap<String, Integer>();
+    private HashMap<String, Integer> blueAllianceIds = new HashMap<String, Integer>("1A");
     
     private ArrayList<String> occupiedStations = new ArrayList<String>();
 
@@ -78,25 +78,30 @@ public class Auto extends SequentialCommandGroup {
         if (llr != null){
             double id = llr.targets_Fiducials[0].fiducialID;
         }
-        for (int i = 0; i < coralLimit; i++) {  //amount of notes to get + 1 preloaded
-            if (swerve.getPose().getY() > 7){
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] [1A]").onlyWhile(() -> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[1A]")));
+            if (swerve.getPose().getY() > 7 && swerve.getPose().getY() < 7.50){
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] [6A]").onlyWhile(() -> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[6A]")));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[6A] [S1]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("S1")));
+
+            }
+            if (swerve.getPose().getY() > 5.90 && swerve.getPose().getY() < 6.50){
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[B] [1A]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[1A]")));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[1A] [S1]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[S1]")));
             }
 
-            if (swerve.getPose().getY() > 7){
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(""));
-            }
+            if (swerve.getPose().getY() > 4.80 && swerve.getPose().getY() < 5.40){
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[C] [2A]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[2A]")));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[2A] [S2]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[S2]")));
             exitReturnCommands.addCommands(
                     //currently only using 1 limelight
                     // Set the limelight pipeline index to 1 for vision processing.
                     new InstantCommand(() -> LimelightHelpers.setPipelineIndex(LimelightConstants.llObjectDetectionName, 1)),
 
                     //Starting from position A
-                    swerve.pathFindThenFollowPath("[A] [6A]").onlyWhile(()-> (swerve.getPose().getY() > 7.00) && (swerve.getPose().getY() < 7.50)),
+                    //swerve.pathFindThenFollowPath("[A] [6A]").onlyWhile(()-> (swerve.getPose().getY() > 7.00) && (swerve.getPose().getY() < 7.50)),
                     //Starting from position B
-                    swerve.pathFindThenFollowPath("[B] [1A]").onlyWhile(()-> (swerve.getPose().getY() > 5.90) && (swerve.getPose().getY() < 6.50)),
+                    //swerve.pathFindThenFollowPath("[B] [1A]").onlyWhile(()-> (swerve.getPose().getY() > 5.90) && (swerve.getPose().getY() < 6.50)),
                     //Starting from position C
-                    swerve.pathFindThenFollowPath("[C] [2A]").onlyWhile(()-> (swerve.getPose().getY() > 4.80) && (swerve.getPose().getY() < 5.40)),
+                    //swerve.pathFindThenFollowPath("[C] [2A]").onlyWhile(()-> (swerve.getPose().getY() > 4.80) && (swerve.getPose().getY() < 5.40)),
                     
                     swerve.pathfindToPosition("").onlyWhile(() -> !LimelightHelpers.getTV(LimelightConstants.llObjectDetectionName),
                     
@@ -118,12 +123,12 @@ public class Auto extends SequentialCommandGroup {
                     swerve.pathfindToPosition(initialPos),
                     //swerve.pathfindToPosition(getClosestLocation()).onlyWhile(() -> !(LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llObjectDetectionName).rawFiducials[0].id == 7)),
                     // Remove the closest location from the list of possible locations.
-                    new InstantCommand(() -> possibleLocations.remove(getClosestLocation()))
+                   new InstantCommand(() -> { possibleLocations.remove(getClosestLocation()); })
                     // Execute the shooting command.
                     //NamedCommands.getCommand("shoot")
                     //new AutoScoringCommand(score, ScoringState.FIRE, ScoringState.IDLE)
                 
-            );
+            ;
         }
         exitReturnCommands.addCommands();
 
