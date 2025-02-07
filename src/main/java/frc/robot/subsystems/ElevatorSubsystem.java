@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
+import SparkClosedLoopController
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,7 +21,6 @@ public class ElevatorSubsystem extends SubsystemBase {
   // Create ele(vator) motors
   private final SparkMax leftElevatorMotor = new ImprovedCanSpark(25, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
   private final SparkMax rightElevatorMotor = new ImprovedCanSpark(26, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
-
   // set up absolute encoders for elevator
   public final CANcoder absoluteEncoder1 = new CANcoder(27);
   public final CANcoder absoluteEncoder2 = new CANcoder(28);
@@ -37,5 +36,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  leftElevatorMotor.setVoltage(pid.calculate(encoder.getDistance(), setpoint) + feedforward);
+  rightElevatorMotor.setVoltage(pid.calculate(encoder.getDistance(), setpoint) + feedforward);
   }
 }
