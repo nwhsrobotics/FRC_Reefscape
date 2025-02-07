@@ -1,10 +1,12 @@
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -85,7 +87,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveModule[] swerveMods = {frontLeft, frontRight, backLeft, backRight};
 
     // create an AHRS object for gyro
-    private final AHRS gyro = new AHRS(Port.kUSB);
+    private final AHRS gyro = new AHRS(NavXComType.kUSB1);
 
     //odometry is a system to keep track of robots current position and rotation on the fields based on the coordinate system
     private final SwerveDrivePoseEstimator odometer = new SwerveDrivePoseEstimator(
@@ -429,7 +431,7 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
-        if (VisionGamePiece.isAprilTagPipeline("limelight")) {
+        /*if (VisionGamePiece.isAprilTagPipeline("limelight")) {
 
             boolean useMegaTag2 = true; //set to false to use MegaTag1
             // we might use megatag1 when disabled to auto orient and megatag2 when enable
@@ -477,7 +479,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 Logger.recordOutput("swerve.odometer.yCoordinate", odometer.getEstimatedPosition().getY());
                 Logger.recordOutput("swerve.odometer.rotation", odometer.getEstimatedPosition().getRotation().getDegrees());
             }
-        }
+        }*/
     }
 
     /**

@@ -25,7 +25,10 @@ public class VisionAprilTag {
     public static double tagDist;
     public static ArrayList<Integer> tagIds = new ArrayList<>();
 
-    //TODO: ADD STABALIZING ALGORITHM
+    private static final long DETECTION_HOLD = 200; 
+    private static long timeDetected = 0;
+
+    private static LimelightResults stableResults = null;
 
     /*
      * fiducial.getRobotPoseTargetSpace(); // Robot pose relative it the AprilTag Coordinate System (Most Useful) where April tag is 0, 0
@@ -181,11 +184,20 @@ public class VisionAprilTag {
      */
     public static LimelightResults isValid(String limelightName) {
         LimelightResults results = LimelightHelpers.getLatestResults(limelightName);
-        if (results != null && results.valid && LimelightHelpers.getTV(limelightName) && results.targets_Fiducials.length > 0) 
-        {
-            return results;
+
+        long now = System.currentTimeMillis();
+
+        if (results != null && results.valid && LimelightHelpers.getTV(limelightName) && results.targets_Fiducials.length > 0) {
+            timeDetected = now;
+            stableResults = results;
+        } else {
+            long time = now - timeDetected;
+            if (time < DETECTION_HOLD) {
+            } else {
+                stableResults = null;
+            }
         }
-        return null;
+        return stableResults;
     }
     
 

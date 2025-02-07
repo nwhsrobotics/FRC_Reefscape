@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants.ModuleConstants;
+import frc.robot.Constants.SysIdConstants;
+import frc.robot.util.ImprovedCanSpark;
 
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
@@ -19,12 +22,16 @@ import static edu.wpi.first.units.Units.Volts;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 
 public class SysId extends SubsystemBase {
   private SparkMax sysMotorLeft;
   private SparkMax sysMotorRight;
   private RelativeEncoder sysMotorLeftEncoder;
+  private final SparkBaseConfig sysMotorLeftConfig;
   
   private SysIdRoutine m_sysIdRoutine;
 
@@ -33,9 +40,19 @@ public class SysId extends SubsystemBase {
   private final MutDistance m_distance = Meters.mutable(0);
   // Mutable holder for unit-safe linear velocity values, persisted to avoid reallocation.
   private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
+
+  
   /** Creates a new SysIdRoutine. */
   public SysId() {
-    this.sysMotorLeft = new SparkMax(79, MotorType.kBrushless);
+    
+    
+
+    sysMotorLeftConfig = new SparkMaxConfig();
+    sysMotorLeftConfig.encoder.positionConversionFactor(SysIdConstants.SYSIDENCOCERROT2METER);
+    sysMotorLeftConfig.encoder.velocityConversionFactor(SysIdConstants.SYSIDENCODERMETERPERSECONDS);
+    this.sysMotorLeft = new ImprovedCanSpark(79, ImprovedCanSpark.MotorKind.NEO, sysMotorLeftConfig, IdleMode.kBrake);
+    sysMotorLeftEncoder = sysMotorLeft.getEncoder();
+
 
     //this.sysMotorRight = new SparkMax(80, MotorType.kBrushless);
 //creates sysid routine in the actual code
@@ -54,7 +71,7 @@ public class SysId extends SubsystemBase {
               log -> {
                 // Record a frame for the left motors.  Since these share an encoder, we consider
                 // the entire group to be one motor.
-                log.motor("drive-left")
+                log.motor("sysid-left")
                     .voltage(
                         m_appliedVoltage.mut_replace(
                             sysMotorLeft.get() * RobotController.getBatteryVoltage(), Volts))

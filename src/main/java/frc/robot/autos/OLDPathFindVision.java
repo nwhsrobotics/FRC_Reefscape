@@ -13,7 +13,7 @@ import frc.robot.util.LimelightHelpers;
 
 import java.util.List;
 
-public class PathFindVision extends Command {
+public class OLDPathFindVision extends Command {
     private final SwerveSubsystem swerve;
     private Command pathFind;
     private final List<Pose2d> possibleLocations;
@@ -22,7 +22,7 @@ public class PathFindVision extends Command {
     /**
      * Creates a new PathFindVision.
      */
-    public PathFindVision(SwerveSubsystem swerve, List<Pose2d> locations, Pose2d pathFindLoc) {
+    public OLDPathFindVision(SwerveSubsystem swerve, List<Pose2d> locations, Pose2d pathFindLoc) {
         this.swerve = swerve;
         addRequirements(swerve);
         possibleLocations = locations;
