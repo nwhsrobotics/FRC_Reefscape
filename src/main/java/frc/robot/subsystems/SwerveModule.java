@@ -55,7 +55,7 @@ public class SwerveModule {
         this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
         this.absoluteEncoderReversed = absoluteEncoderReversed;
 
-        // Initialize the absolute encoder using the given id
+        // Initialize the absolute encoder using the given id 
         absoluteEncoder = new CANcoder(absoluteEncoderId);
 
         // Initialize the drive and turning motors using the given ids
@@ -232,9 +232,10 @@ public class SwerveModule {
             stop();
             return;
         }
-
+        // SwerveModuleState newoOptimizedState = desiredState.optimize(getState().angle); // ...Trying out this one if the other one doesn't work
         // Optimize the desired state based on the current state angle
-        state = SwerveModuleState.optimize(state, getState().angle);
+        // state = SwerveModuleState.optimize(state, getState().angle); .... This one is the old one try the one below.
+        state.optimize(getState().angle);
 
         // Set the drive motor speed and the turning motor angle using PID control
         driveMotor.set(state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
