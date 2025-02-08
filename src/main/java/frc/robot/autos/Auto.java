@@ -27,7 +27,8 @@ public class Auto extends SequentialCommandGroup {
     private final List<Pose2d> possibleLocations;
     private int coralLimit = 10;
     private final Pose2d initialPos;
-    
+    private final List<String> locationsToGo;
+
     //private ArrayList allPaths = new ArrayList<String>(List.of("[B][1A]","[1A] [S1]","[1B] [S1]","[2] [S1]","[2A] [S2]","[2B] [S2]",));
     // add the dictionaries for red and blue alliance with respective tag IDs for locations
     public static HashMap<String, Integer> blueAllianceIds = new HashMap<>();
@@ -59,6 +60,7 @@ public class Auto extends SequentialCommandGroup {
     
     public Auto(SwerveSubsystem swerve, Vision vision, List<Pose2d> blackListLocations, List<String> posToGo, int coralLimit, Pose2d initialPos) {
         this.swerve = swerve;
+        this.locationsToGo = posToGo;
         this.vision = vision;
         possibleLocations = Constants.AprilTags.aprilTags;
         blackList(blackListLocations);
@@ -91,11 +93,17 @@ public class Auto extends SequentialCommandGroup {
         if (llr != null){
             double id = llr.targets_Fiducials[0].fiducialID;
         }
-            if (swerve.getPose().getY() > 7 && swerve.getPose().getY() < 7.50){
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] [6B]").onlyWhile(() -> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[6B]")));
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[6B] [S1]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[S1]")));
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] [5B]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[6A]")));
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] [6A]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[6A]")));
+            //Checks if robot is at position A
+            if (swerve.getPose().getY() > 7 && swerve.getPose().getY() < 7.50) {
+                //Starts from position A and then goes to first position in list 
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] " + locationsToGo.get(0)).onlyWhile(() -> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[6A]")));
+                for (int i = 0; i < locationsToGo.size()-1; i++) {
+                    //Iterates through each position in the list to station 1
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("S1")));
+                    //Move robot from station 1 to next station
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] " + locationsToGo.get(i+1)).onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("S1")));
+
+                }
 
             }
             if (swerve.getPose().getY() > 5.90 && swerve.getPose().getY() < 6.50){
