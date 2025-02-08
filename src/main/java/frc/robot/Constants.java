@@ -271,7 +271,7 @@ public final class Constants {
         redAllianceIds.put("[5A]", 7);
         redAllianceIds.put("[5B]", 7);
         redAllianceIds.put("[6A]", 6);
-        redAllianceIds.put("[6B]", 16);
+        redAllianceIds.put("[6B]", 6);
 
     }
 
