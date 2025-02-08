@@ -192,7 +192,7 @@ public class Vision extends SubsystemBase {
      * @param targetLocation The location we are trying to go to (our convention)
      * @return The boolean is the April Tag ID for that location (field convention and respective alliance) is currently detected
      */
-    public boolean isDetectingTargetID(String targetLocation){
+    public static boolean isDetectingTargetID(String targetLocation){
         var alliance = DriverStation.getAlliance();
         int targetId = -1;
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
