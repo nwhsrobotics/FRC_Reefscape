@@ -80,9 +80,17 @@ public class Auto extends SequentialCommandGroup {
         if (llr != null){
             double id = llr.targets_Fiducials[0].fiducialID;
         }
-            if (swerve.getPose().getY() > 7 && swerve.getPose().getY() < 7.50){
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] [6A]").onlyWhile(() -> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[6A]")));
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[6A] [S1]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("S1")));
+            //Checks if robot is at position A
+            if (swerve.getPose().getY() > 7 && swerve.getPose().getY() < 7.50) {
+                //Starts from position A and then goes to first position in list 
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] " + locationsToGo.get(0)).onlyWhile(() -> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[6A]")));
+                for (int i = 0; i < locationsToGo.size()-1; i++) {
+                    //Iterates through each position in the list to station 1
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("S1")));
+                    //Move robot from station 1 to next station
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] " + locationsToGo.get(i+1)).onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("S1")));
+
+                }
 
             }
             if (swerve.getPose().getY() > 5.90 && swerve.getPose().getY() < 6.50){
