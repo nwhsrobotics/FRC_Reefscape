@@ -19,6 +19,11 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class ElevatorSubsystem extends SubsystemBase {
+
+  private double kS = 0.0;
+  private double kG = 0.0;  
+  private double kV = 0.0; 
+  private double kA = 0.0;  
   
   // Create ele(vator) motors
   private final SparkMax leftElevatorMotor = new ImprovedCanSpark(25, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
@@ -39,12 +44,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   
 
 
-  //I would not declare in here if i were u
   public ElevatorSubsystem() {
-    double kS = 0.0;
-    double kG = 0.0;  
-    double kV = 0.0; 
-    double kA = 0.0;  
+
   }
 
   @Override
