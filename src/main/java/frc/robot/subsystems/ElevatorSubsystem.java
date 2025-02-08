@@ -43,8 +43,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   public RelativeEncoder relativeEncoderRight = rightElevatorMotor.getEncoder();
 
   //PID controllers 
-  public PIDController pigControllerLeft = new PIDController(0, 0, 0);
-  public PIDController pigControllerRight = new PIDController(0, 0, 0);
+  public PIDController pidControllerLeft = new PIDController(0, 0, 0);
+  public PIDController pidControllerRight = new PIDController(0, 0, 0);
 
   // setpoint
   private double setpointNum;
@@ -65,7 +65,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    leftElevatorMotor.setVoltage(pigControllerLeft.calculate(relativeEncoderLeft.getPosition(), setpointNum) + feedforward.calculate(0.0));
-    rightElevatorMotor.setVoltage(pigControllerRight.calculate(relativeEncoderRight.getPosition(), setpointNum) + feedforward.calculate(0.0));
+    leftElevatorMotor.setVoltage(pidControllerLeft.calculate(relativeEncoderLeft.getPosition(), setpointNum) + feedforward.calculate(0.0));
+    rightElevatorMotor.setVoltage(pidControllerRight.calculate(relativeEncoderRight.getPosition(), setpointNum) + feedforward.calculate(0.0));
   }
 }
