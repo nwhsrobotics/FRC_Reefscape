@@ -29,8 +29,12 @@ public class ElevatorSubsystem extends SubsystemBase {
   public RelativeEncoder relativeEncoderRight = rightElevatorMotor.getEncoder();
 
 
-  public ElevatorSubsystem() {
 
+  public ElevatorSubsystem() {
+    private static final double kS = 0.0;
+    private static final double kG = 0.0;  
+    private static final double kV = 0.0; 
+    private static final double kA = 0.0;  
   }
 
   @Override
