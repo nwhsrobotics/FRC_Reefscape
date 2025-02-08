@@ -33,7 +33,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   //PID controllers 
   public PIDController pigControllerLeft = new PIDController(0, 0, 0); 
-  public PIDController pigControllerRight = new PIDController(0, 0, 0); 
+  public PIDController pigControllerRight = new PIDController(0, 0, 0);
+  
+  //Create ElevatorFeedForward
+  
 
 
   //I would not declare in here if i were u
