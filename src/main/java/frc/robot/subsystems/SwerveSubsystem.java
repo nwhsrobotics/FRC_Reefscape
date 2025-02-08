@@ -292,7 +292,7 @@ public class SwerveSubsystem extends SubsystemBase {
      *
      * @param pathName The name of the path file to load and follow.
      */
-    public void pathFindThenFollowPath(String pathName) {
+    public Command pathFindThenFollowPath(String pathName) {
         Command pathfindingCommand;
         // Load the path we want to pathfind to and follow
         PathPlannerPath path;
@@ -311,10 +311,12 @@ public class SwerveSubsystem extends SubsystemBase {
                     path,
                     constraints
             );
+            pathfindingCommand.addRequirements(this);
             pathfindingCommand.schedule();
+            return pathfindingCommand;
         } catch (Exception ignored) {
         }
-
+        return new InstantCommand();
     }
 
     /**
