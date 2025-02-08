@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 import com.revrobotics.spark.SparkClosedLoopController;
 
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
@@ -24,7 +25,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   private double kG = 0.0;  
   private double kV = 0.0; 
   private double kA = 0.0;  
-  
+  // Create a new ElevatorFeedforward with gains kS, kG, kV, and kA
+  ElevatorFeedforward feedforward = new ElevatorFeedforward(kS, kG, kV, kA);
   // Create ele(vator) motors
   private final SparkMax leftElevatorMotor = new ImprovedCanSpark(25, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
   private final SparkMax rightElevatorMotor = new ImprovedCanSpark(26, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
