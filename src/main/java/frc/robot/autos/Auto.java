@@ -15,6 +15,7 @@ import frc.robot.subsystems.VisionAprilTag;
 import frc.robot.subsystems.VisionGamePiece;
 import frc.robot.util.LimelightHelpers;
 import frc.robot.util.LimelightHelpers.LimelightResults;
+import static java.util.Map.entry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,8 +30,20 @@ public class Auto extends SequentialCommandGroup {
     
     //private ArrayList allPaths = new ArrayList<String>(List.of("[B][1A]","[1A] [S1]","[1B] [S1]","[2] [S1]","[2A] [S2]","[2B] [S2]",));
     // add the dictionaries for red and blue alliance with respective tag IDs for locations
-    private HashMap<String, Integer> blueAllianceIds = new HashMap<String, Integer>("1A");
-    
+    public static HashMap<String, Integer> blueAllianceIds = new HashMap<>();
+    blueAllianceIds.put("[1A]", 1);
+    blueAllianceIds.put("[1B]", 1);
+    blueAllianceIds.put("[2A]", 2);
+    blueAllianceIds.put("[2B]", 2);
+    blueAllianceIds.put("[3A]", 3);
+    blueAllianceIds.put("[3B]", 3);
+    blueAllianceIds.put("[4A]", 4);
+    blueAllianceIds.put("[4B]", 4);
+    blueAllianceIds.put("[5A]", 5);
+    blueAllianceIds.put("[5B]", 5);
+    blueAllianceIds.put("[6A]", 6);
+    blueAllianceIds.put("[6B]", 6);
+
     private ArrayList<String> occupiedStations = new ArrayList<String>();
 
 
@@ -79,8 +92,10 @@ public class Auto extends SequentialCommandGroup {
             double id = llr.targets_Fiducials[0].fiducialID;
         }
             if (swerve.getPose().getY() > 7 && swerve.getPose().getY() < 7.50){
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] [6A]").onlyWhile(() -> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[6A]")));
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[6A] [S1]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("S1")));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] [6B]").onlyWhile(() -> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[6B]")));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[6B] [S1]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[S1]")));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] [5B]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[6A]")));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] [6A]").onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[6A]")));
 
             }
             if (swerve.getPose().getY() > 5.90 && swerve.getPose().getY() < 6.50){
