@@ -24,8 +24,6 @@ import java.util.List;
 public class Auto extends SequentialCommandGroup {
     private final SwerveSubsystem swerve;
     private final Vision vision;
-    private final List<Pose2d> possibleLocations;
-    private int coralLimit = 10;
     private final Pose2d initialPos;
     private final List<String> locationsToGo;
 
@@ -62,7 +60,6 @@ public class Auto extends SequentialCommandGroup {
         this.swerve = swerve;
         this.locationsToGo = posToGo;
         this.vision = vision;
-        possibleLocations = Constants.AprilTags.aprilTags;
         this.initialPos = initialPos;
         blueAllianceIds.put("1", 1);
         String s = "[1a]";
@@ -127,43 +124,6 @@ public class Auto extends SequentialCommandGroup {
                     //Move robot from station 2 to next station
                     exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S2] " + locationsToGo.get(i+1)).onlyWhile(()-> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[S2]")));
                 }
-
-            exitReturnCommands.addCommands(
-                    //currently only using 1 limelight
-                    // Set the limelight pipeline index to 1 for vision processing.
-                    new InstantCommand(() -> LimelightHelpers.setPipelineIndex(LimelightConstants.llObjectDetectionName, 1)),
-
-                    //Starting from position A
-                    //swerve.pathFindThenFollowPath("[A] [6A]").onlyWhile(()-> (swerve.getPose().getY() > 7.00) && (swerve.getPose().getY() < 7.50)),
-                    //Starting from position B
-                    //swerve.pathFindThenFollowPath("[B] [1A]").onlyWhile(()-> (swerve.getPose().getY() > 5.90) && (swerve.getPose().getY() < 6.50)),
-                    //Starting from position C
-                    //swerve.pathFindThenFollowPath("[C] [2A]").onlyWhile(()-> (swerve.getPose().getY() > 4.80) && (swerve.getPose().getY() < 5.40)),
-                    
-                    swerve.pathfindToPosition("").onlyWhile(() -> !LimelightHelpers.getTV(LimelightConstants.llObjectDetectionName),
-                    
-
-
-
-          
-                    // Navigate the robot to the closest location without considering vision targeting.
-                    swerve.pathfindToPosition(getClosestLocation()).onlyWhile(() -> !LimelightHelpers.getTV(LimelightConstants.llObjectDetectionName)),
-                    // Navigate the robot to a specific location based on vision targeting.
-                    swerve.pathfindToPosition(VisionGamePiece.visionTargetLocation),
-                    //new PathFindVision(swerve, score, possibleLocations, getClosestLocation()),
-                    //or command.repeatedly also works for single command
-                    //Commands.repeatingSequence(new PathFindVision(swerve, score, possibleLocations, getClosestLocation()).until(() -> score.isNoteInside())),
-                    // Set the limelight pipeline index back to 0 for april tag localization.
-                    //note inside logic doesn't work currently but no current spike implementation done
-                    new InstantCommand(() -> LimelightHelpers.setPipelineIndex(LimelightConstants.llObjectDetectionName, 0)),
-                    // Navigate the robot to the initial position to shoot.
-                    swerve.pathfindToPosition(initialPos),
-                    //swerve.pathfindToPosition(getClosestLocation()).onlyWhile(() -> !(LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llObjectDetectionName).rawFiducials[0].id == 7)),
-                    // Remove the closest location from the list of possible locations.
-                   new InstantCommand(() -> { possibleLocations.remove(getClosestLocation()); })
-                    // Execute the shooting command.
-                    //NamedCommands.getCommand("shoot")
-                    //new AutoScoringCommand(score, ScoringState.FIRE, ScoringState.IDLE)
                 
             ;
         }
@@ -172,25 +132,6 @@ public class Auto extends SequentialCommandGroup {
         return exitReturnCommands;
     }
 
-    /**
-     * Blacklists specified locations from the list of possible locations.
-     *
-     * @param blackListLocations A list of Pose2d objects representing locations to blacklist.
-     */
-    public void blackList(List<Pose2d> blackListLocations) {
-        for (Pose2d pos : blackListLocations) {
-            possibleLocations.remove(pos);
-        }
-    }
-
-    /**
-     * Finds the closest location to the current robot pose from the list of possible locations.
-     *
-     * @return The closest Pose2d location.
-     */
-    public Pose2d getClosestLocation() {
-        return swerve.getPose().nearest(possibleLocations);
-    }
 
     /**
      * Resets robot odometry to a flipped position if the alliance is red.
