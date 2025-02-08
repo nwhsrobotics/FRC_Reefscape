@@ -19,14 +19,18 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-public class ElevatorSubsystem extends SubsystemBase {
 
+
+public class ElevatorSubsystem extends SubsystemBase {
+  
+  // k values
   private double kS = 0.0;
-  private double kG = 0.0;  
-  private double kV = 0.0; 
-  private double kA = 0.0;  
+  private double kG = 0.0;
+  private double kV = 0.0;
+  private double kA = 0.0;
   // Create a new ElevatorFeedforward with gains kS, kG, kV, and kA
   ElevatorFeedforward feedforward = new ElevatorFeedforward(kS, kG, kV, kA);
+
   // Create ele(vator) motors
   private final SparkMax leftElevatorMotor = new ImprovedCanSpark(25, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
   private final SparkMax rightElevatorMotor = new ImprovedCanSpark(26, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
@@ -39,11 +43,19 @@ public class ElevatorSubsystem extends SubsystemBase {
   public RelativeEncoder relativeEncoderRight = rightElevatorMotor.getEncoder();
 
   //PID controllers 
-  public PIDController pigControllerLeft = new PIDController(0, 0, 0); 
-  public PIDController pigControllerRight = new PIDController(0, 0, 0);
+  public PIDController pidControllerLeft = new PIDController(0, 0, 0);
+  public PIDController pidControllerRight = new PIDController(0, 0, 0);
+
+  // setpoint
+  private double setpointNum;
   
-  //Create ElevatorFeedForward
-  
+  // create L(#) preset methods
+  public void L2_Preset() {
+    setpointNum = 0.0;
+  }
+  public void L3_Preset() {
+    setpointNum = 1.0;
+  }
 
 
   public ElevatorSubsystem() {
@@ -53,7 +65,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    leftElevatorMotor.setVoltage(pigControllerLeft.calculate(relativeEncoderLeft.getPosition(), setpoint) + feedforward);
-    rightElevatorMotor.setVoltage(pigControllerRight.calculate(relativeEncoderRight.getPosition(), setpoint) + feedforward);
+    leftElevatorMotor.setVoltage(pidControllerLeft.calculate(relativeEncoderLeft.getPosition(), setpointNum) + feedforward.calculate(0.0));
+    rightElevatorMotor.setVoltage(pidControllerRight.calculate(relativeEncoderRight.getPosition(), setpointNum) + feedforward.calculate(0.0));
   }
 }
