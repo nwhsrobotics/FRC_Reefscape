@@ -7,8 +7,12 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.util.LimelightHelpers;
+import frc.robot.util.LimelightHelpers.LimelightResults;
+
 import org.littletonrobotics.junction.Logger;
 
 public class Vision extends SubsystemBase {
@@ -180,5 +184,37 @@ public class Vision extends SubsystemBase {
             );
             return originalPos.transformBy(left);
          */
+    }
+
+
+    /**
+     * 
+     * @param targetLocation The location we are trying to go to (our convention)
+     * @return The boolean is the April Tag ID for that location (field convention and respective alliance) is currently detected
+     */
+    public boolean isDetectingTargetID(String targetLocation){
+        var alliance = DriverStation.getAlliance();
+        int targetId = -1;
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+            targetId = Constants.AprilTags.redAllianceIds.get(targetLocation);
+        } else {
+            targetId = Constants.AprilTags.blueAllianceIds.get(targetLocation);
+        }
+        LimelightResults llr = VisionAprilTag.isValid("limelight");
+        if (llr != null && llr.targets_Fiducials != null){
+            return llr.targets_Fiducials[0].fiducialID == targetId;
+        }
+        return false;
+    }
+
+    public int getAprilTagId(String location){
+        var alliance = DriverStation.getAlliance();
+        int targetId = -1;
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+            targetId = Constants.AprilTags.redAllianceIds.get(location);
+        } else {
+            targetId = Constants.AprilTags.blueAllianceIds.get(location);
+        }
+        return targetId; 
     }
 }

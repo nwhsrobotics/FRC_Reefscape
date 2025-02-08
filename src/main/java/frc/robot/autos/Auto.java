@@ -27,33 +27,7 @@ public class Auto extends SequentialCommandGroup {
     private final Pose2d initialPos;
     private final List<String> locationsToGo;
     // add the dictionaries for red and blue alliance with respective tag IDs for locations
-    public static HashMap<String, Integer> blueAllianceIds = new HashMap<>();
-    blueAllianceIds.put("[1A]", 20);
-    blueAllianceIds.put("[1B]", 20);
-    blueAllianceIds.put("[2A]", 21);
-    blueAllianceIds.put("[2B]", 21);
-    blueAllianceIds.put("[3A]", 22);
-    blueAllianceIds.put("[3B]", 22);
-    blueAllianceIds.put("[4A]", 17);
-    blueAllianceIds.put("[4B]", 17);
-    blueAllianceIds.put("[5A]", 18);
-    blueAllianceIds.put("[5B]", 18);
-    blueAllianceIds.put("[6A]", 19);
-    blueAllianceIds.put("[6B]", 19);
-
-    public static HashMap<String, Integer> redAllianceIds = new HashMap<>();
-    redAllianceIds.put("[1A]", 11);
-    redAllianceIds.put("[1B]", 11);
-    redAllianceIds.put("[2A]", 10);
-    redAllianceIds.put("[2B]", 10);
-    redAllianceIds.put("[3A]", 9);
-    redAllianceIds.put("[3B]", 9);
-    redAllianceIds.put("[4A]", 8);
-    redAllianceIds.put("[4B]", 8);
-    redAllianceIds.put("[5A]", 7);
-    redAllianceIds.put("[5B]", 7);
-    redAllianceIds.put("[6A]", 6);
-    redAllianceIds.put("[6B]", 16);
+    
 
 
     private ArrayList<String> occupiedStations = new ArrayList<String>();
@@ -90,12 +64,12 @@ public class Auto extends SequentialCommandGroup {
             //Checks if robot is at position A
             if (swerve.getPose().getY() > 7 && swerve.getPose().getY() < 7.50) {
                 //Starts from position A and then goes to first position in list 
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] " + locationsToGo.get(0)).onlyWhile(() -> !isDetectingTargetID(locationsToGo.get(0)))));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] " + locationsToGo.get(0)).onlyWhile(() -> !Vision.isDetectingTargetID(locationsToGo.get(0)))));
                 for (int i = 0; i < locationsToGo.size()-1; i++) {
                     //Iterates through each position in the list to station 1
-                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(()-> !isDetectingTargetID("[S1]")));
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(()-> !Vision.isDetectingTargetID("[S1]")));
                     //Move robot from station 1 to next station
-                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] " + locationsToGo.get(i+1)).onlyWhile(()-> !isDetectingTargetID(locationsToGo.get(i+1))));
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] " + locationsToGo.get(i+1)).onlyWhile(()-> !Vision.isDetectingTargetID(locationsToGo.get(i+1))));
 
                 }
 
@@ -103,12 +77,12 @@ public class Auto extends SequentialCommandGroup {
             //Checks if robot is at position B
             if (swerve.getPose().getY() > 5.90 && swerve.getPose().getY() < 6.50) {
                 //Starts from position B and then goes to first position in list
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[B] " + locationsToGo.get(0)).onlyWhile(()-> !isDetectingTargetID(locationsToGo.get(0))));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[B] " + locationsToGo.get(0)).onlyWhile(()-> !Vision.isDetectingTargetID(locationsToGo.get(0))));
                 for (int i = 0; i < locationsToGo.size()-1; i++) {
                     //Iterates through each position in the list to station 1
-                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]")).onlyWhile(()-> !isDetectingTargetID("[S1]"));
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]")).onlyWhile(()-> !Vision.isDetectingTargetID("[S1]"));
                     //Move robot from station 1 to next station
-                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] " + locationsToGo.get(i+1)).onlyWhile(()-> !isDetectingTargetID(locationsToGo.get(i+1))));
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] " + locationsToGo.get(i+1)).onlyWhile(()-> !Vision.isDetectingTargetID(locationsToGo.get(i+1))));
                 }
                 
             }
@@ -116,12 +90,12 @@ public class Auto extends SequentialCommandGroup {
             //Checks if robot is at position C
             if (swerve.getPose().getY() > 4.80 && swerve.getPose().getY() < 5.40) {
                 //Starts from position C and then goes to first position in list
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[C] " + locationsToGo.get(0)).onlyWhile(()-> !isDetectingTargetID(locationsToGo.get(0))));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[C] " + locationsToGo.get(0)).onlyWhile(()-> !Vision.isDetectingTargetID(locationsToGo.get(0))));
                 for (int i = 0; i < locationsToGo.size()-1; i++) {
                     //Iterates through each position in the list to station 2
-                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S2]").onlyWhile(()-> !isDetectingTargetID("[S2]")));
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S2]").onlyWhile(()-> !Vision.isDetectingTargetID("[S2]")));
                     //Move robot from station 2 to next station
-                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S2] " + locationsToGo.get(i+1)).onlyWhile(()-> !isDetectingTargetID(locationsToGo.get(i+1))));
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S2] " + locationsToGo.get(i+1)).onlyWhile(()-> !Vision.isDetectingTargetID(locationsToGo.get(i+1))));
                 }
                 
             ;
@@ -145,25 +119,5 @@ public class Auto extends SequentialCommandGroup {
         } else {
             swerve.resetOdometry(loc);
         }
-    }
-
-    /**
-     * 
-     * @param targetLocation The location we are trying to go to (our convention)
-     * @return The boolean is the April Tag ID for that location (field convention and respective alliance) is currently detected
-     */
-    public boolean isDetectingTargetID(String targetLocation){
-        var alliance = DriverStation.getAlliance();
-        int targetId = -1;
-        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            targetId = redAllianceIds.get(targetLocation);
-        } else {
-            targetId = blueAllianceIds.get(targetLocation);
-        }
-        LimelightResults llr = VisionAprilTag.isValid("limelight");
-        if (llr != null && llr.targets_Fiducials != null){
-            return llr.targets_Fiducials[0].fiducialID == targetId;
-        }
-        return false;
     }
 }
