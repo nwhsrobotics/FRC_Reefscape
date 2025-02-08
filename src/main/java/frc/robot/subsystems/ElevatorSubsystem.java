@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 import com.revrobotics.spark.SparkClosedLoopController;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,25 +24,30 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final SparkMax leftElevatorMotor = new ImprovedCanSpark(25, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
   private final SparkMax rightElevatorMotor = new ImprovedCanSpark(26, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
   // set up absolute encoders for elevator
-  public final CANcoder absoluteEncoder1 = new CANcoder(27);
-  public final CANcoder absoluteEncoder2 = new CANcoder(28);
+  public final CANcoder absoluteEncoderLeft = new CANcoder(27);
+  public final CANcoder absoluteEncoderRight = new CANcoder(28);
+  
   // set up relative encoders for elevator
   public RelativeEncoder relativeEncoderLeft = leftElevatorMotor.getEncoder();
   public RelativeEncoder relativeEncoderRight = rightElevatorMotor.getEncoder();
 
+  //PID controllers 
+  public PIDController pigControllerLeft = new PIDController(0, 0, 0); 
+  public PIDController pigControllerRight = new PIDController(0, 0, 0); 
 
 
+  //I would not declare in here if i were u
   public ElevatorSubsystem() {
-    private static final double kS = 0.0;
-    private static final double kG = 0.0;  
-    private static final double kV = 0.0; 
-    private static final double kA = 0.0;  
+    double kS = 0.0;
+    double kG = 0.0;  
+    double kV = 0.0; 
+    double kA = 0.0;  
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    leftElevatorMotor.setVoltage(pid.calculate(encoder.getDistance(), setpoint) + feedforward);
-    rightElevatorMotor.setVoltage(pid.calculate(encoder.getDistance(), setpoint) + feedforward);
+    leftElevatorMotor.setVoltage(pigControllerLeft.calculate(relativeEncoderLeft.getPosition(), setpoint) + feedforward);
+    rightElevatorMotor.setVoltage(pigControllerRight.calculate(relativeEncoderRight.getPosition(), setpoint) + feedforward);
   }
 }
