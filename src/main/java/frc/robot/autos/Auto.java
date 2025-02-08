@@ -27,33 +27,7 @@ public class Auto extends SequentialCommandGroup {
     private final Pose2d initialPos;
     private final List<String> locationsToGo;
     // add the dictionaries for red and blue alliance with respective tag IDs for locations
-    public static HashMap<String, Integer> blueAllianceIds = new HashMap<>();
-    blueAllianceIds.put("[1A]", 20);
-    blueAllianceIds.put("[1B]", 20);
-    blueAllianceIds.put("[2A]", 21);
-    blueAllianceIds.put("[2B]", 21);
-    blueAllianceIds.put("[3A]", 22);
-    blueAllianceIds.put("[3B]", 22);
-    blueAllianceIds.put("[4A]", 17);
-    blueAllianceIds.put("[4B]", 17);
-    blueAllianceIds.put("[5A]", 18);
-    blueAllianceIds.put("[5B]", 18);
-    blueAllianceIds.put("[6A]", 19);
-    blueAllianceIds.put("[6B]", 19);
-
-    public static HashMap<String, Integer> redAllianceIds = new HashMap<>();
-    redAllianceIds.put("[1A]", 11);
-    redAllianceIds.put("[1B]", 11);
-    redAllianceIds.put("[2A]", 10);
-    redAllianceIds.put("[2B]", 10);
-    redAllianceIds.put("[3A]", 9);
-    redAllianceIds.put("[3B]", 9);
-    redAllianceIds.put("[4A]", 8);
-    redAllianceIds.put("[4B]", 8);
-    redAllianceIds.put("[5A]", 7);
-    redAllianceIds.put("[5B]", 7);
-    redAllianceIds.put("[6A]", 6);
-    redAllianceIds.put("[6B]", 16);
+    
 
 
     private ArrayList<String> occupiedStations = new ArrayList<String>();
