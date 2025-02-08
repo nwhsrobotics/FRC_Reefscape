@@ -58,13 +58,11 @@ public class Auto extends SequentialCommandGroup {
      * @param initialPos         The initial position to reset the robot odometry to.
      */
     
-    public Auto(SwerveSubsystem swerve, Vision vision, List<Pose2d> blackListLocations, List<String> posToGo, int coralLimit, Pose2d initialPos) {
+    public Auto(SwerveSubsystem swerve, Vision vision, List<String> posToGo, Pose2d initialPos) {
         this.swerve = swerve;
         this.locationsToGo = posToGo;
         this.vision = vision;
         possibleLocations = Constants.AprilTags.aprilTags;
-        blackList(blackListLocations);
-        this.coralLimit = coralLimit;
         this.initialPos = initialPos;
         blueAllianceIds.put("1", 1);
         String s = "[1a]";
