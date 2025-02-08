@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class Constants {
     public static final class CANAssignments {
@@ -245,34 +246,35 @@ public final class Constants {
         public static final Pose2d ID_21 = new Pose2d(5.321,  4.026,  Rotation2d.fromDegrees(0));
         public static final Pose2d ID_22 = new Pose2d(4.905,  3.306,  Rotation2d.fromDegrees(300));
         public static final List<Pose2d> aprilTags = new ArrayList<Pose2d>(List.of(ID_1,ID_2,ID_3,ID_4,ID_5,ID_6,ID_7,ID_8,ID_9,ID_10,ID_11,ID_12,ID_13,ID_14,ID_15,ID_16,ID_17,ID_18,ID_19,ID_20,ID_21,ID_22));
-        public static HashMap<String, Integer> blueAllianceIds = new HashMap<>();
-        blueAllianceIds.put("[1A]", 20);
-        blueAllianceIds.put("[1B]", 20);
-        blueAllianceIds.put("[2A]", 21);
-        blueAllianceIds.put("[2B]", 21);
-        blueAllianceIds.put("[3A]", 22);
-        blueAllianceIds.put("[3B]", 22);
-        blueAllianceIds.put("[4A]", 17);
-        blueAllianceIds.put("[4B]", 17);
-        blueAllianceIds.put("[5A]", 18);
-        blueAllianceIds.put("[5B]", 18);
-        blueAllianceIds.put("[6A]", 19);
-        blueAllianceIds.put("[6B]", 19);
+        public static final Map<String, Integer> blueAllianceIds = new HashMap<>() {{
+            put("[1A]", 20);
+            put("[1B]", 20);
+            put("[2A]", 21);
+            put("[2B]", 21);
+            put("[3A]", 22);
+            put("[3B]", 22);
+            put("[4A]", 17);
+            put("[4B]", 17);
+            put("[5A]", 18);
+            put("[5B]", 18);
+            put("[6A]", 19);
+            put("[6B]", 19);
+        }};
 
-        public static HashMap<String, Integer> redAllianceIds = new HashMap<>();
-        redAllianceIds.put("[1A]", 11);
-        redAllianceIds.put("[1B]", 11);
-        redAllianceIds.put("[2A]", 10);
-        redAllianceIds.put("[2B]", 10);
-        redAllianceIds.put("[3A]", 9);
-        redAllianceIds.put("[3B]", 9);
-        redAllianceIds.put("[4A]", 8);
-        redAllianceIds.put("[4B]", 8);
-        redAllianceIds.put("[5A]", 7);
-        redAllianceIds.put("[5B]", 7);
-        redAllianceIds.put("[6A]", 6);
-        redAllianceIds.put("[6B]", 6);
-
+        public static final Map<String, Integer> redAllianceIds = new HashMap<>() {{
+            put("[1A]", 11);
+            put("[1B]", 11);
+            put("[2A]", 10);
+            put("[2B]", 10);
+            put("[3A]",  9);
+            put("[3B]",  9);
+            put("[4A]",  8);
+            put("[4B]",  8);
+            put("[5A]",  7);
+            put("[5B]",  7);
+            put("[6A]",  6);
+            put("[6B]",  6);
+        }};
     }
 
     public static final class LimelightConstants {
