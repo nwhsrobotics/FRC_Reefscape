@@ -36,7 +36,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  leftElevatorMotor.setVoltage(pid.calculate(encoder.getDistance(), setpoint) + feedforward);
-  rightElevatorMotor.setVoltage(pid.calculate(encoder.getDistance(), setpoint) + feedforward);
+    leftElevatorMotor.setVoltage(pid.calculate(encoder.getDistance(), setpoint) + feedforward);
+    rightElevatorMotor.setVoltage(pid.calculate(encoder.getDistance(), setpoint) + feedforward);
   }
 }
