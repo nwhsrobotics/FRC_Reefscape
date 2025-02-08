@@ -26,7 +26,8 @@ public class Auto extends SequentialCommandGroup {
     private final List<Pose2d> possibleLocations;
     private int coralLimit = 10;
     private final Pose2d initialPos;
-    
+    private final List<String> locationsToGo;
+
     //private ArrayList allPaths = new ArrayList<String>(List.of("[B][1A]","[1A] [S1]","[1B] [S1]","[2] [S1]","[2A] [S2]","[2B] [S2]",));
     // add the dictionaries for red and blue alliance with respective tag IDs for locations
     private HashMap<String, Integer> blueAllianceIds = new HashMap<String, Integer>("1A");
@@ -46,6 +47,7 @@ public class Auto extends SequentialCommandGroup {
     
     public Auto(SwerveSubsystem swerve, Vision vision, List<Pose2d> blackListLocations, List<String> posToGo, int coralLimit, Pose2d initialPos) {
         this.swerve = swerve;
+        this.locationsToGo = posToGo;
         this.vision = vision;
         possibleLocations = Constants.AprilTags.aprilTags;
         blackList(blackListLocations);
