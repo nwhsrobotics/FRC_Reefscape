@@ -15,7 +15,13 @@ public class AutoSelector {
         SendableChooser<Command> autoChooser = new SendableChooser<>();
         autoChooser.addOption("A to 6A", new Auto(swerve, vision, new ArrayList<String>(List.of("[6A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.CAGE_A));
         autoChooser.addOption("A1 to 6A", new Auto(swerve, vision, new ArrayList<String>(List.of("[5A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.CAGE_A));
+        autoChooser.addOption("A to 5A", new Auto(swerve, vision, new ArrayList<String>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.CAGE_A));
+        autoChooser.addOption("A1 to 5A", new Auto(swerve, vision, new ArrayList<String>(List.of("[4A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.CAGE_A));
         autoChooser.addOption("B to 6A", new Auto(swerve, vision, new ArrayList<String>(List.of("[1A]", "[1B]", "[5A]", "[5B]")), Constants.Positions.CAGE_B));
+        autoChooser.addOption("B1 to 6A", new Auto(swerve, vision, new ArrayList<String>(List.of("[1A]", "[5B]", "[1A]", "[5B]")), Constants.Positions.CAGE_B));
+        autoChooser.addOption("C to 4A", new Auto(swerve, vision, new ArrayList<String>(List.of("[4A]", "[4B]", "[3A]", "[3B]")), Constants.Positions.CAGE_C));
+        autoChooser.addOption("C1 to 4A", new Auto(swerve, vision, new ArrayList<String>(List.of("[3A]", "[4B]", "[3A]", "[3B]")), Constants.Positions.CAGE_C));
+
         SmartDashboard.putData(autoChooser);
     }
 }
