@@ -312,6 +312,7 @@ public class SwerveSubsystem extends SubsystemBase {
                     constraints
             );
             pathfindingCommand.addRequirements(this);
+            // maybe not need to schedule it
             pathfindingCommand.schedule();
             return pathfindingCommand;
         } catch (Exception ignored) {

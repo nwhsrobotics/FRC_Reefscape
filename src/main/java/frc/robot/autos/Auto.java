@@ -26,8 +26,6 @@ public class Auto extends SequentialCommandGroup {
     private final Vision vision;
     private final Pose2d initialPos;
     private final List<String> locationsToGo;
-
-    //private ArrayList allPaths = new ArrayList<String>(List.of("[B][1A]","[1A] [S1]","[1B] [S1]","[2] [S1]","[2A] [S2]","[2B] [S2]",));
     // add the dictionaries for red and blue alliance with respective tag IDs for locations
     public static HashMap<String, Integer> blueAllianceIds = new HashMap<>();
     blueAllianceIds.put("[1A]", 20);
@@ -59,26 +57,12 @@ public class Auto extends SequentialCommandGroup {
 
 
     private ArrayList<String> occupiedStations = new ArrayList<String>();
-
-
-    // 
-    /**
-     * Creates a new instance of the Auto class.
-     *
-     * @param swerve             The SwerveSubsystem object representing the robot's swerve drive.
-     * @param blackListLocations A list of Pose2d objects representing locations to blacklist.
-     * @param coralLimit          The limit on the number of notes to be obtained during autonomous + 1 preloaded.
-     * @param initialPos         The initial position to reset the robot odometry to.
-     */
     
     public Auto(SwerveSubsystem swerve, Vision vision, List<String> posToGo, Pose2d initialPos) {
         this.swerve = swerve;
         this.locationsToGo = posToGo;
         this.vision = vision;
         this.initialPos = initialPos;
-        blueAllianceIds.put("1", 1);
-        String s = "[1a]";
-        s.substring(0, 1);
         addCommands(
                 // Reset robot odometry to a initial position.
                 new InstantCommand(() -> flipResetOdometry(initialPos)),
@@ -93,9 +77,9 @@ public class Auto extends SequentialCommandGroup {
     // Checks how many corals (for-loop) it needs to get and adds that many necessary actions (commands)
     // Depending on the start location (A,B,C) you have conditionals to make or follow a specific path
     /**
-     * Generates a SequentialCommandGroup to get notes during autonomous.
+     * Generates a SequentialCommandGroup to get corals during autonomous.
      *
-     * @return A SequentialCommandGroup containing commands to get notes.
+     * @return A SequentialCommandGroup containing commands to get corals.
      */
     public SequentialCommandGroup scoreCoral() {
         SequentialCommandGroup exitReturnCommands = new SequentialCommandGroup();
