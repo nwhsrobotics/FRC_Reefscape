@@ -4,7 +4,9 @@
 
 package frc.robot.autos;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.AprilTags;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Vision;
 
@@ -14,18 +16,33 @@ public class pathFindAprilTag extends Command {
   private final SwerveSubsystem swerve;
   private final Vision vision;
   private final int targetAprilTagId;
+  private Command pathFind;
 
   /** Creates a new pathFindAprilTag. */
-  public pathFindAprilTag(int targetAprilTagId, SwerveSubsystem swerve, Vision vision) {
+  public pathFindAprilTag(int targetAprilTagId, SwerveSubsystem swerve, Vision vision, String targetLocation) {
+    Pose2d object = new Pose2d();
+    object = AprilTags.aprilTags.get(targetAprilTagId-1);
     this.swerve = swerve;
     this.targetAprilTagId = targetAprilTagId;
     this.vision = vision;
     addRequirements(swerve);
+    object = vision.transformPosition(object, 0.5);
+    if(targetLocation.indexOf("B") != -1){
+      Pose2d temp = object;
+      object = vision.scootLeft(temp, 0.5);
+    }
+    if(targetLocation.indexOf("A") != -1){
+      Pose2d temp = object;
+      object = vision.scootRight(temp, 0.5);
+    }
+    pathFind = swerve.pathfindToPosition(object);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    pathFind.schedule();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
