@@ -211,6 +211,12 @@ public final class Constants {
         public static final double SYSIDENCODERMETERPERSECONDS = SYSIDENCOCERROT2METER/60;
 
     }
+    public static final class ElevatorConstants{
+        // Elevator Limits
+        //units are most likely in roatations
+        private static final double MAX_Elevator_HEIGHT = 100.0; // Adjust as needed
+        private static final double MIN_Elevator_HEIGHT = 0.0;
+    }
 
     public static final class AprilTags{
         //degress are facing inwards towards the tags

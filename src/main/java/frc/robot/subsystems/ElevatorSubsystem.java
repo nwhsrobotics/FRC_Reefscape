@@ -29,14 +29,18 @@ public class ElevatorSubsystem extends SubsystemBase {
   public RelativeEncoder relativeEncoderRight = rightElevatorMotor.getEncoder();
 
 
-  public ElevatorSubsystem() {
 
+  public ElevatorSubsystem() {
+    private static final double kS = 0.0;
+    private static final double kG = 0.0;  
+    private static final double kV = 0.0; 
+    private static final double kA = 0.0;  
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  leftElevatorMotor.setVoltage(pid.calculate(encoder.getDistance(), setpoint) + feedforward);
-  rightElevatorMotor.setVoltage(pid.calculate(encoder.getDistance(), setpoint) + feedforward);
+    leftElevatorMotor.setVoltage(pid.calculate(encoder.getDistance(), setpoint) + feedforward);
+    rightElevatorMotor.setVoltage(pid.calculate(encoder.getDistance(), setpoint) + feedforward);
   }
 }
