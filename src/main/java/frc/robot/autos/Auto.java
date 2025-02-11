@@ -28,10 +28,6 @@ public class Auto extends SequentialCommandGroup {
     private final List<String> locationsToGo;
     // add the dictionaries for red and blue alliance with respective tag IDs for locations
     
-
-
-    private ArrayList<String> occupiedStations = new ArrayList<String>();
-    
     public Auto(SwerveSubsystem swerve, Vision vision, List<String> posToGo, Pose2d initialPos) {
         this.swerve = swerve;
         this.locationsToGo = posToGo;
@@ -57,10 +53,6 @@ public class Auto extends SequentialCommandGroup {
      */
     public SequentialCommandGroup scoreCoral() {
         SequentialCommandGroup exitReturnCommands = new SequentialCommandGroup();
-        LimelightResults llr = VisionAprilTag.isValid("limelight");
-        if (llr != null){
-            double id = llr.targets_Fiducials[0].fiducialID;
-        }
             //Checks if robot is at position A
             if (swerve.getPose().getY() > 7 && swerve.getPose().getY() < 7.50) {
                 //Starts from position A and then goes to first position in list 
