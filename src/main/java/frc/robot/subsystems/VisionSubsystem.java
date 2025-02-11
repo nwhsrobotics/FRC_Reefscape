@@ -15,11 +15,11 @@ import frc.robot.util.LimelightHelpers.LimelightResults;
 
 import org.littletonrobotics.junction.Logger;
 
-public class Vision extends SubsystemBase {
+public class VisionSubsystem extends SubsystemBase {
     /**
      * Creates a new Vision.
      */
-    public Vision() {
+    public VisionSubsystem() {
     }
 
     @Override
@@ -121,11 +121,11 @@ public class Vision extends SubsystemBase {
     }
 
     // adjusts the robot position based on april tag position and a preset offset
-    public Pose2d transformPosition(Pose2d originalPos, double offsetDistance) {
+    public Pose2d transformPosition(Pose2d aprilTagPos, double offsetDistance) {
 
-        double givenX = originalPos.getX();
-        double givenY = originalPos.getY();
-        double givenRot = originalPos.getRotation().getRadians();
+        double givenX = aprilTagPos.getX();
+        double givenY = aprilTagPos.getY();
+        double givenRot = aprilTagPos.getRotation().getRadians();
 
         double adjustedX = givenX + offsetDistance * Math.cos(givenRot);
         double adjustedY = givenY + offsetDistance * Math.sin(givenRot);
@@ -193,16 +193,9 @@ public class Vision extends SubsystemBase {
      * @return The boolean is the April Tag ID for that location (field convention and respective alliance) is currently detected
      */
     public boolean isDetectingTargetID(String targetLocation){
-        var alliance = DriverStation.getAlliance();
-        int targetId = -1;
-        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            targetId = Constants.AprilTags.redAllianceIds.get(targetLocation);
-        } else {
-            targetId = Constants.AprilTags.blueAllianceIds.get(targetLocation);
-        }
         LimelightResults llr = VisionAprilTag.isValid("limelight");
         if (llr != null && llr.targets_Fiducials != null){
-            return llr.targets_Fiducials[0].fiducialID == targetId;
+            return llr.targets_Fiducials[0].fiducialID == getAprilTagId(targetLocation);
         }
         return false;
     }
