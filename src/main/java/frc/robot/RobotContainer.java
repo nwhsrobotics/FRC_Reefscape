@@ -21,7 +21,7 @@ import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeOuttake;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Buttons;
 
 public class RobotContainer {
@@ -33,7 +33,7 @@ public class RobotContainer {
 
     private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
-    private final Vision VisionSubsystem = new Vision();
+    private final VisionSubsystem VisionSubsystem = new VisionSubsystem();
 
     private final SendableChooser<Command> autoChooser;
 
