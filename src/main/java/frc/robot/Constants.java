@@ -18,7 +18,7 @@ import java.util.Map;
 
 public final class Constants {
     public static final class CANAssignments {
-        //TODO: FIX THESE IDs
+
         public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
         public static final int BACK_LEFT_DRIVE_MOTOR_ID = 7;
         public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
@@ -33,6 +33,12 @@ public final class Constants {
         public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 12;
         public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 10;
         public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 11;
+
+        //ele can IDs
+        public static final int LEFT_ELEVATOR_MOTOR_ID = 13;
+        public static final int RIGHT_ELEVATOR_MOTOR_ID = 14;
+        public static final int CLIMB_ABSOLUTE_ENCODER_LEFT_ID = 15;
+        public static final int CLIMB_ABSOLUTE_ENCODER_RIGHT_ID = 16;
 
 
         public static final int PDU_ID = 24;

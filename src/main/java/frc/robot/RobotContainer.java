@@ -11,6 +11,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.IntakeOuttakeCommand;
+import frc.robot.commands.L1CMD;
+import frc.robot.commands.L2CMD;
+import frc.robot.commands.L3CMD;
+import frc.robot.commands.L4CMD;
+import frc.robot.commands.LoadStation;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -26,7 +31,7 @@ public class RobotContainer {
 
     private final IntakeOuttake intakeoutake = new IntakeOuttake();
 
-    //private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
     private final Vision VisionSubsystem = new Vision();
 
@@ -39,7 +44,21 @@ public class RobotContainer {
 
         ParallelCommandGroup autoInit = new ParallelCommandGroup(); // new ParallelCommandGroup((new InstantCommand(() -> wristSubsystem.ampPreset(), wristSubsystem), (new InstantCommand(() -> armSubsystem.underStage(), armSubsystem));
 
+        Command L4CMD = new L4CMD(elevatorSubsystem, gunner);
+        Command L3CMD = new L3CMD(elevatorSubsystem, gunner);
+        Command L2CMD = new L2CMD(elevatorSubsystem, gunner);
+        Command L1CMD = new L1CMD(elevatorSubsystem, gunner);
+        Command LoadStation = new LoadStation(elevatorSubsystem, gunner);
+
         NamedCommands.registerCommand("autoInit", autoInit);
+
+        NamedCommands.registerCommand("L4CORAL",L4CMD);
+        NamedCommands.registerCommand("L3CORAL",L3CMD);
+        NamedCommands.registerCommand("L2CORAL",L2CMD);
+        NamedCommands.registerCommand("L1CORAL",L1CMD);
+        NamedCommands.registerCommand("LoadStation",LoadStation);
+
+
 
         //INIT after registering named commands
         autoChooser = AutoBuilder.buildAutoChooser();
