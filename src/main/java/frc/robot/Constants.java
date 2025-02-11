@@ -194,12 +194,12 @@ public final class Constants {
         public static final Pose2d CAGE_B = new Pose2d(8.777, 6.173, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
         public static final Pose2d CAGE_C = new Pose2d(8.777, 5.075, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
 
-        public static final Pose2d BACK_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60)); 
-        public static final Pose2d BACK_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(0)); 
-        public static final Pose2d BACK_RIGHT_REEF = new Pose2d(3.614, 2.613, Rotation2d.fromDegrees(60)); 
-        public static final Pose2d FRONT_LEFT_REEF = new Pose2d(5.352, 5.444, Rotation2d.fromDegrees(-120)); 
-        public static final Pose2d FRONT_MID_REEF = new Pose2d(6.152, 4.026, Rotation2d.fromDegrees(180)); 
-        public static final Pose2d FRONT_RIGHT_REEF = new Pose2d(5.310, 2.582, Rotation2d.fromDegrees(120)); 
+        public static final Pose2d BACK_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60)); // POV_LEFT - Side 6
+        public static final Pose2d BACK_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(0)); // A button - Side 5
+        public static final Pose2d BACK_RIGHT_REEF = new Pose2d(3.614, 2.613, Rotation2d.fromDegrees(60)); // POV_RIGHT - Side 4
+        public static final Pose2d FRONT_LEFT_REEF = new Pose2d(5.352, 5.444, Rotation2d.fromDegrees(-120)); // X button - Side 1
+        public static final Pose2d FRONT_MID_REEF = new Pose2d(6.152, 4.026, Rotation2d.fromDegrees(180)); // Y button - Side 2
+        public static final Pose2d FRONT_RIGHT_REEF = new Pose2d(5.310, 2.582, Rotation2d.fromDegrees(120)); // B button - Side 3
 
         public static final Pose2d STATION_LEFT = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(126)); //this is for the center of the source 
         public static final Pose2d STATION_RIGHT = new Pose2d(1.149, 1.043, Rotation2d.fromDegrees(-126)); //this is for the center of the source 
