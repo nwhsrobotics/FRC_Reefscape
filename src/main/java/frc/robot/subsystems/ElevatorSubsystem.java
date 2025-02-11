@@ -52,13 +52,13 @@ public class ElevatorSubsystem extends SubsystemBase {
   
   // create L(#) preset methods
   public void L1_Preset() {
-    setpointNum = 2.0;
+    setpointNum = 1.0;
   }
   public void L2_Preset() {
-    setpointNum = 0.0;
+    setpointNum = 2.0;
   }
   public void L3_Preset() {
-    setpointNum = 1.0;
+    setpointNum = 3.0;
   }
   public void L4_Preset() {
     setpointNum = 4.0;
