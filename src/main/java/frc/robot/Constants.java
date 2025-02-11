@@ -179,6 +179,7 @@ public final class Constants {
 
     public static final class Positions {
         //from driver perspective
+        
         public static final Pose2d LEFT_GROUND_START_PIECES = new Pose2d(1.219, 5.855, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
         public static final Pose2d MID_GROUND_START_PIECES = new Pose2d(1.219, 4.022, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
         public static final Pose2d RIGHT_GROUND_START_PIECES = new Pose2d(1.219, 2.189, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
@@ -187,7 +188,7 @@ public final class Constants {
         public static final Pose2d CAGE_B = new Pose2d(8.777, 6.173, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
         public static final Pose2d CAGE_C = new Pose2d(8.777, 5.075, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
 
-        public static final Pose2d BACK_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60)); 
+        public static final Pose2d BACK_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60));
         public static final Pose2d BACK_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(0)); 
         public static final Pose2d BACK_RIGHT_REEF = new Pose2d(3.614, 2.613, Rotation2d.fromDegrees(60)); 
         public static final Pose2d FRONT_LEFT_REEF = new Pose2d(5.352, 5.444, Rotation2d.fromDegrees(-120)); 
@@ -197,6 +198,8 @@ public final class Constants {
         public static final Pose2d STATION_LEFT = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(126)); //this is for the center of the source 
         public static final Pose2d STATION_RIGHT = new Pose2d(1.149, 1.043, Rotation2d.fromDegrees(-126)); //this is for the center of the source 
         
+        public static final Pose2d PROCESSOR = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(-90));
+
         public static final List<Pose2d> allNotes = new ArrayList<Pose2d>(); 
         // get rid of temp fix
     }
