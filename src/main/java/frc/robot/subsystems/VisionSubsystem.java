@@ -32,7 +32,7 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput("ll.horizontalDist", VisionGamePiece.horizontalOffestXDistance(limelightName));
         Logger.recordOutput("ll.3dHypotnuese", VisionGamePiece.full3DDistance(limelightName));
         Logger.recordOutput("ll.2dHypotnuese", VisionGamePiece.hypotenuseDistanceXandZ(limelightName));
-        Logger.recordOutput("ll.detect", LimelightHelpers.getTY(""));
+        Logger.recordOutput("ll.detect", LimelightHelpers.getTY(limelightName);
         //1, 1, Rotation2d.fromDegrees(60)
         Logger.recordOutput("ll.target", VisionGamePiece.transformTargetLocation(new Pose2d(), limelightName).toString());
         Logger.recordOutput("ll.targetX", VisionGamePiece.transformTargetLocation(new Pose2d(), limelightName).getX());
@@ -47,7 +47,7 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput("lla.verticalDist", VisionAprilTag.verticalYOffsetDistance(limelightName));
         Logger.recordOutput("lla.horizontalDist", VisionAprilTag.horizontalOffsetXDistance(limelightName));
         Logger.recordOutput("lla.3dHypotnuese", VisionAprilTag.hypotenuseDistanceXandZ(limelightName));
-        Logger.recordOutput("lla.detect", LimelightHelpers.getTY(""));
+        Logger.recordOutput("lla.detect", LimelightHelpers.getTY(limelightName));
         //1, 1, Rotation2d.fromDegrees(60)
         Logger.recordOutput("lla.target", VisionAprilTag.transformTargetLocation(new Pose2d(),limelightName).toString());
         Logger.recordOutput("lla.targetX", VisionAprilTag.transformTargetLocation(new Pose2d(), limelightName).getX());
@@ -74,7 +74,7 @@ public class VisionSubsystem extends SubsystemBase {
         //Logger.recordOutput(llname + ".pipelineName", Vision.getPipelineName(llname));
         //Logger.recordOutput(llname + ".objectDetected", LimelightHelpers.getTV(llname));
 
-        VisionGamePiece.stabilize("limelight");
+        VisionGamePiece.stabilize(limelightName);
     }
 
     //This method takes in blue alliance april tags and checks if it is the coral station
