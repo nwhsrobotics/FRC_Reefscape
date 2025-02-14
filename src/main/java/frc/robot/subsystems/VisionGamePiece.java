@@ -75,7 +75,7 @@ public class VisionGamePiece {
 
     public static double straightLineZDistance(String limelightName) {
         if (stabilize(limelightName)) {
-            double limelightMountAngleDegrees = LimelightConstants.mountAngle;
+            double limelightMountAngleDegrees = LimelightConstants.mountAngleForwards;
             double angleToGoalDegrees = limelightMountAngleDegrees + getStabilizedTy(limelightName);
             double angleToGoalRadians = Math.toRadians(angleToGoalDegrees);
             return verticalYOffsetDistance(limelightName) / Math.tan(angleToGoalRadians);
@@ -93,8 +93,8 @@ public class VisionGamePiece {
     }
 
     public static double verticalYOffsetDistance(String limelightName){
-        double limelightLensHeightMeters = LimelightConstants.mountHeight;
-        double goalHeightMeters = LimelightConstants.targetHeight;
+        double limelightLensHeightMeters = LimelightConstants.mountHeightForwards;
+        double goalHeightMeters = LimelightConstants.targetHeightForwards;
         return goalHeightMeters - limelightLensHeightMeters;
     }
 
@@ -102,7 +102,7 @@ public class VisionGamePiece {
         if (stabilize(limelightName)) {
             double zDistance = straightLineZDistance(limelightName);
             double xDistance = horizontalOffestXDistance(limelightName);
-            double yDistance = LimelightConstants.targetHeight - LimelightConstants.mountHeight;
+            double yDistance = LimelightConstants.targetHeightForwards - LimelightConstants.mountHeightForwards;
             return Math.sqrt(zDistance * zDistance + xDistance * xDistance + yDistance * yDistance);
         }
         return 0.0;
@@ -130,8 +130,8 @@ public class VisionGamePiece {
             double cosVal = Math.cos(targetRotation.getRadians());
             double sinVal = Math.sin(targetRotation.getRadians());
 
-            double actualX = translation.getX() + (distance * cosVal - (LimelightConstants.horizontalOffset * sinVal));
-            double actualY = translation.getY() + (distance * sinVal - (LimelightConstants.horizontalOffset * cosVal));
+            double actualX = translation.getX() + (distance * cosVal - (LimelightConstants.horizontalOffsetForwards * sinVal));
+            double actualY = translation.getY() + (distance * sinVal - (LimelightConstants.horizontalOffsetForwards * cosVal));
 
             Translation2d actualTranslation = new Translation2d(actualX, actualY);
             Pose2d targetPose2d = new Pose2d(actualTranslation, targetRotation);
