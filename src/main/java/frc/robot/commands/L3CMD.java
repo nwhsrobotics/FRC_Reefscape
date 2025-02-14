@@ -22,7 +22,9 @@ public class L3CMD extends Command {
 
   
   @Override
-  public void execute() {}
+  public void execute() {
+    elevator.L3_Preset();
+  }
 
   
   @Override

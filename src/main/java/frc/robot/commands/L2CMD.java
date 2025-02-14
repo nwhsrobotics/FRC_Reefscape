@@ -22,7 +22,9 @@ public class L2CMD extends Command {
 
  
   @Override
-  public void execute() {}
+  public void execute() {
+    elevator.L2_Preset();
+  }
 
  
   @Override

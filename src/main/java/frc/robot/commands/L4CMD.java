@@ -22,7 +22,9 @@ public class L4CMD extends Command {
 
   
   @Override
-  public void execute() {}
+  public void execute() {
+    elevator.L4_Preset();
+  }
 
 
   @Override

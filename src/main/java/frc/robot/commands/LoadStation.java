@@ -22,7 +22,9 @@ public class LoadStation extends Command {
 
   
   @Override
-  public void execute() {}
+  public void execute() {
+    elevator.loadStation_Preset(); 
+  }
 
   
   @Override
