@@ -181,7 +181,7 @@ public final class Constants {
         public static final double scaleFactor = 0.6;
         public static final double kTeleDriveMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond * scaleFactor;
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond * scaleFactor;
-        public static final double kDriveDeadband = 0.05;
+        public static final double kDriveDeadband = 0.10;
     }
 
     public static final class Positions {
