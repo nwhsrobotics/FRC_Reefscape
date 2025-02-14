@@ -287,27 +287,27 @@ public final class Constants {
     }
 
     public static final class LimelightConstants {
-        public static final double mountHeight = 1.32; //in meters
-        public static final double mountAngle = 0.0; //in degrees with straight being 0 up being 90 and down being -90
-        public static final double horizontalOffset = -0.18; //in meters, this offset is how far left or right LL3 is mounted from center (negative is left, positive right)
+        public static final double mountHeightForwards = 1.32; //in meters
+        public static final double mountAngleForwards = 0.0; //in degrees with straight being 0 up being 90 and down being -90
+        public static final double horizontalOffsetForwards = -0.18; //in meters, this offset is how far left or right LL3 is mounted from center (negative is left, positive right)
         //this might not be needed but doesn't hurt us
-        public static final double distanceFromCenter = 0.3; //in meters, straight distance to the camera from middle
-        public static final double hypotenuseDistance = Math.hypot(horizontalOffset, distanceFromCenter); // actual distance in 2d from middle
-        public static final double thethaFromCenter = -32; //this might be needed for angle offset
-        public static String llObjectDetectionName = "limelight1";
-        public static String llLocalizationName = "limelight1Loc";
-        public static double targetHeight = 0;
+        public static final double distanceFromCenterForwards = 0.3; //in meters, straight distance to the camera from middle
+        public static final double hypotenuseDistanceForwards = Math.hypot(horizontalOffsetForwards, distanceFromCenterForwards); // actual distance in 2d from middle
+        public static final double thethaFromCenterForwards = -32; //this might be needed for angle offset
+        public static String llObjectDetectionNameForwards = "limelight1";
+        public static String llLocalizationNameForwards = "limelight1Loc";
+        public static double targetHeightForwards = 0;
         
-        public static final double mountHeight2 = 1.32; //in meters
-        public static final double mountAngle = 0.0; //in degrees with straight being 0 up being 90 and down being -90
-        public static final double horizontalOffset = -0.18; //in meters, this offset is how far left or right LL3 is mounted from center (negative is left, positive right)
+        public static final double mountHeightBackwards = 1.32; //in meters
+        public static final double mountAngleBackwards = 0.0; //in degrees with straight being 0 up being 90 and down being -90
+        public static final double horizontalOffsetBackwards = -0.18; //in meters, this offset is how far left or right LL3 is mounted from center (negative is left, positive right)
         //this might not be needed but doesn't hurt us
-        public static final double distanceFromCenter = 0.3; //in meters, straight distance to the camera from middle
-        public static final double hypotenuseDistance = Math.hypot(horizontalOffset, distanceFromCenter); // actual distance in 2d from middle
-        public static final double thethaFromCenter = -32; //this might be needed for angle offset
-        public static String llObjectDetectionName = "limelight1";
-        public static String llLocalizationName = "limelight1Loc";
-        public static double targetHeight = 0;
+        public static final double distanceFromCenterBackwards = 0.3; //in meters, straight distance to the camera from middle
+        public static final double hypotenuseDistanceBackwards = Math.hypot(horizontalOffsetForwards, distanceFromCenterForwards); // actual distance in 2d from middle
+        public static final double thethaFromCenterBackwards = -32; //this might be needed for angle offset
+        public static String llObjectDetectionNameBackwards = "limelight1";
+        public static String llLocalizationNameBackwards = "limelight1Loc";
+        public static double targetHeightBackwards = 0;
         
     }
     

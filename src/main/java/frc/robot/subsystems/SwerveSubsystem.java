@@ -567,7 +567,7 @@ public class SwerveSubsystem extends SubsystemBase {
      * It is RECOMMENDED to stand still and be close to the April tag when resetting this way as it solely relies on vision
      */
     public void resetOdometryWithVision() {
-        String name = LimelightConstants.llLocalizationName;
+        String name = LimelightConstants.llLocalizationNameForwards;
         int pipeline = (int) LimelightHelpers.getCurrentPipelineIndex(name);
         //set the pipeline index to the high resolution april tag (less fps but high accuracy)
         LimelightHelpers.setPipelineIndex(name, 0);
