@@ -34,7 +34,9 @@ public class RobotContainer {
 
     private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
-    private final VisionSubsystem VisionSubsystem = new VisionSubsystem();
+    private final VisionSubsystem VisionSubsystem = new VisionSubsystem("limelight1");
+    private final VisionSubsystem VisionSubsystem2 = new VisionSubsystem("limelight2");
+
 
     private final SendableChooser<Command> autoChooser;
 
