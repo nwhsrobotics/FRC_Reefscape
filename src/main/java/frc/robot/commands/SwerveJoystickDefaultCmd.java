@@ -4,6 +4,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.Positions;
@@ -91,9 +92,12 @@ public class SwerveJoystickDefaultCmd extends Command {
             }
         }
 
-        if (xbox.getPOV() == 90){
-            swerveSubsystem.autonavigator.navigateTo(Positions.BACK_RIGHT_REEF);
-        }
+        if(xbox.getPOV() == 0){
+        swerveSubsystem.autonavigator.navigateTo(Constants.Positions.STATION_LEFT);
+    }
+    if(xbox.getLeftTriggerAxis() >= 0.2 && xbox.getPOV() == 0){
+      swerveSubsystem.autonavigator.navigateTo(Constants.Positions.STATION_RIGHT);
+    }
     }
 
     @Override
