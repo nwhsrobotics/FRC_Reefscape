@@ -240,8 +240,9 @@ public final class Constants {
     public static final class ElevatorConstants{
         // Elevator Limits
         //units are most likely in roatations
-        private static final double MAX_Elevator_HEIGHT = 100.0; // Adjust as needed
-        private static final double MIN_Elevator_HEIGHT = 0.0;
+        public static final double MAX_Elevator_HEIGHT = 100.0; // Adjust as needed
+        public static final double MIN_Elevator_HEIGHT = 0.0;
+        public static final double ELEVATOR_GEAR_RATIO = 0.0;
     }
 
     public static final class AprilTags{
