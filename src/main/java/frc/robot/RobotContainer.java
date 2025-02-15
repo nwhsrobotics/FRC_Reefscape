@@ -28,14 +28,14 @@ import frc.robot.util.Buttons;
 public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 
-    private final ClimbSubsystem climbSubsystem = new ClimbSubsystem(); 
+    //private final ClimbSubsystem climbSubsystem = new ClimbSubsystem(); 
 
-    private final IntakeOuttake intakeoutake = new IntakeOuttake();
+    //private final IntakeOuttake intakeoutake = new IntakeOuttake();
 
-    private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    //private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
-    private final VisionSubsystem limeLightForwards = new VisionSubsystem("limelight1");
-    private final VisionSubsystem limeLightBackwards = new VisionSubsystem("limelight2");
+    private final VisionSubsystem limeLightForwards = new VisionSubsystem("limelight");
+    //private final VisionSubsystem limeLightBackwards = new VisionSubsystem("limelight2");
 
 
     private final SendableChooser<Command> autoChooser;
@@ -47,7 +47,7 @@ public class RobotContainer {
 
         ParallelCommandGroup autoInit = new ParallelCommandGroup(); // new ParallelCommandGroup((new InstantCommand(() -> wristSubsystem.ampPreset(), wristSubsystem), (new InstantCommand(() -> armSubsystem.underStage(), armSubsystem));
 
-        Command L4CMD = new L4CMD(elevatorSubsystem, gunner);
+        /*Command L4CMD = new L4CMD(elevatorSubsystem, gunner);
         Command L3CMD = new L3CMD(elevatorSubsystem, gunner);
         Command L2CMD = new L2CMD(elevatorSubsystem, gunner);
         Command L1CMD = new L1CMD(elevatorSubsystem, gunner);
@@ -59,11 +59,14 @@ public class RobotContainer {
         NamedCommands.registerCommand("L3CORAL",L3CMD);
         NamedCommands.registerCommand("L2CORAL",L2CMD);
         NamedCommands.registerCommand("L1CORAL",L1CMD);
-        NamedCommands.registerCommand("LoadStation",LoadStation);
+        NamedCommands.registerCommand("LoadStation",LoadStation);*/
 
 
 
         //INIT after registering named commands
+        NamedCommands.registerCommand("Intake", new InstantCommand());
+        NamedCommands.registerCommand("Outtake", new InstantCommand());
+        NamedCommands.registerCommand("L4", new InstantCommand());
         autoChooser = AutoBuilder.buildAutoChooser();
 
 
@@ -82,7 +85,7 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         swerveSubsystem.setDefaultCommand(new SwerveJoystickDefaultCmd(swerveSubsystem, driver));
-        intakeoutake.setDefaultCommand(new IntakeOuttakeCommand(intakeoutake, gunner));
+        //intakeoutake.setDefaultCommand(new IntakeOuttakeCommand(intakeoutake, gunner));
     }
 
     public Command getAutonomousCommand() {

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.Positions;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionAprilTag;
 import frc.robot.subsystems.VisionGamePiece;
@@ -43,9 +44,9 @@ public class SwerveJoystickDefaultCmd extends Command {
         } else if (xbox.getRightBumperButton()) { //for april tag allign
             fieldRelative = false;
             swerveSubsystem.drive(
-                    VisionAprilTag.limelight_rangeZ_proportional(LimelightConstants.llLocalizationNameForwards),
-                    0,
-                    VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
+                0*VisionAprilTag.limelight_rangeZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
+                    0*VisionAprilTag.horizontalOffsetXAprilTag(LimelightConstants.llLocalizationNameForwards),
+                    0*VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
 
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if booster not pressed
@@ -88,6 +89,10 @@ public class SwerveJoystickDefaultCmd extends Command {
             } else {
                 swerveSubsystem.autonavigator.resumeNavigation();
             }
+        }
+
+        if (xbox.getPOV() == 90){
+            swerveSubsystem.autonavigator.navigateTo(Positions.BACK_RIGHT_REEF);
         }
     }
 

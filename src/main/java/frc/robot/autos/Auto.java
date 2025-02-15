@@ -29,10 +29,9 @@ public class Auto extends SequentialCommandGroup {
     private final VisionSubsystem visionBackwards;
     // add the dictionaries for red and blue alliance with respective tag IDs for locations
     
-    public Auto(SwerveSubsystem swerve, VisionSubsystem visionforwards, VisionSubsystem visionBackwards, <String> posToGo, Pose2d initialPos) {
+    public Auto(SwerveSubsystem swerve, VisionSubsystem visionForwards, VisionSubsystem visionBackwards, List<String> posToGo, Pose2d initialPos) {
         this.swerve = swerve;
         this.locationsToGo = posToGo;
-        this.vision = vision;
         this.initialPos = initialPos;
         this.visionForwards = visionForwards;
         this.visionBackwards = visionBackwards;
