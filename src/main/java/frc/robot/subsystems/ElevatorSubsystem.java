@@ -52,18 +52,18 @@ public class ElevatorSubsystem extends SubsystemBase {
   
   // create L(#) preset methods
 
-  //Drive bace in 1/2 in off the ground (1.27cm) 
+  //Drive bace in 3.8cm off the ground  
   public void L1_Preset() {
-    setpointNum = 0.0;   
+    setpointNum = 0.0;  // 46cm >> 42.2cm >> 0.224m
   }
   public void L2_Preset() {
-    setpointNum = 0.7973;     // 81cm >> 79.73cm >>  0.7973m 
+    setpointNum = 0.7973;    // 81cm >> 77.2cm  >> 0.772m  
   }
   public void L3_Preset() {
-    setpointNum = 1.1973;  //121cm  >>  119.73cm  >>  1.1973m 
+    setpointNum = 1.1973;  //121cm  >> 117.2cm  >>  1.172m
   }
   public void L4_Preset() {
-    setpointNum = 1.8173;  //183cm >>  181.73cm  >>   1.8173m
+    setpointNum = 1.8173;  //183cm >>  179.3cm  >>   1.793m 
   }
   public void loadStation_Preset(){
     setpointNum = 0.0; //needs to be found 
