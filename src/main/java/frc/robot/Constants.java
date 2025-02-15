@@ -18,7 +18,24 @@ import java.util.Map;
 
 public final class Constants {
     public static final class CANAssignments {
+        // 2024 robot
+        public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6;
+        public static final int BACK_LEFT_DRIVE_MOTOR_ID = 1;
+        public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 10;
+        public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 3;
 
+        public static final int FRONT_LEFT_STEER_MOTOR_ID = 8;
+        public static final int BACK_LEFT_STEER_MOTOR_ID = 2;
+        public static final int FRONT_RIGHT_STEER_MOTOR_ID = 11;
+        public static final int BACK_RIGHT_STEER_MOTOR_ID = 4;
+
+        public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 22;
+        public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 20;
+        public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 21;
+        public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 23;
+
+        // 2025 robot
+        /*
         public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
         public static final int BACK_LEFT_DRIVE_MOTOR_ID = 7;
         public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
@@ -32,7 +49,7 @@ public final class Constants {
         public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 9;
         public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 12;
         public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 10;
-        public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 11;
+        public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 11;*/
 
         //ele can IDs
         public static final int LEFT_ELEVATOR_MOTOR_ID = 13;
@@ -137,19 +154,18 @@ public final class Constants {
         
 
         //THESE ONES ARE FOR THE 2025 ROBOT 
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 0.6212622190936846;//2.66 + Math.PI;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = -0.679553489033339;//5.24 - Math.PI;
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 2.103087660191214;//0.61 + Math.PI;
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = -2.2534177774040067;//5.20 - Math.PI;
+        //public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 0.6212622190936846;//2.66 + Math.PI;
+        //public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = -0.679553489033339;//5.24 - Math.PI;
+        //public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 2.103087660191214;//0.61 + Math.PI;
+        //public static final double kBackRightDriveAbsoluteEncoderOffsetRad = -2.2534177774040067;//5.20 - Math.PI;
 
 
         //2024 ROBOT
-        /*
         public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = -1.0998642249140047;//2.66 + Math.PI;
         public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 2.1475731030398975;//5.24 - Math.PI;
         public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = -1.0829904362472627;//0.61 + Math.PI;
         public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 1.0737865515199487;//5.20 - Math.PI;
-        */
+        
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = 6380.0 / 60.0 * (ModuleConstants.kDriveMotorGearRatio) * ModuleConstants.kWheelDiameterMeters * Math.PI; // set up for NEOs to drive
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = kPhysicalMaxSpeedMetersPerSecond / Math.hypot(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0); //adapted from SDS
@@ -294,8 +310,8 @@ public final class Constants {
         public static final double distanceFromCenterForwards = 0.3; //in meters, straight distance to the camera from middle
         public static final double hypotenuseDistanceForwards = Math.hypot(horizontalOffsetForwards, distanceFromCenterForwards); // actual distance in 2d from middle
         public static final double thethaFromCenterForwards = -32; //this might be needed for angle offset
-        public static String llObjectDetectionNameForwards = "limelight1";
-        public static String llLocalizationNameForwards = "limelight1Loc";
+        public static String llObjectDetectionNameForwards = "limelight";
+        public static String llLocalizationNameForwards = "limelight";
         public static double targetHeightForwards = 0;
         
         public static final double mountHeightBackwards = 1.32; //in meters

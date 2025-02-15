@@ -22,7 +22,7 @@ public class VisionSubsystem extends SubsystemBase {
     public VisionSubsystem(String limelightName) {
         this.limelightName = limelightName;
     }
-    }
+
 
     @Override
     public void periodic() {
@@ -32,7 +32,7 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput("ll.horizontalDist", VisionGamePiece.horizontalOffestXDistance(limelightName));
         Logger.recordOutput("ll.3dHypotnuese", VisionGamePiece.full3DDistance(limelightName));
         Logger.recordOutput("ll.2dHypotnuese", VisionGamePiece.hypotenuseDistanceXandZ(limelightName));
-        Logger.recordOutput("ll.detect", LimelightHelpers.getTY(limelightName);
+        Logger.recordOutput("ll.detect", LimelightHelpers.getTY(limelightName));
         //1, 1, Rotation2d.fromDegrees(60)
         Logger.recordOutput("ll.target", VisionGamePiece.transformTargetLocation(new Pose2d(), limelightName).toString());
         Logger.recordOutput("ll.targetX", VisionGamePiece.transformTargetLocation(new Pose2d(), limelightName).getX());

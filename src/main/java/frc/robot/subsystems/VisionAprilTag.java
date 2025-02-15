@@ -25,7 +25,7 @@ public class VisionAprilTag {
     public static double tagDist;
     public static ArrayList<Integer> tagIds = new ArrayList<>();
 
-    private static final long DETECTION_HOLD = 200; 
+    private static final long DETECTION_HOLD = 100; 
     private static long timeDetected = 0;
 
     private static LimelightResults stableResults = null;
@@ -77,7 +77,7 @@ public class VisionAprilTag {
     public static double limelight_rangeZ_proportional(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
-            return -straightLineZDistance(limelightName) * 0.345;
+            return straightLineZDistance(limelightName) * 0.345;
         }
         return 0.0;
     }
@@ -157,7 +157,7 @@ public class VisionAprilTag {
     public static double horizontalOffsetXAprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
-            return llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getX();
+            return llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getX() * 0.145;
         }
         return 0.0;
     }
