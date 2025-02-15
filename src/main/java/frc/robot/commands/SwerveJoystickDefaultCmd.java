@@ -45,9 +45,9 @@ public class SwerveJoystickDefaultCmd extends Command {
         } else if (xbox.getRightBumperButton()) { //for april tag allign
             fieldRelative = false;
             swerveSubsystem.drive(
-                0*VisionAprilTag.limelight_rangeZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
-                    0*VisionAprilTag.horizontalOffsetXAprilTag(LimelightConstants.llLocalizationNameForwards),
-                    0*VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
+                VisionAprilTag.limelight_rangeZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
+                    VisionAprilTag.horizontalOffsetXAprilTag(LimelightConstants.llLocalizationNameForwards),
+                    VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
 
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if booster not pressed
