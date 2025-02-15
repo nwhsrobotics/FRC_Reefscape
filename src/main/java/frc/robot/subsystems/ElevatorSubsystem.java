@@ -52,21 +52,21 @@ public class ElevatorSubsystem extends SubsystemBase {
   
   // create L(#) preset methods
 
-  //TODO will need to be chnged baced off of how tall the robot's bace is 
+  //Drive bace in 1/2 in off the ground (1.27cm) 
   public void L1_Preset() {
     setpointNum = 0.0;   
   }
   public void L2_Preset() {
-    setpointNum = 0.81;     // 81 cm  
+    setpointNum = 0.7973;     // 81cm >> 79.73cm >>  0.7973m 
   }
   public void L3_Preset() {
-    setpointNum = 1.21;  //121 cm 
+    setpointNum = 1.1973;  //121cm  >>  119.73cm  >>  1.1973m 
   }
   public void L4_Preset() {
-    setpointNum = 1.83;  //183 cm
+    setpointNum = 1.8173;  //183cm >>  181.73cm  >>   1.8173m
   }
   public void loadStation_Preset(){
-    setpointNum = 0.0; 
+    setpointNum = 0.0; //needs to be found 
   }
 
 
