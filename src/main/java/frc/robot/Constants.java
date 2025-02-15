@@ -14,10 +14,11 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class Constants {
     public static final class CANAssignments {
-        //TODO: FIX THESE IDs
+
         public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
         public static final int BACK_LEFT_DRIVE_MOTOR_ID = 7;
         public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
@@ -32,6 +33,12 @@ public final class Constants {
         public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 12;
         public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 10;
         public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 11;
+
+        //ele can IDs
+        public static final int LEFT_ELEVATOR_MOTOR_ID = 13;
+        public static final int RIGHT_ELEVATOR_MOTOR_ID = 14;
+        public static final int CLIMB_ABSOLUTE_ENCODER_LEFT_ID = 15;
+        public static final int CLIMB_ABSOLUTE_ENCODER_RIGHT_ID = 16;
 
 
         public static final int PDU_ID = 24;
@@ -174,11 +181,12 @@ public final class Constants {
         public static final double scaleFactor = 0.6;
         public static final double kTeleDriveMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond * scaleFactor;
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond * scaleFactor;
-        public static final double kDriveDeadband = 0.05;
+        public static final double kDriveDeadband = 0.10;
     }
 
     public static final class Positions {
         //from driver perspective
+        
         public static final Pose2d LEFT_GROUND_START_PIECES = new Pose2d(1.219, 5.855, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
         public static final Pose2d MID_GROUND_START_PIECES = new Pose2d(1.219, 4.022, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
         public static final Pose2d RIGHT_GROUND_START_PIECES = new Pose2d(1.219, 2.189, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
@@ -187,16 +195,18 @@ public final class Constants {
         public static final Pose2d CAGE_B = new Pose2d(8.777, 6.173, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
         public static final Pose2d CAGE_C = new Pose2d(8.777, 5.075, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
 
-        public static final Pose2d BACK_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60)); 
-        public static final Pose2d BACK_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(0)); 
-        public static final Pose2d BACK_RIGHT_REEF = new Pose2d(3.614, 2.613, Rotation2d.fromDegrees(60)); 
-        public static final Pose2d FRONT_LEFT_REEF = new Pose2d(5.352, 5.444, Rotation2d.fromDegrees(-120)); 
-        public static final Pose2d FRONT_MID_REEF = new Pose2d(6.152, 4.026, Rotation2d.fromDegrees(180)); 
-        public static final Pose2d FRONT_RIGHT_REEF = new Pose2d(5.310, 2.582, Rotation2d.fromDegrees(120)); 
+        public static final Pose2d BACK_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60)); // POV_LEFT - Side 6
+        public static final Pose2d BACK_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(0)); // A button - Side 5
+        public static final Pose2d BACK_RIGHT_REEF = new Pose2d(3.614, 2.613, Rotation2d.fromDegrees(60)); // POV_RIGHT - Side 4
+        public static final Pose2d FRONT_LEFT_REEF = new Pose2d(5.352, 5.444, Rotation2d.fromDegrees(-120)); // X button - Side 1
+        public static final Pose2d FRONT_MID_REEF = new Pose2d(6.152, 4.026, Rotation2d.fromDegrees(180)); // Y button - Side 2
+        public static final Pose2d FRONT_RIGHT_REEF = new Pose2d(5.310, 2.582, Rotation2d.fromDegrees(120)); // B button - Side 3
 
         public static final Pose2d STATION_LEFT = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(126)); //this is for the center of the source 
         public static final Pose2d STATION_RIGHT = new Pose2d(1.149, 1.043, Rotation2d.fromDegrees(-126)); //this is for the center of the source 
         
+        public static final Pose2d PROCESSOR = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(-90));
+
         public static final List<Pose2d> allNotes = new ArrayList<Pose2d>(); 
         // get rid of temp fix
     }
@@ -245,48 +255,62 @@ public final class Constants {
         public static final Pose2d ID_21 = new Pose2d(5.321,  4.026,  Rotation2d.fromDegrees(0));
         public static final Pose2d ID_22 = new Pose2d(4.905,  3.306,  Rotation2d.fromDegrees(300));
         public static final List<Pose2d> aprilTags = new ArrayList<Pose2d>(List.of(ID_1,ID_2,ID_3,ID_4,ID_5,ID_6,ID_7,ID_8,ID_9,ID_10,ID_11,ID_12,ID_13,ID_14,ID_15,ID_16,ID_17,ID_18,ID_19,ID_20,ID_21,ID_22));
-        public static HashMap<String, Integer> blueAllianceIds = new HashMap<>();
-        blueAllianceIds.put("[1A]", 20);
-        blueAllianceIds.put("[1B]", 20);
-        blueAllianceIds.put("[2A]", 21);
-        blueAllianceIds.put("[2B]", 21);
-        blueAllianceIds.put("[3A]", 22);
-        blueAllianceIds.put("[3B]", 22);
-        blueAllianceIds.put("[4A]", 17);
-        blueAllianceIds.put("[4B]", 17);
-        blueAllianceIds.put("[5A]", 18);
-        blueAllianceIds.put("[5B]", 18);
-        blueAllianceIds.put("[6A]", 19);
-        blueAllianceIds.put("[6B]", 19);
+        public static final Map<String, Integer> blueAllianceIds = new HashMap<>() {{
+            put("[1A]", 20);
+            put("[1B]", 20);
+            put("[2A]", 21);
+            put("[2B]", 21);
+            put("[3A]", 22);
+            put("[3B]", 22);
+            put("[4A]", 17);
+            put("[4B]", 17);
+            put("[5A]", 18);
+            put("[5B]", 18);
+            put("[6A]", 19);
+            put("[6B]", 19);
+        }};
 
-        public static HashMap<String, Integer> redAllianceIds = new HashMap<>();
-        redAllianceIds.put("[1A]", 11);
-        redAllianceIds.put("[1B]", 11);
-        redAllianceIds.put("[2A]", 10);
-        redAllianceIds.put("[2B]", 10);
-        redAllianceIds.put("[3A]", 9);
-        redAllianceIds.put("[3B]", 9);
-        redAllianceIds.put("[4A]", 8);
-        redAllianceIds.put("[4B]", 8);
-        redAllianceIds.put("[5A]", 7);
-        redAllianceIds.put("[5B]", 7);
-        redAllianceIds.put("[6A]", 6);
-        redAllianceIds.put("[6B]", 6);
-
+        public static final Map<String, Integer> redAllianceIds = new HashMap<>() {{
+            put("[1A]", 11);
+            put("[1B]", 11);
+            put("[2A]", 10);
+            put("[2B]", 10);
+            put("[3A]",  9);
+            put("[3B]",  9);
+            put("[4A]",  8);
+            put("[4B]",  8);
+            put("[5A]",  7);
+            put("[5B]",  7);
+            put("[6A]",  6);
+            put("[6B]",  6);
+        }};
     }
 
     public static final class LimelightConstants {
-        public static final double mountHeight = 1.32; //in meters
-        public static final double mountAngle = 0.0; //in degrees with straight being 0 up being 90 and down being -90
-        public static final double horizontalOffset = -0.18; //in meters, this offset is how far left or right LL3 is mounted from center (negative is left, positive right)
+        public static final double mountHeightForwards = 1.32; //in meters
+        public static final double mountAngleForwards = 0.0; //in degrees with straight being 0 up being 90 and down being -90
+        public static final double horizontalOffsetForwards = -0.18; //in meters, this offset is how far left or right LL3 is mounted from center (negative is left, positive right)
         //this might not be needed but doesn't hurt us
-        public static final double distanceFromCenter = 0.3; //in meters, straight distance to the camera from middle
-        public static final double hypotenuseDistance = Math.hypot(horizontalOffset, distanceFromCenter); // actual distance in 2d from middle
-        public static final double thethaFromCenter = -32; //this might be needed for angle offset
-        public static String llObjectDetectionName = "limelight";
-        public static String llLocalizationName = "limelightLoc";
-        public static double targetHeight = 0;
+        public static final double distanceFromCenterForwards = 0.3; //in meters, straight distance to the camera from middle
+        public static final double hypotenuseDistanceForwards = Math.hypot(horizontalOffsetForwards, distanceFromCenterForwards); // actual distance in 2d from middle
+        public static final double thethaFromCenterForwards = -32; //this might be needed for angle offset
+        public static String llObjectDetectionNameForwards = "limelight1";
+        public static String llLocalizationNameForwards = "limelight1Loc";
+        public static double targetHeightForwards = 0;
+        
+        public static final double mountHeightBackwards = 1.32; //in meters
+        public static final double mountAngleBackwards = 0.0; //in degrees with straight being 0 up being 90 and down being -90
+        public static final double horizontalOffsetBackwards = -0.18; //in meters, this offset is how far left or right LL3 is mounted from center (negative is left, positive right)
+        //this might not be needed but doesn't hurt us
+        public static final double distanceFromCenterBackwards = 0.3; //in meters, straight distance to the camera from middle
+        public static final double hypotenuseDistanceBackwards = Math.hypot(horizontalOffsetForwards, distanceFromCenterForwards); // actual distance in 2d from middle
+        public static final double thethaFromCenterBackwards = -32; //this might be needed for angle offset
+        public static String llObjectDetectionNameBackwards = "limelight1";
+        public static String llLocalizationNameBackwards = "limelight1Loc";
+        public static double targetHeightBackwards = 0;
+        
     }
+    
 
     public enum RuntimeEnvironment {
         /**
