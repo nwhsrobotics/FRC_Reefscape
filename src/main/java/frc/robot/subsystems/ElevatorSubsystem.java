@@ -10,6 +10,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CANAssignments;
 import frc.robot.util.ImprovedCanSpark;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
@@ -32,11 +33,11 @@ public class ElevatorSubsystem extends SubsystemBase {
   ElevatorFeedforward feedforward = new ElevatorFeedforward(kS, kG, kV, kA);
 
   // Create ele(vator) motors
-  private final SparkMax leftElevatorMotor = new ImprovedCanSpark(25, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
-  private final SparkMax rightElevatorMotor = new ImprovedCanSpark(26, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
+  private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
+  private final SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
   // set up absolute encoders for elevator
-  public final CANcoder absoluteEncoderLeft = new CANcoder(27);
-  public final CANcoder absoluteEncoderRight = new CANcoder(28);
+  public final CANcoder absoluteEncoderLeft = new CANcoder(CANAssignments.CLIMB_ABSOLUTE_ENCODER_LEFT_ID);
+  public final CANcoder absoluteEncoderRight = new CANcoder(CANAssignments.CLIMB_ABSOLUTE_ENCODER_RIGHT_ID);
   
   // set up relative encoders for elevator
   public RelativeEncoder relativeEncoderLeft = leftElevatorMotor.getEncoder();
@@ -50,11 +51,22 @@ public class ElevatorSubsystem extends SubsystemBase {
   private double setpointNum;
   
   // create L(#) preset methods
+
+  //TODO will need to be chnged baced off of how tall the robot's bace is 
+  public void L1_Preset() {
+    setpointNum = 0.0;   
+  }
   public void L2_Preset() {
-    setpointNum = 0.0;
+    setpointNum = 0.81;     // 81 cm  
   }
   public void L3_Preset() {
-    setpointNum = 1.0;
+    setpointNum = 1.21;  //121 cm 
+  }
+  public void L4_Preset() {
+    setpointNum = 1.83;  //183 cm
+  }
+  public void loadStation_Preset(){
+    setpointNum = 0.0; 
   }
 
 

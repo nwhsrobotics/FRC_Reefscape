@@ -215,8 +215,8 @@ public class VisionAprilTag {
 
             Pose2d cameraPoseOnRobot = new Pose2d(
                 new Translation2d(
-                    LimelightConstants.distanceFromCenter,  
-                    LimelightConstants.horizontalOffset      
+                    LimelightConstants.distanceFromCenterForwards,  
+                    LimelightConstants.horizontalOffsetForwards      
                 ),
                 new Rotation2d(0) 
             );
