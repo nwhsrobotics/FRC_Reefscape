@@ -81,23 +81,18 @@ public class SwerveJoystickDefaultCmd extends Command {
                 -MathUtil.applyDeadband(Driver1.getRawAxis(4), OIConstants.kDriveDeadband),
                 true, true),
                 swerveSubsystem)); */
-        if (swerveSubsystem.autonavigator.isEnabled()) {
-            if (MathUtil.applyDeadband(xbox.getLeftX(), OIConstants.kDriveDeadband) != 0 || 
-                MathUtil.applyDeadband(xbox.getLeftY(), OIConstants.kDriveDeadband) != 0 || 
-                MathUtil.applyDeadband(xbox.getRightX(), OIConstants.kDriveDeadband) != 0 ||
-                MathUtil.applyDeadband(xbox.getRightY(), OIConstants.kDriveDeadband) != 0) {
-                swerveSubsystem.autonavigator.pauseNavigation();
-            } else {
-                swerveSubsystem.autonavigator.resumeNavigation();
-            }
+
+
+
+        //TODO: Move this to probably to Robot.java 
+        if(xbox.getPOV() == 0){
+            
+            swerveSubsystem.autonavigator.navigateTo(Constants.Positions.STATION_LEFT);
         }
 
-        if(xbox.getPOV() == 0){
-        swerveSubsystem.autonavigator.navigateTo(Constants.Positions.STATION_LEFT);
-    }
-    if(xbox.getLeftTriggerAxis() >= 0.2 && xbox.getPOV() == 0){
-      swerveSubsystem.autonavigator.navigateTo(Constants.Positions.STATION_RIGHT);
-    }
+        if(xbox.getLeftTriggerAxis() >= 0.2 && xbox.getPOV() == 0){
+            swerveSubsystem.autonavigator.navigateTo(Constants.Positions.STATION_RIGHT);
+          }
     }
 
     @Override
