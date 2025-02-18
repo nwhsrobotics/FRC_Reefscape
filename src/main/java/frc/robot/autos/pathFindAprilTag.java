@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.AprilTags;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.VisionAprilTag;
 import frc.robot.subsystems.VisionSubsystem;
 
 
@@ -21,7 +22,8 @@ public class pathFindAprilTag extends Command {
   /** Creates a new pathFindAprilTag. */
   public pathFindAprilTag(int targetAprilTagId, SwerveSubsystem swerve, VisionSubsystem vision, String targetLocation) {
     Pose2d object = new Pose2d();
-    object = AprilTags.aprilTags.get(targetAprilTagId-1);
+    //object = AprilTags.aprilTags.get(targetAprilTagId-1);
+    object = VisionAprilTag.transformTargetLocation(swerve.getPose(), "limelight");
     this.swerve = swerve;
     this.targetAprilTagId = targetAprilTagId;
     this.vision = vision;
