@@ -33,23 +33,28 @@ public class ElevatorSubsystem extends SubsystemBase {
   // Create a new ElevatorFeedforward with gains kS, kG, kV, and kA
   ElevatorFeedforward feedforward = new ElevatorFeedforward(kS, kG, kV, kA);
 
+  Encoder absoluteEncoder = new Encoder(null, null);
+
   // Create ele(vator) motors
   private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
   private final SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
   // set up absolute encoders for elevator
-  public final CANcoder absoluteEncoderLeft = new CANcoder(CANAssignments.CLIMB_ABSOLUTE_ENCODER_LEFT_ID);
-  public final CANcoder absoluteEncoderRight = new CANcoder(CANAssignments.CLIMB_ABSOLUTE_ENCODER_RIGHT_ID);
+  //public final CANcoder absoluteEncoderLeft = new CANcoder(CANAssignments.CLIMB_ABSOLUTE_ENCODER_LEFT_ID);
+  //public final CANcoder absoluteEncoderRight = new CANcoder(CANAssignments.CLIMB_ABSOLUTE_ENCODER_RIGHT_ID);
+
   
   // set up relative encoders for elevator
   public RelativeEncoder relativeEncoderLeft = leftElevatorMotor.getEncoder();
   public RelativeEncoder relativeEncoderRight = rightElevatorMotor.getEncoder();
+
+  
 
   //PID controllers 
   public PIDController pidControllerLeft = new PIDController(0, 0, 0);
   public PIDController pidControllerRight = new PIDController(0, 0, 0);
 
   // setpoint
-  private double setPointRotations;
+  private double setPointRotations = 0.0;
 
   public double metersToRotations(double setpointNumMeters){
     return setpointNumMeters * ElevatorConstants.ELEVATOR_GEAR_RATIO;
@@ -82,8 +87,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    
     // This method will be called once per scheduler run
-    leftElevatorMotor.setVoltage(pidControllerLeft.calculate(relativeEncoderLeft.getPosition(), setPointRotations) + feedforward.calculate(0.0));
-    rightElevatorMotor.setVoltage(pidControllerRight.calculate(relativeEncoderRight.getPosition(), setPointRotations) + feedforward.calculate(0.0));
+    leftElevatorMotor.setVoltage(pidControllerLeft.calculate(absoluteEncoder.getDistance(), setPointRotations) + feedforward.calculate(0.0));
+    rightElevatorMotor.setVoltage(pidControllerRight.calculate(absoluteEncoder.getDistance(), setPointRotations) + feedforward.calculate(0.0));
   }
 }

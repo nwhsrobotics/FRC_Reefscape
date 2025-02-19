@@ -50,7 +50,7 @@ public class SysId extends SubsystemBase {
     sysMotorLeftConfig = new SparkMaxConfig();
     sysMotorLeftConfig.encoder.positionConversionFactor(SysIdConstants.SYSIDENCOCERROT2METER);
     sysMotorLeftConfig.encoder.velocityConversionFactor(SysIdConstants.SYSIDENCODERMETERPERSECONDS);
-    this.sysMotorLeft = new ImprovedCanSpark(79, ImprovedCanSpark.MotorKind.NEO, sysMotorLeftConfig, IdleMode.kBrake);
+    this.sysMotorLeft = new ImprovedCanSpark(41, ImprovedCanSpark.MotorKind.NEO, sysMotorLeftConfig, IdleMode.kBrake);
     sysMotorLeftEncoder = sysMotorLeft.getEncoder();
 
 
@@ -74,7 +74,7 @@ public class SysId extends SubsystemBase {
                 log.motor("sysid-left")
                     .voltage(
                         m_appliedVoltage.mut_replace(
-                            sysMotorLeft.get() * RobotController.getBatteryVoltage(), Volts))
+                            sysMotorLeft.getAppliedOutput() * RobotController.getBatteryVoltage(), Volts))
                     .linearPosition(m_distance.mut_replace(sysMotorLeftEncoder.getPosition(), Meters))
                     .linearVelocity(
                       //CHANGE THE UNITS OF VELOCITY USING THE SETVELOCITYCONVERSIONFACTOR
