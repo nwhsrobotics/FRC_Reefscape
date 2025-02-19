@@ -36,17 +36,17 @@ public class SwerveJoystickDefaultCmd extends Command {
             //while using Limelight, turn off field-relative driving.
             fieldRelative = false;
             swerveSubsystem.drive(
-                    VisionGamePiece.limelight_rangeZ_proportional(LimelightConstants.llObjectDetectionName),
+                    VisionGamePiece.limelight_rangeZ_proportional(LimelightConstants.llObjectDetectionNameForwards),
                     0,
-                    VisionGamePiece.limelight_aimX_proportional(LimelightConstants.llObjectDetectionName),
+                    VisionGamePiece.limelight_aimX_proportional(LimelightConstants.llObjectDetectionNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
 
         } else if (xbox.getRightBumperButton()) { //for april tag allign
             fieldRelative = false;
             swerveSubsystem.drive(
-                    VisionAprilTag.limelight_rangeZ_proportional(LimelightConstants.llLocalizationName),
+                    VisionAprilTag.limelight_rangeZ_proportional(LimelightConstants.llLocalizationNameForwards),
                     0,
-                    VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationName),
+                    VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
 
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if booster not pressed
