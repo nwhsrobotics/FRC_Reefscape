@@ -20,6 +20,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 
 
@@ -74,6 +75,10 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void loadStation_Preset(){
     setPointRotations = metersToRotations(0.0); //needs to be found 
   }
+
+  //Create limit switches
+  DigitalInput toplimitSwitch = new DigitalInput(0);
+  DigitalInput bottomlimitSwitch = new DigitalInput(0);
 
 
   public ElevatorSubsystem() {
