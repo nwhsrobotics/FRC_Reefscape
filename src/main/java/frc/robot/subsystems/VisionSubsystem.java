@@ -32,6 +32,7 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput("ll.horizontalDist", VisionGamePiece.horizontalOffestXDistance(limelightName));
         Logger.recordOutput("ll.3dHypotnuese", VisionGamePiece.full3DDistance(limelightName));
         Logger.recordOutput("ll.2dHypotnuese", VisionGamePiece.hypotenuseDistanceXandZ(limelightName));
+        Logger.recordOutput("ll.rot", VisionGamePiece.hypotenuseDistanceXandZ(limelightName));
         Logger.recordOutput("ll.detect", LimelightHelpers.getTY(limelightName));
         //1, 1, Rotation2d.fromDegrees(60)
         Logger.recordOutput("ll.target", VisionGamePiece.transformTargetLocation(new Pose2d(), limelightName).toString());
@@ -46,6 +47,7 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput("lla.straightLineDist", VisionAprilTag.straightLineZDistance(limelightName));
         Logger.recordOutput("lla.verticalDist", VisionAprilTag.verticalYOffsetDistance(limelightName));
         Logger.recordOutput("lla.horizontalDist", VisionAprilTag.horizontalOffsetXDistance(limelightName));
+        Logger.recordOutput("lla.rot", VisionAprilTag.limelight_aimX_proportional(limelightName));
         Logger.recordOutput("lla.3dHypotnuese", VisionAprilTag.hypotenuseDistanceXandZ(limelightName));
         Logger.recordOutput("lla.detect", LimelightHelpers.getTY(limelightName));
         //1, 1, Rotation2d.fromDegrees(60)

@@ -44,8 +44,8 @@ public class SwerveJoystickDefaultCmd extends Command {
         } else if (xbox.getRightBumperButton()) { //for april tag allign
             fieldRelative = false;
             swerveSubsystem.drive(
-                    VisionAprilTag.limelight_rangeZ_proportional(LimelightConstants.llLocalizationNameForwards),
-                    0,
+                VisionAprilTag.limelight_rangeZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
+                    VisionAprilTag.horizontalOffsetXAprilTag(LimelightConstants.llLocalizationNameForwards),
                     VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
 
@@ -72,24 +72,6 @@ public class SwerveJoystickDefaultCmd extends Command {
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         }
         //fancy equation probably would us to get rid of speed coefficients
-        swerveSubsystem.setDefaultCommand(
-        new RunCommand(
-            () -> swerveSubsystem.drive(
-                -MathUtil.applyDeadband(Math.copySign(Math.pow(xbox.getRawAxis(1), 3), xbox.getRawAxis(1) + (0.25 * xbox.getRawAxis(1))), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(Math.copySign(Math.pow(xbox.getRawAxis(0), 3), xbox.getRawAxis(0) + (0.25 * xbox.getRawAxis(0))), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(xbox.getRawAxis(4), OIConstants.kDriveDeadband),
-                true, true),
-                swerveSubsystem));
-        if (swerveSubsystem.autonavigator.isEnabled()) {
-            if (MathUtil.applyDeadband(xbox.getLeftX(), OIConstants.kDriveDeadband) != 0 || 
-                MathUtil.applyDeadband(xbox.getLeftY(), OIConstants.kDriveDeadband) != 0 || 
-                MathUtil.applyDeadband(xbox.getRightX(), OIConstants.kDriveDeadband) != 0 ||
-                MathUtil.applyDeadband(xbox.getRightY(), OIConstants.kDriveDeadband) != 0) {
-                swerveSubsystem.autonavigator.pauseNavigation();
-            } else {
-                swerveSubsystem.autonavigator.resumeNavigation();
-            }
-        }
     }
 
     @Override
