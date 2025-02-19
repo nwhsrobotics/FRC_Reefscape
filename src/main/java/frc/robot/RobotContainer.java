@@ -18,21 +18,19 @@ import frc.robot.commands.L3CMD;
 import frc.robot.commands.L4CMD;
 import frc.robot.commands.LoadStation;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
-import frc.robot.commands.SysIDCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeOuttake;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Buttons;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 
     //private final ClimbSubsystem climbSubsystem = new ClimbSubsystem(); 
 
-    private final IntakeOuttake intakeoutake = new IntakeOuttake();
+    //private final IntakeOuttake intakeoutake = new IntakeOuttake();
 
     //private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
@@ -75,13 +73,6 @@ public class RobotContainer {
 
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::zeroGyro, swerveSubsystem));
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
-        new JoystickButton(gunner, Buttons.X).onTrue(sysIdSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
-        new JoystickButton(gunner, Buttons.Y).onTrue(sysIdSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-        new JoystickButton(gunner, Buttons.A).onTrue(sysIdSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-        new JoystickButton(gunner, Buttons.B).onTrue(sysIdSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-
-
-
 
         // NEED TO ADD THE FAST/SLOW MODE TOGGLE (see controller diagram)
         // NEED TO ADD THE STATION 1/2 TOGGLE THING (see controller diagram)
@@ -95,7 +86,7 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         swerveSubsystem.setDefaultCommand(new SwerveJoystickDefaultCmd(swerveSubsystem, driver));
-        intakeoutake.setDefaultCommand(new IntakeOuttakeCommand(intakeoutake, gunner));
+        //intakeoutake.setDefaultCommand(new IntakeOuttakeCommand(intakeoutake, gunner));
     }
 
     public Command getAutonomousCommand() {

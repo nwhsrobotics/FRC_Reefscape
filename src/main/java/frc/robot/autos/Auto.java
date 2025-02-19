@@ -55,65 +55,68 @@ public class Auto extends SequentialCommandGroup {
      */
     public SequentialCommandGroup scoreCoral() {
         SequentialCommandGroup exitReturnCommands = new SequentialCommandGroup();
-        LimelightResults llr = VisionAprilTag.isValid("limelight");
-        if (llr != null){
-            double id = llr.targets_Fiducials[0].fiducialID;
-        }
-        for (int i = 0; i < coralLimit; i++) {  //amount of notes to get + 1 preloaded
-            if (swerve.getPose().getY() > 7){
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] [1A]").onlyWhile(() -> !VisionAprilTag.isValid("limelight").targets_Fiducials[0].fiducialID == blueAllianceIds.get("[1A]")));
-            }
-
-            if (swerve.getPose().getY() > 7){
-                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(""));
-            }
-            exitReturnCommands.addCommands(
-                    //currently only using 1 limelight
-                    // Set the limelight pipeline index to 1 for vision processing.
-                    new InstantCommand(() -> LimelightHelpers.setPipelineIndex(LimelightConstants.llObjectDetectionName, 1)),
-
-                    //Starting from position A
-                    swerve.pathFindThenFollowPath("[A] [6A]").onlyWhile(()-> (swerve.getPose().getY() > 7.00) && (swerve.getPose().getY() < 7.50)),
-                    //Starting from position B
-                    swerve.pathFindThenFollowPath("[B] [1A]").onlyWhile(()-> (swerve.getPose().getY() > 5.90) && (swerve.getPose().getY() < 6.50)),
-                    //Starting from position C
-                    swerve.pathFindThenFollowPath("[C] [2A]").onlyWhile(()-> (swerve.getPose().getY() > 4.80) && (swerve.getPose().getY() < 5.40)),
-                    
-                    swerve.pathfindToPosition("").onlyWhile(() -> !LimelightHelpers.getTV(LimelightConstants.llObjectDetectionName),
-                    
-
-
-
-          
-                    // Navigate the robot to the closest location without considering vision targeting.
-                    swerve.pathfindToPosition(getClosestLocation()).onlyWhile(() -> !LimelightHelpers.getTV(LimelightConstants.llObjectDetectionName)),
-                    // Navigate the robot to a specific location based on vision targeting.
-                    swerve.pathfindToPosition(VisionGamePiece.visionTargetLocation),
-                    //new PathFindVision(swerve, score, possibleLocations, getClosestLocation()),
-                    //or command.repeatedly also works for single command
-                    //Commands.repeatingSequence(new PathFindVision(swerve, score, possibleLocations, getClosestLocation()).until(() -> score.isNoteInside())),
-                    // Set the limelight pipeline index back to 0 for april tag localization.
-                    //note inside logic doesn't work currently but no current spike implementation done
-                    new InstantCommand(() -> LimelightHelpers.setPipelineIndex(LimelightConstants.llObjectDetectionName, 0)),
-                    // Navigate the robot to the initial position to shoot.
-                    swerve.pathfindToPosition(initialPos),
-                    //swerve.pathfindToPosition(getClosestLocation()).onlyWhile(() -> !(LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llObjectDetectionName).rawFiducials[0].id == 7)),
-                    // Remove the closest location from the list of possible locations.
-                    new InstantCommand(() -> possibleLocations.remove(getClosestLocation()))
-                    // Execute the shooting command.
-                    //NamedCommands.getCommand("shoot")
-                    //new AutoScoringCommand(score, ScoringState.FIRE, ScoringState.IDLE)
+            //Checks if robot is at position A
+            if (swerve.getPose().getY() > 7 && swerve.getPose().getY() < 7.50) {
+                //Starts from position A and then goes to first position in list 
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] " + locationsToGo.get(0)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
+                //once the april tag is detected, pathFindAprilTag comes in and adjusts the robot to the april tag
+                exitReturnCommands.addCommands(new pathFindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
                 
-            );
+                for (int i = 0; i < locationsToGo.size()-1; i++) {
+                    //Iterates through each position in the list to station 1
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(()-> !visionBackwards.isDetectingTargetID("[S1]")));
+                    exitReturnCommands.addCommands(new pathFindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
+                    //Move robot from station 1 to next station
+                    int finalI = i;
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] " + locationsToGo.get(i+1)).onlyWhile(()-> !visionForwards.isDetectingTargetID(locationsToGo.get(finalI +1))));
+                    exitReturnCommands.addCommands(new pathFindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(i+1)), swerve, visionForwards, locationsToGo.get(i+1)));
+                }
+
+            }
+            //Checks if robot is at position B
+            if (swerve.getPose().getY() > 5.90 && swerve.getPose().getY() < 6.50) {
+                //Starts from position B and then goes to first position in list
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[B] " + locationsToGo.get(0)).onlyWhile(()-> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
+                exitReturnCommands.addCommands(new pathFindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
+
+                for (int i = 0; i < locationsToGo.size()-1; i++) {
+                    //Iterates through each position in the list to station 1
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(()-> !visionBackwards.isDetectingTargetID("[S1]")));
+                    exitReturnCommands.addCommands(new pathFindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
+
+                    //Move robot from station 1 to next station
+                    int finalI = i;
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] " + locationsToGo.get(i+1)).onlyWhile(()-> !visionForwards.isDetectingTargetID(locationsToGo.get(finalI +1))));
+                    exitReturnCommands.addCommands(new pathFindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(i+1)), swerve, visionForwards, locationsToGo.get(i+1)));
+
+                }
+                
+            }
+
+            //Checks if robot is at position C
+            if (swerve.getPose().getY() > 4.80 && swerve.getPose().getY() < 5.40) {
+                //Starts from position C and then goes to first position in list
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[C] " + locationsToGo.get(0)).onlyWhile(()-> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
+                exitReturnCommands.addCommands(new pathFindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
+
+                for (int i = 0; i < locationsToGo.size()-1; i++) {
+                    //Iterates through each position in the list to station 2
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S2]").onlyWhile(()-> !visionBackwards.isDetectingTargetID("[S2]")));
+                    exitReturnCommands.addCommands(new pathFindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
+
+                    //Move robot from station 2 to next station
+                    int finalI = i;
+                    exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S2] " + locationsToGo.get(i+1)).onlyWhile(()-> !visionForwards.isDetectingTargetID(locationsToGo.get(finalI +1))));
+                    exitReturnCommands.addCommands(new pathFindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(i+1)), swerve, visionForwards, locationsToGo.get(i+1)));
+
+                }
+                
+            ;
         }
-            */
         exitReturnCommands.addCommands();
 
         return exitReturnCommands;
-        
     }
-
-
 
 
     /**
