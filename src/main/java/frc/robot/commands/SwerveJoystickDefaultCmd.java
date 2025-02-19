@@ -45,9 +45,9 @@ public class SwerveJoystickDefaultCmd extends Command {
         } else if (xbox.getRightBumperButton()) { //for april tag allign
             fieldRelative = false;
             swerveSubsystem.drive(
-                VisionAprilTag.limelight_rangeZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
-                    VisionAprilTag.horizontalOffsetXAprilTag(LimelightConstants.llLocalizationNameForwards),
-                    VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
+                0*VisionAprilTag.limelight_rangeZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
+                    0*VisionAprilTag.horizontalOffsetXAprilTag(LimelightConstants.llLocalizationNameForwards),
+                    0*VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
 
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if booster not pressed
@@ -81,18 +81,23 @@ public class SwerveJoystickDefaultCmd extends Command {
                 -MathUtil.applyDeadband(Driver1.getRawAxis(4), OIConstants.kDriveDeadband),
                 true, true),
                 swerveSubsystem)); */
-
-
-
-        //TODO: Move this to probably to Robot.java 
-        if(xbox.getPOV() == 0){
-            
-            swerveSubsystem.autonavigator.navigateTo(Constants.Positions.STATION_LEFT);
+        if (swerveSubsystem.autonavigator.isEnabled()) {
+            if (MathUtil.applyDeadband(xbox.getLeftX(), OIConstants.kDriveDeadband) != 0 || 
+                MathUtil.applyDeadband(xbox.getLeftY(), OIConstants.kDriveDeadband) != 0 || 
+                MathUtil.applyDeadband(xbox.getRightX(), OIConstants.kDriveDeadband) != 0 ||
+                MathUtil.applyDeadband(xbox.getRightY(), OIConstants.kDriveDeadband) != 0) {
+                swerveSubsystem.autonavigator.pauseNavigation();
+            } else {
+                swerveSubsystem.autonavigator.resumeNavigation();
+            }
         }
 
-        if(xbox.getLeftTriggerAxis() >= 0.2 && xbox.getPOV() == 0){
-            swerveSubsystem.autonavigator.navigateTo(Constants.Positions.STATION_RIGHT);
-          }
+        if(xbox.getPOV() == 0){
+        swerveSubsystem.autonavigator.navigateTo(Constants.Positions.STATION_LEFT);
+    }
+    if(xbox.getLeftTriggerAxis() >= 0.2 && xbox.getPOV() == 0){
+      swerveSubsystem.autonavigator.navigateTo(Constants.Positions.STATION_RIGHT);
+    }
     }
 
     @Override
