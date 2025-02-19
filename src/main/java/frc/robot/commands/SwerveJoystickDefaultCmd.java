@@ -4,10 +4,9 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.Positions;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionAprilTag;
 import frc.robot.subsystems.VisionGamePiece;
@@ -45,9 +44,9 @@ public class SwerveJoystickDefaultCmd extends Command {
         } else if (xbox.getRightBumperButton()) { //for april tag allign
             fieldRelative = false;
             swerveSubsystem.drive(
-                0*VisionAprilTag.limelight_rangeZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
-                    0*VisionAprilTag.horizontalOffsetXAprilTag(LimelightConstants.llLocalizationNameForwards),
-                    0*VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
+                    VisionAprilTag.limelight_rangeZ_proportional(LimelightConstants.llLocalizationNameForwards),
+                    0,
+                    VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
 
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if booster not pressed
@@ -73,14 +72,14 @@ public class SwerveJoystickDefaultCmd extends Command {
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         }
         //fancy equation probably would us to get rid of speed coefficients
-        /*swerveSubsystem.setDefaultCommand(
+        swerveSubsystem.setDefaultCommand(
         new RunCommand(
             () -> swerveSubsystem.drive(
-                -MathUtil.applyDeadband(Math.copySign(Math.pow(Driver1.getRawAxis(1), 2), Driver1.getRawAxis(1)), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(Math.copySign(Math.pow(Driver1.getRawAxis(0), 2), Driver1.getRawAxis(0)), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(Driver1.getRawAxis(4), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(Math.copySign(Math.pow(xbox.getRawAxis(1), 3), xbox.getRawAxis(1) + (0.25 * xbox.getRawAxis(1))), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(Math.copySign(Math.pow(xbox.getRawAxis(0), 3), xbox.getRawAxis(0) + (0.25 * xbox.getRawAxis(0))), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(xbox.getRawAxis(4), OIConstants.kDriveDeadband),
                 true, true),
-                swerveSubsystem)); */
+                swerveSubsystem));
         if (swerveSubsystem.autonavigator.isEnabled()) {
             if (MathUtil.applyDeadband(xbox.getLeftX(), OIConstants.kDriveDeadband) != 0 || 
                 MathUtil.applyDeadband(xbox.getLeftY(), OIConstants.kDriveDeadband) != 0 || 
@@ -91,13 +90,6 @@ public class SwerveJoystickDefaultCmd extends Command {
                 swerveSubsystem.autonavigator.resumeNavigation();
             }
         }
-
-        if(xbox.getPOV() == 0){
-        swerveSubsystem.autonavigator.navigateTo(Constants.Positions.STATION_LEFT);
-    }
-    if(xbox.getLeftTriggerAxis() >= 0.2 && xbox.getPOV() == 0){
-      swerveSubsystem.autonavigator.navigateTo(Constants.Positions.STATION_RIGHT);
-    }
     }
 
     @Override
