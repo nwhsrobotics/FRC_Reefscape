@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.Positions;
 import frc.robot.commands.IntakeOuttakeCommand;
 import frc.robot.commands.L1CMD;
@@ -22,6 +23,7 @@ import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeOuttake;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.SysId;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Buttons;
 
@@ -35,6 +37,8 @@ public class RobotContainer {
     //private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
     private final VisionSubsystem limeLightForwards = new VisionSubsystem("limelight");
+
+    public final SysId sysIdSubsystem = new SysId();
     //private final VisionSubsystem limeLightBackwards = new VisionSubsystem("limelight2");
 
     
@@ -76,11 +80,19 @@ public class RobotContainer {
 
         // NEED TO ADD THE FAST/SLOW MODE TOGGLE (see controller diagram)
         // NEED TO ADD THE STATION 1/2 TOGGLE THING (see controller diagram)
+        /*
         new JoystickButton(driver, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(swerveSubsystem.autonavigator::toggle, swerveSubsystem));
         new JoystickButton(driver, Buttons.X).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_LEFT_REEF), swerveSubsystem));
         new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_MID_REEF), swerveSubsystem));
         new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_MID_REEF), swerveSubsystem));
         new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF), swerveSubsystem));
+        */
+        new JoystickButton(gunner, Buttons.X).onTrue(sysIdSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        new JoystickButton(gunner, Buttons.Y).onTrue(sysIdSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        new JoystickButton(gunner, Buttons.A).onTrue(sysIdSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        new JoystickButton(gunner, Buttons.B).onTrue(sysIdSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+
+
         new JoystickButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_RIGHT_REEF), swerveSubsystem));
         new JoystickButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_LEFT_REEF), swerveSubsystem));
         SmartDashboard.putData("Auto Chooser", autoChooser);
