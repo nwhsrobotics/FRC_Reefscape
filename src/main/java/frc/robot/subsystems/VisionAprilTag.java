@@ -53,12 +53,13 @@ public class VisionAprilTag {
      * Adjusts output based on the horizontal alignment error.
      *
      * @return The angular velocity proportional to the horizontal angle error.
+     * TODO: Bug fix
      */
     public static double limelight_aimX_proportional(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
             double kP = 0.035;
-            double horizontalError = llr.targets_Fiducials[0].getTargetPose_RobotSpace2D().getRotation().getDegrees();
+            double horizontalError = LimelightHelpers.getTX(limelightName);
             return -kP * horizontalError;
         }
         return 0.0;
@@ -77,7 +78,7 @@ public class VisionAprilTag {
     public static double limelight_rangeZ_proportional(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
-            return straightLineZDistance(limelightName) * 0.345;
+            return straightLineZDistance(limelightName) * 0.278;
         }
         return 0.0;
     }
@@ -85,7 +86,7 @@ public class VisionAprilTag {
     public static double limelight_rangeZ_aprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
-            return -straightLineZAprilTag(limelightName) * 0.345;
+            return -straightLineZAprilTag(limelightName) * 0.278;
         }
         return 0.0;
     }
@@ -149,7 +150,7 @@ public class VisionAprilTag {
     public static double horizontalOffsetXDistance(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
-            return llr.targets_Fiducials[0].getTargetPose_RobotSpace().getTranslation().getX();
+            return llr.targets_Fiducials[0].getTargetPose_RobotSpace().getTranslation().getX() * 0.278;
         }
         return 0.0;
     }
@@ -157,7 +158,7 @@ public class VisionAprilTag {
     public static double horizontalOffsetXAprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
-            return llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getX() * 0.145;
+            return llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getX() * 0.278;
         }
         return 0.0;
     }
