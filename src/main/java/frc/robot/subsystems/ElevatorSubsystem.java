@@ -3,24 +3,19 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.util.ImprovedCanSpark;
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+
 
 
 
@@ -57,6 +52,18 @@ public class ElevatorSubsystem extends SubsystemBase {
   // setpoint
   private double setPointRotations = 0.0;
 
+  //Current Elevator Level
+  int currentElevatorLevel = 1;
+
+  //Evevator presets (prob should go to constants)
+  //TODO: CHECK TO SEE IF THESE ARE CORRECT 
+  double loadStationPreset = 0.0;
+  double L1Preset = 0.224 ; 
+  double L2Preset = 0.7973;
+  double L3Preset = 1.1973;
+  double L4Preset = 1.8173; 
+ 
+  
   public double metersToRotations(double setpointNumMeters){
     return setpointNumMeters * ElevatorConstants.ELEVATOR_GEAR_RATIO;
 
@@ -65,25 +72,61 @@ public class ElevatorSubsystem extends SubsystemBase {
   // create L(#) preset methods
 
   //Drive bace in 3.8cm off the ground  
+  public void loadStation_Preset(){
+    setPointRotations = metersToRotations(loadStationPreset); //needs to be found 
+  }
   public void L1_Preset() {
-    setPointRotations = metersToRotations(0.0); // 46cm >> 42.2cm >> 0.224m
+    setPointRotations = metersToRotations(L1Preset); // 46cm >> 42.2cm >> 0.224m
   }
   public void L2_Preset() {
-    setPointRotations = metersToRotations(0.7973);   // 81cm >> 77.2cm  >> 0.772m  
+    setPointRotations = metersToRotations(L2Preset);   // 81cm >> 77.2cm  >> 0.772m  
   }
   public void L3_Preset() {
-    setPointRotations = metersToRotations(1.1973);  //121cm  >> 117.2cm  >>  1.172m
+    setPointRotations = metersToRotations(L3Preset);  //121cm  >> 117.2cm  >>  1.172m
   }
   public void L4_Preset() {
-    setPointRotations = metersToRotations(1.8173);  //183cm >>  179.3cm  >>   1.793m 
+    setPointRotations = metersToRotations(L4Preset);  //183cm >>  179.3cm  >>   1.793m 
   }
-  public void loadStation_Preset(){
-    setPointRotations = metersToRotations(0.0); //needs to be found 
+  
+
+  //Seting elevator heights 
+  public void increaseCurrentLevel(){
+    if(currentElevatorLevel>=5){
+      System.err.println("LEVEL IS CURRENTLY 5 AND CAN NOT GO DOWN ANYMORE!");
+    }else{
+      currentElevatorLevel++; 
+      updatesetPointRotations();
+    }
   }
+
 
   //Create limit switches
   DigitalInput toplimitSwitch = new DigitalInput(0);
   DigitalInput bottomlimitSwitch = new DigitalInput(0);
+
+  public void decreaseCurrentLevel(){
+    if(currentElevatorLevel<=1){
+      System.err.println("LEVEL IS CURRENTLY 1 AND CAN NOT GO DOWN ANYMORE!");
+    }else{
+      currentElevatorLevel--; 
+      updatesetPointRotations();
+    }
+  }
+
+  private void updatesetPointRotations(){
+    if(currentElevatorLevel == 1){
+      loadStation_Preset();
+    }else if(currentElevatorLevel == 2){
+      L1_Preset();
+    }else if(currentElevatorLevel == 3){
+      L2_Preset();
+    }else if(currentElevatorLevel == 4){
+      L3_Preset();
+    }else if(currentElevatorLevel == 5){
+      L4_Preset(); 
+    }
+  }
+
 
 
   public ElevatorSubsystem() {

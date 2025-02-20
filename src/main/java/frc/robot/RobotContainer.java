@@ -34,7 +34,7 @@ public class RobotContainer {
 
     //private final IntakeOuttake intakeoutake = new IntakeOuttake();
 
-    //private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
     private final VisionSubsystem limeLightForwards = new VisionSubsystem("limelight");
 
@@ -52,7 +52,7 @@ public class RobotContainer {
 
         ParallelCommandGroup autoInit = new ParallelCommandGroup(); // new ParallelCommandGroup((new InstantCommand(() -> wristSubsystem.ampPreset(), wristSubsystem), (new InstantCommand(() -> armSubsystem.underStage(), armSubsystem));
 
-        /*Command L4CMD = new L4CMD(elevatorSubsystem, gunner);
+        Command L4CMD = new L4CMD(elevatorSubsystem, gunner);
         Command L3CMD = new L3CMD(elevatorSubsystem, gunner);
         Command L2CMD = new L2CMD(elevatorSubsystem, gunner);
         Command L1CMD = new L1CMD(elevatorSubsystem, gunner);
@@ -64,20 +64,22 @@ public class RobotContainer {
         NamedCommands.registerCommand("L3CORAL",L3CMD);
         NamedCommands.registerCommand("L2CORAL",L2CMD);
         NamedCommands.registerCommand("L1CORAL",L1CMD);
-        NamedCommands.registerCommand("LoadStation",LoadStation);*/
-
+        NamedCommands.registerCommand("LoadStation",LoadStation);
 
 
         //INIT after registering named commands
         NamedCommands.registerCommand("Intake", new InstantCommand());
         NamedCommands.registerCommand("Outtake", new InstantCommand());
-        NamedCommands.registerCommand("L4", new InstantCommand());
-        autoChooser = AutoBuilder.buildAutoChooser();
+        NamedCommands.registerCommand("MoveElevator", new InstantCommand());
+        autoChooser = AutoBuilder.buildAutoChooser(); 
 
-
+        //Gunner controlls 
+        new JoystickButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
+        
+        //Driver controlls 
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::zeroGyro, swerveSubsystem));
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
-
         // NEED TO ADD THE FAST/SLOW MODE TOGGLE (see controller diagram)
         // NEED TO ADD THE STATION 1/2 TOGGLE THING (see controller diagram)
         /*
