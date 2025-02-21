@@ -72,6 +72,10 @@ public class SwerveJoystickDefaultCmd extends Command {
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         }
         //fancy equation probably would us to get rid of speed coefficients
+      
+                
+
+
     }
 
     @Override
