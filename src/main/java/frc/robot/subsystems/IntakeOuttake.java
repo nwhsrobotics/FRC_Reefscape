@@ -5,26 +5,43 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import com.ctre.phoenix6.ISerializable;
+
 import edu.wpi.first.wpilibj.Servo;
 
 public class IntakeOuttake extends SubsystemBase {
   private Servo servoMoter; //Initiative variable for Servo object
-  /** Creates a new IntakeOuttake. */
+  private boolean isIntakeOpen; 
+  
+
+
   public IntakeOuttake() {
     servoMoter = new Servo(0); // Initialize servo on PWM port 0
-    
+    isIntakeOpen = false; 
   }
   /** Opens the outake mechanism toa present position */
 
   public void outtakeOpen() {
-    servoMoter.set(0.5);
-    System.out.println("Outtakeopen"); // Mid-point or fully open
+    if(!isIntakeOpen){
+      isIntakeOpen = true;
+      servoMoter.set(0.5);
+      System.out.println("Outtakeopen"); //open 90 dagrees 
+    }else{
+      System.out.println("Outtake already open you idiot!");
+    }
+    
   }
   /** CLoses the outtake mechanism to a present position */
-
   public void outtakeClose() {
-    servoMoter.set(0.0);
-    System.out.println("Outtakeopen");  // Fully closed
+    if(isIntakeOpen){
+      isIntakeOpen = false;
+      servoMoter.set(0.0);
+      System.out.println("Outtakeclosed");
+    }else{
+      System.out.println("Outtake already closed");
+    }
+      
   }
  
 

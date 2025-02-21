@@ -1,6 +1,6 @@
 {
-  "robotWidth": 0.813,
-  "robotLength": 0.813,
+  "robotWidth": 0.737,
+  "robotLength": 0.737,
   "holonomicMode": true,
   "pathFolders": [
     "New Folder"
@@ -14,11 +14,11 @@
   "robotMass": 74.07,
   "robotMOI": 6.883,
   "robotTrackwidth": 0.546,
-  "driveWheelRadius": 0.048,
-  "driveGearing": 5.143,
+  "driveWheelRadius": 0.051,
+  "driveGearing": 5.145,
   "maxDriveSpeed": 5.45,
   "driveMotorType": "vortex",
-  "driveCurrentLimit": 60.0,
+  "driveCurrentLimit": 80.0,
   "wheelCOF": 1.2,
   "flModuleX": 0.242,
   "flModuleY": 0.242,
