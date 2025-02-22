@@ -150,7 +150,7 @@ public class VisionAprilTag {
     public static double horizontalOffsetXDistance(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
-            return llr.targets_Fiducials[0].getTargetPose_RobotSpace().getTranslation().getX() * 0.278;
+            return llr.targets_Fiducials[0].getTargetPose_RobotSpace().getTranslation().getX();
         }
         return 0.0;
     }
@@ -158,7 +158,7 @@ public class VisionAprilTag {
     public static double horizontalOffsetXAprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
-            return llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getX() * 0.278;
+            return llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getX();
         }
         return 0.0;
     }
