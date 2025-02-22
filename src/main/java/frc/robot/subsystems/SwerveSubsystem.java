@@ -434,14 +434,14 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
-        /*if (VisionGamePiece.isAprilTagPipeline("limelight")) {
+        /*if (VisionGamePiece.isAprilTagPipeline(Constants.LimelightConstants.llLocalizationNameForwards)) {
 
             boolean useMegaTag2 = true; //set to false to use MegaTag1
             // we might use megatag1 when disabled to auto orient and megatag2 when enable
             // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78 
             boolean doRejectUpdate = false;
             if (!useMegaTag2) {
-                LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+                LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.LimelightConstants.llLocalizationNameForwards);
 
                 if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
                     if (mt1.rawFiducials[0].ambiguity > .7) {
@@ -462,8 +462,8 @@ public class SwerveSubsystem extends SubsystemBase {
                             mt1.timestampSeconds);
                 }
             } else if (useMegaTag2) {
-                LimelightHelpers.SetRobotOrientation("limelight", odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-                LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+                LimelightHelpers.SetRobotOrientation(Constants.LimelightConstants.llLocalizationNameForwards, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+                LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(Constants.LimelightConstants.llLocalizationNameForwards);
                 if (Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
                 {
                     doRejectUpdate = true;
