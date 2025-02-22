@@ -36,10 +36,10 @@ public class RobotContainer {
 
     private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
-    private final VisionSubsystem limeLightForwards = new VisionSubsystem("limelight");
+    private final VisionSubsystem limeLightForwards = new VisionSubsystem(Constants.LimelightConstants.llLocalizationNameForwards);
 
     public final SysId sysIdSubsystem = new SysId();
-    //private final VisionSubsystem limeLightBackwards = new VisionSubsystem("limelight2");
+    //private final VisionSubsystem limeLightBackwards = new VisionSubsystem(Constants.LimelightConstants.llLocalizationNameBackwards);
 
     
 

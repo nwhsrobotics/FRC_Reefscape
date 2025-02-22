@@ -27,7 +27,7 @@ public class VisionSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run\
-        Logger.recordOutput("ll.straightLineDist", VisionGamePiece.straightLineZDistance(limelightName));
+        /*Logger.recordOutput("ll.straightLineDist", VisionGamePiece.straightLineZDistance(limelightName));
         Logger.recordOutput("ll.verticalDist", VisionGamePiece.verticalYOffsetDistance(limelightName));
         Logger.recordOutput("ll.horizontalDist", VisionGamePiece.horizontalOffestXDistance(limelightName));
         Logger.recordOutput("ll.3dHypotnuese", VisionGamePiece.full3DDistance(limelightName));
@@ -76,8 +76,25 @@ public class VisionSubsystem extends SubsystemBase {
         //Logger.recordOutput(llname + ".pipelineName", Vision.getPipelineName(llname));
         //Logger.recordOutput(llname + ".objectDetected", LimelightHelpers.getTV(llname));
 
-        VisionGamePiece.stabilize(limelightName);
+        //VisionGamePiece.stabilize(limelightName);
     }
+
+    public String getLimelightName(){
+        return limelightName;
+    }
+
+    public void right(){
+        LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.3, 0);
+    }
+
+    public void left(){
+        LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.3, 0);
+    }
+
+    public void center(){
+        LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0, 0);
+    }
+
 
     //This method takes in blue alliance april tags and checks if it is the coral station
     public boolean isBlueAllianceCoralStation(int id) {
