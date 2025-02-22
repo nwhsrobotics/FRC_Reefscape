@@ -103,6 +103,8 @@ public class RobotContainer {
         new JoystickButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_LEFT_REEF), swerveSubsystem));
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
+        
+
         swerveSubsystem.setDefaultCommand(new SwerveJoystickDefaultCmd(swerveSubsystem, driver));
         //intakeoutake.setDefaultCommand(new IntakeOuttakeCommand(intakeoutake, gunner));
     }
