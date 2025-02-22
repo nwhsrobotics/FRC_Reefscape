@@ -32,7 +32,7 @@ public class RobotContainer {
 
     //private final ClimbSubsystem climbSubsystem = new ClimbSubsystem(); 
 
-    //private final IntakeOuttake intakeoutake = new IntakeOuttake();
+    private final IntakeOuttake intakeoutake = new IntakeOuttake();
 
     //private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
@@ -75,8 +75,11 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser(); 
 
         //Gunner controlls 
-        //new JoystickButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
-        //new JoystickButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
+
+        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
+        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake));
         
         //Driver controlls 
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::zeroGyro, swerveSubsystem));

@@ -92,7 +92,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   //Seting elevator heights 
   public void increaseCurrentLevel(){
     if(currentElevatorLevel>=5){
-      System.err.println("LEVEL IS CURRENTLY 5 AND CAN NOT GO DOWN ANYMORE!");
+      System.out.println("LEVEL IS CURRENTLY 5 AND CAN NOT GO DOWN ANYMORE!");
     }else{
       currentElevatorLevel++; 
       updatesetPointRotations();
@@ -106,7 +106,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public void decreaseCurrentLevel(){
     if(currentElevatorLevel<=1){
-      System.err.println("LEVEL IS CURRENTLY 1 AND CAN NOT GO DOWN ANYMORE!");
+      System.out.println("LEVEL IS CURRENTLY 1 AND CAN NOT GO DOWN ANYMORE!");
     }else{
       currentElevatorLevel--; 
       updatesetPointRotations();
@@ -125,7 +125,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }else if(currentElevatorLevel == 5){
       L4_Preset(); 
     }
-  }
+  } 
 
 
 
