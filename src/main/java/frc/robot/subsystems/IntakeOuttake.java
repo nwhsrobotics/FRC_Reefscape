@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix6.ISerializable;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IntakeOuttake extends SubsystemBase {
   private Servo servoMoter; //Initiative variable for Servo object
@@ -19,16 +20,17 @@ public class IntakeOuttake extends SubsystemBase {
   public IntakeOuttake() {
     servoMoter = new Servo(0); // Initialize servo on PWM port 0
     isIntakeOpen = false; 
+    SmartDashboard.putBoolean("Is Intake Open", isIntakeOpen);
   }
   /** Opens the outake mechanism toa present position */
 
   public void outtakeOpen() {
     if(!isIntakeOpen){
       isIntakeOpen = true;
-      servoMoter.set(0.5);
+      servoMoter.set(0.3);
       System.out.println("Outtakeopen"); //open 90 dagrees 
     }else{
-      System.out.println("Outtake already open you idiot!");
+      System.out.println("Outtake already open");
     }
     
   }
