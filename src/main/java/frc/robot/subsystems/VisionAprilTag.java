@@ -49,13 +49,18 @@ public class VisionAprilTag {
 
 
     /**
-     * Implements simple proportional turning control with the Limelight.
-     * Adjusts output based on the horizontal alignment error.
-     *
-     * @return The angular velocity proportional to the horizontal angle error.
-     * TODO: Bug fix
+     * Distance times Magic number = Speed.
+     * <p>
+     * Magic number is the fine tuned speed limiter value
+     * <p>
+     * Imagine if distance is 8 meters, if we don't multiply by 
+     * magic number (speed limiter) it will output 8 meters/second!
+     * <p>
+     * If distance is 8, and magic number is 0.25,
+     * the output speed value will be a reasonable 2 meters/second
+     * @return The speed
      */
-    public static double limelight_aimX_proportional(String limelightName) {
+    public static double limelight_aimSpeedX_proportional(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
             double kP = 0.035;
@@ -65,7 +70,19 @@ public class VisionAprilTag {
         return 0.0;
     }
     
-    public static double limelight_aimX_aprilTag(String limelightName) {
+    /**
+     * Distance times Magic number = Speed.
+     * <p>
+     * Magic number is the fine tuned speed limiter value
+     * <p>
+     * Imagine if distance is 8 meters, if we don't multiply by 
+     * magic number (speed limiter) it will output 8 meters/second!
+     * <p>
+     * If distance is 8, and magic number is 0.25,
+     * the output speed value will be reasonable 2 meters/second
+     * @return The speed
+     */
+    public static double limelight_aimSpeedX_aprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
             double kP = 0.035;
@@ -75,18 +92,82 @@ public class VisionAprilTag {
         return 0.0;
     }
     
-    public static double limelight_rangeZ_proportional(String limelightName) {
+    /**
+     * Distance times Magic number = Speed.
+     * <p>
+     * Magic number is the fine tuned speed limiter value
+     * <p>
+     * Imagine if distance is 8 meters, if we don't multiply by 
+     * magic number (speed limiter) it will output 8 meters/second!
+     * <p>
+     * If distance is 8, and magic number is 0.25,
+     * the output speed value will be reasonable 2 meters/second
+     * @return The speed
+     */
+    public static double limelight_rangeSpeedZ_proportional(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
             return straightLineZDistance(limelightName) * 0.278;
         }
         return 0.0;
     }
-    
-    public static double limelight_rangeZ_aprilTag(String limelightName) {
+
+    /**
+     * Distance times Magic number = Speed.
+     * <p>
+     * Magic number is the fine tuned speed limiter value
+     * <p>
+     * Imagine if distance is 8 meters, if we don't multiply by 
+     * magic number (speed limiter) it will output 8 meters/second!
+     * <p>
+     * If distance is 8, and magic number is 0.25,
+     * the output speed value will be reasonable 2 meters/second
+     * @return The speed
+     */
+    public static double limelight_rangeSpeedZ_aprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
             return -straightLineZAprilTag(limelightName) * 0.278;
+        }
+        return 0.0;
+    }
+
+    /**
+     * Distance times Magic number = Speed.
+     * <p>
+     * Magic number is the fine tuned speed limiter value
+     * <p>
+     * Imagine if distance is 8 meters, if we don't multiply by 
+     * magic number (speed limiter) it will output 8 meters/second!
+     * <p>
+     * If distance is 8, and magic number is 0.25,
+     * the output speed value will be reasonable 2 meters/second
+     * @return The speed
+     */
+    public static double horizontalOffsetSpeedX(String limelightName) {
+        LimelightResults llr = isValid(limelightName);
+        if (llr != null) {
+            return horizontalOffsetXDistance(limelightName) * 0.278;
+        }
+        return 0.0;
+    }
+    
+    /**
+     * Distance times Magic number = Speed.
+     * <p>
+     * Magic number is the fine tuned speed limiter value
+     * <p>
+     * Imagine if distance is 8 meters, if we don't multiply by 
+     * magic number (speed limiter) it will output 8 meters/second!
+     * <p>
+     * If distance is 8, and magic number is 0.25,
+     * the output speed value will be reasonable 2 meters/second
+     * @return The speed
+     */
+    public static double horizontalOffsetSpeedXAprilTag(String limelightName) {
+        LimelightResults llr = isValid(limelightName);
+        if (llr != null) {
+            return horizontalOffsetXAprilTag(limelightName) * 0.278;
         }
         return 0.0;
     }
@@ -272,5 +353,18 @@ public class VisionAprilTag {
      */
     private static boolean isAprilTagPipeline(String limelightName) {
         return LimelightHelpers.getCurrentPipelineIndex(limelightName) == 0;
+    }
+
+    //TODO: Tune this, how far left or right from april tag
+    public static void offsetRight(String limelightName){
+        LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.3, 0);
+    }
+
+    public static void offsetLeft(String limelightName){
+        LimelightHelpers.setFiducial3DOffset(limelightName, 0, -0.3, 0);
+    }
+
+    public static void offsetCenter(String limelightName){
+        LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0, 0);
     }
 }

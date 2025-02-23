@@ -20,7 +20,8 @@ public class AlternativePathfindAprilTag extends Command {
   private Command pathFind;
 
 
-
+  //TODO: Fix the limelight names constant based on if station or reef, removed unused parameters, and add in Auto.java, right, center, and left based on target loc and camera, etc
+  // A-> Right, B-> Left, S-> Center (always end with center)
   /** Creates a new AlternativePathfindAprilTag. */
   public AlternativePathfindAprilTag(int targetAprilTagId, SwerveSubsystem swerve, VisionSubsystem vision, String targetLocation) {
     this.swerve=swerve;
@@ -34,7 +35,6 @@ public class AlternativePathfindAprilTag extends Command {
   @Override
   public void initialize() {
 
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,16 +44,16 @@ public class AlternativePathfindAprilTag extends Command {
     if(Math.abs(VisionAprilTag.horizontalOffsetXAprilTag("llf")) >= (Math.PI/20)){
     
     swerve.drive(
-                0*VisionAprilTag.limelight_rangeZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
-                0.278*VisionAprilTag.horizontalOffsetXAprilTag(LimelightConstants.llLocalizationNameForwards),
-                VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
+                0*VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
+                VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llLocalizationNameForwards),
+                VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llLocalizationNameForwards),
                 swerve.isFieldRelative() && fieldRelative, false);
     }
     else{
       swerve.drive(
-        0.314*VisionAprilTag.limelight_rangeZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
-        0*VisionAprilTag.horizontalOffsetXAprilTag(LimelightConstants.llLocalizationNameForwards),
-        0*VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
+        VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
+        VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llLocalizationNameForwards),
+        VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llLocalizationNameForwards),
         swerve.isFieldRelative() && fieldRelative, false);
     }
 
@@ -70,7 +70,7 @@ public class AlternativePathfindAprilTag extends Command {
   @Override
   public boolean isFinished()
   { 
-    if (Math.abs(VisionAprilTag.horizontalOffsetXAprilTag("llf")) <= (Math.PI/20) && Math.abs(VisionAprilTag.limelight_rangeZ_aprilTag("llf")) <= (4*(Math.PI)/75))
+    if (Math.abs(VisionAprilTag.horizontalOffsetXAprilTag("llf")) <= (Math.PI/20) && Math.abs(VisionAprilTag.straightLineZAprilTag("llf")) <= (4*(Math.PI)/75))
   {
     return true;
   }
