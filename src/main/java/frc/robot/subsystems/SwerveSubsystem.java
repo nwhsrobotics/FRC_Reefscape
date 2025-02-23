@@ -306,15 +306,17 @@ public class SwerveSubsystem extends SubsystemBase {
 
             // What pathfinding does is pathfind to the start of a path and then continue along that path.
             // If you don't want to continue along the path, you can make it pathfind to a specific location.
-
+            //TODO: Either use this (
             pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
                     path,
                     constraints
             );
+            //TODO: maybe no need to schedule it or addrequirements
             pathfindingCommand.addRequirements(this);
-            // maybe not need to schedule it
             pathfindingCommand.schedule();
             return pathfindingCommand;
+            // ) or just this
+            //return AutoBuilder.followPath(path);
         } catch (Exception ignored) {
         }
         return new InstantCommand();
@@ -332,7 +334,9 @@ public class SwerveSubsystem extends SubsystemBase {
                 AutoConstants.kPathfindingConstraints,
                 0.0 // Goal end velocity in meters/sec
         );
+        //TODO: Fix autonav (probably dont need addrequirements)
         command.addRequirements(this);
+        //and also don't need to schedule here? maybe schedule in autonav
         command.schedule();
 
         return command;

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Positions;
 import frc.robot.commands.IntakeOuttakeCommand;
 import frc.robot.commands.L1CMD;
@@ -72,6 +73,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Outtake", new InstantCommand());
         NamedCommands.registerCommand("MoveElevator", new InstantCommand());
         autoChooser = AutoBuilder.buildAutoChooser(); 
+        //TODO: Move autochooser here
 
         //Gunner controlls 
         new JoystickButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
@@ -85,21 +87,23 @@ public class RobotContainer {
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
         // NEED TO ADD THE FAST/SLOW MODE TOGGLE (see controller diagram)
         // NEED TO ADD THE STATION 1/2 TOGGLE THING (see controller diagram)
-        /*
-        new JoystickButton(driver, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(swerveSubsystem.autonavigator::toggle, swerveSubsystem));
-        new JoystickButton(driver, Buttons.X).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_LEFT_REEF), swerveSubsystem));
-        new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_MID_REEF), swerveSubsystem));
-        new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_MID_REEF), swerveSubsystem));
-        new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF), swerveSubsystem));
-        */
+        
+        new JoystickButton(driver, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(swerveSubsystem.autonavigator::toggle));
+        new JoystickButton(driver, Buttons.X).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_LEFT_REEF)));
+        new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_MID_REEF)));
+        new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_MID_REEF)));
+        new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));
+        //TODO: This can work
+        new JoystickButton(driver, Buttons.LEFT_BUMPER).whileTrue(AutoBuilder.pathfindToPose(Positions.BACK_LEFT_REEF, AutoConstants.kPathfindingConstraints, 0.0));
+        
         new JoystickButton(gunner, Buttons.X).onTrue(sysIdSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
         new JoystickButton(gunner, Buttons.Y).onTrue(sysIdSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
         new JoystickButton(gunner, Buttons.A).onTrue(sysIdSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
         new JoystickButton(gunner, Buttons.B).onTrue(sysIdSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 
 
-        new JoystickButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_RIGHT_REEF), swerveSubsystem));
-        new JoystickButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_LEFT_REEF), swerveSubsystem));
+        new JoystickButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_RIGHT_REEF)));
+        new JoystickButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_LEFT_REEF)));
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         

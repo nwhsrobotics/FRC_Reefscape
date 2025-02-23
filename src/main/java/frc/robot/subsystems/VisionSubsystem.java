@@ -83,18 +83,6 @@ public class VisionSubsystem extends SubsystemBase {
         return limelightName;
     }
 
-    public void right(){
-        LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.3, 0);
-    }
-
-    public void left(){
-        LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.3, 0);
-    }
-
-    public void center(){
-        LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0, 0);
-    }
-
 
     //This method takes in blue alliance april tags and checks if it is the coral station
     public boolean isBlueAllianceCoralStation(int id) {
