@@ -79,6 +79,11 @@ public class VisionSubsystem extends SubsystemBase {
         //VisionGamePiece.stabilize(limelightName);
     }
 
+    public String getLimelightName(){
+        return limelightName;
+    }
+
+
     //This method takes in blue alliance april tags and checks if it is the coral station
     public boolean isBlueAllianceCoralStation(int id) {
         return id == 12 || id == 13;

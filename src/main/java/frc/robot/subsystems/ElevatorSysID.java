@@ -58,10 +58,10 @@ public class ElevatorSysID extends SubsystemBase {
     elevatorSysMotorRightConfig.encoder.velocityConversionFactor(SysIdConstants.SYSIDENCODERMETERPERSECONDS);
 
     this.elevatorSysIDMotorLeft = new ImprovedCanSpark(41, ImprovedCanSpark.MotorKind.NEO, elevatorSysMotorLeftConfig, IdleMode.kBrake);
-    this.elevatorSysIDMotorRight = new ImprovedCanSpark(42, ImprovedCanSpark.MotorKind.NEO, elevatorSysMotorRightConfig, IdleMode.kBrake);
+    this.elevatorSysIDMotorRight = new ImprovedCanSpark(7, ImprovedCanSpark.MotorKind.NEO, elevatorSysMotorRightConfig, IdleMode.kBrake);
    
     elevatorSysMotorLeftEncoder = elevatorSysIDMotorLeft.getEncoder();
-    elevatorSysMotorLeftEncoder = elevatorSysIDMotorRight.getEncoder();
+    elevatorSysMotorRightEncoder = elevatorSysIDMotorRight.getEncoder();
 
 
     //this.sysMotorRight = new SparkMax(80, MotorType.kBrushless);
@@ -92,7 +92,7 @@ public class ElevatorSysID extends SubsystemBase {
                         m_velocity.mut_replace(elevatorSysMotorLeftEncoder.getVelocity() , MetersPerSecond));
                         
                 
-                      
+                     
                 log.motor("elevator-right")
                       .voltage(
                           m_appliedVoltage.mut_replace(

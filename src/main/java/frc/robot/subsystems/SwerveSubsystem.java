@@ -306,15 +306,17 @@ public class SwerveSubsystem extends SubsystemBase {
 
             // What pathfinding does is pathfind to the start of a path and then continue along that path.
             // If you don't want to continue along the path, you can make it pathfind to a specific location.
-
+            //TODO: Either use this (
             pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
                     path,
                     constraints
             );
+            //TODO: maybe no need to schedule it or addrequirements
             pathfindingCommand.addRequirements(this);
-            // maybe not need to schedule it
             pathfindingCommand.schedule();
             return pathfindingCommand;
+            // ) or just this
+            //return AutoBuilder.followPath(path);
         } catch (Exception ignored) {
         }
         return new InstantCommand();
@@ -332,7 +334,9 @@ public class SwerveSubsystem extends SubsystemBase {
                 AutoConstants.kPathfindingConstraints,
                 0.0 // Goal end velocity in meters/sec
         );
+        //TODO: Fix autonav (probably dont need addrequirements)
         command.addRequirements(this);
+        //and also don't need to schedule here? maybe schedule in autonav
         command.schedule();
 
         return command;
@@ -434,14 +438,14 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
-        /*if (VisionGamePiece.isAprilTagPipeline("limelight")) {
+        /*if (VisionGamePiece.isAprilTagPipeline(Constants.LimelightConstants.llLocalizationNameForwards)) {
 
             boolean useMegaTag2 = true; //set to false to use MegaTag1
             // we might use megatag1 when disabled to auto orient and megatag2 when enable
             // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78 
             boolean doRejectUpdate = false;
             if (!useMegaTag2) {
-                LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+                LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.LimelightConstants.llLocalizationNameForwards);
 
                 if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
                     if (mt1.rawFiducials[0].ambiguity > .7) {
@@ -462,8 +466,8 @@ public class SwerveSubsystem extends SubsystemBase {
                             mt1.timestampSeconds);
                 }
             } else if (useMegaTag2) {
-                LimelightHelpers.SetRobotOrientation("limelight", odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-                LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+                LimelightHelpers.SetRobotOrientation(Constants.LimelightConstants.llLocalizationNameForwards, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+                LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(Constants.LimelightConstants.llLocalizationNameForwards);
                 if (Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
                 {
                     doRejectUpdate = true;
