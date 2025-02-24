@@ -56,7 +56,6 @@ public class ElevatorSubsystem extends SubsystemBase {
   int currentElevatorLevel = 0;
 
   //Evevator presets (prob should go to constants)
-  //TODO: CHECK TO SEE IF THESE ARE CORRECT 
   double loadStationPreset = 0.0;
   double L1Preset = 0.224 ; 
   double L2Preset = 0.7973;
@@ -81,7 +80,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   //Drive bace in 3.8cm off the ground  
   public void loadStation_Preset(){
-    setPointRotations = metersToRotations(loadStationPreset); //needs to be found 
+    setPointRotations = metersToRotations(loadStationPreset); 
   }
   public void L1_Preset() {
     setPointRotations = metersToRotations(L1Preset); // 46cm >> 42.2cm >> 0.224m
@@ -99,7 +98,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   //Seting elevator heights 
   public void increaseCurrentLevel(){
-    if(currentElevatorLevel>=4){
+    if(currentElevatorLevel>=elevatorHeights.length-1){
       System.out.println("LEVEL IS CURRENTLY 5 AND CAN NOT GO DOWN ANYMORE!");
     }else{
       currentElevatorLevel++; 
