@@ -53,15 +53,22 @@ public class ElevatorSubsystem extends SubsystemBase {
   private double setPointRotations = 0.0;
 
   //Current Elevator Level
-  int currentElevatorLevel = 1;
+  int currentElevatorLevel = 0;
 
   //Evevator presets (prob should go to constants)
-  //TODO: CHECK TO SEE IF THESE ARE CORRECT 
   double loadStationPreset = 0.0;
   double L1Preset = 0.224 ; 
   double L2Preset = 0.7973;
   double L3Preset = 1.1973;
   double L4Preset = 1.8173; 
+
+  double[] elevatorHeights = new double[] {
+    0.0, //loadStation 
+    0.224, // L1
+    0.7973, //L2
+    1.1973,  //L3 
+    1.8173  //L4 
+  };
  
   
   public double metersToRotations(double setpointNumMeters){
@@ -73,7 +80,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   //Drive bace in 3.8cm off the ground  
   public void loadStation_Preset(){
-    setPointRotations = metersToRotations(loadStationPreset); //needs to be found 
+    setPointRotations = metersToRotations(loadStationPreset); 
   }
   public void L1_Preset() {
     setPointRotations = metersToRotations(L1Preset); // 46cm >> 42.2cm >> 0.224m
@@ -91,11 +98,11 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   //Seting elevator heights 
   public void increaseCurrentLevel(){
-    if(currentElevatorLevel>=5){
+    if(currentElevatorLevel>=elevatorHeights.length-1){
       System.out.println("LEVEL IS CURRENTLY 5 AND CAN NOT GO DOWN ANYMORE!");
     }else{
       currentElevatorLevel++; 
-      updatesetPointRotations();
+      setPointRotations = elevatorHeights[currentElevatorLevel];
     }
   }
 
@@ -105,27 +112,15 @@ public class ElevatorSubsystem extends SubsystemBase {
   DigitalInput bottomlimitSwitch = new DigitalInput(0);
 
   public void decreaseCurrentLevel(){
-    if(currentElevatorLevel<=1){
+    if(currentElevatorLevel<=0){
       System.out.println("LEVEL IS CURRENTLY 1 AND CAN NOT GO DOWN ANYMORE!");
     }else{
       currentElevatorLevel--; 
-      updatesetPointRotations();
+      setPointRotations = elevatorHeights[currentElevatorLevel]; 
     }
   }
-
-  private void updatesetPointRotations(){
-    if(currentElevatorLevel == 1){
-      loadStation_Preset();
-    }else if(currentElevatorLevel == 2){
-      L1_Preset();
-    }else if(currentElevatorLevel == 3){
-      L2_Preset();
-    }else if(currentElevatorLevel == 4){
-      L3_Preset();
-    }else if(currentElevatorLevel == 5){
-      L4_Preset(); 
-    }
-  } 
+  
+  
 
 
 

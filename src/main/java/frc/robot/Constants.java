@@ -203,16 +203,17 @@ public final class Constants {
     public static final class Positions {
         //from driver perspective
         
-        public static final Pose2d LEFT_GROUND_START_PIECES = new Pose2d(1.219, 5.855, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
-        public static final Pose2d MID_GROUND_START_PIECES = new Pose2d(1.219, 4.022, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
-        public static final Pose2d RIGHT_GROUND_START_PIECES = new Pose2d(1.219, 2.189, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
+        public static final Pose2d LEFT_GROUND_START_PIECES = new Pose2d(1.219, 5.855, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
+        public static final Pose2d MID_GROUND_START_PIECES = new Pose2d(1.219, 4.022, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
+        public static final Pose2d RIGHT_GROUND_START_PIECES = new Pose2d(1.219, 2.189, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
 
-        public static final Pose2d CAGE_A = new Pose2d(8.777, 7.267, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
-        public static final Pose2d CAGE_B = new Pose2d(8.777, 6.173, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
-        public static final Pose2d CAGE_C = new Pose2d(8.777, 5.075, Rotation2d.fromDegrees(0)); //TODO: fix rotation 
+        //TODO: Add pos A,B,C locations as well
+        public static final Pose2d CAGE_A = new Pose2d(8.777, 7.267, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
+        public static final Pose2d CAGE_B = new Pose2d(8.777, 6.173, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
+        public static final Pose2d CAGE_C = new Pose2d(8.777, 5.075, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
 
         public static final Pose2d BACK_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60)); // POV_LEFT - Side 6
-        public static final Pose2d BACK_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(0)); // A button - Side 5
+        public static final Pose2d BACK_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(1)); // A button - Side 5
         public static final Pose2d BACK_RIGHT_REEF = new Pose2d(3.614, 2.613, Rotation2d.fromDegrees(60)); // POV_RIGHT - Side 4
         public static final Pose2d FRONT_LEFT_REEF = new Pose2d(5.352, 5.444, Rotation2d.fromDegrees(-120)); // X button - Side 1
         public static final Pose2d FRONT_MID_REEF = new Pose2d(6.152, 4.026, Rotation2d.fromDegrees(180)); // Y button - Side 2
@@ -315,8 +316,8 @@ public final class Constants {
         public static final double distanceFromCenterForwards = 0.3; //in meters, straight distance to the camera from middle
         public static final double hypotenuseDistanceForwards = Math.hypot(horizontalOffsetForwards, distanceFromCenterForwards); // actual distance in 2d from middle
         public static final double thethaFromCenterForwards = -32; //this might be needed for angle offset
-        public static String llObjectDetectionNameForwards = "limelight";
-        public static String llLocalizationNameForwards = "limelight";
+        public static String llObjectDetectionNameForwards = "llf";
+        public static String llLocalizationNameForwards = "llf";
         public static double targetHeightForwards = 0;
         
         public static final double mountHeightBackwards = 1.32; //in meters
@@ -324,10 +325,10 @@ public final class Constants {
         public static final double horizontalOffsetBackwards = -0.18; //in meters, this offset is how far left or right LL3 is mounted from center (negative is left, positive right)
         //this might not be needed but doesn't hurt us
         public static final double distanceFromCenterBackwards = 0.3; //in meters, straight distance to the camera from middle
-        public static final double hypotenuseDistanceBackwards = Math.hypot(horizontalOffsetForwards, distanceFromCenterForwards); // actual distance in 2d from middle
+        public static final double hypotenuseDistanceBackwards = Math.hypot(horizontalOffsetBackwards, distanceFromCenterBackwards); // actual distance in 2d from middle
         public static final double thethaFromCenterBackwards = -32; //this might be needed for angle offset
-        public static String llObjectDetectionNameBackwards = "limelight1";
-        public static String llLocalizationNameBackwards = "limelight1Loc";
+        public static String llObjectDetectionNameBackwards = "llb";
+        public static String llLocalizationNameBackwards = "llb";
         public static double targetHeightBackwards = 0;
         
     }

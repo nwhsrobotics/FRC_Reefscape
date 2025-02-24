@@ -123,6 +123,8 @@ public class AutoNavigation {
         }
 
         navigationCommand = swerve.pathfindToPosition(destination);
+        //TODO: Schedule here instead?
+        //navigationCommand.schedule();
         Logger.recordOutput("autonavigator.destination", destination);
     }
 }
