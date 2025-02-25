@@ -355,7 +355,7 @@ public class VisionAprilTag {
         return LimelightHelpers.getCurrentPipelineIndex(limelightName) == 0;
     }
 
-    //TODO: Tune this, how far left or right from april tag
+    //TODO: Tune this, how far left or right from april tag and distance limiter for isDetecting
     public static void offsetRight(String limelightName){
         LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.3, 0);
     }
