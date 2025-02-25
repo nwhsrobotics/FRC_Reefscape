@@ -208,9 +208,9 @@ public final class Constants {
         public static final Pose2d RIGHT_GROUND_START_PIECES = new Pose2d(1.219, 2.189, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
 
         //TODO: Add pos A,B,C locations as well
-        public static final Pose2d CAGE_A = new Pose2d(8.777, 7.267, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
-        public static final Pose2d CAGE_B = new Pose2d(8.777, 6.173, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
-        public static final Pose2d CAGE_C = new Pose2d(8.777, 5.075, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
+        public static final Pose2d CAGE_A = new Pose2d(7.584, 7.283, Rotation2d.fromDegrees(180)); //TODO: fix rotation 
+        public static final Pose2d CAGE_B = new Pose2d(7.584, 6.185, Rotation2d.fromDegrees(180)); //TODO: fix rotation 
+        public static final Pose2d CAGE_C = new Pose2d(7.584, 5.056, Rotation2d.fromDegrees(180)); //TODO: fix rotation 
 
         public static final Pose2d BACK_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60)); // POV_LEFT - Side 6
         public static final Pose2d BACK_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(1)); // A button - Side 5
