@@ -1,6 +1,9 @@
 package frc.robot;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.XboxController;
@@ -13,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Positions;
+import frc.robot.autos.Auto;
 import frc.robot.commands.IntakeOuttakeCommand;
 import frc.robot.commands.L1CMD;
 import frc.robot.commands.L2CMD;
@@ -40,7 +44,7 @@ public class RobotContainer {
     private final VisionSubsystem limeLightForwards = new VisionSubsystem(Constants.LimelightConstants.llLocalizationNameForwards);
 
     public final SysId sysIdSubsystem = new SysId();
-    //private final VisionSubsystem limeLightBackwards = new VisionSubsystem(Constants.LimelightConstants.llLocalizationNameBackwards);
+    private final VisionSubsystem limeLightBackwards = new VisionSubsystem(Constants.LimelightConstants.llLocalizationNameBackwards);
 
     
 
@@ -74,6 +78,15 @@ public class RobotContainer {
         NamedCommands.registerCommand("MoveElevator", new InstantCommand());
         autoChooser = AutoBuilder.buildAutoChooser(); 
         //TODO: Move autochooser here
+        autoChooser.addOption("A to 6A", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<String>(List.of("[6A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.CAGE_A));
+        autoChooser.addOption("A1 to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.CAGE_A));
+        autoChooser.addOption("A to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.CAGE_A));
+        autoChooser.addOption("A1 to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[4A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.CAGE_A));
+        autoChooser.addOption("B to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[1A]", "[1B]", "[5A]", "[5B]")), Constants.Positions.CAGE_B));
+        autoChooser.addOption("B1 to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[1A]", "[5B]", "[1A]", "[5B]")), Constants.Positions.CAGE_B));
+        autoChooser.addOption("C to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[4A]", "[4B]", "[3A]", "[3B]")), Constants.Positions.CAGE_C));
+        autoChooser.addOption("C1 to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[3A]", "[4B]", "[3A]", "[3B]")), Constants.Positions.CAGE_C));
+
 
         //Gunner controlls 
         new JoystickButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
