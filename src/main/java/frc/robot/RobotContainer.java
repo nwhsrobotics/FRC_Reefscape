@@ -28,7 +28,6 @@ import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeOuttake;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.SysId;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Buttons;
 
@@ -39,11 +38,11 @@ public class RobotContainer {
 
     private final IntakeOuttake intakeoutake = new IntakeOuttake();
 
-    private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    //private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
     private final VisionSubsystem limeLightForwards = new VisionSubsystem(Constants.LimelightConstants.llLocalizationNameForwards);
 
-    public final SysId sysIdSubsystem = new SysId();
+   // public final SysId sysIdSubsystem = new SysId();
     private final VisionSubsystem limeLightBackwards = new VisionSubsystem(Constants.LimelightConstants.llLocalizationNameBackwards);
 
     
@@ -57,19 +56,19 @@ public class RobotContainer {
 
         ParallelCommandGroup autoInit = new ParallelCommandGroup(); // new ParallelCommandGroup((new InstantCommand(() -> wristSubsystem.ampPreset(), wristSubsystem), (new InstantCommand(() -> armSubsystem.underStage(), armSubsystem));
 
-        Command L4CMD = new L4CMD(elevatorSubsystem, gunner);
-        Command L3CMD = new L3CMD(elevatorSubsystem, gunner);
-        Command L2CMD = new L2CMD(elevatorSubsystem, gunner);
-        Command L1CMD = new L1CMD(elevatorSubsystem, gunner);
-        Command LoadStation = new LoadStation(elevatorSubsystem, gunner);
+        // Command L4CMD = new L4CMD(elevatorSubsystem, gunner);
+        // Command L3CMD = new L3CMD(elevatorSubsystem, gunner);
+        // Command L2CMD = new L2CMD(elevatorSubsystem, gunner);
+        // Command L1CMD = new L1CMD(elevatorSubsystem, gunner);
+        // Command LoadStation = new LoadStation(elevatorSubsystem, gunner);
 
         NamedCommands.registerCommand("autoInit", autoInit);
 
-        NamedCommands.registerCommand("L4CORAL",L4CMD);
-        NamedCommands.registerCommand("L3CORAL",L3CMD);
-        NamedCommands.registerCommand("L2CORAL",L2CMD);
-        NamedCommands.registerCommand("L1CORAL",L1CMD);
-        NamedCommands.registerCommand("LoadStation",LoadStation);
+        // NamedCommands.registerCommand("L4CORAL",L4CMD);
+        // NamedCommands.registerCommand("L3CORAL",L3CMD);
+        // NamedCommands.registerCommand("L2CORAL",L2CMD);
+        // NamedCommands.registerCommand("L1CORAL",L1CMD);
+        // NamedCommands.registerCommand("LoadStation",LoadStation);
 
 
         //INIT after registering named commands
@@ -89,8 +88,8 @@ public class RobotContainer {
 
 
         //Gunner controlls 
-        new JoystickButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
+        // new JoystickButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
+        // new JoystickButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
 
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake));
@@ -109,10 +108,10 @@ public class RobotContainer {
         //TODO: This can work
         new JoystickButton(driver, Buttons.LEFT_BUMPER).whileTrue(AutoBuilder.pathfindToPose(Positions.BACK_LEFT_REEF, AutoConstants.kPathfindingConstraints, 0.0));
         
-        new JoystickButton(gunner, Buttons.X).onTrue(sysIdSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
-        new JoystickButton(gunner, Buttons.Y).onTrue(sysIdSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-        new JoystickButton(gunner, Buttons.A).onTrue(sysIdSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-        new JoystickButton(gunner, Buttons.B).onTrue(sysIdSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        //new JoystickButton(gunner, Buttons.X).onTrue(sysIdSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        //new JoystickButton(gunner, Buttons.Y).onTrue(sysIdSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        //new JoystickButton(gunner, Buttons.A).onTrue(sysIdSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        //new JoystickButton(gunner, Buttons.B).onTrue(sysIdSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 
 
         new JoystickButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_RIGHT_REEF)));
