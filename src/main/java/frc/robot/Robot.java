@@ -83,22 +83,14 @@ public class Robot extends LoggedRobot {
 
         //TODO: Add static IP to Limelights and RoboRIO (Check which ones here work and remove comment others while doing so)
         for(int port = 5800; port <= 5809; port++){
-            // http://roborio-(teamnum)-FRC.local:5801
             PortForwarder.add(port, Constants.LimelightConstants.llLocalizationNameBackwards + ".local",port);
-        }
-        for(int port = 5800; port <= 5809; port++){
+            // http://roborio-(teamnum)-FRC.local:5801
             PortForwarder.add(port+10, Constants.LimelightConstants.llLocalizationNameForwards + ".local",port);
             // http://roborio-(teamnum)-FRC.local:5811
-        }
-        for(int port = 5800; port <= 5809; port++){
             PortForwarder.add(port+20, "limelight-" + Constants.LimelightConstants.llLocalizationNameBackwards + ".local",port);
             // http://roborio-(teamnum)-FRC.local:5821
-        }
-        for(int port = 5800; port <= 5809; port++){
             PortForwarder.add(port+30, "limelight-" + Constants.LimelightConstants.llLocalizationNameForwards + ".local",port);
             // http://roborio-(teamnum)-FRC.local:5831
-        }
-        for(int port = 5800; port <= 5809; port++){
             PortForwarder.add(port+40, "limelight.local",port);
             // http://roborio-(teamnum)-FRC.local:5841
         }
