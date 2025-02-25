@@ -22,9 +22,10 @@ import frc.robot.commands.LoadStation;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSysID;
 import frc.robot.subsystems.IntakeOuttake;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.SysId;
+
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Buttons;
 
@@ -35,11 +36,13 @@ public class RobotContainer {
 
     private final IntakeOuttake intakeoutake = new IntakeOuttake();
 
-    private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+
+    public final ElevatorSysID elevatorSysID = new ElevatorSysID();
 
     private final VisionSubsystem limeLightForwards = new VisionSubsystem(Constants.LimelightConstants.llLocalizationNameForwards);
 
-    public final SysId sysIdSubsystem = new SysId();
+    //public final SysId sysIdSubsystem = new SysId();
     //private final VisionSubsystem limeLightBackwards = new VisionSubsystem(Constants.LimelightConstants.llLocalizationNameBackwards);
 
     
@@ -95,11 +98,12 @@ public class RobotContainer {
         new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));
         //TODO: This can work
         new JoystickButton(driver, Buttons.LEFT_BUMPER).whileTrue(AutoBuilder.pathfindToPose(Positions.BACK_LEFT_REEF, AutoConstants.kPathfindingConstraints, 0.0));
-        
-        new JoystickButton(gunner, Buttons.X).onTrue(sysIdSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
-        new JoystickButton(gunner, Buttons.Y).onTrue(sysIdSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-        new JoystickButton(gunner, Buttons.A).onTrue(sysIdSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-        new JoystickButton(gunner, Buttons.B).onTrue(sysIdSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        /*
+        new JoystickButton(gunner, Buttons.X).onTrue(elevatorSysID.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        new JoystickButton(gunner, Buttons.Y).onTrue(elevatorSysID.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        new JoystickButton(gunner, Buttons.A).onTrue(elevatorSysID.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        new JoystickButton(gunner, Buttons.B).onTrue(elevatorSysID.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        */
 
 
         new JoystickButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_RIGHT_REEF)));
