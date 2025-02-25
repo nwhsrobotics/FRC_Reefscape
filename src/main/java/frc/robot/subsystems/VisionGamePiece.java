@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class VisionGamePiece {
 
-    // TODO: READD/REDO COMMENTS, But much better and self explanatory so you can understand the math just by reading comments
+    // READD/REDO COMMENTS, But much better and self explanatory so you can understand the math just by reading comments
 
     public static Pose2d visionTargetLocation = new Pose2d();
     public static double tagDist;
