@@ -9,12 +9,12 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.util.ImprovedCanSpark;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
 
 
 
@@ -48,6 +48,10 @@ public class ElevatorSubsystem extends SubsystemBase {
   //PID controllers 
   public PIDController pidControllerLeft = new PIDController(0, 0, 0);
   public PIDController pidControllerRight = new PIDController(0, 0, 0);
+
+  //Create limit switches
+  DigitalInput toplimitSwitch = new DigitalInput(0);
+  DigitalInput bottomlimitSwitch = new DigitalInput(0);
 
   // setpoint
   private double setPointRotations = 0.0;
@@ -107,9 +111,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
 
-  //Create limit switches
-  DigitalInput toplimitSwitch = new DigitalInput(0);
-  DigitalInput bottomlimitSwitch = new DigitalInput(0);
+
 
   public void decreaseCurrentLevel(){
     if(currentElevatorLevel<=0){
@@ -121,6 +123,18 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
   
   
+  private void emergencyLimitSwitchLogic(){
+
+    if(toplimitSwitch.get()){
+      setPointRotations = elevatorHeights[elevatorHeights.length-1]; 
+      System.out.println("[WARNING] Elevator height maxed out (Hint: this should have not happened)!");
+    }
+    if(!toplimitSwitch.get()){
+      setPointRotations = elevatorHeights[0]; 
+      System.out.println("[WARNING] Elevator height at 0 (Hint: Stop doing what u doing rn)!");
+    }
+
+  } 
 
 
 
@@ -132,6 +146,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void periodic() {
     
     // This method will be called once per scheduler run
+    emergencyLimitSwitchLogic();
     leftElevatorMotor.setVoltage(pidControllerLeft.calculate(absoluteEncoder.getDistance(), setPointRotations) + feedforward.calculate(0.0));
     rightElevatorMotor.setVoltage(pidControllerRight.calculate(absoluteEncoder.getDistance(), setPointRotations) + feedforward.calculate(0.0));
   }
