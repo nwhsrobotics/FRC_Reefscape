@@ -5,13 +5,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.Constants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionAprilTag;
 import frc.robot.subsystems.VisionGamePiece;
-import frc.robot.util.Buttons;
 
 public class SwerveJoystickDefaultCmd extends Command {
     private final SwerveSubsystem swerveSubsystem;
@@ -34,7 +32,7 @@ public class SwerveJoystickDefaultCmd extends Command {
     @Override
     public void execute() {
         //assuming 2 limelights
-        /*if (xbox.getLeftBumperButton()) {  //for object detection alligning
+        if (xbox.getLeftBumperButton()) {  //for object detection alligning
             //while using Limelight, turn off field-relative driving.
             fieldRelative = false;
             swerveSubsystem.drive(
@@ -43,35 +41,28 @@ public class SwerveJoystickDefaultCmd extends Command {
                     VisionGamePiece.limelight_aimX_proportional(LimelightConstants.llObjectDetectionNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
 
-        }*/
-        if (xbox.getLeftBumperButton()) {  //for back vision april tag detection alligning
-            //while using Limelight, turn off field-relative driving.
+        } else if (xbox.getRightBumperButton()) { //for april tag allign
             fieldRelative = false;
             swerveSubsystem.drive(
-                VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llLocalizationNameBackwards),
-                VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llLocalizationNameBackwards),
-                    VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llLocalizationNameBackwards),
+                    VisionAprilTag.limelight_rangeSpeedZ_proportional(LimelightConstants.llLocalizationNameForwards),
+                    0,
+                    VisionAprilTag.limelight_aimX_proportional(LimelightConstants.llLocalizationNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
-        } else if (xbox.getRightBumperButton()) { //for forwards april tag allign
-            fieldRelative = false;
-            swerveSubsystem.drive(
-                VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
-                VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llLocalizationNameForwards),
-                    VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llLocalizationNameForwards),
-                    swerveSubsystem.isFieldRelative() && fieldRelative, false);
+
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if booster not pressed
             fieldRelative = true;
             swerveSubsystem.drive(
+                    //TODO: its actually kinda funny we do things manually but dont use MathUtil.clamp, MathUtil.deadband, etc. implement MathUtil. instead of doing that please
                     -MathUtil.applyDeadband(xbox.getLeftY(), OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(xbox.getLeftX(), OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(xbox.getRightX(), OIConstants.kDriveDeadband),
                     swerveSubsystem.isFieldRelative() && fieldRelative, true);
             //TODO: invert if red so drivers dont have to abitarly reset gyro and field relative everytime
-            /*swerveSubsystem.drive(
+            swerveSubsystem.drive(
                     -MathUtil.applyDeadband(invertIfRed(xbox.getLeftY()), OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(invertIfRed(xbox.getLeftX()), OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(invertIfRed(xbox.getRightX()), OIConstants.kDriveDeadband),
-                    swerveSubsystem.isFieldRelative && fieldRelative, true);*/
+                    swerveSubsystem.isFieldRelative && fieldRelative, true);
         } else {
             fieldRelative = true;
             swerveSubsystem.drive(
@@ -79,24 +70,26 @@ public class SwerveJoystickDefaultCmd extends Command {
                     -MathUtil.applyDeadband(xbox.getLeftX(), OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(xbox.getRightX(), OIConstants.kDriveDeadband),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
-        /*fancy equation that probably would help us to get rid of speed coefficients (ratelimit probably false)
-        swerveSubsystem.drive(
-            -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftY(), 2), xbox.getLeftY())), OIConstants.kDriveDeadband),
-            -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftX(), 2), xbox.getLeftX())), OIConstants.kDriveDeadband),
-            -MathUtil.applyDeadband(invertIfRed(xbox.getRightX()), OIConstants.kDriveDeadband),
-            true, true);*/
         }
-
-        if (xbox.getPOV() == Buttons.POV_RIGHT){
-            VisionAprilTag.offsetRight(Constants.LimelightConstants.llLocalizationNameForwards);
+        //fancy equation probably would us to get rid of speed coefficients
+        swerveSubsystem.setDefaultCommand(
+        new RunCommand(
+            () -> swerveSubsystem.drive(
+                -MathUtil.applyDeadband(Math.copySign(Math.pow(xbox.getRawAxis(1), 3), xbox.getRawAxis(1) + (0.25 * xbox.getRawAxis(1))), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(Math.copySign(Math.pow(xbox.getRawAxis(0), 3), xbox.getRawAxis(0) + (0.25 * xbox.getRawAxis(0))), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(xbox.getRawAxis(4), OIConstants.kDriveDeadband),
+                true, true),
+                swerveSubsystem));
+        if (swerveSubsystem.autonavigator.isEnabled()) {
+            if (MathUtil.applyDeadband(xbox.getLeftX(), OIConstants.kDriveDeadband) != 0 || 
+                MathUtil.applyDeadband(xbox.getLeftY(), OIConstants.kDriveDeadband) != 0 || 
+                MathUtil.applyDeadband(xbox.getRightX(), OIConstants.kDriveDeadband) != 0 ||
+                MathUtil.applyDeadband(xbox.getRightY(), OIConstants.kDriveDeadband) != 0) {
+                swerveSubsystem.autonavigator.pauseNavigation();
+            } else {
+                swerveSubsystem.autonavigator.resumeNavigation();
+            }
         }
-        if (xbox.getPOV() == Buttons.POV_LEFT){
-            VisionAprilTag.offsetRight(Constants.LimelightConstants.llLocalizationNameForwards);
-        }
-        if (xbox.getPOV() == Buttons.POV_UP){
-            VisionAprilTag.offsetRight(Constants.LimelightConstants.llLocalizationNameForwards);
-        }
-
     }
 
     @Override
