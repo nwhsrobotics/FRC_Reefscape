@@ -106,10 +106,10 @@ public class SwerveJoystickDefaultCmd extends Command {
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
             if (alliance.get() == DriverStation.Alliance.Red) {
-                return -1;
+                return -num;
             }
         }
-        return 1;
+        return num;
     }
 
 
