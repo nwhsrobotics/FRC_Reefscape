@@ -144,8 +144,8 @@ public class SwerveSubsystem extends SubsystemBase {
             this.autonavigator = new AutoNavigation(this);
 
             // Pause for 500 milliseconds to allow the gyro to stabilize.
-            // Set the yaw of the gyro to 0 afterwards.
-            // TODO: Do we need this anymore? Might cause conflicts with path planner
+            // Set the yaw of the gyro to 0 afterwards (hardware offset).
+            // TODO: Calculate sysid MOI for swerve/pathplanner
             //gyro.reset();
             Commands.waitUntil(() -> !gyro.isCalibrating()).andThen(new InstantCommand(() -> gyro.zeroYaw()));
             /*Commands.waitSeconds(0.5)
@@ -306,7 +306,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
             // What pathfinding does is pathfind to the start of a path and then continue along that path.
             // If you don't want to continue along the path, you can make it pathfind to a specific location.
-            //TODO: Either use this (
+            //Either use this (
             pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
                     path,
                     constraints
