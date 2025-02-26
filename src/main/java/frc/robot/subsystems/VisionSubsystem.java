@@ -204,6 +204,8 @@ public class VisionSubsystem extends SubsystemBase {
     public boolean isDetectingTargetID(String targetLocation){
         LimelightResults llr = VisionAprilTag.isValid(limelightName);
         if (llr != null && llr.targets_Fiducials != null){
+            // distance limiter
+            //  && llr.targets_Fiducials[0].getTargetPose_RobotSpace2D().getTranslation().getNorm() < 4
             return llr.targets_Fiducials[0].fiducialID == getAprilTagId(targetLocation);
         }
         return false;

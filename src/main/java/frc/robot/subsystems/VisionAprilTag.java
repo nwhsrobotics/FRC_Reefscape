@@ -25,7 +25,7 @@ public class VisionAprilTag {
     public static double tagDist;
     public static ArrayList<Integer> tagIds = new ArrayList<>();
 
-    private static final long DETECTION_HOLD = 100; 
+    private static double holdDuration = 100; 
     private static long timeDetected = 0;
 
     private static LimelightResults stableResults = null;
@@ -272,9 +272,12 @@ public class VisionAprilTag {
         if (results != null && results.valid && LimelightHelpers.getTV(limelightName) && results.targets_Fiducials.length > 0) {
             timeDetected = now;
             stableResults = results;
+            // experimental distance adaptive stabilizer (make it greater than linear if needed) 
+            // int idealDist = 4;
+            // holdDuration = (hypotenuseDistanceXandZAprilTag(limelightName) / idealDist) * 100;
         } else {
             long time = now - timeDetected;
-            if (time < DETECTION_HOLD) {
+            if (time < holdDuration) {
             } else {
                 stableResults = null;
             }
@@ -355,7 +358,7 @@ public class VisionAprilTag {
         return LimelightHelpers.getCurrentPipelineIndex(limelightName) == 0;
     }
 
-    //TODO: Tune this, how far left or right from april tag
+    //TODO: Tune this, how far left or right from april tag and distance limiter for isDetecting
     public static void offsetRight(String limelightName){
         LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.3, 0);
     }

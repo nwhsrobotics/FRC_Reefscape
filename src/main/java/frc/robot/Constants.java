@@ -203,14 +203,14 @@ public final class Constants {
     public static final class Positions {
         //from driver perspective
         
-        public static final Pose2d LEFT_GROUND_START_PIECES = new Pose2d(1.219, 5.855, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
-        public static final Pose2d MID_GROUND_START_PIECES = new Pose2d(1.219, 4.022, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
-        public static final Pose2d RIGHT_GROUND_START_PIECES = new Pose2d(1.219, 2.189, Rotation2d.fromDegrees(1)); //TODO: fix rotation 
+        public static final Pose2d LEFT_GROUND_START_PIECES = new Pose2d(1.219, 5.855, Rotation2d.fromDegrees(180)); 
+        public static final Pose2d MID_GROUND_START_PIECES = new Pose2d(1.219, 4.022, Rotation2d.fromDegrees(180)); 
+        public static final Pose2d RIGHT_GROUND_START_PIECES = new Pose2d(1.219, 2.189, Rotation2d.fromDegrees(180)); 
 
-        //TODO: Add pos A,B,C locations as well
-        public static final Pose2d CAGE_A = new Pose2d(7.584, 7.283, Rotation2d.fromDegrees(180)); //TODO: fix rotation 
-        public static final Pose2d CAGE_B = new Pose2d(7.584, 6.185, Rotation2d.fromDegrees(180)); //TODO: fix rotation 
-        public static final Pose2d CAGE_C = new Pose2d(7.584, 5.056, Rotation2d.fromDegrees(180)); //TODO: fix rotation 
+        //These are the starting positions near the respective cages, they are on starting line, not in the cage itself
+        public static final Pose2d CAGE_A = new Pose2d(7.584, 7.283, Rotation2d.fromDegrees(180)); 
+        public static final Pose2d CAGE_B = new Pose2d(7.584, 6.185, Rotation2d.fromDegrees(180)); 
+        public static final Pose2d CAGE_C = new Pose2d(7.584, 5.056, Rotation2d.fromDegrees(180)); 
 
         public static final Pose2d BACK_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60)); // POV_LEFT - Side 6
         public static final Pose2d BACK_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(1)); // A button - Side 5

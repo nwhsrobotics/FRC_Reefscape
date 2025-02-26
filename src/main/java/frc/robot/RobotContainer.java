@@ -6,7 +6,10 @@ import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.util.PathPlannerLogging;
+
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -49,7 +52,8 @@ public class RobotContainer {
    // public final SysId sysIdSubsystem = new SysId();
     private final VisionSubsystem limeLightBackwards = new VisionSubsystem(Constants.LimelightConstants.llLocalizationNameBackwards);
 
-    
+    private final Field2d field;
+
 
     private final SendableChooser<Command> autoChooser;
 
@@ -58,6 +62,26 @@ public class RobotContainer {
 
     public RobotContainer() {
 
+        field = new Field2d();
+        SmartDashboard.putData("Field", field);
+
+        // Logging callback for current robot pose
+        PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
+            // Do whatever you want with the pose here
+            field.setRobotPose(pose);
+        });
+
+        // Logging callback for target robot pose
+        PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
+            // Do whatever you want with the pose here
+            field.getObject("target pose").setPose(pose);
+        });
+
+        // Logging callback for the active path, this is sent as a list of poses
+        PathPlannerLogging.setLogActivePathCallback((poses) -> {
+            // Do whatever you want with the poses here
+            field.getObject("path").setPoses(poses);
+        });
         ParallelCommandGroup autoInit = new ParallelCommandGroup(); // new ParallelCommandGroup((new InstantCommand(() -> wristSubsystem.ampPreset(), wristSubsystem), (new InstantCommand(() -> armSubsystem.underStage(), armSubsystem));
 
         // Command L4CMD = new L4CMD(elevatorSubsystem, gunner);
@@ -79,8 +103,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake", new InstantCommand());
         NamedCommands.registerCommand("Outtake", new InstantCommand());
         NamedCommands.registerCommand("MoveElevator", new InstantCommand());
-        autoChooser = AutoBuilder.buildAutoChooser(); 
-        //TODO: Move autochooser here
+        //autoChooser = AutoBuilder.buildAutoChooser(); 
+        autoChooser = new SendableChooser<>();
         autoChooser.addOption("A to 6A", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<String>(List.of("[6A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.CAGE_A));
         autoChooser.addOption("A1 to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.CAGE_A));
         autoChooser.addOption("A to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.CAGE_A));
@@ -126,10 +150,15 @@ public class RobotContainer {
         
 
         swerveSubsystem.setDefaultCommand(new SwerveJoystickDefaultCmd(swerveSubsystem, driver));
+
+        
         //intakeoutake.setDefaultCommand(new IntakeOuttakeCommand(intakeoutake, gunner));
     }
 
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
+
+    
+    
     }
 }
