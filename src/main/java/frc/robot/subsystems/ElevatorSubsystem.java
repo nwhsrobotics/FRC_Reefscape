@@ -106,7 +106,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       System.out.println("LEVEL IS CURRENTLY 5 AND CAN NOT GO UP ANYMORE!");
     }else{
       currentElevatorLevel++; 
-      setPointRotations = elevatorHeights[currentElevatorLevel];
+      setPointRotations = metersToRotations(elevatorHeights[currentElevatorLevel]);
     }
   }
 
@@ -118,7 +118,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       System.out.println("LEVEL IS CURRENTLY 1 AND CAN NOT GO DOWN ANYMORE!");
     }else{
       currentElevatorLevel--; 
-      setPointRotations = elevatorHeights[currentElevatorLevel]; 
+      setPointRotations = metersToRotations(elevatorHeights[currentElevatorLevel]); 
     }
   }
   
