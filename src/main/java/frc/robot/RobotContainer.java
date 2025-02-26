@@ -103,8 +103,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake", new InstantCommand());
         NamedCommands.registerCommand("Outtake", new InstantCommand());
         NamedCommands.registerCommand("MoveElevator", new InstantCommand());
-        autoChooser = AutoBuilder.buildAutoChooser(); 
-        //TODO: Move autochooser here
+        //autoChooser = AutoBuilder.buildAutoChooser(); 
+        autoChooser = new SendableChooser<>();
         autoChooser.addOption("A to 6A", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<String>(List.of("[6A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.CAGE_A));
         autoChooser.addOption("A1 to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.CAGE_A));
         autoChooser.addOption("A to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.CAGE_A));
