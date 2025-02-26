@@ -76,7 +76,7 @@ public class ElevatorSubsystem extends SubsystemBase {
  
   
   public double metersToRotations(double setpointNumMeters){
-    return setpointNumMeters * ElevatorConstants.ELEVATOR_GEAR_RATIO;
+    return setpointNumMeters * ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER;
 
   }
   
@@ -129,7 +129,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       setPointRotations = elevatorHeights[elevatorHeights.length-1]; 
       System.out.println("[WARNING] Elevator height maxed out (Hint: this should have not happened)!");
     }
-    if(!toplimitSwitch.get()){
+    if(bottomlimitSwitch.get()){
       setPointRotations = elevatorHeights[0]; 
       System.out.println("[WARNING] Elevator height at 0 (Hint: Stop doing what u doing rn)!");
     }
