@@ -5,31 +5,38 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CANAssignments;
+import frc.robot.util.ImprovedCanSpark;
 
 public class AlgaeArm extends SubsystemBase {
-    //public CANcoder rotatingArmCaNcoder  =  new CANcoder(Something);
-    private CANcoder rotatingArmCaNcoder;
-    private SparkBaseConfig RotatingArmMotorConfig;
+
+    private double knockoutSpeed = .1;
+
+    Encoder algaeEncoder = new Encoder(null, null); 
+    private final SparkMax motor = new ImprovedCanSpark(CANAssignments.ALGAE_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
+
     
-    private final SparkMax RotatingArmMotor = new SparkMax(29, MotorType.kBrushless);
-    public void armMovement() {
+    
+    public void triggerAlgaeArm(){
+
         
-        rotatingArmCaNcoder = new CANcoder(30);
-        RotatingArmMotorConfig.encoder.positionConversionFactor(1); // I don't know what to do with this but its part of an encoder so I added it
-        RotatingArmMotorConfig.encoder.velocityConversionFactor(1); // I don't know what to do with this but its part of an encoder so I added it
+
+
+    }
+        
+
+
+
+
+
+        
+    public AlgaeArm(){
+
     }
     
-    
-       public void MovingAlgaeMotor(double AlgaeSpeed){
-        RotatingArmMotor.set(AlgaeSpeed); //Change as needed
-
-       }
-        
-        
-    
     public void stop(){
-        RotatingArmMotor.set(0);
 
     }
 

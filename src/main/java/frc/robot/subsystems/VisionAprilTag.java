@@ -370,4 +370,9 @@ public class VisionAprilTag {
     public static void offsetCenter(String limelightName){
         LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0, 0);
     }
+
+    public static double limelight_aimX_proportional(String llLocalizationNameForwards) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'limelight_aimX_proportional'");
+    }
 }
