@@ -27,7 +27,7 @@ import frc.robot.commands.L3CMD;
 import frc.robot.commands.L4CMD;
 import frc.robot.commands.LoadStation;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
-import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.AlgaeArm;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSysID;
 import frc.robot.subsystems.IntakeOuttake;
@@ -39,7 +39,7 @@ import frc.robot.util.Buttons;
 public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 
-    //private final ClimbSubsystem climbSubsystem = new ClimbSubsystem(); 
+    private final AlgaeArm algaeArm = new AlgaeArm();
 
     private final IntakeOuttake intakeoutake = new IntakeOuttake();
 
@@ -118,6 +118,8 @@ public class RobotContainer {
         //Gunner controlls 
         // new JoystickButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
         // new JoystickButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
+
+        new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> algaeArm.triggerAlgaeArm(), algaeArm));
 
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake));
