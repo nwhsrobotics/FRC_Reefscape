@@ -53,7 +53,7 @@ public class AlternativePathfindAprilTag extends Command {
     if(Math.abs(VisionAprilTag.horizontalOffsetXAprilTag(vision.getLimelightName()))>= (Math.PI/20)){
     
     swerve.drive(
-                0*VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
+                VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
                 VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llLocalizationNameForwards),
                 VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llLocalizationNameForwards),
                 swerve.isFieldRelative() && fieldRelative, false);
@@ -79,12 +79,13 @@ public class AlternativePathfindAprilTag extends Command {
   @Override
   public boolean isFinished()
   { 
-    if (Math.abs(VisionAprilTag.horizontalOffsetXAprilTag(vision.getLimelightName())) <= (Math.PI/20) && Math.abs(VisionAprilTag.straightLineZAprilTag(vision.getLimelightName())) <= ((4*(Math.PI))/75))
-  {
-    return true;
-  }
-    else{
-      return false;
-    }
-  }
+    return false;}
+  //   if (Math.abs(VisionAprilTag.horizontalOffsetXAprilTag(vision.getLimelightName())) <= (Math.PI/20) && Math.abs(VisionAprilTag.straightLineZAprilTag(vision.getLimelightName())) <= ((4*(Math.PI))/75))
+  // {
+  //   return true;
+  // }
+  //   else{
+  //     return false;
+  //   }
+  // }
 }

@@ -57,7 +57,7 @@ public class SwerveJoystickDefaultCmd extends Command {
             swerveSubsystem.drive(
                 VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
                 VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llLocalizationNameForwards),
-                    VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llLocalizationNameForwards),
+                VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llLocalizationNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if booster not pressed
             fieldRelative = true;
@@ -101,10 +101,10 @@ public class SwerveJoystickDefaultCmd extends Command {
             VisionAprilTag.offsetRight(Constants.LimelightConstants.llLocalizationNameForwards);
         }
         if (xbox.getPOV() == Buttons.POV_LEFT){
-            VisionAprilTag.offsetRight(Constants.LimelightConstants.llLocalizationNameForwards);
+            VisionAprilTag.offsetLeft(Constants.LimelightConstants.llLocalizationNameForwards);
         }
         if (xbox.getPOV() == Buttons.POV_UP){
-            VisionAprilTag.offsetRight(Constants.LimelightConstants.llLocalizationNameForwards);
+            VisionAprilTag.offsetCenter(Constants.LimelightConstants.llLocalizationNameForwards);
         }
 
     }
