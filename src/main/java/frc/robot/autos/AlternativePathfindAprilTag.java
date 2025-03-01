@@ -5,6 +5,7 @@
 package frc.robot.autos;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OIConstants;
@@ -27,6 +28,14 @@ public class AlternativePathfindAprilTag extends Command {
     this.swerve=swerve;
     this.vision=vision;
     this.targetAprilTagId=targetAprilTagId;
+    if(targetLocation.indexOf("B") != -1){
+      VisionAprilTag.offsetLeft(vision.getLimelightName());
+    }
+    if(targetLocation.indexOf("A") != -1){
+      VisionAprilTag.offsetRight(vision.getLimelightName());
+
+    }
+
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -41,7 +50,7 @@ public class AlternativePathfindAprilTag extends Command {
   @Override
   public void execute() {
     boolean fieldRelative=false;
-    if(Math.abs(VisionAprilTag.horizontalOffsetXAprilTag("llf")) >= (Math.PI/20)){
+    if(Math.abs(VisionAprilTag.horizontalOffsetXAprilTag(vision.getLimelightName()))>= (Math.PI/20)){
     
     swerve.drive(
                 0*VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
@@ -70,7 +79,7 @@ public class AlternativePathfindAprilTag extends Command {
   @Override
   public boolean isFinished()
   { 
-    if (Math.abs(VisionAprilTag.horizontalOffsetXAprilTag("llf")) <= (Math.PI/20) && Math.abs(VisionAprilTag.straightLineZAprilTag("llf")) <= (4*(Math.PI)/75))
+    if (Math.abs(VisionAprilTag.horizontalOffsetXAprilTag(vision.getLimelightName())) <= (Math.PI/20) && Math.abs(VisionAprilTag.straightLineZAprilTag(vision.getLimelightName())) <= ((4*(Math.PI))/75))
   {
     return true;
   }
