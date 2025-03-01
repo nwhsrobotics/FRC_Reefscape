@@ -25,7 +25,7 @@ public class VisionAprilTag {
     public static double tagDist;
     public static ArrayList<Integer> tagIds = new ArrayList<>();
 
-    private static double holdDuration = 100; 
+    private static double holdDuration = 200; 
     private static long timeDetected = 0;
 
     private static LimelightResults stableResults = null;
@@ -360,11 +360,11 @@ public class VisionAprilTag {
 
     //TODO: Tune this, how far left or right from april tag and distance limiter for isDetecting
     public static void offsetRight(String limelightName){
-        LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.3, 0);
+        LimelightHelpers.setFiducial3DOffset(limelightName, 0, -0.159, 0);
     }
 
     public static void offsetLeft(String limelightName){
-        LimelightHelpers.setFiducial3DOffset(limelightName, 0, -0.3, 0);
+        LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.159, 0);
     }
 
     public static void offsetCenter(String limelightName){

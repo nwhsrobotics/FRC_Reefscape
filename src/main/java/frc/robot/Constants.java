@@ -318,8 +318,8 @@ public final class Constants {
         public static final double distanceFromCenterForwards = 0.3; //in meters, straight distance to the camera from middle
         public static final double hypotenuseDistanceForwards = Math.hypot(horizontalOffsetForwards, distanceFromCenterForwards); // actual distance in 2d from middle
         public static final double thethaFromCenterForwards = -32; //this might be needed for angle offset
-        public static String llObjectDetectionNameForwards = "llf";
-        public static String llLocalizationNameForwards = "llf";
+        public static String llObjectDetectionNameForwards = "limelight";
+        public static String llLocalizationNameForwards = "limelight";
         public static double targetHeightForwards = 0;
         
         public static final double mountHeightBackwards = 1.32; //in meters

@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Positions;
+import frc.robot.autos.AlternativePathfindAprilTag;
 import frc.robot.autos.Auto;
 import frc.robot.commands.IntakeOuttakeCommand;
 import frc.robot.commands.L1CMD;
@@ -39,13 +40,13 @@ import frc.robot.util.Buttons;
 public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 
-    private final AlgaeArm algaeArm = new AlgaeArm();
+    //private final AlgaeArm algaeArm = new AlgaeArm();
 
-    private final IntakeOuttake intakeoutake = new IntakeOuttake();
+    //private final IntakeOuttake intakeoutake = new IntakeOuttake();
 
     //public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
-    public final ElevatorSysID elevatorSysID = new ElevatorSysID();
+    //public final ElevatorSysID elevatorSysID = new ElevatorSysID();
 
     private final VisionSubsystem limeLightForwards = new VisionSubsystem(Constants.LimelightConstants.llLocalizationNameForwards);
 
@@ -118,11 +119,11 @@ public class RobotContainer {
         //Gunner controlls 
         // new JoystickButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
         // new JoystickButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
-
+        /* 
         new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> algaeArm.triggerAlgaeArm(), algaeArm));
 
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
-        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake));
+        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); */
         
         //Driver controlls 
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::zeroGyro, swerveSubsystem));
@@ -158,7 +159,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        return new AlternativePathfindAprilTag(1, swerveSubsystem, limeLightForwards, "");
 
     
     
