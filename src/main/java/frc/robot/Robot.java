@@ -1,24 +1,13 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.VisionAprilTag;
-import frc.robot.subsystems.VisionGamePiece;
 import frc.robot.util.ImprovedPowerDistribution;
-import frc.robot.util.LimelightHelpers;
-import frc.robot.util.LimelightHelpers.LimelightResults;
-import frc.robot.util.LimelightHelpers.LimelightTarget_Barcode;
-import frc.robot.util.LimelightHelpers.LimelightTarget_Classifier;
-import frc.robot.util.LimelightHelpers.LimelightTarget_Detector;
-import frc.robot.util.LimelightHelpers.LimelightTarget_Fiducial;
-import frc.robot.util.LimelightHelpers.LimelightTarget_Retro;
 
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -83,13 +72,13 @@ public class Robot extends LoggedRobot {
 
         //TODO: Add static IP to Limelights and RoboRIO (Check which ones here work and remove comment others while doing so)
         for(int port = 5800; port <= 5809; port++){
-            PortForwarder.add(port, Constants.LimelightConstants.llLocalizationNameBackwards + ".local",port);
+            PortForwarder.add(port, Constants.LimelightConstants.llBack + ".local",port);
             // http://roborio-(teamnum)-FRC.local:5801
-            PortForwarder.add(port+10, Constants.LimelightConstants.llLocalizationNameForwards + ".local",port);
+            PortForwarder.add(port+10, Constants.LimelightConstants.llFront + ".local",port);
             // http://roborio-(teamnum)-FRC.local:5811
-            PortForwarder.add(port+20, "limelight-" + Constants.LimelightConstants.llLocalizationNameBackwards + ".local",port);
+            PortForwarder.add(port+20, "limelight-" + Constants.LimelightConstants.llBack + ".local",port);
             // http://roborio-(teamnum)-FRC.local:5821
-            PortForwarder.add(port+30, "limelight-" + Constants.LimelightConstants.llLocalizationNameForwards + ".local",port);
+            PortForwarder.add(port+30, "limelight-" + Constants.LimelightConstants.llFront + ".local",port);
             // http://roborio-(teamnum)-FRC.local:5831
             PortForwarder.add(port+40, "limelight.local",port);
             // http://roborio-(teamnum)-FRC.local:5841
