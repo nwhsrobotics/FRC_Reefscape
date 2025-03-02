@@ -210,9 +210,9 @@ public final class Constants {
         public static final Pose2d RIGHT_GROUND_START_PIECES = new Pose2d(1.219, 2.189, Rotation2d.fromDegrees(180)); 
 
         //These are the starting positions near the respective cages, they are on starting line, not in the cage itself
-        public static final Pose2d CAGE_A = new Pose2d(7.584, 7.283, Rotation2d.fromDegrees(180)); 
-        public static final Pose2d CAGE_B = new Pose2d(7.584, 6.185, Rotation2d.fromDegrees(180)); 
-        public static final Pose2d CAGE_C = new Pose2d(7.584, 5.056, Rotation2d.fromDegrees(180)); 
+        public static final Pose2d START_A = new Pose2d(7.584, 7.283, Rotation2d.fromDegrees(180)); 
+        public static final Pose2d START_B = new Pose2d(7.584, 6.185, Rotation2d.fromDegrees(180)); 
+        public static final Pose2d START_C = new Pose2d(7.584, 5.056, Rotation2d.fromDegrees(180)); 
 
         public static final Pose2d BACK_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60)); // POV_LEFT - Side 6
         public static final Pose2d BACK_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(1)); // A button - Side 5
@@ -318,8 +318,8 @@ public final class Constants {
         public static final double distanceFromCenterForwards = 0.3; //in meters, straight distance to the camera from middle
         public static final double hypotenuseDistanceForwards = Math.hypot(horizontalOffsetForwards, distanceFromCenterForwards); // actual distance in 2d from middle
         public static final double thethaFromCenterForwards = -32; //this might be needed for angle offset
-        public static String llObjectDetectionNameForwards = "limelight";
-        public static String llLocalizationNameForwards = "limelight";
+        public static String llObjectDetectionNameForwards = "limelight-llf";
+        public static String llFront = "limelight-llf";
         public static double targetHeightForwards = 0;
         
         public static final double mountHeightBackwards = 1.32; //in meters
@@ -329,8 +329,8 @@ public final class Constants {
         public static final double distanceFromCenterBackwards = 0.3; //in meters, straight distance to the camera from middle
         public static final double hypotenuseDistanceBackwards = Math.hypot(horizontalOffsetBackwards, distanceFromCenterBackwards); // actual distance in 2d from middle
         public static final double thethaFromCenterBackwards = -32; //this might be needed for angle offset
-        public static String llObjectDetectionNameBackwards = "llb";
-        public static String llLocalizationNameBackwards = "llb";
+        public static String llObjectDetectionNameBackwards = "limelight-llb";
+        public static String llBack = "limelight-llb";
         public static double targetHeightBackwards = 0;
         
     }

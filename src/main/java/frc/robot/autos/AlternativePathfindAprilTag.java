@@ -4,11 +4,8 @@
 
 package frc.robot.autos;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.LimelightConstants;
-import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionAprilTag;
 import frc.robot.subsystems.VisionSubsystem;
@@ -54,16 +51,16 @@ public class AlternativePathfindAprilTag extends Command {
     if(Math.abs(VisionAprilTag.horizontalOffsetXAprilTag(vision.getLimelightName()))>= (Math.PI/20)){
     
     swerve.drive(
-                VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
-                VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llLocalizationNameForwards),
-                VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llLocalizationNameForwards),
+                VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llFront),
+                VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
+                VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llFront),
                 swerve.isFieldRelative() && fieldRelative, false);
     }
     else{
       swerve.drive(
-        VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llLocalizationNameForwards),
-        VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llLocalizationNameForwards),
-        VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llLocalizationNameForwards),
+        VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llFront),
+        VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
+        VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llFront),
         swerve.isFieldRelative() && fieldRelative, false);
     }
 
@@ -79,14 +76,14 @@ public class AlternativePathfindAprilTag extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished()
-  { 
-    return false;}
-  //   if (Math.abs(VisionAprilTag.horizontalOffsetXAprilTag(vision.getLimelightName())) <= (Math.PI/20) && Math.abs(VisionAprilTag.straightLineZAprilTag(vision.getLimelightName())) <= ((4*(Math.PI))/75))
-  // {
-  //   return true;
-  // }
-  //   else{
-  //     return false;
-  //   }
-  // }
+  { // right now the magic numbers are 0.158m and 0.168m (this is still big gap, try to get them as low as 0.04m and 0.08m or less)
+    if (Math.abs(VisionAprilTag.horizontalOffsetXAprilTag(vision.getLimelightName())) <= (Math.PI/20) && 
+       Math.abs(VisionAprilTag.straightLineZAprilTag(vision.getLimelightName())) <= ((4*(Math.PI))/75))
+  {
+    return true;
+  }
+    else{
+      return false;
+    }
+  }
 }

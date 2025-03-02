@@ -19,7 +19,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -571,7 +570,7 @@ public class SwerveSubsystem extends SubsystemBase {
      * It is RECOMMENDED to stand still and be close to the April tag when resetting this way as it solely relies on vision
      */
     public void resetOdometryWithVision() {
-        String name = LimelightConstants.llLocalizationNameForwards;
+        String name = LimelightConstants.llFront;
         int pipeline = (int) LimelightHelpers.getCurrentPipelineIndex(name);
         //set the pipeline index to the high resolution april tag (less fps but high accuracy)
         LimelightHelpers.setPipelineIndex(name, 0);
