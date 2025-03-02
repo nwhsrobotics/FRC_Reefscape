@@ -51,16 +51,16 @@ public class AlternativePathfindAprilTag extends Command {
     if(Math.abs(VisionAprilTag.horizontalOffsetXAprilTag(vision.getLimelightName()))>= (Math.PI/20)){
     
     swerve.drive(
-                VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llFront),
-                VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
-                VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llFront),
+                VisionAprilTag.limelight_rangeSpeedZ_aprilTag(vision.getLimelightName()),
+                VisionAprilTag.horizontalOffsetSpeedXAprilTag(vision.getLimelightName()),
+                VisionAprilTag.limelight_aimSpeedX_proportional(vision.getLimelightName()),
                 swerve.isFieldRelative() && fieldRelative, false);
     }
     else{
       swerve.drive(
-        VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llFront),
-        VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
-        VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llFront),
+        VisionAprilTag.limelight_rangeSpeedZ_aprilTag(vision.getLimelightName()),
+        VisionAprilTag.horizontalOffsetSpeedXAprilTag(vision.getLimelightName()),
+        VisionAprilTag.limelight_aimSpeedX_proportional(vision.getLimelightName()),
         swerve.isFieldRelative() && fieldRelative, false);
     }
 

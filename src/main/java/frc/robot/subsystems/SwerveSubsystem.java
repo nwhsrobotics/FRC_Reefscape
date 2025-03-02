@@ -18,7 +18,10 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -144,7 +147,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
             // Pause for 500 milliseconds to allow the gyro to stabilize.
             // Set the yaw of the gyro to 0 afterwards (hardware offset).
-            // TODO: Calculate sysid MOI for swerve/pathplanner
+            // TODO: Calculate sysid MOI for swerve/pathplanner and elastic notifications
             //gyro.reset();
             Commands.waitUntil(() -> !gyro.isCalibrating()).andThen(new InstantCommand(() -> gyro.zeroYaw()));
             /*Commands.waitSeconds(0.5)
@@ -375,7 +378,7 @@ public class SwerveSubsystem extends SubsystemBase {
         Logger.recordOutput("swerve.drive.back.right.velocity", backRight.getDriveVelocity());
 
         // Below code is just to test elastic dashboard custom widget
-        /*SmartDashboard.putData("Swerve Drive", new Sendable() {
+        SmartDashboard.putData("Swerve Drive", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.setSmartDashboardType("SwerveDrive");
@@ -394,7 +397,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
                 builder.addDoubleProperty("Robot Angle", () -> gyro.getAngle(), null);
             }
-            });*/
+            });
     }
 
     /**
@@ -437,14 +440,14 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
-        /*if (VisionGamePiece.isAprilTagPipeline(Constants.LimelightConstants.llLocalizationNameForwards)) {
+        if (VisionGamePiece.isAprilTagPipeline(LimelightConstants.llFront)) {
 
             boolean useMegaTag2 = true; //set to false to use MegaTag1
             // we might use megatag1 when disabled to auto orient and megatag2 when enable
             // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78 
             boolean doRejectUpdate = false;
             if (!useMegaTag2) {
-                LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.LimelightConstants.llLocalizationNameForwards);
+                LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llFront);
 
                 if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
                     if (mt1.rawFiducials[0].ambiguity > .7) {
@@ -465,8 +468,8 @@ public class SwerveSubsystem extends SubsystemBase {
                             mt1.timestampSeconds);
                 }
             } else if (useMegaTag2) {
-                LimelightHelpers.SetRobotOrientation(Constants.LimelightConstants.llLocalizationNameForwards, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-                LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(Constants.LimelightConstants.llLocalizationNameForwards);
+                LimelightHelpers.SetRobotOrientation(LimelightConstants.llFront, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+                LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.llFront);
                 if (Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
                 {
                     doRejectUpdate = true;
@@ -485,7 +488,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 Logger.recordOutput("swerve.odometer.yCoordinate", odometer.getEstimatedPosition().getY());
                 Logger.recordOutput("swerve.odometer.rotation", odometer.getEstimatedPosition().getRotation().getDegrees());
             }
-        }*/
+        }
     }
 
     /**

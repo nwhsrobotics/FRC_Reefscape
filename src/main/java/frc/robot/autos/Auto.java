@@ -113,7 +113,6 @@ public class Auto extends SequentialCommandGroup {
                 
             ;
         }
-        exitReturnCommands.addCommands();
 
         return exitReturnCommands;
     }
