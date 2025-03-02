@@ -96,7 +96,8 @@ public class RobotContainer {
         //autoChooser = AutoBuilder.buildAutoChooser(); 
         autoChooser = new SendableChooser<>();
         //should be using arrays since the list size doesn't change, 
-        // but list is easier for new members to understand
+        // but list is easier for new members to understand 
+        // plus allows an option for dynamic location changes
         autoChooser.addOption("A to 6A", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<String>(List.of("[6A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.START_A));
         autoChooser.addOption("A1 to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.START_A));
         autoChooser.addOption("A to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.START_A));

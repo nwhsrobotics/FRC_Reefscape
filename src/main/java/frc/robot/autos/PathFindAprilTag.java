@@ -23,7 +23,7 @@ public class PathFindAprilTag extends Command {
   public PathFindAprilTag(int targetAprilTagId, SwerveSubsystem swerve, VisionSubsystem vision, String targetLocation) {
     Pose2d object = new Pose2d();
     //object = AprilTags.aprilTags.get(targetAprilTagId-1);
-    object = VisionAprilTag.transformTargetLocation(swerve.getPose(), Constants.LimelightConstants.llFront);
+    object = VisionAprilTag.transformTargetLocation(swerve.getPose(), vision.getLimelightName());
     this.swerve = swerve;
     this.targetAprilTagId = targetAprilTagId;
     this.vision = vision;
