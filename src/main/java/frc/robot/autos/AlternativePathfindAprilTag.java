@@ -21,12 +21,13 @@ public class AlternativePathfindAprilTag extends Command {
   private Command pathFind;
 
 
-  //TODO: Fix the limelight names constant based on if station or reef, removed unused parameters, and add in Auto.java, right, center, and left based on target loc and camera, etc
+
   // A-> Right, B-> Left, S-> Center (always end with center)
   /** Creates a new AlternativePathfindAprilTag. */
   public AlternativePathfindAprilTag(int targetAprilTagId, SwerveSubsystem swerve, VisionSubsystem vision, String targetLocation) {
     this.swerve=swerve;
     this.vision=vision;
+    addRequirements(swerve);
     this.targetAprilTagId=targetAprilTagId;
     if(targetLocation.indexOf("B") != -1){
       VisionAprilTag.offsetLeft(vision.getLimelightName());

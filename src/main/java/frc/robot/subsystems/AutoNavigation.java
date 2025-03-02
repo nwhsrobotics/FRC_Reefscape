@@ -98,7 +98,7 @@ public class AutoNavigation {
         if (navigationCommand == null || navigationCommand.isScheduled()) {
             return;
         }
-
+        navigationCommand.addRequirements(swerve);
         navigationCommand.schedule();
     }
 
@@ -123,7 +123,8 @@ public class AutoNavigation {
         }
 
         navigationCommand = swerve.pathfindToPosition(destination);
-        //navigationCommand.schedule();
+        navigationCommand.addRequirements(swerve);
+        navigationCommand.schedule();
         Logger.recordOutput("autonavigator.destination", destination);
     }
 }

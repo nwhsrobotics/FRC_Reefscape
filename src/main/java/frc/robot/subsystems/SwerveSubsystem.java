@@ -311,7 +311,7 @@ public class SwerveSubsystem extends SubsystemBase {
                     path,
                     constraints
             );
-            //TODO: maybe no need to schedule it or addrequirements
+            //maybe no need to schedule it or addrequirements
             pathfindingCommand.addRequirements(this);
             pathfindingCommand.schedule();
             return pathfindingCommand;
@@ -335,9 +335,9 @@ public class SwerveSubsystem extends SubsystemBase {
                 0.0 // Goal end velocity in meters/sec
         );
         //TODO: Fix autonav (probably dont need addrequirements)
-        command.addRequirements(this);
+        //command.addRequirements(this);
         //and also don't need to schedule here? maybe schedule in autonav
-        command.schedule();
+        //command.schedule();
 
         return command;
     }

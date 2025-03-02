@@ -28,7 +28,6 @@ import frc.robot.commands.L3CMD;
 import frc.robot.commands.L4CMD;
 import frc.robot.commands.LoadStation;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
-import frc.robot.subsystems.AlgaeArm;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSysID;
 import frc.robot.subsystems.IntakeOuttake;
@@ -126,7 +125,7 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); */
         
         //Driver controlls 
-        new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::zeroGyro, swerveSubsystem));
+        new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::resetOdometryWithVision, swerveSubsystem));
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
         // NEED TO ADD THE FAST/SLOW MODE TOGGLE (see controller diagram)
         // NEED TO ADD THE STATION 1/2 TOGGLE THING (see controller diagram)

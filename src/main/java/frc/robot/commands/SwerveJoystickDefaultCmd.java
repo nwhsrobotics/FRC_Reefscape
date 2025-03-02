@@ -66,7 +66,7 @@ public class SwerveJoystickDefaultCmd extends Command {
                     -MathUtil.applyDeadband(xbox.getLeftX(), OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(xbox.getRightX(), OIConstants.kDriveDeadband),
                     swerveSubsystem.isFieldRelative() && fieldRelative, true);
-            //TODO: invert if red so drivers dont have to abitarly reset gyro and field relative everytime
+            //invert if red so drivers dont have to abitarly reset gyro and field relative everytime
             /*swerveSubsystem.drive(
                     -MathUtil.applyDeadband(invertIfRed(xbox.getLeftY()), OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(invertIfRed(xbox.getLeftX()), OIConstants.kDriveDeadband),
