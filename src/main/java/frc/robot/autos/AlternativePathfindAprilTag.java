@@ -24,7 +24,7 @@ public class AlternativePathfindAprilTag extends Command {
   public AlternativePathfindAprilTag(int targetAprilTagId, SwerveSubsystem swerve, VisionSubsystem vision, String targetLocation) {
     this.swerve=swerve;
     this.vision=vision;
-    addRequirements(swerve);
+    //addRequirements(swerve);
     this.targetAprilTagId=targetAprilTagId;
     if(targetLocation.indexOf("B") != -1){
       VisionAprilTag.offsetLeft(vision.getLimelightName());
@@ -58,9 +58,9 @@ public class AlternativePathfindAprilTag extends Command {
     }
     else{
       swerve.drive(
-        VisionAprilTag.limelight_rangeSpeedZ_aprilTag(vision.getLimelightName()),
-        VisionAprilTag.horizontalOffsetSpeedXAprilTag(vision.getLimelightName()),
-        VisionAprilTag.limelight_aimSpeedX_proportional(vision.getLimelightName()),
+          VisionAprilTag.limelight_rangeSpeedZ_aprilTag(vision.getLimelightName()),
+          VisionAprilTag.horizontalOffsetSpeedXAprilTag(vision.getLimelightName()),
+          VisionAprilTag.limelight_aimSpeedX_proportional(vision.getLimelightName()),
         swerve.isFieldRelative() && fieldRelative, false);
     }
 
@@ -78,7 +78,7 @@ public class AlternativePathfindAprilTag extends Command {
   public boolean isFinished()
   { // right now the magic numbers are 0.158m and 0.168m (this is still big gap, try to get them as low as 0.04m and 0.08m or less)
     if (Math.abs(VisionAprilTag.horizontalOffsetXAprilTag(vision.getLimelightName())) <= (Math.PI/20) && 
-       Math.abs(VisionAprilTag.straightLineZAprilTag(vision.getLimelightName())) <= ((4*(Math.PI))/75))
+       Math.abs(VisionAprilTag.straightLineZAprilTag(vision.getLimelightName())) <= ((Math.PI+2)/10))
   {
     return true;
   }
