@@ -9,15 +9,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "L4"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "[A] [6B]"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
                 }
               }
             ]
@@ -26,24 +26,24 @@
         {
           "type": "named",
           "data": {
-            "name": "Out Take"
+            "name": "Outtake"
           }
         },
         {
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": " down"
-                }
-              },
               {
                 "type": "path",
                 "data": {
                   "pathName": "[6B] [S1]"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Lower"
+                }
               }
             ]
           }
@@ -55,45 +55,57 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "L4"
-                }
-              },
               {
                 "type": "path",
                 "data": {
                   "pathName": "[S1] [5B]"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
+                }
               }
             ]
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Out Take"
+            "name": "Outtake"
           }
         },
         {
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": " down"
-                }
-              },
               {
                 "type": "path",
                 "data": {
                   "pathName": "[5B] [S1]"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Lower"
+                }
               }
             ]
           }
@@ -105,44 +117,25 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "L4"
-                }
-              },
               {
                 "type": "path",
                 "data": {
                   "pathName": "[S1] [6A]"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Out Take"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
+              },
               {
                 "type": "named",
                 "data": {
-                  "name": "elvator down"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "[6A] [S1]"
+                  "name": "L4"
                 }
               }
             ]
@@ -155,28 +148,71 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Outtake"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "L4"
+                  "pathName": "[6A] [S1]"
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "[S1] [5A]"
+                  "name": "Lower"
                 }
               }
             ]
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Out Take"
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "[S1] [5A]"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Outtake"
           }
         }
       ]
