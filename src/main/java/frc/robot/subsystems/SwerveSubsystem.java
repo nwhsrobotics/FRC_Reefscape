@@ -378,7 +378,7 @@ public class SwerveSubsystem extends SubsystemBase {
         Logger.recordOutput("swerve.drive.back.right.velocity", backRight.getDriveVelocity());
 
         // Below code is just to test elastic dashboard custom widget
-        SmartDashboard.putData("Swerve Drive", new Sendable() {
+       /*  SmartDashboard.putData("Swerve Drive", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.setSmartDashboardType("SwerveDrive");
@@ -397,7 +397,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
                 builder.addDoubleProperty("Robot Angle", () -> gyro.getAngle(), null);
             }
-            });
+            });*/
     }
 
     /**
@@ -440,6 +440,7 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
+        /*
         if (VisionGamePiece.isAprilTagPipeline(LimelightConstants.llFront)) {
 
             boolean useMegaTag2 = true; //set to false to use MegaTag1
@@ -489,6 +490,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 Logger.recordOutput("swerve.odometer.rotation", odometer.getEstimatedPosition().getRotation().getDegrees());
             }
         }
+            */
     }
 
     /**
