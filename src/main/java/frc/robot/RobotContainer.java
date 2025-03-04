@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -132,6 +133,8 @@ public class RobotContainer {
         new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_MID_REEF)));
         new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));
     
+        //new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));
+        new JoystickButton(driver, Buttons.B).onTrue(swerveSubsystem.pathFindThenFollowPath("[A1] [6A]"));
         //TODO: This can work
         new JoystickButton(driver, Buttons.LEFT_BUMPER).whileTrue(AutoBuilder.pathfindToPose(Positions.BACK_LEFT_REEF, AutoConstants.kPathfindingConstraints, 0.0));
         /*
@@ -155,10 +158,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new AlternativePathfindAprilTag(1, swerveSubsystem, limeLightForwards, "");
-        
-        //return autoChooser.getSelected();
-    
+      //return new AlternativePathfindAprilTag(1, swerveSubsystem, limeLightForwards, "");
+       return autoChooser.getSelected();
     
     }
 }

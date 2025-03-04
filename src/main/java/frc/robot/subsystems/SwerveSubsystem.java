@@ -314,11 +314,13 @@ public class SwerveSubsystem extends SubsystemBase {
                     constraints
             );
             //maybe no need to schedule it or addrequirements
-            pathfindingCommand.addRequirements(this);
-            pathfindingCommand.schedule();
-            return pathfindingCommand;
+            //pathfindingCommand.addRequirements(this);
+            //pathfindingCommand.schedule();
+            //return pathfindingCommand;
+            Command e = AutoBuilder.followPath(path);
+            e.schedule();
             // ) or just this
-            //return AutoBuilder.followPath(path);
+            return e;
         } catch (Exception ignored) {
         }
         return new InstantCommand();
@@ -348,7 +350,7 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         updateOdometry();
-
+/* 
         // Log position of robot.
         Logger.recordOutput("swerve.pose", getPose());
 
