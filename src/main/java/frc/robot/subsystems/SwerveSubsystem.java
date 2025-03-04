@@ -318,7 +318,7 @@ public class SwerveSubsystem extends SubsystemBase {
             //pathfindingCommand.schedule();
             //return pathfindingCommand;
             Command e = AutoBuilder.followPath(path);
-            e.schedule();
+            //e.schedule();
             // ) or just this
             return e;
         } catch (Exception ignored) {
