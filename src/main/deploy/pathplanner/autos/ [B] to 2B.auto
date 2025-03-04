@@ -11,7 +11,69 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[B] [2B]"
+                  "pathName": "[B] [2A]"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Outtake"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "[2A] [S2]"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Lower"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "[S2] [2B]"
                 }
               },
               {
@@ -73,7 +135,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[S2] [2A]"
+                  "pathName": "[S2] [3A]"
                 }
               },
               {
@@ -94,7 +156,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L4"
+            "name": "Outtake"
           }
         },
         {
@@ -104,7 +166,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[2A] [S2]"
+                  "pathName": "[3A] [S2]"
                 }
               },
               {
@@ -135,7 +197,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[S2] [2A]"
+                  "pathName": "[S2] [3B]"
                 }
               },
               {
