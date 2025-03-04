@@ -80,6 +80,8 @@ public class VisionSubsystem extends SubsystemBase {
         //Logger.recordOutput(llname + ".objectDetected", LimelightHelpers.getTV(llname));
 
         VisionGamePiece.stabilize(limelightName);
+
+        Logger.recordOutput("detectingValid", isDetectingTargetID("[1A]"));
     }
 
     public String getLimelightName(){

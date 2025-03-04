@@ -36,17 +36,17 @@ public class Auto extends SequentialCommandGroup {
         this.initialPos = initialPos;
         this.visionForwards = visionForwards;
         this.visionBackwards = visionBackwards;
-        LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront);
-        LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront);
-        
+        // LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront);
+        // LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront);
+        // Elastic.Notification.notif("Auto done");
         addCommands(
                 // Reset robot odometry to a initial position.
-                Elastic.Notification notification = new Elastic.Notification(Elastic.Notification.NotificationLevel.ERROR, "Error Notification", "This is an example error notification.");
-                Elastic.sendNotification(notification);
                 new InstantCommand(() -> flipResetOdometry(initialPos)),
+                //new InstantCommand(() -> Elastic.Notification.notif("AUTO RUNNING")),
                 NamedCommands.getCommand("autoInit"),
                 NamedCommands.getCommand("Output"),
-                scoreCoral()
+                scoreCoral(),
+                //new InstantCommand(() -> Elastic.Notification.notif("AUTO RUNNING"))
         );
     }
 
@@ -61,7 +61,7 @@ public class Auto extends SequentialCommandGroup {
     public SequentialCommandGroup scoreCoral() {
         SequentialCommandGroup exitReturnCommands = new SequentialCommandGroup();
             //Checks if robot is at position A
-            if (getLocation(initialPos).equals(Positions.START_A)) {
+            if (initialPos.equals(Positions.START_A)) {
                 //Starts from position A and then goes to first position in list 
                 exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] " + locationsToGo.get(0)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
                 //once the april tag is detected, pathFindAprilTag comes in and adjusts the robot to the april tag
@@ -79,7 +79,8 @@ public class Auto extends SequentialCommandGroup {
 
             }
             //Checks if robot is at position B
-            if (getLocation(initialPos).equals(Positions.START_B)) {
+            if (initialPos.equals(Positions.START_B)) {
+                //exitReturnCommands.addCommands(new InstantCommand(() -> Elastic.Notification.notif("B AUTO")));
                 //Starts from position B and then goes to first position in list
                 exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[B] " + locationsToGo.get(0)).onlyWhile(()-> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
                 exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
@@ -99,7 +100,7 @@ public class Auto extends SequentialCommandGroup {
             }
 
             //Checks if robot is at position C
-            if (getLocation(initialPos).equals(Positions.START_C)) {
+            if (initialPos.equals(Positions.START_C)) {
                 //Starts from position C and then goes to first position in list
                 exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[C] " + locationsToGo.get(0)).onlyWhile(()-> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
                 exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
