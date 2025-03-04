@@ -9,15 +9,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "L4"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "[A] [1B]"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
                 }
               }
             ]
@@ -26,7 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Out Take"
+            "name": "Outtake"
           }
         },
         {
@@ -34,15 +34,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": " down"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "[1B] [S1]"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Lower"
                 }
               }
             ]
@@ -76,7 +76,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Out Take"
+            "name": "Outtake"
           }
         },
         {
@@ -84,15 +84,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": " down"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "[1A] [S1]"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
                 }
               }
             ]
@@ -126,7 +126,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Out Take"
+            "name": "Outtake"
           }
         },
         {
@@ -134,15 +134,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "elvator down"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "[6B] [S1]"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Lower"
                 }
               }
             ]
@@ -176,7 +176,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Out Take"
+            "name": "Outtake"
           }
         }
       ]
