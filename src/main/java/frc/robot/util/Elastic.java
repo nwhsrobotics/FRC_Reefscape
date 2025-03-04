@@ -262,6 +262,11 @@ public final class Elastic {
       this.height = height;
     }
 
+    public static void notif(String msg){
+      Elastic.Notification notification = new Elastic.Notification(Elastic.Notification.NotificationLevel.INFO, "Notif", msg);
+      Elastic.sendNotification(notification);
+    }
+
     /**
      * Gets the height of the notification
      *
