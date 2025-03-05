@@ -28,8 +28,8 @@ public class SwerveModule {
     //private final SparkFlex turningMotor;
 
     // 2024 robot
-    private final SparkMax driveMotor;
-    private final SparkMax turningMotor;
+    private final SparkFlex driveMotor;
+    private final SparkFlex turningMotor;
 
     private final SparkBaseConfig driveMotorConfig;
     private final SparkBaseConfig turningMotorConfig;
@@ -77,11 +77,11 @@ public class SwerveModule {
         //driveMotor = new ImprovedCanSparkFlex(driveMotorId, ImprovedCanSparkFlex.MotorKind.NEO, driveMotorConfig, IdleMode.kBrake);
 
         // 2024 robot
-        driveMotorConfig = new SparkMaxConfig();
+        driveMotorConfig = new SparkFlexConfig();
         driveMotorConfig.inverted(driveMotorReversed);
         driveMotorConfig.encoder.positionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
         driveMotorConfig.encoder.velocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
-        driveMotor = new ImprovedCanSpark(driveMotorId, ImprovedCanSpark.MotorKind.NEO, driveMotorConfig, IdleMode.kBrake);
+        driveMotor = new ImprovedCanSparkFlex(driveMotorId, ImprovedCanSparkFlex.MotorKind.NEO, driveMotorConfig, IdleMode.kBrake);
         //driveMotor.configure(driveMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
         
         //2025 robot
@@ -89,11 +89,11 @@ public class SwerveModule {
         //turningMotor = new ImprovedCanSparkFlex(turningMotorId, ImprovedCanSparkFlex.MotorKind.NEO, turningMotorConfig, IdleMode.kBrake);
 
         // 2024 robot
-        turningMotorConfig = new SparkMaxConfig();
+        turningMotorConfig = new SparkFlexConfig();
         turningMotorConfig.inverted(turningMotorReversed);
         turningMotorConfig.encoder.positionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad);
         turningMotorConfig.encoder.velocityConversionFactor(ModuleConstants.kTurningEncoderRPM2RadPerSec);
-        turningMotor = new ImprovedCanSpark(turningMotorId, ImprovedCanSpark.MotorKind.NEO, turningMotorConfig, IdleMode.kBrake);
+        turningMotor = new ImprovedCanSparkFlex(turningMotorId, ImprovedCanSparkFlex.MotorKind.NEO, turningMotorConfig, IdleMode.kBrake);
         //turningMotor.configure(driveMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
         // Initialize the drive and turning encoders

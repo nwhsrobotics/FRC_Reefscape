@@ -174,6 +174,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        
         if (robotContainer.swerveSubsystem.autonavigator.isEnabled()) {
             if (MathUtil.applyDeadband(robotContainer.driver.getLeftX(), OIConstants.kDriveDeadband) != 0 || 
                 MathUtil.applyDeadband(robotContainer.driver.getLeftY(), OIConstants.kDriveDeadband) != 0 || 
@@ -184,6 +185,7 @@ public class Robot extends LoggedRobot {
                 robotContainer.swerveSubsystem.autonavigator.resumeNavigation();
             }
         }
+            
     }
 
     @Override

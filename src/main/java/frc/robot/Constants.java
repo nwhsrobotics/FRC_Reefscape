@@ -18,26 +18,26 @@ import java.util.Map;
 
 public final class Constants {
     public static final class CANAssignments {
-        // 2024 robot
-        public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6;
-        public static final int BACK_LEFT_DRIVE_MOTOR_ID = 1;
-        public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 10;
-        public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 3;
+        
+        // public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6;
+        // public static final int BACK_LEFT_DRIVE_MOTOR_ID = 1;
+        // public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 10;
+        // public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 3;
 
-        public static final int FRONT_LEFT_STEER_MOTOR_ID = 8;
-        public static final int BACK_LEFT_STEER_MOTOR_ID = 2;
-        public static final int FRONT_RIGHT_STEER_MOTOR_ID = 11;
-        public static final int BACK_RIGHT_STEER_MOTOR_ID = 4;
+        // public static final int FRONT_LEFT_STEER_MOTOR_ID = 8;
+        // public static final int BACK_LEFT_STEER_MOTOR_ID = 2;
+        // public static final int FRONT_RIGHT_STEER_MOTOR_ID = 11;
+        // public static final int BACK_RIGHT_STEER_MOTOR_ID = 4;
 
-        public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 22;
-        public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 20;
-        public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 21;
-        public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 23;
+        //public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 22;
+        // public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 20;
+        // public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 21;
+        // public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 23;
         public static final int ALGAE_ABSOLUTE_ENCODER_ID = 24;
         public static final int ALGAE_MOTOR_ID = 25;
 
         // 2025 robot
-        /*
+        
         public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
         public static final int BACK_LEFT_DRIVE_MOTOR_ID = 7;
         public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
@@ -51,13 +51,13 @@ public final class Constants {
         public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 9;
         public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 12;
         public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 10;
-        public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 11;*/
+        public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 11;
 
         //ele can IDs
         public static final int LEFT_ELEVATOR_MOTOR_ID = 13;
         public static final int RIGHT_ELEVATOR_MOTOR_ID = 14;
-        public static final int CLIMB_ABSOLUTE_ENCODER_LEFT_ID = 15;
-        public static final int CLIMB_ABSOLUTE_ENCODER_RIGHT_ID = 16;
+        //public static final int CLIMB_ABSOLUTE_ENCODER_LEFT_ID = 15;
+        //public static final int CLIMB_ABSOLUTE_ENCODER_RIGHT_ID = 16;
 
 
         public static final int PDU_ID = 24;
@@ -156,18 +156,19 @@ public final class Constants {
         
 
         //THESE ONES ARE FOR THE 2025 ROBOT 
-        //public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 0.6212622190936846;//2.66 + Math.PI;
-        //public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = -0.679553489033339;//5.24 - Math.PI;
-        //public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 2.103087660191214;//0.61 + Math.PI;
-        //public static final double kBackRightDriveAbsoluteEncoderOffsetRad = -2.2534177774040067;//5.20 - Math.PI;
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 0.6212622190936846;//2.66 + Math.PI;
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = -0.679553489033339;//5.24 - Math.PI;
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 2.103087660191214;//0.61 + Math.PI;
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = -2.2534177774040067;//5.20 - Math.PI;
 
 
         //2024 ROBOT
+        /*
         public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = -1.0998642249140047;//2.66 + Math.PI;
         public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 2.1475731030398975;//5.24 - Math.PI;
         public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = -1.0829904362472627;//0.61 + Math.PI;
         public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 1.0737865515199487;//5.20 - Math.PI;
-        
+        */
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = 6380.0 / 60.0 * (ModuleConstants.kDriveMotorGearRatio) * ModuleConstants.kWheelDiameterMeters * Math.PI; // set up for NEOs to drive
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = kPhysicalMaxSpeedMetersPerSecond / Math.hypot(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0); //adapted from SDS
@@ -245,10 +246,18 @@ public final class Constants {
         //units are most likely in roatations
         public static final double MAX_Elevator_HEIGHT = 100.0; // Adjust as needed
         public static final double MIN_Elevator_HEIGHT = 0.0;
-        public static final double ELEVATOR_GEAR_RATIO = 0.0;
+        public static final double ELEVATOR_GEAR_RATIO = 1.0/3.0; //3:1, change later to 12:1
 
-        public static final double PULLEY_DIAMETER_METERS = 0.0;
-        public static final double ELEVATOR_MOTOR_ENCODER_ROT2METER = ELEVATOR_GEAR_RATIO * Math.PI * PULLEY_DIAMETER_METERS;
+        public static final double SPROCKET_TEETH = 22.0;
+        public static final double CHAIN_PITCH_INCH = 0.25;
+
+        public static final double METERS_PER_INCH = 0.0254;
+
+        public static final double ELEVATOR_STAGES = 3.0;
+
+
+
+        public static final double ELEVATOR_MOTOR_ENCODER_ROT2METER = ELEVATOR_GEAR_RATIO * SPROCKET_TEETH * CHAIN_PITCH_INCH * METERS_PER_INCH * ELEVATOR_STAGES;
         public  static final double ELEVATOR_ENCODER_METER_PER_SECONDS = ELEVATOR_MOTOR_ENCODER_ROT2METER/60;
     }
 

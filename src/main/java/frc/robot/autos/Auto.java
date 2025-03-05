@@ -13,6 +13,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.VisionAprilTag;
 import frc.robot.subsystems.VisionGamePiece;
+import frc.robot.util.Elastic;
 import frc.robot.util.LimelightHelpers;
 import frc.robot.util.LimelightHelpers.LimelightResults;
 import static java.util.Map.entry;
@@ -35,13 +36,17 @@ public class Auto extends SequentialCommandGroup {
         this.initialPos = initialPos;
         this.visionForwards = visionForwards;
         this.visionBackwards = visionBackwards;
+        // LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront);
+        // LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront);
+        // Elastic.Notification.notif("Auto done");
         addCommands(
                 // Reset robot odometry to a initial position.
                 new InstantCommand(() -> flipResetOdometry(initialPos)),
-            
+                //new InstantCommand(() -> Elastic.Notification.notif("AUTO RUNNING")),
                 NamedCommands.getCommand("autoInit"),
                 NamedCommands.getCommand("Output"),
-                scoreCoral()
+                scoreCoral(),
+                //new InstantCommand(() -> Elastic.Notification.notif("AUTO RUNNING"))
         );
     }
 
@@ -56,7 +61,7 @@ public class Auto extends SequentialCommandGroup {
     public SequentialCommandGroup scoreCoral() {
         SequentialCommandGroup exitReturnCommands = new SequentialCommandGroup();
             //Checks if robot is at position A
-            if (swerve.getPose().getY() > 7 && swerve.getPose().getY() < 7.50) {
+            if (initialPos.equals(Positions.START_A)) {
                 //Starts from position A and then goes to first position in list 
                 exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] " + locationsToGo.get(0)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
                 //once the april tag is detected, pathFindAprilTag comes in and adjusts the robot to the april tag
@@ -74,7 +79,8 @@ public class Auto extends SequentialCommandGroup {
 
             }
             //Checks if robot is at position B
-            if (swerve.getPose().getY() > 5.90 && swerve.getPose().getY() < 6.50) {
+            if (initialPos.equals(Positions.START_B)) {
+                //exitReturnCommands.addCommands(new InstantCommand(() -> Elastic.Notification.notif("B AUTO")));
                 //Starts from position B and then goes to first position in list
                 exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[B] " + locationsToGo.get(0)).onlyWhile(()-> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
                 exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
@@ -94,7 +100,7 @@ public class Auto extends SequentialCommandGroup {
             }
 
             //Checks if robot is at position C
-            if (swerve.getPose().getY() > 4.80 && swerve.getPose().getY() < 5.40) {
+            if (initialPos.equals(Positions.START_C)) {
                 //Starts from position C and then goes to first position in list
                 exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[C] " + locationsToGo.get(0)).onlyWhile(()-> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
                 exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
@@ -125,15 +131,15 @@ public class Auto extends SequentialCommandGroup {
      */
 
     public void flipResetOdometry(Pose2d loc) {
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            swerve.resetOdometry(FlippingUtil.flipFieldPose(loc));
-        } else {
-            swerve.resetOdometry(loc);
-        }
+        swerve.resetOdometry(getLocation(loc));
     }
 
-    public void addCommandActions(SequentialCommandGroup commands, String startLocation, String station){
-        
+    public Pose2d getLocation(Pose2d loc){
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+            return FlippingUtil.flipFieldPose(loc);
+        } else {
+            return loc;
+        }
     }
 }
