@@ -246,7 +246,7 @@ public final class Constants {
         //units are most likely in roatations
         public static final double MAX_Elevator_HEIGHT = 100.0; // Adjust as needed
         public static final double MIN_Elevator_HEIGHT = 0.0;
-        public static final double ELEVATOR_GEAR_RATIO = 1.0/3.0; //3:1, change later to 12:1
+        public static final double ELEVATOR_GEAR_RATIO = 1.0/12.0; //3:1, change later to 12:1
 
         public static final double SPROCKET_TEETH = 22.0;
         public static final double CHAIN_PITCH_INCH = 0.25;
