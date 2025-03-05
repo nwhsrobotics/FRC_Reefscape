@@ -36,7 +36,7 @@ public class RobotContainer {
 
     //private final IntakeOuttake intakeoutake = new IntakeOuttake();
 
-    public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    //public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
     //public final ElevatorSysID elevatorSysID = new ElevatorSysID();
 
@@ -107,7 +107,7 @@ public class RobotContainer {
         autoChooser.addOption("A to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.START_A));
         autoChooser.addOption("A1 to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[4A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.START_A));
         autoChooser.addOption("B to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[1A]", "[1B]", "[5A]", "[5B]")), Constants.Positions.START_B));
-        autoChooser.addOption("B1 to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[1A]", "[5B]", "[1A]", "[5B]")), Constants.Positions.START_B));
+        autoChooser.addOption("B1 to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[1B]", "[5B]", "[1A]", "[5B]")), Constants.Positions.START_B));
         autoChooser.addOption("C to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[4A]", "[4B]", "[3A]", "[3B]")), Constants.Positions.START_C));
         autoChooser.addOption("C1 to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[3A]", "[4B]", "[3A]", "[3B]")), Constants.Positions.START_C));
 

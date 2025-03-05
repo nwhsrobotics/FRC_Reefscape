@@ -350,7 +350,7 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         updateOdometry();
-/* 
+
         // Log position of robot.
         Logger.recordOutput("swerve.pose", getPose());
 
@@ -399,7 +399,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
                 builder.addDoubleProperty("Robot Angle", () -> gyro.getAngle(), null);
             }
-            });*/
+            });
     }
 
     /**
