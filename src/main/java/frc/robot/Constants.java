@@ -19,39 +19,39 @@ import java.util.Map;
 public final class Constants {
     public static final class CANAssignments {
         
-        // public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6;
-        // public static final int BACK_LEFT_DRIVE_MOTOR_ID = 1;
-        // public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 10;
-        // public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 3;
+        public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6;
+        public static final int BACK_LEFT_DRIVE_MOTOR_ID = 1;
+        public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 10;
+        public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 3;
 
-        // public static final int FRONT_LEFT_STEER_MOTOR_ID = 8;
-        // public static final int BACK_LEFT_STEER_MOTOR_ID = 2;
-        // public static final int FRONT_RIGHT_STEER_MOTOR_ID = 11;
-        // public static final int BACK_RIGHT_STEER_MOTOR_ID = 4;
+        public static final int FRONT_LEFT_STEER_MOTOR_ID = 8;
+        public static final int BACK_LEFT_STEER_MOTOR_ID = 2;
+        public static final int FRONT_RIGHT_STEER_MOTOR_ID = 11;
+        public static final int BACK_RIGHT_STEER_MOTOR_ID = 4;
 
-        //public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 22;
-        // public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 20;
-        // public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 21;
-        // public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 23;
+        public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 22;
+        public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 20;
+        public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 21;
+        public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 23;
         public static final int ALGAE_ABSOLUTE_ENCODER_ID = 24;
         public static final int ALGAE_MOTOR_ID = 25;
 
         // 2025 robot
         
-        public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
-        public static final int BACK_LEFT_DRIVE_MOTOR_ID = 7;
-        public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
-        public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 5;
+        // public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
+        // public static final int BACK_LEFT_DRIVE_MOTOR_ID = 7;
+        // public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
+        // public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 5;
 
-        public static final int FRONT_LEFT_STEER_MOTOR_ID = 2;
-        public static final int BACK_LEFT_STEER_MOTOR_ID = 8;
-        public static final int FRONT_RIGHT_STEER_MOTOR_ID = 4;
-        public static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
+        // public static final int FRONT_LEFT_STEER_MOTOR_ID = 2;
+        // public static final int BACK_LEFT_STEER_MOTOR_ID = 8;
+        // public static final int FRONT_RIGHT_STEER_MOTOR_ID = 4;
+        // public static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
 
-        public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 9;
-        public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 12;
-        public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 10;
-        public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 11;
+        // public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 9;
+        // public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 12;
+        // public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 10;
+        // public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 11;
 
         //ele can IDs
         public static final int LEFT_ELEVATOR_MOTOR_ID = 13;
@@ -156,19 +156,19 @@ public final class Constants {
         
 
         //THESE ONES ARE FOR THE 2025 ROBOT 
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 0.6212622190936846;//2.66 + Math.PI;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = -0.679553489033339;//5.24 - Math.PI;
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 2.103087660191214;//0.61 + Math.PI;
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = -2.2534177774040067;//5.20 - Math.PI;
+        // public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 0.6212622190936846;//2.66 + Math.PI;
+        // public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = -0.679553489033339;//5.24 - Math.PI;
+        // public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 2.103087660191214;//0.61 + Math.PI;
+        // public static final double kBackRightDriveAbsoluteEncoderOffsetRad = -2.2534177774040067;//5.20 - Math.PI;
 
 
         //2024 ROBOT
-        /*
+        
         public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = -1.0998642249140047;//2.66 + Math.PI;
         public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 2.1475731030398975;//5.24 - Math.PI;
         public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = -1.0829904362472627;//0.61 + Math.PI;
         public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 1.0737865515199487;//5.20 - Math.PI;
-        */
+        
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = 6380.0 / 60.0 * (ModuleConstants.kDriveMotorGearRatio) * ModuleConstants.kWheelDiameterMeters * Math.PI; // set up for NEOs to drive
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = kPhysicalMaxSpeedMetersPerSecond / Math.hypot(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0); //adapted from SDS
@@ -289,8 +289,8 @@ public final class Constants {
         public static final Pose2d ID_22 = new Pose2d(4.905,  3.306,  Rotation2d.fromDegrees(300));
         public static final List<Pose2d> aprilTags = new ArrayList<Pose2d>(List.of(ID_1,ID_2,ID_3,ID_4,ID_5,ID_6,ID_7,ID_8,ID_9,ID_10,ID_11,ID_12,ID_13,ID_14,ID_15,ID_16,ID_17,ID_18,ID_19,ID_20,ID_21,ID_22));
         public static final Map<String, Integer> blueAllianceIds = new HashMap<>() {{
-            put("[1A]", 20);
-            put("[1B]", 20);
+            put("[1A]", 6);
+            put("[1B]", 6);
             put("[2A]", 21);
             put("[2B]", 21);
             put("[3A]", 22);
@@ -301,6 +301,8 @@ public final class Constants {
             put("[5B]", 18);
             put("[6A]", 19);
             put("[6B]", 19);
+            put("[S1]",13);
+            put("[S2]",12);
         }};
 
         public static final Map<String, Integer> redAllianceIds = new HashMap<>() {{
@@ -316,6 +318,8 @@ public final class Constants {
             put("[5B]",  7);
             put("[6A]",  6);
             put("[6B]",  6);
+            put("[S1]",1);
+            put("[S2]",2);
         }};
     }
 
