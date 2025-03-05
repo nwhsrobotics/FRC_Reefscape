@@ -147,7 +147,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
             // Pause for 500 milliseconds to allow the gyro to stabilize.
             // Set the yaw of the gyro to 0 afterwards (hardware offset).
-            // TODO: Calculate sysid MOI for swerve/pathplanner and elastic notifications
+            // TODO: Calculate sysid MOI for swerve/pathplanner constants, swerve setpoint generator, and elastic notifications
             //gyro.reset();
             Commands.waitUntil(() -> !gyro.isCalibrating()).andThen(new InstantCommand(() -> gyro.zeroYaw()));
             /*Commands.waitSeconds(0.5)

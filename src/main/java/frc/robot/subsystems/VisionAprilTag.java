@@ -25,6 +25,7 @@ public class VisionAprilTag {
     public static double tagDist;
     public static ArrayList<Integer> tagIds = new ArrayList<>();
 
+    // maybe 100?
     private static double holdDuration = 200; 
     private static long timeDetected = 0;
 
@@ -273,8 +274,8 @@ public class VisionAprilTag {
             timeDetected = now;
             stableResults = results;
             // experimental distance adaptive stabilizer (make it greater than linear if needed) 
-            // int idealDist = 4;
-            // holdDuration = (hypotenuseDistanceXandZAprilTag(limelightName) / idealDist) * 100;
+            //int idealDist = 2;
+            //holdDuration = Math.max(((hypotenuseDistanceXandZAprilTag(limelightName) / idealDist) * 100), 20);
         } else {
             long time = now - timeDetected;
             if (time < holdDuration) {
