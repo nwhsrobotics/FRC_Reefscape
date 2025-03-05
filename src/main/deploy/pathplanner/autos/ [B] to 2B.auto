@@ -17,7 +17,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L4"
+                  "name": "L4CORAL"
                 }
               }
             ]
@@ -48,7 +48,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Lower"
+                  "name": "LoadStation"
                 }
               }
             ]
@@ -79,7 +79,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L4"
+                  "name": "L4CORAL"
                 }
               }
             ]
@@ -110,7 +110,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Lower"
+                  "name": "LoadStation"
                 }
               }
             ]
@@ -141,7 +141,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L4"
+                  "name": "L4CORAL"
                 }
               }
             ]
@@ -172,7 +172,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Lower"
+                  "name": "LoadStation"
                 }
               }
             ]
@@ -203,7 +203,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L4"
+                  "name": "L4CORAL"
                 }
               }
             ]
