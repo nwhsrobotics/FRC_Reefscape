@@ -338,7 +338,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 AutoConstants.kPathfindingConstraints,
                 0.0 // Goal end velocity in meters/sec
         );
-        //TODO: Fix autonav (probably dont need addrequirements)
+        //Fix autonav (probably dont need addrequirements)
         //command.addRequirements(this);
         //and also don't need to schedule here? maybe schedule in autonav
         //command.schedule();
