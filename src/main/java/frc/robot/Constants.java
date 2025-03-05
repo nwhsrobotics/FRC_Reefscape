@@ -246,7 +246,7 @@ public final class Constants {
         //units are most likely in roatations
         public static final double MAX_Elevator_HEIGHT = 100.0; // Adjust as needed
         public static final double MIN_Elevator_HEIGHT = 0.0;
-        public static final double ELEVATOR_GEAR_RATIO = 1.0/3.0; //3:1, change later to 12:1
+        public static final double ELEVATOR_GEAR_RATIO = 1.0/12.0; //3:1, change later to 12:1
 
         public static final double SPROCKET_TEETH = 22.0;
         public static final double CHAIN_PITCH_INCH = 0.25;
@@ -255,10 +255,21 @@ public final class Constants {
 
         public static final double ELEVATOR_STAGES = 3.0;
 
+        
+
 
 
         public static final double ELEVATOR_MOTOR_ENCODER_ROT2METER = ELEVATOR_GEAR_RATIO * SPROCKET_TEETH * CHAIN_PITCH_INCH * METERS_PER_INCH * ELEVATOR_STAGES;
         public  static final double ELEVATOR_ENCODER_METER_PER_SECONDS = ELEVATOR_MOTOR_ENCODER_ROT2METER/60;
+
+        public static final double MAX_VELOCITY_M_S = 0.5;
+
+        public static final double MAX_ACCEL_M_S2 = 2.0;
+
+        public static final double MAX_VELOCITY_RPM = ((MAX_VELOCITY_M_S)/ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60.0;
+
+        public static final double MAX_ACCEL_RPM_S =  ((MAX_ACCEL_M_S2)/ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60.0;
+
     }
 
     public static final class AprilTags{

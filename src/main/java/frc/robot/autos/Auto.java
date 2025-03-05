@@ -45,7 +45,7 @@ public class Auto extends SequentialCommandGroup {
                 //new InstantCommand(() -> Elastic.Notification.notif("AUTO RUNNING")),
                 NamedCommands.getCommand("autoInit"),
                 NamedCommands.getCommand("Output"),
-                scoreCoral(),
+                scoreCoral()
                 //new InstantCommand(() -> Elastic.Notification.notif("AUTO RUNNING"))
         );
     }
