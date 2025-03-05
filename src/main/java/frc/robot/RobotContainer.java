@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -21,19 +22,21 @@ import frc.robot.Constants.Positions;
 import frc.robot.autos.AlternativePathfindAprilTag;
 import frc.robot.autos.Auto;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 //import frc.robot.subsystems.SysId;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Buttons;
 
 public class RobotContainer {
+    
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 
     //private final AlgaeArm algaeArm = new AlgaeArm();
 
     //private final IntakeOuttake intakeoutake = new IntakeOuttake();
 
-    //public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
     //public final ElevatorSysID elevatorSysID = new ElevatorSysID();
 
@@ -98,6 +101,7 @@ public class RobotContainer {
         //should be using arrays since the list size doesn't change, 
         // but list is easier for new members to understand 
         // plus allows an option for dynamic location changes
+         
         autoChooser.addOption("A to 6A", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<String>(List.of("[6A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.START_A));
         autoChooser.addOption("A1 to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.START_A));
         autoChooser.addOption("A to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.START_A));
@@ -109,8 +113,8 @@ public class RobotContainer {
 
 
         //Gunner controlls 
-        // new JoystickButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
-        // new JoystickButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
+        //new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
+        //new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
         /* 
         new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> algaeArm.triggerAlgaeArm(), algaeArm));
 
@@ -128,6 +132,9 @@ public class RobotContainer {
         new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_MID_REEF)));
         new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_MID_REEF)));
         new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));
+    
+        //new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));
+        new JoystickButton(driver, Buttons.B).onTrue(swerveSubsystem.pathFindThenFollowPath("[A1] [6A]"));
         //TODO: This can work
         new JoystickButton(driver, Buttons.LEFT_BUMPER).whileTrue(AutoBuilder.pathfindToPose(Positions.BACK_LEFT_REEF, AutoConstants.kPathfindingConstraints, 0.0));
         /*
@@ -138,8 +145,8 @@ public class RobotContainer {
         */
 
 
-        new JoystickButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_RIGHT_REEF)));
-        new JoystickButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_LEFT_REEF)));
+        //new JoystickButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_RIGHT_REEF)));
+        //new JoystickButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_LEFT_REEF)));
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         
@@ -151,9 +158,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new AlternativePathfindAprilTag(1, swerveSubsystem, limeLightForwards, "");
-        //return autoChooser.getSelected();
-    
+      //return new AlternativePathfindAprilTag(1, swerveSubsystem, limeLightForwards, "");
+       return autoChooser.getSelected();
     
     }
 }

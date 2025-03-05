@@ -314,11 +314,13 @@ public class SwerveSubsystem extends SubsystemBase {
                     constraints
             );
             //maybe no need to schedule it or addrequirements
-            pathfindingCommand.addRequirements(this);
-            pathfindingCommand.schedule();
-            return pathfindingCommand;
+            //pathfindingCommand.addRequirements(this);
+            //pathfindingCommand.schedule();
+            //return pathfindingCommand;
+            Command e = AutoBuilder.followPath(path);
+            //e.schedule();
             // ) or just this
-            //return AutoBuilder.followPath(path);
+            return e;
         } catch (Exception ignored) {
         }
         return new InstantCommand();
@@ -348,7 +350,7 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         updateOdometry();
-
+/* 
         // Log position of robot.
         Logger.recordOutput("swerve.pose", getPose());
 
@@ -378,7 +380,7 @@ public class SwerveSubsystem extends SubsystemBase {
         Logger.recordOutput("swerve.drive.back.right.velocity", backRight.getDriveVelocity());
 
         // Below code is just to test elastic dashboard custom widget
-        SmartDashboard.putData("Swerve Drive", new Sendable() {
+       /*  SmartDashboard.putData("Swerve Drive", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.setSmartDashboardType("SwerveDrive");
@@ -397,7 +399,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
                 builder.addDoubleProperty("Robot Angle", () -> gyro.getAngle(), null);
             }
-            });
+            });*/
     }
 
     /**
@@ -440,6 +442,7 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
+        /*
         if (VisionGamePiece.isAprilTagPipeline(LimelightConstants.llFront)) {
 
             boolean useMegaTag2 = true; //set to false to use MegaTag1
@@ -489,6 +492,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 Logger.recordOutput("swerve.odometer.rotation", odometer.getEstimatedPosition().getRotation().getDegrees());
             }
         }
+            */
     }
 
     /**
