@@ -210,7 +210,7 @@ public class VisionSubsystem extends SubsystemBase {
         LimelightResults llr = VisionAprilTag.isValid(limelightName);
         if (llr != null && llr.targets_Fiducials != null){
             // TODO: distance limiter and adaptive delay hold
-            //  && llr.targets_Fiducials[0].getTargetPose_RobotSpace2D().getTranslation().getNorm() < 4
+            //  && llr.targets_Fiducials[0].getTargetPose_RobotSpace2D().getTranslation().getNorm() < 1.5
             return llr.targets_Fiducials[0].fiducialID == getAprilTagId(targetLocation);
         }
         return false;
@@ -220,9 +220,9 @@ public class VisionSubsystem extends SubsystemBase {
         var alliance = DriverStation.getAlliance();
         int targetId = -1;
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            targetId = Constants.AprilTags.redAllianceIds.get(location);
+            targetId = Constants.AprilTags.redAllianceIds.getOrDefault(location, -1);
         } else {
-            targetId = Constants.AprilTags.blueAllianceIds.get(location);
+            targetId = Constants.AprilTags.blueAllianceIds.getOrDefault(location, -1);
         }
         return targetId; 
     }
