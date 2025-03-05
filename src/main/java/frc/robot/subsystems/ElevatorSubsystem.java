@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -12,6 +13,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfigAccessor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -34,17 +36,17 @@ public class ElevatorSubsystem extends SubsystemBase {
   private double kA = 0.0;
   // Create a new ElevatorFeedforward with gains kS, kG, kV, and kA
   ElevatorFeedforward feedforward = new ElevatorFeedforward(kS, kG, kV, kA);
-  SparkBaseConfig configEl = new SparkFlexConfig();
+  SparkBaseConfig configEl = new SparkMaxConfig();
 
   //Encoder absoluteEncoder = new Encoder(null, null);
 
   // Create ele(vator) motors
   
   
-  //private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO,  IdleMode.kBrake,0.0, 0.0, 0.0, 0.0);
-  //private final SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO,  IdleMode.kBrake,0.0, 0.0, 0.0, 0.0);
-  //SparkClosedLoopController leftElevatorController = leftElevatorMotor.getClosedLoopController();
-  //SparkClosedLoopController rightElevatorController = rightElevatorMotor.getClosedLoopController();
+  // private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO,  IdleMode.kBrake,0.0, 0.0, 0.0, 0.0);
+  // private final SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO,  IdleMode.kBrake,0.0, 0.0, 0.0, 0.0);
+  // SparkClosedLoopController leftElevatorController = leftElevatorMotor.getClosedLoopController();
+  // SparkClosedLoopController rightElevatorController = rightElevatorMotor.getClosedLoopController();
   
   
   private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO, SparkBaseConfig.IdleMode.kBrake);
@@ -174,10 +176,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     leftElevatorMotor.setVoltage(pidControllerLeft.calculate(relativeEncoderLeft.getPosition(), -setPointRotations));
     rightElevatorMotor.setVoltage(pidControllerRight.calculate(relativeEncoderRight.getPosition(), setPointRotations));
 
-    //leftElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, null, feedforward.calculate(0.0));
-    //rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, null, feedforward.calculate(0.0));
-    //leftElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
-    //rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
+    // leftElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
+    // rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
+    // leftElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
+    // rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
 
 
 
