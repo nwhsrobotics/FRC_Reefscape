@@ -28,6 +28,8 @@ import frc.robot.util.ImprovedCanSpark;
 
 
 public class ElevatorSubsystem extends SubsystemBase {
+
+
   
   // k values
   private double kS = 0.0;
@@ -36,22 +38,28 @@ public class ElevatorSubsystem extends SubsystemBase {
   private double kA = 0.0;
   // Create a new ElevatorFeedforward with gains kS, kG, kV, and kA
   ElevatorFeedforward feedforward = new ElevatorFeedforward(kS, kG, kV, kA);
-  SparkBaseConfig configEl = new SparkMaxConfig();
+  private SparkBaseConfig configEl = new SparkMaxConfig();
 
   //Encoder absoluteEncoder = new Encoder(null, null);
 
   // Create ele(vator) motors
   
   
-  // private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO,  IdleMode.kBrake,0.0, 0.0, 0.0, 0.0);
-  // private final SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO,  IdleMode.kBrake,0.0, 0.0, 0.0, 0.0);
-  // SparkClosedLoopController leftElevatorController = leftElevatorMotor.getClosedLoopController();
-  // SparkClosedLoopController rightElevatorController = rightElevatorMotor.getClosedLoopController();
+  private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO,  IdleMode.kBrake, 0.4, 0.0, 0.0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.0);
+  private final SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO,  IdleMode.kBrake,0.4, 0.0, 0.0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.0);
+  
+  SparkClosedLoopController leftElevatorController = leftElevatorMotor.getClosedLoopController();
+  SparkClosedLoopController rightElevatorController = rightElevatorMotor.getClosedLoopController();
+
+  
+
+
   
   
-  private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO, SparkBaseConfig.IdleMode.kBrake);
   
-  private final SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO, SparkBaseConfig.IdleMode.kBrake);
+  //private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO, SparkBaseConfig.IdleMode.kBrake);
+  
+  //private final SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO, SparkBaseConfig.IdleMode.kBrake);
 
   
   
@@ -64,6 +72,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   // set up relative encoders for elevator
   public RelativeEncoder relativeEncoderLeft = leftElevatorMotor.getEncoder();
   public RelativeEncoder relativeEncoderRight = rightElevatorMotor.getEncoder();
+
+  
 
   
 
@@ -90,10 +100,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   double[] elevatorHeights = new double[] {
     0.0, //loadStation 
-    0.25, // L1
-    0.5, //L2
-    0.75,  //L3 
-    1.0  //L4 
+    0.424, // L1
+    0.6973, //L2
+    1.0973,  //L3 
+    1.7173  //L4 
   };
  
   
@@ -173,13 +183,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     
     // This method will be called once per scheduler run
     //emergencyLimitSwitchLogic();
-    leftElevatorMotor.setVoltage(pidControllerLeft.calculate(relativeEncoderLeft.getPosition(), -setPointRotations));
-    rightElevatorMotor.setVoltage(pidControllerRight.calculate(relativeEncoderRight.getPosition(), setPointRotations));
+    //leftElevatorMotor.setVoltage(pidControllerLeft.calculate(relativeEncoderLeft.getPosition(), -setPointRotations));
+    //rightElevatorMotor.setVoltage(pidControllerRight.calculate(relativeEncoderRight.getPosition(), setPointRotations));
 
     // leftElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
     // rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
-    // leftElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
-    // rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
+    leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
+
+    rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
 
 
 
