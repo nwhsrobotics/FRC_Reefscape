@@ -73,9 +73,9 @@ public class SwerveJoystickDefaultCmd extends Command {
         } else {
             fieldRelative = true;
             swerveSubsystem.drive(
-                    -MathUtil.applyDeadband(xbox.getLeftY(), OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(xbox.getLeftX(), OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(xbox.getRightX(), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(xbox.getLeftY()*0.2, OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(xbox.getLeftX()*0.2, OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(xbox.getRightX()*0.2, OIConstants.kDriveDeadband),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         /*fancy equation that probably would help us to get rid of speed coefficients (ratelimit probably false)
         swerveSubsystem.drive(

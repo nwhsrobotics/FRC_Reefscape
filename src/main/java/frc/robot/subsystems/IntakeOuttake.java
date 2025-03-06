@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -19,6 +21,7 @@ public class IntakeOuttake extends SubsystemBase {
     servoMoter = new Servo(0); // Initialize servo on PWM port 0
     isIntakeOpen = false; 
     SmartDashboard.putBoolean("Is Intake Open", isIntakeOpen);
+    // Logger.recordOutput("Is On", isIntakeOpen);
   }
   /** Opens the outake mechanism toa present position */
 
@@ -48,6 +51,6 @@ public class IntakeOuttake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
+    SmartDashboard.putBoolean("Is Intake Open", isIntakeOpen);
   }
 }

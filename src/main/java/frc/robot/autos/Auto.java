@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.Positions;
@@ -77,7 +78,7 @@ public class Auto extends SequentialCommandGroup {
                     exitReturnCommands.addCommands(NamedCommands.getCommand("LoadStation"));
                     exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(()-> !visionBackwards.isDetectingTargetID("[S1]")));
                     exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
-                   
+                    //exitReturnCommands.addCommands(new WaitCommand(2));
                     //Move robot from station 1 to next station
                     int finalI = i;
                     exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] " + locationsToGo.get(i+1)).onlyWhile(()-> !visionForwards.isDetectingTargetID(locationsToGo.get(finalI +1))));
