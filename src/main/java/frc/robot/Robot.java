@@ -9,6 +9,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,6 +20,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.ImprovedPowerDistribution;
 import frc.robot.util.LocalADStarAK;
+import frc.robot.util.RobotErrorHandler;
 
 import java.util.List;
 
@@ -34,6 +36,13 @@ import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 
 public class Robot extends LoggedRobot {
+
+    static {
+        // TODO: This is the last (very bad) resort
+        // RobotErrorHandler.initialize();
+    }
+
+
     private Command autonomousCommand;
     public RobotContainer robotContainer;
     public ImprovedPowerDistribution robotPD;
@@ -45,6 +54,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotInit() {
+        DriverStation.silenceJoystickConnectionWarning(true);
         Pathfinding.setPathfinder(new LocalADStarAK());
         FollowPathCommand.warmupCommand().schedule();
         PathfindingCommand.warmupCommand().schedule();
@@ -92,6 +102,8 @@ public class Robot extends LoggedRobot {
             PortForwarder.add(port+10, Constants.LimelightConstants.llFront + ".local",port);
             // http://roborio-(teamnum)-FRC.local:5811
         }
+
+    
     }
 
     /**

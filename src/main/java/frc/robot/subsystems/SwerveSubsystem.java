@@ -215,18 +215,18 @@ public class SwerveSubsystem extends SubsystemBase {
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
         // Note: it is important to not discretize speeds before or after
         // using the setpoint generator, as it will discretize them for you
-        // swerve setpoint generator
-        previousSetpoint = setpointGenerator.generateSetpoint(
-            previousSetpoint, // The previous setpoint
-            robotRelativeSpeeds, // The desired target speeds
-            0.02 // The loop time of the robot code, in seconds
-        );
-        setModuleStates(previousSetpoint.moduleStates()); // Method that will drive the robot given target module states
+        // swerve setpoint generator (uncomment this)
+        // previousSetpoint = setpointGenerator.generateSetpoint(
+        //     previousSetpoint, // The previous setpoint
+        //     robotRelativeSpeeds, // The desired target speeds
+        //     0.02 // The loop time of the robot code, in seconds
+        // );
+        // setModuleStates(previousSetpoint.moduleStates()); // Method that will drive the robot given target module states
         
         // earlier code
-        // ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
-        // SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
-        // setModuleStates(targetStates);
+        ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+        SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
+        setModuleStates(targetStates);
     }
 
 
