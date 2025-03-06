@@ -22,6 +22,8 @@
   "wheelCOF": 1.0,
   "flModuleX": 0.286,
   "flModuleY": 0.286,
+  "frModuleX": 0.286,
+  "frModuleY": -0.286,
   "blModuleX": -0.286,
   "blModuleY": 0.286,
   "brModuleX": 0.0,
