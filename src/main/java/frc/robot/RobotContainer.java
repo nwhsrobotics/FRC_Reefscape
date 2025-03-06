@@ -21,6 +21,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Positions;
 import frc.robot.autos.AlternativePathfindAprilTag;
 import frc.robot.autos.Auto;
+import frc.robot.commands.*;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -77,19 +78,19 @@ public class RobotContainer {
         });
         ParallelCommandGroup autoInit = new ParallelCommandGroup(); // new ParallelCommandGroup((new InstantCommand(() -> wristSubsystem.ampPreset(), wristSubsystem), (new InstantCommand(() -> armSubsystem.underStage(), armSubsystem));
 
-        // Command L4CMD = new L4CMD(elevatorSubsystem, gunner);
-        // Command L3CMD = new L3CMD(elevatorSubsystem, gunner);
-        // Command L2CMD = new L2CMD(elevatorSubsystem, gunner);
-        // Command L1CMD = new L1CMD(elevatorSubsystem, gunner);
-        // Command LoadStation = new LoadStation(elevatorSubsystem, gunner);
+        Command L4CMD = new L4CMD(elevatorSubsystem, gunner);
+        Command L3CMD = new L3CMD(elevatorSubsystem, gunner);
+        Command L2CMD = new L2CMD(elevatorSubsystem, gunner);
+        Command L1CMD = new L1CMD(elevatorSubsystem, gunner);
+        Command LoadStation = new LoadStation(elevatorSubsystem, gunner);
 
         NamedCommands.registerCommand("autoInit", autoInit);
 
-        // NamedCommands.registerCommand("L4CORAL",L4CMD);
-        // NamedCommands.registerCommand("L3CORAL",L3CMD);
-        // NamedCommands.registerCommand("L2CORAL",L2CMD);
-        // NamedCommands.registerCommand("L1CORAL",L1CMD);
-        // NamedCommands.registerCommand("LoadStation",LoadStation);
+         NamedCommands.registerCommand("L4CORAL",L4CMD);
+         NamedCommands.registerCommand("L3CORAL",L3CMD);
+         NamedCommands.registerCommand("L2CORAL",L2CMD);
+         NamedCommands.registerCommand("L1CORAL",L1CMD);
+         NamedCommands.registerCommand("LoadStation",LoadStation);
 
 
         //INIT after registering named commands
@@ -107,14 +108,14 @@ public class RobotContainer {
         autoChooser.addOption("A to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.START_A));
         autoChooser.addOption("A1 to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[4A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.START_A));
         autoChooser.addOption("B to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[1A]", "[1B]", "[5A]", "[5B]")), Constants.Positions.START_B));
-        autoChooser.addOption("B1 to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[1A]", "[5B]", "[1A]", "[5B]")), Constants.Positions.START_B));
+        autoChooser.addOption("B1 to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[1B]", "[5B]", "[1A]", "[5B]")), Constants.Positions.START_B));
         autoChooser.addOption("C to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[4A]", "[4B]", "[3A]", "[3B]")), Constants.Positions.START_C));
         autoChooser.addOption("C1 to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[3A]", "[4B]", "[3A]", "[3B]")), Constants.Positions.START_C));
 
 
         //Gunner controlls 
-        //new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
-        //new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
         /* 
         new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> algaeArm.triggerAlgaeArm(), algaeArm));
 
@@ -130,12 +131,12 @@ public class RobotContainer {
         new JoystickButton(driver, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(swerveSubsystem.autonavigator::toggle));
         new JoystickButton(driver, Buttons.X).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_LEFT_REEF)));
         new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_MID_REEF)));
-        new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_MID_REEF)));
-        new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));
+        //new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_MID_REEF)));
+        //new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));
     
         //new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));
-        new JoystickButton(driver, Buttons.B).onTrue(swerveSubsystem.pathFindThenFollowPath("[A1] [6A]"));
-        //TODO: This can work
+        //new JoystickButton(driver, Buttons.B).onTrue(swerveSubsystem.pathFindThenFollowPath("[A1] [6A]"));
+        //This can work
         new JoystickButton(driver, Buttons.LEFT_BUMPER).whileTrue(AutoBuilder.pathfindToPose(Positions.BACK_LEFT_REEF, AutoConstants.kPathfindingConstraints, 0.0));
         /*
         new JoystickButton(gunner, Buttons.X).onTrue(elevatorSysID.sysIdDynamic(SysIdRoutine.Direction.kForward));

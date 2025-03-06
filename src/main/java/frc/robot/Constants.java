@@ -19,6 +19,7 @@ import java.util.Map;
 public final class Constants {
     public static final class CANAssignments {
         
+        // 2024 robot
         // public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6;
         // public static final int BACK_LEFT_DRIVE_MOTOR_ID = 1;
         // public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 10;
@@ -29,7 +30,7 @@ public final class Constants {
         // public static final int FRONT_RIGHT_STEER_MOTOR_ID = 11;
         // public static final int BACK_RIGHT_STEER_MOTOR_ID = 4;
 
-        //public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 22;
+        // public static final int FRONT_LEFT_STEER_ABSOLUTE_ENCODER_ID = 22;
         // public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 20;
         // public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 21;
         // public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 23;
@@ -37,7 +38,6 @@ public final class Constants {
         public static final int ALGAE_MOTOR_ID = 25;
 
         // 2025 robot
-        
         public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;
         public static final int BACK_LEFT_DRIVE_MOTOR_ID = 7;
         public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
@@ -163,12 +163,12 @@ public final class Constants {
 
 
         //2024 ROBOT
-        /*
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = -1.0998642249140047;//2.66 + Math.PI;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 2.1475731030398975;//5.24 - Math.PI;
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = -1.0829904362472627;//0.61 + Math.PI;
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 1.0737865515199487;//5.20 - Math.PI;
-        */
+        
+        // public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = -1.0998642249140047;//2.66 + Math.PI;
+        // public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 2.1475731030398975;//5.24 - Math.PI;
+        // public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = -1.0829904362472627;//0.61 + Math.PI;
+        // public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 1.0737865515199487;//5.20 - Math.PI;
+        
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = 6380.0 / 60.0 * (ModuleConstants.kDriveMotorGearRatio) * ModuleConstants.kWheelDiameterMeters * Math.PI; // set up for NEOs to drive
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = kPhysicalMaxSpeedMetersPerSecond / Math.hypot(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0); //adapted from SDS
@@ -246,7 +246,7 @@ public final class Constants {
         //units are most likely in roatations
         public static final double MAX_Elevator_HEIGHT = 100.0; // Adjust as needed
         public static final double MIN_Elevator_HEIGHT = 0.0;
-        public static final double ELEVATOR_GEAR_RATIO = 1.0/3.0; //3:1, change later to 12:1
+        public static final double ELEVATOR_GEAR_RATIO = 1.0/12.0; //3:1, change later to 12:1
 
         public static final double SPROCKET_TEETH = 22.0;
         public static final double CHAIN_PITCH_INCH = 0.25;
@@ -255,10 +255,21 @@ public final class Constants {
 
         public static final double ELEVATOR_STAGES = 3.0;
 
+        
+
 
 
         public static final double ELEVATOR_MOTOR_ENCODER_ROT2METER = ELEVATOR_GEAR_RATIO * SPROCKET_TEETH * CHAIN_PITCH_INCH * METERS_PER_INCH * ELEVATOR_STAGES;
         public  static final double ELEVATOR_ENCODER_METER_PER_SECONDS = ELEVATOR_MOTOR_ENCODER_ROT2METER/60;
+
+        public static final double MAX_VELOCITY_M_S = 0.5;
+
+        public static final double MAX_ACCEL_M_S2 = 2.0;
+
+        public static final double MAX_VELOCITY_RPM = ((MAX_VELOCITY_M_S)/ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60.0;
+
+        public static final double MAX_ACCEL_RPM_S =  ((MAX_ACCEL_M_S2)/ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60.0;
+
     }
 
     public static final class AprilTags{
@@ -301,6 +312,9 @@ public final class Constants {
             put("[5B]", 18);
             put("[6A]", 19);
             put("[6B]", 19);
+            put("[S1]", 13);
+            put("[S2]", 12);
+            put("[P]", 16);
         }};
 
         public static final Map<String, Integer> redAllianceIds = new HashMap<>() {{
@@ -316,6 +330,9 @@ public final class Constants {
             put("[5B]",  7);
             put("[6A]",  6);
             put("[6B]",  6);
+            put("[S1]", 1);
+            put("[S2]", 2);
+            put("[P]", 3);
         }};
     }
 

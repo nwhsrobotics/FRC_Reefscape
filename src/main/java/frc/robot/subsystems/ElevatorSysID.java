@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.SysIdConstants;
 import frc.robot.util.ImprovedCanSpark;
@@ -50,12 +51,12 @@ public class ElevatorSysID extends SubsystemBase {
     
 
     elevatorSysMotorLeftConfig = new SparkMaxConfig();
-    elevatorSysMotorLeftConfig.encoder.positionConversionFactor(SysIdConstants.SYSIDENCOCERROT2METER);
-    elevatorSysMotorLeftConfig.encoder.velocityConversionFactor(SysIdConstants.SYSIDENCODERMETERPERSECONDS);
+    //elevatorSysMotorLeftConfig.encoder.positionConversionFactor(SysIdConstants.SYSIDENCOCERROT2METER);
+    //elevatorSysMotorLeftConfig.encoder.velocityConversionFactor(SysIdConstants.SYSIDENCODERMETERPERSECONDS);
 
     elevatorSysMotorRightConfig = new SparkMaxConfig();
-    elevatorSysMotorRightConfig.encoder.positionConversionFactor(SysIdConstants.SYSIDENCOCERROT2METER);
-    elevatorSysMotorRightConfig.encoder.velocityConversionFactor(SysIdConstants.SYSIDENCODERMETERPERSECONDS);
+    //elevatorSysMotorRightConfig.encoder.positionConversionFactor(ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
+    //elevatorSysMotorRightConfig.encoder.velocityConversionFactor(SysIdConstants.SYSIDENCODERMETERPERSECONDS);
 
     this.elevatorSysIDMotorLeft = new ImprovedCanSpark(41, ImprovedCanSpark.MotorKind.NEO, elevatorSysMotorLeftConfig, IdleMode.kBrake);
     this.elevatorSysIDMotorRight = new ImprovedCanSpark(7, ImprovedCanSpark.MotorKind.NEO, elevatorSysMotorRightConfig, IdleMode.kBrake);
@@ -86,10 +87,10 @@ public class ElevatorSysID extends SubsystemBase {
                     .voltage(
                         m_appliedVoltage.mut_replace(
                           elevatorSysIDMotorLeft.getAppliedOutput() * RobotController.getBatteryVoltage(), Volts))
-                    .linearPosition(m_distance.mut_replace(elevatorSysMotorLeftEncoder.getPosition(), Meters))
+                    .linearPosition(m_distance.mut_replace((elevatorSysMotorLeftEncoder.getPosition()/ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER), Meters))
                     .linearVelocity(
                       //CHANGE THE UNITS OF VELOCITY USING THE SETVELOCITYCONVERSIONFACTOR
-                        m_velocity.mut_replace(elevatorSysMotorLeftEncoder.getVelocity() , MetersPerSecond));
+                        m_velocity.mut_replace((elevatorSysMotorLeftEncoder.getVelocity()/ElevatorConstants.ELEVATOR_ENCODER_METER_PER_SECONDS) , MetersPerSecond));
                         
                 
                      
@@ -97,10 +98,10 @@ public class ElevatorSysID extends SubsystemBase {
                       .voltage(
                           m_appliedVoltage.mut_replace(
                             elevatorSysIDMotorRight.getAppliedOutput() * RobotController.getBatteryVoltage(), Volts))
-                      .linearPosition(m_distance.mut_replace(elevatorSysMotorRightEncoder.getPosition(), Meters))
+                      .linearPosition(m_distance.mut_replace((elevatorSysMotorRightEncoder.getPosition()/ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER), Meters))
                       .linearVelocity(
                           //CHANGE THE UNITS OF VELOCITY USING THE SETVELOCITYCONVERSIONFACTOR
-                          m_velocity.mut_replace(elevatorSysMotorRightEncoder.getVelocity() , MetersPerSecond));
+                          m_velocity.mut_replace((elevatorSysMotorRightEncoder.getVelocity()/ElevatorConstants.ELEVATOR_ENCODER_METER_PER_SECONDS) , MetersPerSecond));
                 
                 
                 // Record a frame for the right motors.  Since these share an encoder, we consider

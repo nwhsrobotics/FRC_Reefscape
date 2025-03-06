@@ -4,6 +4,9 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.DriveFeedforwards;
+import com.pathplanner.lib.util.swerve.SwerveSetpoint;
+import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
@@ -45,6 +48,9 @@ public class SwerveSubsystem extends SubsystemBase {
     // holding forwards will move the robot away from the driver station,
     // because that is the forwards direction relative to the field.
     private boolean isFieldRelative = true;
+
+    private final SwerveSetpointGenerator setpointGenerator;
+    private SwerveSetpoint previousSetpoint;
 
     public AutoNavigation autonavigator;
 
@@ -141,13 +147,14 @@ public class SwerveSubsystem extends SubsystemBase {
                         return false;
                     },
                     this
+
             );
 
             this.autonavigator = new AutoNavigation(this);
 
             // Pause for 500 milliseconds to allow the gyro to stabilize.
             // Set the yaw of the gyro to 0 afterwards (hardware offset).
-            // TODO: Calculate sysid MOI for swerve/pathplanner and elastic notifications
+            // TODO: Calculate sysid MOI for swerve/pathplanner constants, swerve setpoint generator, and elastic notifications
             //gyro.reset();
             Commands.waitUntil(() -> !gyro.isCalibrating()).andThen(new InstantCommand(() -> gyro.zeroYaw()));
             /*Commands.waitSeconds(0.5)
@@ -155,6 +162,15 @@ public class SwerveSubsystem extends SubsystemBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        setpointGenerator = new SwerveSetpointGenerator(
+            config, // The robot configuration. This is the same config used for generating trajectories and running path following commands.
+            Units.rotationsToRadians(10.0) // The max rotation velocity of a swerve module in radians per second. This should probably be stored in your Constants file
+        );
+        // Initialize the previous setpoint to the robot's current speeds & module states
+        ChassisSpeeds currentSpeeds = getSpeeds(); // Method to get current robot-relative chassis speeds
+        SwerveModuleState[] currentStates = getModuleStates(); // Method to get the current swerve module states
+        previousSetpoint = new SwerveSetpoint(currentSpeeds, currentStates, DriveFeedforwards.zeros(config.numModules));
     }
 
     /**
@@ -196,7 +212,15 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
         ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
-
+        // Note: it is important to not discretize speeds before or after
+        // using the setpoint generator, as it will discretize them for you
+        previousSetpoint = setpointGenerator.generateSetpoint(
+            previousSetpoint, // The previous setpoint
+            robotRelativeSpeeds, // The desired target speeds
+            0.02 // The loop time of the robot code, in seconds
+        );
+        setModuleStates(previousSetpoint.moduleStates()); // Method that will drive the robot given target module states
+        
         SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
         setModuleStates(targetStates);
     }
@@ -338,7 +362,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 AutoConstants.kPathfindingConstraints,
                 0.0 // Goal end velocity in meters/sec
         );
-        //TODO: Fix autonav (probably dont need addrequirements)
+        //Fix autonav (probably dont need addrequirements)
         //command.addRequirements(this);
         //and also don't need to schedule here? maybe schedule in autonav
         //command.schedule();
@@ -350,7 +374,7 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         updateOdometry();
-/* 
+
         // Log position of robot.
         Logger.recordOutput("swerve.pose", getPose());
 
@@ -380,7 +404,7 @@ public class SwerveSubsystem extends SubsystemBase {
         Logger.recordOutput("swerve.drive.back.right.velocity", backRight.getDriveVelocity());
 
         // Below code is just to test elastic dashboard custom widget
-       /*  SmartDashboard.putData("Swerve Drive", new Sendable() {
+       SmartDashboard.putData("Swerve Drive", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 builder.setSmartDashboardType("SwerveDrive");
@@ -399,7 +423,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
                 builder.addDoubleProperty("Robot Angle", () -> gyro.getAngle(), null);
             }
-            });*/
+            });
+        
     }
 
     /**
@@ -442,8 +467,8 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
-        /*
-        if (VisionGamePiece.isAprilTagPipeline(LimelightConstants.llFront)) {
+        
+        if (VisionAprilTag.isAprilTagPipeline(LimelightConstants.llFront)) {
 
             boolean useMegaTag2 = true; //set to false to use MegaTag1
             // we might use megatag1 when disabled to auto orient and megatag2 when enable
@@ -486,13 +511,60 @@ public class SwerveSubsystem extends SubsystemBase {
                             mt2.pose,
                             mt2.timestampSeconds);
                 }
-                Logger.recordOutput("swerve.odometer", odometer.getEstimatedPosition());
-                Logger.recordOutput("swerve.odometer.xCoordinate", odometer.getEstimatedPosition().getX());
-                Logger.recordOutput("swerve.odometer.yCoordinate", odometer.getEstimatedPosition().getY());
-                Logger.recordOutput("swerve.odometer.rotation", odometer.getEstimatedPosition().getRotation().getDegrees());
             }
         }
-            */
+
+        if (VisionAprilTag.isAprilTagPipeline(LimelightConstants.llBack)) {
+
+            boolean useMegaTag2 = true; //set to false to use MegaTag1
+            // we might use megatag1 when disabled to auto orient and megatag2 when enable
+            // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78 
+            boolean doRejectUpdate = false;
+            if (!useMegaTag2) {
+                LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llBack);
+
+                if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
+                    if (mt1.rawFiducials[0].ambiguity > .7) {
+                        doRejectUpdate = true;
+                    }
+                    if (mt1.rawFiducials[0].distToCamera > 3) {
+                        doRejectUpdate = true;
+                    }
+                }
+                if (mt1.tagCount == 0) {
+                    doRejectUpdate = true;
+                }
+
+                if (!doRejectUpdate) {
+                    odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
+                    odometer.addVisionMeasurement(
+                            mt1.pose,
+                            mt1.timestampSeconds);
+                }
+            } else if (useMegaTag2) {
+                LimelightHelpers.SetRobotOrientation(LimelightConstants.llBack, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+                LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.llBack);
+                if (Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+                {
+                    doRejectUpdate = true;
+                }
+                if (mt2.tagCount == 0) {
+                    doRejectUpdate = true;
+                }
+                if (!doRejectUpdate) {
+                    odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
+                    odometer.addVisionMeasurement(
+                            mt2.pose,
+                            mt2.timestampSeconds);
+                }
+            }
+        }
+
+        Logger.recordOutput("swerve.odometer", odometer.getEstimatedPosition());
+        Logger.recordOutput("swerve.odometer.xCoordinate", odometer.getEstimatedPosition().getX());
+        Logger.recordOutput("swerve.odometer.yCoordinate", odometer.getEstimatedPosition().getY());
+        Logger.recordOutput("swerve.odometer.rotation", odometer.getEstimatedPosition().getRotation().getDegrees());
+            
     }
 
     /**
