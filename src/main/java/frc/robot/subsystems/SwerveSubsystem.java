@@ -213,9 +213,9 @@ public class SwerveSubsystem extends SubsystemBase {
      * @param robotRelativeSpeeds The desired robot-relative speeds.
      */
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-        ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
         // Note: it is important to not discretize speeds before or after
         // using the setpoint generator, as it will discretize them for you
+        // swerve setpoint generator
         previousSetpoint = setpointGenerator.generateSetpoint(
             previousSetpoint, // The previous setpoint
             robotRelativeSpeeds, // The desired target speeds
@@ -223,8 +223,10 @@ public class SwerveSubsystem extends SubsystemBase {
         );
         setModuleStates(previousSetpoint.moduleStates()); // Method that will drive the robot given target module states
         
-        SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
-        setModuleStates(targetStates);
+        // earlier code
+        // ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+        // SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
+        // setModuleStates(targetStates);
     }
 
 
@@ -406,26 +408,26 @@ public class SwerveSubsystem extends SubsystemBase {
         Logger.recordOutput("swerve.drive.back.right.velocity", backRight.getDriveVelocity());
 
         // Below code is just to test elastic dashboard custom widget
-       SmartDashboard.putData("Swerve Drive", new Sendable() {
-            @Override
-            public void initSendable(SendableBuilder builder) {
-                builder.setSmartDashboardType("SwerveDrive");
+    //    SmartDashboard.putData("Swerve Drive", new Sendable() {
+    //         @Override
+    //         public void initSendable(SendableBuilder builder) {
+    //             builder.setSmartDashboardType("SwerveDrive");
 
-                builder.addDoubleProperty("Front Left Angle", () -> frontLeft.getTurningPosition(), null);
-                builder.addDoubleProperty("Front Left Velocity", () -> frontLeft.getDriveVelocity(), null);
+    //             builder.addDoubleProperty("Front Left Angle", () -> frontLeft.getTurningPosition(), null);
+    //             builder.addDoubleProperty("Front Left Velocity", () -> frontLeft.getDriveVelocity(), null);
 
-                builder.addDoubleProperty("Front Right Angle", () -> frontRight.getTurningPosition(), null);
-                builder.addDoubleProperty("Front Right Velocity", () -> frontRight.getDriveVelocity(), null);
+    //             builder.addDoubleProperty("Front Right Angle", () -> frontRight.getTurningPosition(), null);
+    //             builder.addDoubleProperty("Front Right Velocity", () -> frontRight.getDriveVelocity(), null);
 
-                builder.addDoubleProperty("Back Left Angle", () -> backLeft.getTurningPosition(), null);
-                builder.addDoubleProperty("Back Left Velocity", () -> backLeft.getDriveVelocity(), null);
+    //             builder.addDoubleProperty("Back Left Angle", () -> backLeft.getTurningPosition(), null);
+    //             builder.addDoubleProperty("Back Left Velocity", () -> backLeft.getDriveVelocity(), null);
 
-                builder.addDoubleProperty("Back Right Angle", () -> backRight.getTurningPosition(), null);
-                builder.addDoubleProperty("Back Right Velocity", () -> backRight.getDriveVelocity(), null);
+    //             builder.addDoubleProperty("Back Right Angle", () -> backRight.getTurningPosition(), null);
+    //             builder.addDoubleProperty("Back Right Velocity", () -> backRight.getDriveVelocity(), null);
 
-                builder.addDoubleProperty("Robot Angle", () -> gyro.getAngle(), null);
-            }
-            });
+    //             builder.addDoubleProperty("Robot Angle", () -> gyro.getAngle(), null);
+    //         }
+    //         });
         
     }
 
