@@ -58,7 +58,8 @@ public class Robot extends LoggedRobot {
 
         switch (LoggerConstants.MODE) {
             case REAL:
-                Logger.addDataReceiver(new WPILOGWriter("/media/sda1/"));
+                // /media/sda1/
+                Logger.addDataReceiver(new WPILOGWriter("/U"));
                 if (!LoggerConstants.SILENT_NT4) {
                     Logger.addDataReceiver(new NT4Publisher());
                 }

@@ -105,14 +105,14 @@ public class RobotContainer {
         // but list is easier for new members to understand 
         // plus allows an option for dynamic location changes
          
-        autoChooser.addOption("A to 6A", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<String>(List.of("[6A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.START_A));
-        autoChooser.addOption("A1 to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[6B]", "[5A]", "[5B]")), Constants.Positions.START_A));
-        autoChooser.addOption("A to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.START_A));
-        autoChooser.addOption("A1 to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[4A]", "[5B]", "[4A]", "[4B]")), Constants.Positions.START_A));
-        autoChooser.addOption("B to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[1A]", "[1B]", "[5A]", "[5B]")), Constants.Positions.START_B));
-        autoChooser.addOption("B1 to 6A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[1B]", "[5B]", "[1A]", "[5B]")), Constants.Positions.START_B));
-        autoChooser.addOption("C to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[4A]", "[4B]", "[3A]", "[3B]")), Constants.Positions.START_C));
-        autoChooser.addOption("C1 to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<String>(List.of("[3A]", "[4B]", "[3A]", "[3B]")), Constants.Positions.START_C));
+        autoChooser.addOption("A*", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<>(List.of("[6A]", "[6B]", "[5A]", "[5B]")), Positions.START_A));
+        //autoChooser.addOption("A1 to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[5A]", "[6B]", "[5A]", "[5B]")), Positions.START_A));
+        //autoChooser.addOption("A to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Positions.START_A));
+        //autoChooser.addOption("A1 to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[4A]", "[5B]", "[4A]", "[4B]")), Positions.START_A));
+        autoChooser.addOption("B*", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[1A]", "[1B]", "[5A]", "[5B]")), Positions.START_B));
+        //autoChooser.addOption("B1 to 1A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[1A]", "[5B]", "[1A]", "[5B]")), Positions.START_B));
+        autoChooser.addOption("C*", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[4A]", "[4B]", "[3A]", "[3B]")), Positions.START_C));
+        //autoChooser.addOption("C1 to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[3A]", "[4B]", "[3A]", "[3B]")), Positions.START_C));
 
 
         //Gunner controlls 
@@ -139,7 +139,7 @@ public class RobotContainer {
         //new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));
         //new JoystickButton(driver, Buttons.B).onTrue(swerveSubsystem.pathFindThenFollowPath("[A1] [6A]"));
         //This can work
-        new JoystickButton(driver, Buttons.LEFT_BUMPER).whileTrue(AutoBuilder.pathfindToPose(Positions.BACK_LEFT_REEF, AutoConstants.kPathfindingConstraints, 0.0));
+        //new JoystickButton(driver, Buttons.LEFT_BUMPER).whileTrue(AutoBuilder.pathfindToPose(Positions.BACK_LEFT_REEF, AutoConstants.kPathfindingConstraints, 0.0));
         /*
         new JoystickButton(gunner, Buttons.X).onTrue(elevatorSysID.sysIdDynamic(SysIdRoutine.Direction.kForward));
         new JoystickButton(gunner, Buttons.Y).onTrue(elevatorSysID.sysIdDynamic(SysIdRoutine.Direction.kReverse));
@@ -147,7 +147,7 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.B).onTrue(elevatorSysID.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
         */
 
-
+        
         //new POVButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_RIGHT_REEF)));
         //new POVButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_LEFT_REEF)));
         SmartDashboard.putData("Auto Chooser", autoChooser);
