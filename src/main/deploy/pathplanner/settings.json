@@ -26,8 +26,8 @@
   "frModuleY": -0.286,
   "blModuleX": -0.286,
   "blModuleY": 0.286,
-  "brModuleX": 0.0,
-  "brModuleY": 0.0,
+  "brModuleX": -0.286,
+  "brModuleY": -0.286,
   "bumperOffsetX": 0.0,
   "bumperOffsetY": 0.0,
   "robotFeatures": []

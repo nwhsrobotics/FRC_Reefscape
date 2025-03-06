@@ -49,7 +49,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // because that is the forwards direction relative to the field.
     private boolean isFieldRelative = true;
 
-    private final SwerveSetpointGenerator setpointGenerator;
+    private SwerveSetpointGenerator setpointGenerator;
     private SwerveSetpoint previousSetpoint;
 
     public AutoNavigation autonavigator;
@@ -157,20 +157,22 @@ public class SwerveSubsystem extends SubsystemBase {
             // TODO: Calculate sysid MOI for swerve/pathplanner constants, swerve setpoint generator, and elastic notifications
             //gyro.reset();
             Commands.waitUntil(() -> !gyro.isCalibrating()).andThen(new InstantCommand(() -> gyro.zeroYaw()));
+            setpointGenerator = new SwerveSetpointGenerator(
+                config, // The robot configuration. This is the same config used for generating trajectories and running path following commands.
+                Units.rotationsToRadians(10.0) // The max rotation velocity of a swerve module in radians per second. This should probably be stored in your Constants file
+            );
+            // Initialize the previous setpoint to the robot's current speeds & module states
+            ChassisSpeeds currentSpeeds = getSpeeds(); // Method to get current robot-relative chassis speeds
+            SwerveModuleState[] currentStates = getModuleStates(); // Method to get the current swerve module states
+            previousSetpoint = new SwerveSetpoint(currentSpeeds, currentStates, DriveFeedforwards.zeros(config.numModules));
             /*Commands.waitSeconds(0.5)
                     .andThen(new RunCommand(() -> gyro.zeroYaw()));*/
         } catch (Exception e) {
             e.printStackTrace();
+            setpointGenerator = null;
         }
 
-        setpointGenerator = new SwerveSetpointGenerator(
-            config, // The robot configuration. This is the same config used for generating trajectories and running path following commands.
-            Units.rotationsToRadians(10.0) // The max rotation velocity of a swerve module in radians per second. This should probably be stored in your Constants file
-        );
-        // Initialize the previous setpoint to the robot's current speeds & module states
-        ChassisSpeeds currentSpeeds = getSpeeds(); // Method to get current robot-relative chassis speeds
-        SwerveModuleState[] currentStates = getModuleStates(); // Method to get the current swerve module states
-        previousSetpoint = new SwerveSetpoint(currentSpeeds, currentStates, DriveFeedforwards.zeros(config.numModules));
+
     }
 
     /**
