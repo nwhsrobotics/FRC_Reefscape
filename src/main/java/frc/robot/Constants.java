@@ -222,10 +222,14 @@ public final class Constants {
         public static final Pose2d FRONT_MID_REEF = new Pose2d(6.152, 4.026, Rotation2d.fromDegrees(180)); // Y button - Side 2
         public static final Pose2d FRONT_RIGHT_REEF = new Pose2d(5.310, 2.582, Rotation2d.fromDegrees(120)); // B button - Side 3
 
+        public static final Pose2d FRONT_REEF = new Pose2d(7, 4, Rotation2d.fromDegrees(180));
+        public static final Pose2d BACK_REEF = new Pose2d(2.5, 4, Rotation2d.fromDegrees(1));
+
         public static final Pose2d STATION_LEFT = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(126)); //this is for the center of the source 
         public static final Pose2d STATION_RIGHT = new Pose2d(1.149, 1.043, Rotation2d.fromDegrees(-126)); //this is for the center of the source 
         
         public static final Pose2d PROCESSOR = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(-90));
+
 
         public static final List<Pose2d> allNotes = new ArrayList<Pose2d>(); 
         // get rid of temp fix

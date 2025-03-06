@@ -57,7 +57,7 @@ public class SwerveJoystickDefaultCmd extends Command {
                 VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
                 VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llFront),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
-        } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if booster not pressed
+        } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if trigger(slow mode) not pressed
             fieldRelative = true;
             swerveSubsystem.drive(
                     -MathUtil.applyDeadband(xbox.getLeftY(), OIConstants.kDriveDeadband),
@@ -71,6 +71,7 @@ public class SwerveJoystickDefaultCmd extends Command {
                     -MathUtil.applyDeadband(invertIfRed(xbox.getRightX()), OIConstants.kDriveDeadband),
                     swerveSubsystem.isFieldRelative && fieldRelative, true);*/
         } else {
+            // slow mode *0.2 (or can be booster too) has no slew rate/rate limit
             fieldRelative = true;
             swerveSubsystem.drive(
                     -MathUtil.applyDeadband(xbox.getLeftY()*0.2, OIConstants.kDriveDeadband),
@@ -93,16 +94,6 @@ public class SwerveJoystickDefaultCmd extends Command {
         //             -MathUtil.applyDeadband(xbox.getRawAxis(4), OIConstants.kDriveDeadband),
         //             true, true),
         //             swerveSubsystem));
-        }
-
-        if (xbox.getPOV() == Buttons.POV_RIGHT){
-            VisionAprilTag.offsetRight(Constants.LimelightConstants.llFront);
-        }
-        if (xbox.getPOV() == Buttons.POV_LEFT){
-            VisionAprilTag.offsetLeft(Constants.LimelightConstants.llFront);
-        }
-        if (xbox.getPOV() == Buttons.POV_UP){
-            VisionAprilTag.offsetCenter(Constants.LimelightConstants.llFront);
         }
 
     }
