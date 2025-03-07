@@ -341,6 +341,7 @@ public final class Constants {
     }
 
     public static final class LimelightConstants {
+        // 3.8cm or 0.038m base height of robot (add to all heights)
         //Forward Limelight
         public static final double mountHeightForwards = 0.5392; //in meters
         public static final double mountAngleForwards = 23.984; //in degrees with straight being 0 up being 90 and down being -90

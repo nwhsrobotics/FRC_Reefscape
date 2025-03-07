@@ -27,12 +27,14 @@ public class L4CMD extends Command {
   }
   
   @Override
-  public void initialize() {}
+  public void initialize() {
+    elevator.L4_Preset();
+  }
 
   
   @Override
   public void execute() {
-    elevator.L4_Preset();
+    //elevator.L4_Preset();
   }
 
 
@@ -42,6 +44,6 @@ public class L4CMD extends Command {
 
   @Override
   public boolean isFinished() {
-    return isAtLocation();
+    return elevator.isNearTargetPosition();
   }
 }

@@ -89,15 +89,26 @@ public class RobotContainer {
         Command LoadStation = new LoadStation(elevatorSubsystem, gunner);
 
         //INIT after registering named commands
+        //maybe wait until commands instead of separate classes?
         NamedCommands.registerCommand("L4CORAL", L4CMD);
         NamedCommands.registerCommand("L3CORAL", L3CMD);
         NamedCommands.registerCommand("L2CORAL", L2CMD);
         NamedCommands.registerCommand("L1CORAL", L1CMD);
         NamedCommands.registerCommand("LoadStation", LoadStation);
+        NamedCommands.registerCommand("L4", new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem)
+                                                    .andThen(new WaitCommand(2.0)));
+        NamedCommands.registerCommand("L3", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem)
+                                                    .andThen(new WaitCommand(1.7)));
+        NamedCommands.registerCommand("L2", new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem)
+                                                    .andThen(new WaitCommand(1.4)));
+        NamedCommands.registerCommand("L1", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem)
+                                                    .andThen(new WaitCommand(1.1)));
+        NamedCommands.registerCommand("Load", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem)
+                                                    .andThen(new WaitCommand(0.9)));
         NamedCommands.registerCommand("Intake", new WaitCommand(2.0));
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
                                                     .andThen(new WaitCommand(1))
-                                                    .andThen(new InstantCommand(() -> intakeoutake.outtakeClose())));
+                                                    .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
         NamedCommands.registerCommand("MoveElevator", new InstantCommand());
 
         // autos (either PathPlanner or Auto with Vision) (cannot have both enabled, need to keep 1 commented out)

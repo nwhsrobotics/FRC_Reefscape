@@ -202,8 +202,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
     rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
 
-    System.out.println(elevatorHeights[currentElevatorLevel]);
-    System.out.println(relativeEncoderRight.getPosition());
+    //System.out.println(elevatorHeights[currentElevatorLevel]);
+    //System.out.println(relativeEncoderRight.getPosition());
 
 
 
@@ -212,4 +212,15 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
   }
+
+
+
+  public boolean isNearTargetPosition(){
+    double metersError = 0.05;
+    double targetMetersHeight = rotationsToMeters(setPointRotations);
+    double currentMetersHeight = rotationsToMeters(relativeEncoderRight.getPosition());
+
+    return Math.abs(targetMetersHeight - currentMetersHeight) <= metersError;
+  }
+
 }
