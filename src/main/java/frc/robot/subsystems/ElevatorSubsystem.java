@@ -103,10 +103,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public double[] elevatorHeights = new double[] {
     0.0, //loadSttion 
-    0.424, // L1
-    0.6973, //L2
-    1.1373,//L3
-    1.7173  //L4 
+    0.474, // L1
+    0.7473, //L2
+    1.1873,//L3
+    1.8173  //L4 
   };
  
   

@@ -89,11 +89,11 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("autoInit", autoInit);
 
-         NamedCommands.registerCommand("L4CORAL",L4CMD);
-         NamedCommands.registerCommand("L3CORAL",L3CMD);
-         NamedCommands.registerCommand("L2CORAL",L2CMD);
-         NamedCommands.registerCommand("L1CORAL",L1CMD);
-         NamedCommands.registerCommand("LoadStation",LoadStation);
+         NamedCommands.registerCommand("L4CORAL",new InstantCommand());
+         NamedCommands.registerCommand("L3CORAL",new InstantCommand());
+         NamedCommands.registerCommand("L2CORAL",new InstantCommand());
+         NamedCommands.registerCommand("L1CORAL",new InstantCommand());
+         NamedCommands.registerCommand("LoadStation",new InstantCommand());
 
 
         //INIT after registering named commands
@@ -106,13 +106,13 @@ public class RobotContainer {
         // but list is easier for new members to understand 
         // plus allows an option for dynamic location changes
          
-        autoChooser.addOption("A*", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<>(List.of("[6A]", "[6B]", "[5A]", "[5B]")), Positions.START_A));
+        autoChooser.addOption("A*", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<>(List.of("[1A]", "[6B]", "[5A]", "[5B]")), Positions.START_A));
         //autoChooser.addOption("A1 to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[5A]", "[6B]", "[5A]", "[5B]")), Positions.START_A));
         //autoChooser.addOption("A to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Positions.START_A));
         //autoChooser.addOption("A1 to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[4A]", "[5B]", "[4A]", "[4B]")), Positions.START_A));
-        autoChooser.addOption("B*", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[1A]", "[1B]", "[5A]", "[5B]")), Positions.START_B));
+        //autoChooser.addOption("B*", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[1A]", "[1B]", "[5A]", "[5B]")), Positions.START_B));
         //autoChooser.addOption("B1 to 1A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[1A]", "[5B]", "[1A]", "[5B]")), Positions.START_B));
-        autoChooser.addOption("C*", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[4A]", "[4B]", "[3A]", "[3B]")), Positions.START_C));
+        //autoChooser.addOption("C*", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[4A]", "[4B]", "[3A]", "[3B]")), Positions.START_C));
         //autoChooser.addOption("C1 to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[3A]", "[4B]", "[3A]", "[3B]")), Positions.START_C));
 
 
@@ -123,9 +123,10 @@ public class RobotContainer {
         //new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> algaeArm.triggerAlgaeArm(), algaeArm));
 
         new JoystickButton(gunner, Buttons.Y).onTrue(new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
 
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); 

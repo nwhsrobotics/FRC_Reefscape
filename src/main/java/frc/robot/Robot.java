@@ -38,8 +38,8 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 public class Robot extends LoggedRobot {
 
     static {
-        // TODO: This is the last (very bad) resort
-        // RobotErrorHandler.initialize();
+        // This is the last (very bad) resort
+        RobotErrorHandler.initialize();
     }
 
 
