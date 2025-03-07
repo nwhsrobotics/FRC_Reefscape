@@ -81,7 +81,7 @@ public class RobotContainer {
             field.getObject("path").setPoses(poses);
         });
 
-        
+        //make these instantcommands and reuse them for auto and manual
         Command L4CMD = new L4CMD(elevatorSubsystem, gunner);
         Command L3CMD = new L3CMD(elevatorSubsystem, gunner);
         Command L2CMD = new L2CMD(elevatorSubsystem, gunner);
@@ -136,8 +136,8 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
-        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); 
+        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
+        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); 
 
         
         //Driver controlls 
