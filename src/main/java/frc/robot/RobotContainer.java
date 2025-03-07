@@ -124,6 +124,7 @@ public class RobotContainer {
 
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); 
+
         
         //Driver controlls 
         // NEED TO ADD THE FAST/SLOW MODE TOGGLE (see controller diagram)
