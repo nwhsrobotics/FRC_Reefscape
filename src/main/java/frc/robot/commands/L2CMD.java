@@ -17,6 +17,17 @@ public class L2CMD extends Command {
   }
 
 
+  public boolean isAtLocation(){
+    
+    if (elevator.setPointRotations == 0.0){
+      return ((elevator.rotationsToMeters(elevator.setPointRotations)-elevator.relativeEncoderLeft.getPosition())>-0.2);
+      
+    }
+    return (Math.abs(elevator.rotationsToMeters(elevator.setPointRotations)-elevator.relativeEncoderLeft.getPosition())<0.2);
+
+  }
+
+
   @Override
   public void initialize() {}
 
@@ -33,6 +44,6 @@ public class L2CMD extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return isAtLocation();
   }
 }
