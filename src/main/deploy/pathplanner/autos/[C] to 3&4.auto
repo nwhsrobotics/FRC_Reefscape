@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[B] [1A]"
+                  "pathName": "[C] [3A]"
                 }
               }
             ]
@@ -42,7 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[1A] [S1]"
+                  "pathName": "[3A] [S2]"
                 }
               }
             ]
@@ -61,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[S1] [1B]"
+                  "pathName": "[S2] [3B]"
                 }
               }
             ]
@@ -92,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[1B] [S1]"
+                  "pathName": "[3B] [S2]"
                 }
               }
             ]
@@ -111,7 +111,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[S1] [6B]"
+                  "pathName": "[S2] [4A]"
                 }
               }
             ]
@@ -142,7 +142,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[6B] [S1]"
+                  "pathName": "[4A] [S2]"
                 }
               }
             ]
@@ -161,7 +161,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[S1] [6A]"
+                  "pathName": "[S2] [4B]"
                 }
               }
             ]
