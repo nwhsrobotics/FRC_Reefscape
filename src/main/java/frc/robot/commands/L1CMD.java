@@ -16,8 +16,12 @@ public class L1CMD extends Command {
     addRequirements(elevator);
   }
 
+  //TODO: Move this method in the elevator subsystem
+  // so don't need to repeatedly change/copy paste for all commands
   public boolean isAtLocation(){
     
+    //TODO: There is a logic error here (units), its meters-rotations, should either be meters-meters or rotations-rotations
+    // or use setPositionConversionFactor
     if (elevator.setPointRotations == 0.0){
       return ((elevator.rotationsToMeters(elevator.setPointRotations)-elevator.relativeEncoderLeft.getPosition())>-0.2);
       

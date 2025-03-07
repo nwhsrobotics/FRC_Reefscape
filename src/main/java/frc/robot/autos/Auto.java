@@ -39,7 +39,7 @@ public class Auto extends SequentialCommandGroup {
         this.visionForwards = visionForwards;
         this.visionBackwards = visionBackwards;
         // LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront);
-        LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront);
+        // LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront);
         // Elastic.Notification.notif("Auto done");
         addCommands(
                 // Reset robot odometry to a initial position.

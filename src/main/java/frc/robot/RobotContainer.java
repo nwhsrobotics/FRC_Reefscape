@@ -80,35 +80,31 @@ public class RobotContainer {
             // Do whatever you want with the poses here
             field.getObject("path").setPoses(poses);
         });
-        ParallelCommandGroup autoInit = new ParallelCommandGroup(); // new ParallelCommandGroup((new InstantCommand(() -> wristSubsystem.ampPreset(), wristSubsystem), (new InstantCommand(() -> armSubsystem.underStage(), armSubsystem));
 
+        
         Command L4CMD = new L4CMD(elevatorSubsystem, gunner);
         Command L3CMD = new L3CMD(elevatorSubsystem, gunner);
         Command L2CMD = new L2CMD(elevatorSubsystem, gunner);
         Command L1CMD = new L1CMD(elevatorSubsystem, gunner);
         Command LoadStation = new LoadStation(elevatorSubsystem, gunner);
 
-        NamedCommands.registerCommand("autoInit", autoInit);
-
-         NamedCommands.registerCommand("L4CORAL", L4CMD);
-         NamedCommands.registerCommand("L3CORAL", L3CMD);
-         NamedCommands.registerCommand("L2CORAL", L2CMD);
-         NamedCommands.registerCommand("L1CORAL", L1CMD);
-         NamedCommands.registerCommand("LoadStation", LoadStation);
-
-
         //INIT after registering named commands
+        NamedCommands.registerCommand("L4CORAL", L4CMD);
+        NamedCommands.registerCommand("L3CORAL", L3CMD);
+        NamedCommands.registerCommand("L2CORAL", L2CMD);
+        NamedCommands.registerCommand("L1CORAL", L1CMD);
+        NamedCommands.registerCommand("LoadStation", LoadStation);
         NamedCommands.registerCommand("Intake", new WaitCommand(2.0));
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
                                                     .andThen(new WaitCommand(1))
                                                     .andThen(new InstantCommand(() -> intakeoutake.outtakeClose())));
         NamedCommands.registerCommand("MoveElevator", new InstantCommand());
+
+        // autos (either PathPlanner or Auto with Vision) (cannot have both enabled, need to keep 1 commented out)
+        // remove this comment below for pathplanner auto
         //autoChooser = AutoBuilder.buildAutoChooser(); 
+        // remove all the autochooser comments below for Auto with Vision auto
         autoChooser = new SendableChooser<>();
-        //should be using arrays since the list size doesn't change, 
-        // but list is easier for new members to understand 
-        // plus allows an option for dynamic location changes
-         
         autoChooser.addOption("A*", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<>(List.of("[1A]", "[6B]", "[5A]", "[5B]")), Positions.START_A));
         //autoChooser.addOption("A1 to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[5A]", "[6B]", "[5A]", "[5B]")), Positions.START_A));
         //autoChooser.addOption("A to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Positions.START_A));
@@ -119,29 +115,24 @@ public class RobotContainer {
         //autoChooser.addOption("C1 to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[3A]", "[4B]", "[3A]", "[3B]")), Positions.START_C));
 
 
-        //Gunner controlls 
-        //new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
-        //new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
-         
+        // Gunner controlls 
+        // https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
+        new POVButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
+        new POVButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
         //new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> algaeArm.triggerAlgaeArm(), algaeArm));
-
         new JoystickButton(gunner, Buttons.Y).onTrue(new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
-
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); 
 
         
         //Driver controlls 
-        // NEED TO ADD THE FAST/SLOW MODE TOGGLE (see controller diagram)
-        // NEED TO ADD THE STATION 1/2 TOGGLE THING (see controller diagram)
         // https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::resetOdometryWithVision, swerveSubsystem));
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
-        
         new JoystickButton(driver, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(swerveSubsystem.autonavigator::toggle));
         new JoystickButton(driver, Buttons.X).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.STATION_LEFT)));
         new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.STATION_RIGHT)));
