@@ -89,7 +89,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   //DigitalInput bottomlimitSwitch = new DigitalInput(0);
 
   // setpoint
-  private double setPointRotations = 0.0;
+  public double setPointRotations = 0.0;
 
   //Current Elevator Level
   int currentElevatorLevel = 0;
@@ -137,8 +137,6 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void L4_Preset() {
     setPointRotations = metersToRotations(elevatorHeights[4]);  //183cm >>  179.3cm  >>   1.793m 
   }
-
-  
 
   
   
