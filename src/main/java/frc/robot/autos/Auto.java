@@ -45,8 +45,6 @@ public class Auto extends SequentialCommandGroup {
                 // Reset robot odometry to a initial position.
                 new InstantCommand(() -> flipResetOdometry(initialPos)),
                 //new InstantCommand(() -> Elastic.Notification.notif("AUTO RUNNING")),
-                NamedCommands.getCommand("autoInit"),
-                NamedCommands.getCommand("Output"),
                 scoreCoral()
                 //new InstantCommand(() -> Elastic.Notification.notif("AUTO RUNNING"))
         );
@@ -78,6 +76,7 @@ public class Auto extends SequentialCommandGroup {
                     exitReturnCommands.addCommands(NamedCommands.getCommand("LoadStation"));
                     exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(()-> !visionBackwards.isDetectingTargetID("[S1]")));
                     exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
+                    exitReturnCommands.addCommands(NamedCommands.getCommand("Intake"));
                     //exitReturnCommands.addCommands(new WaitCommand(2));
                     //Move robot from station 1 to next station
                     int finalI = i;
@@ -103,7 +102,7 @@ public class Auto extends SequentialCommandGroup {
                     exitReturnCommands.addCommands(NamedCommands.getCommand("LoadStation"));
                     exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(()-> !visionBackwards.isDetectingTargetID("[S1]")));
                     exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
-                    
+                    exitReturnCommands.addCommands(NamedCommands.getCommand("Intake"));
                     //Move robot from station 1 to next station
                     int finalI = i;
                     exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] " + locationsToGo.get(i+1)).onlyWhile(()-> !visionForwards.isDetectingTargetID(locationsToGo.get(finalI +1))));
@@ -127,7 +126,7 @@ public class Auto extends SequentialCommandGroup {
                     exitReturnCommands.addCommands(NamedCommands.getCommand("LoadStation"));
                     exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S2]").onlyWhile(()-> !visionBackwards.isDetectingTargetID("[S2]")));
                     exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
-                    
+                    exitReturnCommands.addCommands(NamedCommands.getCommand("Intake"));
                     //Move robot from station 2 to next station
                     int finalI = i;
                     exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S2] " + locationsToGo.get(i+1)).onlyWhile(()-> !visionForwards.isDetectingTargetID(locationsToGo.get(finalI +1))));
