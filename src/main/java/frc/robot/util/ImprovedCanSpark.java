@@ -41,7 +41,7 @@ public class ImprovedCanSpark extends SparkMax {
         SparkMaxConfig config = new SparkMaxConfig();
         config.idleMode(mode);
         switch (motor) {
-            case NEO -> config.smartCurrentLimit(80);
+            case NEO -> config.smartCurrentLimit(30);
             case NEO550 -> config.smartCurrentLimit(20);
             case VORTEX -> config.smartCurrentLimit(80);
         }
