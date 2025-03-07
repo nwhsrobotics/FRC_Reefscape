@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.AutoConstants;
@@ -44,10 +45,10 @@ public class RobotContainer {
 
     //public final ElevatorSysID elevatorSysID = new ElevatorSysID();
 
-    private final VisionSubsystem limeLightForwards = new VisionSubsystem(Constants.LimelightConstants.llFront);
+    private final VisionSubsystem limeLightForwards = new VisionSubsystem(LimelightConstants.llFront);
 
    // public final SysId sysIdSubsystem = new SysId();
-    private final VisionSubsystem limeLightBackwards = new VisionSubsystem(Constants.LimelightConstants.llBack);
+    private final VisionSubsystem limeLightBackwards = new VisionSubsystem(LimelightConstants.llBack);
 
     private final Field2d field;
 
@@ -89,16 +90,18 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("autoInit", autoInit);
 
-         NamedCommands.registerCommand("L4CORAL",new InstantCommand());
-         NamedCommands.registerCommand("L3CORAL",new InstantCommand());
-         NamedCommands.registerCommand("L2CORAL",new InstantCommand());
-         NamedCommands.registerCommand("L1CORAL",new InstantCommand());
-         NamedCommands.registerCommand("LoadStation",new InstantCommand());
+         NamedCommands.registerCommand("L4CORAL", L4CMD);
+         NamedCommands.registerCommand("L3CORAL", L3CMD);
+         NamedCommands.registerCommand("L2CORAL", L2CMD);
+         NamedCommands.registerCommand("L1CORAL", L1CMD);
+         NamedCommands.registerCommand("LoadStation", LoadStation);
 
 
         //INIT after registering named commands
-        NamedCommands.registerCommand("Intake", new InstantCommand());
-        NamedCommands.registerCommand("Outtake", new InstantCommand());
+        NamedCommands.registerCommand("Intake", new WaitCommand(2.0));
+        NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
+                                                    .andThen(new WaitCommand(1))
+                                                    .andThen(new InstantCommand(() -> intakeoutake.outtakeClose())));
         NamedCommands.registerCommand("MoveElevator", new InstantCommand());
         //autoChooser = AutoBuilder.buildAutoChooser(); 
         autoChooser = new SendableChooser<>();

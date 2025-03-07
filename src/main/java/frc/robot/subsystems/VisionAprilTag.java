@@ -274,8 +274,9 @@ public class VisionAprilTag {
             timeDetected = now;
             stableResults = results;
             // experimental distance adaptive stabilizer (make it greater than linear if needed) 
-            //int idealDist = 2;
-            //holdDuration = Math.max(((hypotenuseDistanceXandZAprilTag(limelightName) / idealDist) * 100), 20);
+            int idealDist = 2;
+            double distance = results.targets_Fiducials[0].getRobotPose_TargetSpace2D().getTranslation().getNorm();
+            holdDuration = Math.max((distance / idealDist) * 100, 20);            
         } else {
             long time = now - timeDetected;
             if (time < holdDuration) {
