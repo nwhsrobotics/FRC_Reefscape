@@ -45,11 +45,13 @@ public class ElevatorSubsystem extends SubsystemBase {
   // Create ele(vator) motors
   
   
-  private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO,  IdleMode.kBrake, 0.4, 0.0, 0.0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.0);
-  private final SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO,  IdleMode.kBrake,0.4, 0.0, 0.0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.0);
+  private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO,  IdleMode.kBrake, 0.8,0.0, 0.0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02/ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
+  private final SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO,  IdleMode.kBrake,0.8,0.0, 0.0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02/ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
   
   SparkClosedLoopController leftElevatorController = leftElevatorMotor.getClosedLoopController();
   SparkClosedLoopController rightElevatorController = rightElevatorMotor.getClosedLoopController();
+
+  
 
   
 
@@ -67,6 +69,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   // set up absolute encoders for elevator
   //public final CANcoder absoluteEncoderLeft = new CANcoder(CANAssignments.CLIMB_ABSOLUTE_ENCODER_LEFT_ID);
   //public final CANcoder absoluteEncoderRight = new CANcoder(CANAssignments.CLIMB_ABSOLUTE_ENCODER_RIGHT_ID);
+
 
   
   // set up relative encoders for elevator
@@ -98,11 +101,11 @@ public class ElevatorSubsystem extends SubsystemBase {
   double L3Preset = 1.1973;
   double L4Preset = 1.8173; 
 
-  double[] elevatorHeights = new double[] {
-    0.0, //loadStation 
+  public double[] elevatorHeights = new double[] {
+    0.0, //loadSttion 
     0.424, // L1
     0.6973, //L2
-    1.0973,  //L3 
+    1.1373,//L3
     1.7173  //L4 
   };
  
@@ -110,6 +113,10 @@ public class ElevatorSubsystem extends SubsystemBase {
   public double metersToRotations(double setpointNumMeters){
     return setpointNumMeters/ ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER;
 
+  }
+
+  public double rotationsToMeters(double setpointNumRotations){
+    return setpointNumRotations * ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER;
   }
   
   // create L(#) preset methods
@@ -130,6 +137,10 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void L4_Preset() {
     setPointRotations = metersToRotations(elevatorHeights[4]);  //183cm >>  179.3cm  >>   1.793m 
   }
+
+  
+
+  
   
 
   //Seting elevator heights 
@@ -172,6 +183,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public ElevatorSubsystem() {
 
+
+
   }
 
   @Override
@@ -189,8 +202,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     // leftElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
     // rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
     leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
-
     rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
+
+    System.out.println(elevatorHeights[currentElevatorLevel]);
+    System.out.println(relativeEncoderRight.getPosition());
+
+
+
+
 
 
 
