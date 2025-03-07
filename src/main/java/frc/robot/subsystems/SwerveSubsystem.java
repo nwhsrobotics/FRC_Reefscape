@@ -379,6 +379,8 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
         updateOdometry();
 
+
+        
         // Log position of robot.
         Logger.recordOutput("swerve.pose", getPose());
 
