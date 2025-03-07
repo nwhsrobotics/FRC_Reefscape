@@ -77,7 +77,7 @@ public class AlternativePathfindAprilTag extends Command {
   @Override
   public boolean isFinished()
   { // right now the magic numbers are 0.158m and 0.168m (this is still big gap, try to get them as low as 0.04m and 0.08m or less)
-    if (Math.abs(VisionAprilTag.horizontalOffsetXAprilTag(vision.getLimelightName())) <= (Math.PI/20) && 
+    if (Math.abs(VisionAprilTag.horizontalOffsetXAprilTag(vision.getLimelightName())) <= (Math.PI/55) && 
        Math.abs(VisionAprilTag.straightLineZAprilTag(vision.getLimelightName())) <= ((Math.PI+2)/10))
   {
     return true;
