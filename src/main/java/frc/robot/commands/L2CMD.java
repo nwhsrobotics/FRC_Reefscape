@@ -29,12 +29,14 @@ public class L2CMD extends Command {
 
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    elevator.L2_Preset();
+  }
 
  
   @Override
   public void execute() {
-    elevator.L2_Preset();
+    //elevator.L2_Preset();
   }
 
  
@@ -44,6 +46,6 @@ public class L2CMD extends Command {
 
   @Override
   public boolean isFinished() {
-    return isAtLocation();
+    return elevator.isNearTargetPosition();
   }
 }

@@ -16,11 +16,11 @@ public class L1CMD extends Command {
     addRequirements(elevator);
   }
 
-  //TODO: Move this method in the elevator subsystem
+  //Move this method in the elevator subsystem
   // so don't need to repeatedly change/copy paste for all commands
   public boolean isAtLocation(){
     
-    //TODO: There is a logic error here (units), its meters-rotations, should either be meters-meters or rotations-rotations
+    //There is a logic error here (units), its meters-rotations, should either be meters-meters or rotations-rotations
     // or use setPositionConversionFactor
     if (elevator.setPointRotations == 0.0){
       return ((elevator.rotationsToMeters(elevator.setPointRotations)-elevator.relativeEncoderLeft.getPosition())>-0.2);
@@ -31,12 +31,15 @@ public class L1CMD extends Command {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    elevator.L1_Preset();
+  }
 
 
   @Override
   public void execute() {
-    elevator.L1_Preset();
+    //dont need to repeat call it so
+    //elevator.L1_Preset();
   }
 
  
@@ -46,6 +49,6 @@ public class L1CMD extends Command {
 
   @Override
   public boolean isFinished() {
-    return isAtLocation();
+    return elevator.isNearTargetPosition();
   }
 }

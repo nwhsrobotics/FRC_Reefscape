@@ -27,12 +27,14 @@ public class L3CMD extends Command {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    elevator.L3_Preset();
+  }
 
   
   @Override
   public void execute() {
-    elevator.L3_Preset();
+    //elevator.L3_Preset();
   }
 
   
@@ -42,6 +44,6 @@ public class L3CMD extends Command {
   
   @Override
   public boolean isFinished() {
-    return isAtLocation();
+    return elevator.isNearTargetPosition();
   }
 }

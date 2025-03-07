@@ -27,12 +27,14 @@ public class LoadStation extends Command {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    elevator.loadStation_Preset(); 
+  }
 
   
   @Override
   public void execute() {
-    elevator.loadStation_Preset(); 
+    //elevator.loadStation_Preset(); 
   }
 
   
@@ -42,6 +44,6 @@ public class LoadStation extends Command {
   
   @Override
   public boolean isFinished() {
-    return isAtLocation();
+    return elevator.isNearTargetPosition();
   }
 }
