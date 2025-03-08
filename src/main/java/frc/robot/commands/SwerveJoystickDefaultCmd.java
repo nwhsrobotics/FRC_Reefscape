@@ -47,9 +47,9 @@ public class SwerveJoystickDefaultCmd extends Command {
             //TODO: Negative
             fieldRelative = false;
             swerveSubsystem.drive(
-                VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llBack),
-                VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llBack),
-                    VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llBack),
+                -VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llBack),
+                -VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llBack),
+                VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llBack),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         } else if (xbox.getRightBumperButton()) { //for forwards april tag allign
             fieldRelative = false;

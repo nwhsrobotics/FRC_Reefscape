@@ -109,10 +109,10 @@ public class RobotContainer {
 
         // autos (either PathPlanner or Auto with Vision) (cannot have both enabled, need to keep 1 commented out)
         // remove this comment below for pathplanner auto
-        //autoChooser = AutoBuilder.buildAutoChooser(); 
+        autoChooser = AutoBuilder.buildAutoChooser("[A] to 6&1"); 
         // remove all the autochooser comments below for Auto with Vision auto
-        autoChooser = new SendableChooser<>();
-        autoChooser.addOption("A*", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<>(List.of("[1A]", "[6B]", "[5A]", "[5B]")), Positions.START_A));
+        //autoChooser = new SendableChooser<>();
+        //autoChooser.addOption("A*", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<>(List.of("[1A]", "[6B]", "[5A]", "[5B]")), Positions.START_A));
         //autoChooser.addOption("A1 to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[5A]", "[6B]", "[5A]", "[5B]")), Positions.START_A));
         //autoChooser.addOption("A to 5A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[5A]", "[5B]", "[4A]", "[4B]")), Positions.START_A));
         //autoChooser.addOption("A1 to 4A", new Auto(swerveSubsystem, limeLightForwards,limeLightBackwards, new ArrayList<>(List.of("[4A]", "[5B]", "[4A]", "[4B]")), Positions.START_A));
