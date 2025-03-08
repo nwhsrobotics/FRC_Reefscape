@@ -216,7 +216,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
   public boolean isNearTargetPosition(){
-    double metersError = 0.05;
+    double metersError = 0.02;
     double targetMetersHeight = rotationsToMeters(setPointRotations);
     double currentMetersHeight = rotationsToMeters(relativeEncoderRight.getPosition());
 
