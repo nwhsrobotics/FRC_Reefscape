@@ -473,7 +473,7 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
-        
+        try {
         if (VisionAprilTag.isAprilTagPipeline(LimelightConstants.llFront)) {
 
             boolean useMegaTag2 = true; //set to false to use MegaTag1
@@ -570,6 +570,9 @@ public class SwerveSubsystem extends SubsystemBase {
         Logger.recordOutput("swerve.odometer.xCoordinate", odometer.getEstimatedPosition().getX());
         Logger.recordOutput("swerve.odometer.yCoordinate", odometer.getEstimatedPosition().getY());
         Logger.recordOutput("swerve.odometer.rotation", odometer.getEstimatedPosition().getRotation().getDegrees());
+    } catch (Exception io){
+        
+    }
             
     }
 
