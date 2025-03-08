@@ -31,6 +31,9 @@ public class VisionAprilTag {
 
     private static LimelightResults stableResults = null;
 
+    private static double scootOffsetX = 0.0;
+
+
     /*
      * fiducial.getRobotPoseTargetSpace(); // Robot pose relative it the AprilTag Coordinate System (Most Useful) where April tag is 0, 0
         fiducial.getCameraPoseTargetSpace(); // Camera pose relative to the AprilTag (useful) (never use camera tbh)
@@ -240,7 +243,7 @@ public class VisionAprilTag {
     public static double horizontalOffsetXAprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
-            return llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getX();
+            return llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getX() + scootOffsetX;
         }
         return 0.0;
     }
@@ -361,14 +364,20 @@ public class VisionAprilTag {
     }
 
     public static void offsetRight(String limelightName){
-        LimelightHelpers.setFiducial3DOffset(limelightName, 0, -0.159, 0);
+        scootOffsetX = -0.159;
+        //LimelightHelpers.setFiducial3DOffset(limelightName, 0, -0.159, 0);
+        LimelightHelpers.setFiducial3DOffset(limelightName, scootOffsetX, 0, 0);
     }
 
     public static void offsetLeft(String limelightName){
-        LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.159, 0);
+        scootOffsetX = 0.159;
+        //LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.159, 0);
+        LimelightHelpers.setFiducial3DOffset(limelightName, scootOffsetX, 0, 0);
     }
 
     public static void offsetCenter(String limelightName){
-        LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0, 0);
+        scootOffsetX = 0.0;
+        //LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.0, 0);
+        LimelightHelpers.setFiducial3DOffset(limelightName, scootOffsetX, 0, 0);
     }
 }

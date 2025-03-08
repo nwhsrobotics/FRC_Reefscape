@@ -44,6 +44,7 @@ public class SwerveJoystickDefaultCmd extends Command {
         }*/
         if (xbox.getLeftBumperButton()) {  //for back vision april tag detection alligning
             //while using Limelight, turn off field-relative driving.
+            //TODO: Negative
             fieldRelative = false;
             swerveSubsystem.drive(
                 VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llBack),
