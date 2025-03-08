@@ -91,16 +91,16 @@ public class RobotContainer {
 
         //INIT after registering named commands
         //maybe wait until commands instead of separate classes?
-        NamedCommands.registerCommand("L4CORAL", L4CMD.andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
-        NamedCommands.registerCommand("L3CORAL", L3CMD.andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
-        NamedCommands.registerCommand("L2CORAL", L2CMD.andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
-        NamedCommands.registerCommand("L1CORAL", L1CMD.andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
-        NamedCommands.registerCommand("LoadStation", LoadStation);
-        NamedCommands.registerCommand("L4", L4CMD.andThen(new WaitCommand(2.0)));
-        NamedCommands.registerCommand("L3", L3CMD.andThen(new WaitCommand(1.7)));
-        NamedCommands.registerCommand("L2", L2CMD.andThen(new WaitCommand(1.4)));
-        NamedCommands.registerCommand("L1", L1CMD.andThen(new WaitCommand(1.1)));
-        NamedCommands.registerCommand("Load", LoadStation.andThen(new WaitCommand(0.9)));
+        NamedCommands.registerCommand("L4CORAL",  new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
+        NamedCommands.registerCommand("L3CORAL", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
+        NamedCommands.registerCommand("L2CORAL", new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
+        NamedCommands.registerCommand("L1CORAL", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
+        NamedCommands.registerCommand("LoadStation", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
+        NamedCommands.registerCommand("L4", new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(new WaitCommand(2.0)));
+        NamedCommands.registerCommand("L3", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.7)));
+        NamedCommands.registerCommand("L2",new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.4)));
+        NamedCommands.registerCommand("L1", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.1)));
+        NamedCommands.registerCommand("Load", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem).andThen(new WaitCommand(0.9)));
         NamedCommands.registerCommand("Intake", new WaitCommand(2.0));
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
                                                     .andThen(new WaitCommand(1))
@@ -127,11 +127,11 @@ public class RobotContainer {
         new POVButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
         new POVButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
         //new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> algaeArm.triggerAlgaeArm(), algaeArm));
-        new JoystickButton(gunner, Buttons.Y).onTrue(L1CMD);
-        new JoystickButton(gunner, Buttons.B).onTrue(L2CMD);
-        new JoystickButton(gunner, Buttons.A).onTrue(L3CMD);
-        new JoystickButton(gunner, Buttons.X).onTrue(L4CMD);
-        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(LoadStation);
+        new JoystickButton(gunner, Buttons.Y).onTrue( new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.B).onTrue( new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.A).onTrue( new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.X).onTrue( new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); 
 
