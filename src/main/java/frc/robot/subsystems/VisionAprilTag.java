@@ -364,15 +364,15 @@ public class VisionAprilTag {
     }
 
     public static void offsetRight(String limelightName){
-        scootOffsetX = -0.159;
-        //LimelightHelpers.setFiducial3DOffset(limelightName, 0, -0.159, 0);
-        LimelightHelpers.setFiducial3DOffset(limelightName, scootOffsetX, 0, 0);
+        scootOffsetX = -0.189;
+        LimelightHelpers.setFiducial3DOffset(limelightName, 0, scootOffsetX, 0);
+        //LimelightHelpers.setFiducial3DOffset(limelightName, scootOffsetX, 0, 0);
     }
 
     public static void offsetLeft(String limelightName){
-        scootOffsetX = 0.159;
-        //LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.159, 0);
-        LimelightHelpers.setFiducial3DOffset(limelightName, scootOffsetX, 0, 0);
+        scootOffsetX = 0.189;
+        LimelightHelpers.setFiducial3DOffset(limelightName, 0, scootOffsetX, 0);
+        //LimelightHelpers.setFiducial3DOffset(limelightName, scootOffsetX, 0, 0);
     }
 
     public static void offsetCenter(String limelightName){
