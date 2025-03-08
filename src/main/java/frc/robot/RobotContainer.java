@@ -131,7 +131,7 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.B).onTrue(L2CMD);
         new JoystickButton(gunner, Buttons.A).onTrue(L3CMD);
         new JoystickButton(gunner, Buttons.X).onTrue(L4CMD);
-        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(LoadStation);
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); 
 

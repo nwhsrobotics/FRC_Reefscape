@@ -24,7 +24,7 @@ public class AlternativePathfindAprilTag extends Command {
   public AlternativePathfindAprilTag(int targetAprilTagId, SwerveSubsystem swerve, VisionSubsystem vision, String targetLocation) {
     this.swerve=swerve;
     this.vision=vision;
-    //addRequirements(swerve);
+    addRequirements(swerve);
     this.targetAprilTagId=targetAprilTagId;
     if(targetLocation.indexOf("B") != -1){
       VisionAprilTag.offsetLeft(vision.getLimelightName());
