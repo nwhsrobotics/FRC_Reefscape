@@ -294,45 +294,60 @@ public class VisionAprilTag {
     /**
      * Transforms the target's location based on Limelight's data.
      *
-     * @param pos           The current position of the target.
+     * @param pos           The current position of the swerve.
      * @param limelightName Name of the Limelight.
      * @return The transformed position of the target.
      */
     public static Pose2d transformTargetLocation(Pose2d pos, String limelightName) {
-        // we could just use transform, but come on thats not fun like the normal math it does all the trig under the hood for us :(
+        // we could just use transform, but come on that's not fun like the normal math it does all the trig under the hood for us :(
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
-
-            Pose2d cameraPoseOnRobot = new Pose2d(
-                new Translation2d(
-                    LimelightConstants.distanceFromCenterForwards,  
-                    LimelightConstants.horizontalOffsetForwards      
-                ),
-                new Rotation2d(0) 
-            );
-
-            Pose2d targetInCameraCoords = llr.targets_Fiducials[0].getTargetPose_RobotSpace2D();
-
-            Pose2d targetInRobotCoords = cameraPoseOnRobot.transformBy(
-                new Transform2d(
-                    targetInCameraCoords.getTranslation(),
-                    targetInCameraCoords.getRotation()
-                )
-            );
-
+    
+            Pose2d targetInRobotCoords = llr.targets_Fiducials[0].getTargetPose_RobotSpace2D();
+    
             Pose2d targetOnField = pos.transformBy(
                 new Transform2d(
                     targetInRobotCoords.getTranslation(),
+                    //TODO: get tx instead?
+                    //LimelightHelpers.getTX(limelightName)
                     targetInRobotCoords.getRotation()
                 )
             );
-
+    
             Logger.recordOutput("limelight.objectPos", targetOnField);
             return targetOnField;
         }
-
+    
         return pos;
     }
+
+    // public static Pose2d transformTargetLocation(Pose2d pos, String limelightName) {
+    //     LimelightResults llr = isValid(limelightName);
+    //     if (llr != null) {
+    //         Pose2d rawTarget = llr.targets_Fiducials[0].getTargetPose_RobotSpace2D();
+            
+    //         Translation2d rawTranslation = rawTarget.getTranslation();
+    //         Translation2d adjustedTranslation = new Translation2d(rawTranslation.getX(), -rawTranslation.getY());
+            
+    //         Rotation2d rawRotation = rawTarget.getRotation();
+    //         Rotation2d adjustedRotation = rawRotation.unaryMinus(); 
+            
+    //         Pose2d adjustedTarget = new Pose2d(adjustedTranslation, adjustedRotation);
+            
+    //         Pose2d targetOnField = pos.transformBy(
+    //             new Transform2d(
+    //                 adjustedTarget.getTranslation(),
+    //                 adjustedTarget.getRotation()
+    //             )
+    //         );
+            
+    //         Logger.recordOutput("limelight.objectPos", targetOnField);
+    //         return targetOnField;
+    //     }
+    //     return pos;
+    // }
+    
+    
 
 
     /**
