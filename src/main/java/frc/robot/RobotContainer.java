@@ -135,6 +135,7 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); 
+        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
 
         
         //Driver controlls 
@@ -156,9 +157,8 @@ public class RobotContainer {
                     ),
                     0.2
                 );
-                Command cmd = swerveSubsystem.pathfindToPosition(target);
-                cmd.addRequirements(swerveSubsystem);
-                cmd.schedule();
+                swerveSubsystem.autonavigator.enable();
+                swerveSubsystem.autonavigator.navigateTo(target);
             })
         );
 
@@ -171,51 +171,50 @@ public class RobotContainer {
                     ),
                     0.2
                 );
-                Command cmd = swerveSubsystem.pathfindToPosition(target);
-                cmd.addRequirements(swerveSubsystem);
-                cmd.schedule();
+                swerveSubsystem.autonavigator.enable();
+                swerveSubsystem.autonavigator.navigateTo(target);
             })
         );
 
-        new JoystickButton(driver, Buttons.Y).onTrue(
-            new InstantCommand(() -> {
-                Pose2d target = limeLightForwards.scootRight(
-                    VisionAprilTag.transformTargetLocation(
-                        swerveSubsystem.getPose(), 
-                        LimelightConstants.llFront
-                    ),
-                    0.2
-                );
-                Command cmd = swerveSubsystem.pathfindToPosition(target)
-                    .andThen(
-                        NamedCommands.getCommand("L4CORAL"),
-                        NamedCommands.getCommand("Outtake"),
-                        NamedCommands.getCommand("LoadStation")
-                    );
-                cmd.addRequirements(swerveSubsystem);
-                cmd.schedule();
-            })
-        );
+        // new JoystickButton(driver, Buttons.Y).onTrue(
+        //     new InstantCommand(() -> {
+        //         Pose2d target = limeLightForwards.scootRight(
+        //             VisionAprilTag.transformTargetLocation(
+        //                 swerveSubsystem.getPose(), 
+        //                 LimelightConstants.llFront
+        //             ),
+        //             0.2
+        //         );
+        //         Command cmd = swerveSubsystem.pathfindToPosition(target)
+        //             .andThen(
+        //                 NamedCommands.getCommand("L4CORAL"),
+        //                 NamedCommands.getCommand("Outtake"),
+        //                 NamedCommands.getCommand("LoadStation")
+        //             );
+        //         cmd.addRequirements(swerveSubsystem);
+        //         cmd.schedule();
+        //     })
+        // );
 
-        new JoystickButton(driver, Buttons.A).onTrue(
-            new InstantCommand(() -> {
-                Pose2d target = limeLightForwards.scootLeft(
-                    VisionAprilTag.transformTargetLocation(
-                        swerveSubsystem.getPose(), 
-                        LimelightConstants.llFront
-                    ),
-                    0.2
-                );
-                Command cmd = swerveSubsystem.pathfindToPosition(target)
-                    .andThen(
-                        NamedCommands.getCommand("L4CORAL"),
-                        NamedCommands.getCommand("Outtake"),
-                        NamedCommands.getCommand("LoadStation")
-                    );
-                cmd.addRequirements(swerveSubsystem);
-                cmd.schedule();
-            })
-        );
+        // new JoystickButton(driver, Buttons.A).onTrue(
+        //     new InstantCommand(() -> {
+        //         Pose2d target = limeLightForwards.scootLeft(
+        //             VisionAprilTag.transformTargetLocation(
+        //                 swerveSubsystem.getPose(), 
+        //                 LimelightConstants.llFront
+        //             ),
+        //             0.2
+        //         );
+        //         Command cmd = swerveSubsystem.pathfindToPosition(target)
+        //             .andThen(
+        //                 NamedCommands.getCommand("L4CORAL"),
+        //                 NamedCommands.getCommand("Outtake"),
+        //                 NamedCommands.getCommand("LoadStation")
+        //             );
+        //         cmd.addRequirements(swerveSubsystem);
+        //         cmd.schedule();
+        //     })
+        // );
 
         
                                 
