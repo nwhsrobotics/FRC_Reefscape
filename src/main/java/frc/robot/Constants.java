@@ -343,8 +343,8 @@ public final class Constants {
     public static final class LimelightConstants {
         // 3.8cm or 0.038m base height of robot (add to all heights)
         //Forward Limelight
-        public static final double mountHeightForwards = 0.6; //in meters
-        public static final double mountAngleForwards = 25.000; //in degrees with straight being 0 up being 90 and down being -90
+        public static final double mountHeightForwards = 0.625; //in meters
+        public static final double mountAngleForwards = 17.5; //in degrees with straight being 0 up being 90 and down being -90
         public static final double horizontalOffsetForwards = 0.0; //in meters, this offset is how far left or right LL3 is mounted from center (negative is left, positive right)
         //this might not be needed but doesn't hurt us
         public static final double distanceFromCenterForwards = 0.0387; //in meters, straight distance to the camera from middle

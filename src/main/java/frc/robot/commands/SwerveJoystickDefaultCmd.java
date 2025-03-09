@@ -63,7 +63,7 @@ public class SwerveJoystickDefaultCmd extends Command {
             swerveSubsystem.drive(
                     -MathUtil.applyDeadband(invertIfRed(xbox.getLeftY()), OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(invertIfRed(xbox.getLeftX()), OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(invertIfRed(xbox.getRightX()), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband((xbox.getRightX()), OIConstants.kDriveDeadband),
                     swerveSubsystem.isFieldRelative() && fieldRelative, true);
             //invert if red so drivers dont have to abitarly reset gyro and field relative everytime
             /*swerveSubsystem.drive(
@@ -77,7 +77,7 @@ public class SwerveJoystickDefaultCmd extends Command {
             swerveSubsystem.drive(
                     -MathUtil.applyDeadband(invertIfRed(xbox.getLeftY()*0.2), OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(invertIfRed(xbox.getLeftX()*0.2), OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(invertIfRed(xbox.getRightX()*0.2), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband((xbox.getRightX()*0.2), OIConstants.kDriveDeadband),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         /*fancy equation that probably would help us to get rid of speed coefficients (ratelimit probably false)
         swerveSubsystem.drive(

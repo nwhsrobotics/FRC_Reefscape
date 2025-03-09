@@ -102,7 +102,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("L2",new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.4)));
         NamedCommands.registerCommand("L1", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.1)));
         NamedCommands.registerCommand("Load", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem).andThen(new WaitCommand(0.9)));
-        NamedCommands.registerCommand("Intake", new WaitCommand(2.0));
+        NamedCommands.registerCommand("Intake", new WaitCommand(1.5));
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
                                                     .andThen(new WaitCommand(1))
                                                     .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
@@ -130,12 +130,18 @@ public class RobotContainer {
         //new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> algaeArm.triggerAlgaeArm(), algaeArm));
         new JoystickButton(gunner, Buttons.Y).onTrue( new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.B).onTrue( new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.A).onTrue( new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
+        new JoystickButton(gunn
+        , Buttons.A).onTrue( new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.X).onTrue( new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); 
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
+
+        new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("L1CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
+        new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
+        new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("L3CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
+        //new POVButton(gunner, Buttons.POV_LEFT).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
 
         
         //Driver controlls 
@@ -148,33 +154,33 @@ public class RobotContainer {
         // new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_REEF)));
         // new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_REEF)));
 
-        new JoystickButton(driver, Buttons.X).onTrue(
-            new InstantCommand(() -> {
-                Pose2d target = limeLightForwards.scootLeft(
-                    VisionAprilTag.transformTargetLocation(
-                        swerveSubsystem.getPose(), 
-                        LimelightConstants.llFront
-                    ),
-                    0.2
-                );
-                swerveSubsystem.autonavigator.enable();
-                swerveSubsystem.autonavigator.navigateTo(target);
-            })
-        );
+        // new JoystickButton(driver, Buttons.X).onTrue(
+        //     new InstantCommand(() -> {
+        //         Pose2d target = limeLightForwards.scootLeft(
+        //             VisionAprilTag.transformTargetLocation(
+        //                 swerveSubsystem.getPose(), 
+        //                 LimelightConstants.llFront
+        //             ),
+        //             2
+        //         );
+        //         swerveSubsystem.autonavigator.enable();
+        //         swerveSubsystem.autonavigator.navigateTo(target);
+        //     })
+        // );
 
-        new JoystickButton(driver, Buttons.B).onTrue(
-            new InstantCommand(() -> {
-                Pose2d target = limeLightForwards.scootLeft(
-                    VisionAprilTag.transformTargetLocation(
-                        swerveSubsystem.getPose(), 
-                        LimelightConstants.llFront
-                    ),
-                    0.2
-                );
-                swerveSubsystem.autonavigator.enable();
-                swerveSubsystem.autonavigator.navigateTo(target);
-            })
-        );
+        // new JoystickButton(driver, Buttons.B).onTrue(
+        //     new InstantCommand(() -> {
+        //         Pose2d target = limeLightForwards.scootLeft(
+        //             VisionAprilTag.transformTargetLocation(
+        //                 swerveSubsystem.getPose(), 
+        //                 LimelightConstants.llFront
+        //             ),
+        //             2
+        //         );
+        //         swerveSubsystem.autonavigator.enable();
+        //         swerveSubsystem.autonavigator.navigateTo(target);
+        //     })
+        // );
 
         // new JoystickButton(driver, Buttons.Y).onTrue(
         //     new InstantCommand(() -> {
