@@ -9,6 +9,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -141,10 +142,84 @@ public class RobotContainer {
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::resetOdometryWithVision, swerveSubsystem));
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
         //new JoystickButton(driver, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(swerveSubsystem.autonavigator::toggle));
-        new JoystickButton(driver, Buttons.X).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.STATION_LEFT)));
-        new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.STATION_RIGHT)));
-        new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_REEF)));
-        new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_REEF)));
+        // new JoystickButton(driver, Buttons.X).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.STATION_LEFT)));
+        // new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.STATION_RIGHT)));
+        // new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_REEF)));
+        // new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_REEF)));
+
+        new JoystickButton(driver, Buttons.X).onTrue(
+            new InstantCommand(() -> {
+                Pose2d target = limeLightForwards.scootLeft(
+                    VisionAprilTag.transformTargetLocation(
+                        swerveSubsystem.getPose(), 
+                        LimelightConstants.llFront
+                    ),
+                    0.2
+                );
+                Command cmd = swerveSubsystem.pathfindToPosition(target);
+                cmd.addRequirements(swerveSubsystem);
+                cmd.schedule();
+            })
+        );
+
+        new JoystickButton(driver, Buttons.B).onTrue(
+            new InstantCommand(() -> {
+                Pose2d target = limeLightForwards.scootLeft(
+                    VisionAprilTag.transformTargetLocation(
+                        swerveSubsystem.getPose(), 
+                        LimelightConstants.llFront
+                    ),
+                    0.2
+                );
+                Command cmd = swerveSubsystem.pathfindToPosition(target);
+                cmd.addRequirements(swerveSubsystem);
+                cmd.schedule();
+            })
+        );
+
+        new JoystickButton(driver, Buttons.Y).onTrue(
+            new InstantCommand(() -> {
+                Pose2d target = limeLightForwards.scootRight(
+                    VisionAprilTag.transformTargetLocation(
+                        swerveSubsystem.getPose(), 
+                        LimelightConstants.llFront
+                    ),
+                    0.2
+                );
+                Command cmd = swerveSubsystem.pathfindToPosition(target)
+                    .andThen(
+                        NamedCommands.getCommand("L4CORAL"),
+                        NamedCommands.getCommand("Outtake"),
+                        NamedCommands.getCommand("LoadStation")
+                    );
+                cmd.addRequirements(swerveSubsystem);
+                cmd.schedule();
+            })
+        );
+
+        new JoystickButton(driver, Buttons.A).onTrue(
+            new InstantCommand(() -> {
+                Pose2d target = limeLightForwards.scootLeft(
+                    VisionAprilTag.transformTargetLocation(
+                        swerveSubsystem.getPose(), 
+                        LimelightConstants.llFront
+                    ),
+                    0.2
+                );
+                Command cmd = swerveSubsystem.pathfindToPosition(target)
+                    .andThen(
+                        NamedCommands.getCommand("L4CORAL"),
+                        NamedCommands.getCommand("Outtake"),
+                        NamedCommands.getCommand("LoadStation")
+                    );
+                cmd.addRequirements(swerveSubsystem);
+                cmd.schedule();
+            })
+        );
+
+        
+                                
+        
         new POVButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> VisionAprilTag.offsetRight(Constants.LimelightConstants.llFront)));
         new POVButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> VisionAprilTag.offsetLeft(Constants.LimelightConstants.llFront)));
         new POVButton(driver, Buttons.POV_UP).onTrue(new InstantCommand(() -> VisionAprilTag.offsetCenter(Constants.LimelightConstants.llFront)));

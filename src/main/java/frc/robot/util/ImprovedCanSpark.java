@@ -53,6 +53,8 @@ public class ImprovedCanSpark extends SparkMax {
         .maxVelocity(maxVel)
         .maxAcceleration(maxAccel).
         allowedClosedLoopError(allowedError);
+        //config.voltageCompensation(11);
+        //setVoltage(11);
         if (DriverStation.isFMSAttached()) {
             configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         } else {

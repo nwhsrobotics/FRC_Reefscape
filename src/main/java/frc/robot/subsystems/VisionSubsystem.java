@@ -8,6 +8,8 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -159,45 +161,44 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     public Pose2d scootRight(Pose2d adjustedPos, double scootDist) {
-        double initialX = adjustedPos.getX();
-        double initialY = adjustedPos.getY();
-        double initialRot = adjustedPos.getRotation().getRadians();
+        // double initialX = adjustedPos.getX();
+        // double initialY = adjustedPos.getY();
+        // double initialRot = adjustedPos.getRotation().getRadians();
 
-        double scootedX = initialX + scootDist * Math.sin(initialRot);
-        double scootedY = initialY - scootDist * Math.cos(initialRot);
+        // double scootedX = initialX + scootDist * Math.sin(initialRot);
+        // double scootedY = initialY - scootDist * Math.cos(initialRot);
 
-        Pose2d scootingRight = new Pose2d(scootedX, scootedY, Rotation2d.fromRadians(initialRot));
+        // Pose2d scootingRight = new Pose2d(scootedX, scootedY, Rotation2d.fromRadians(initialRot));
 
-        return scootingRight;
+        // return scootingRight;
 
-        /* is no math fun?
+        // is no math fun?
             Transform2d right = new Transform2d(
                 new Translation2d(0.0, -scootDist), 
                 new Rotation2d(0.0)
             );
-            return originalPos.transformBy(right);
-         */
+            return adjustedPos.transformBy(right);
+         
     }
 
     public Pose2d scootLeft(Pose2d adjustedPos, double scootDist) {
-        double initialX = adjustedPos.getX();
-        double initialY = adjustedPos.getY();
-        double initialRot = adjustedPos.getRotation().getRadians();
+        // double initialX = adjustedPos.getX();
+        // double initialY = adjustedPos.getY();
+        // double initialRot = adjustedPos.getRotation().getRadians();
 
-        double scootedX = initialX - scootDist * Math.sin(initialRot);
-        double scootedY = initialY + scootDist * Math.cos(initialRot);
+        // double scootedX = initialX - scootDist * Math.sin(initialRot);
+        // double scootedY = initialY + scootDist * Math.cos(initialRot);
 
-        Pose2d scootingRight = new Pose2d(scootedX, scootedY, Rotation2d.fromRadians(initialRot));
+        // Pose2d scootingRight = new Pose2d(scootedX, scootedY, Rotation2d.fromRadians(initialRot));
 
-        return scootingRight;
+        // return scootingRight;
 
-        /* is no math fun?
+        // is no math fun?
             Transform2d left = new Transform2d(
                 new Translation2d(0.0, scootDist), 
                 new Rotation2d(0.0)
             );
-            return originalPos.transformBy(left);
-         */
+            return adjustedPos.transformBy(left);
     }
 
 

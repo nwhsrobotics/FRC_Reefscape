@@ -189,9 +189,9 @@ public class Robot extends LoggedRobot {
                 MathUtil.applyDeadband(robotContainer.driver.getLeftY(), OIConstants.kDriveDeadband) != 0 || 
                 MathUtil.applyDeadband(robotContainer.driver.getRightX(), OIConstants.kDriveDeadband) != 0 ||
                 MathUtil.applyDeadband(robotContainer.driver.getRightY(), OIConstants.kDriveDeadband) != 0) {
-                robotContainer.swerveSubsystem.autonavigator.pauseNavigation();
+                robotContainer.swerveSubsystem.autonavigator.disable();
             } else {
-                robotContainer.swerveSubsystem.autonavigator.resumeNavigation();
+                //robotContainer.swerveSubsystem.autonavigator.resumeNavigation();
             }
         }
             
