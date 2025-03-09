@@ -512,7 +512,7 @@ public class SwerveSubsystem extends SubsystemBase {
                     doRejectUpdate = true;
                 }
                 if (!doRejectUpdate) {
-                    odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
+                    odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.4, .4, 9999999));
                     odometer.addVisionMeasurement(
                             mt2.pose,
                             mt2.timestampSeconds);
