@@ -62,6 +62,8 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput(limelightName+".tx", LimelightHelpers.getTX(limelightName));
         Logger.recordOutput(limelightName+".ty", LimelightHelpers.getTY(limelightName));
         Logger.recordOutput(limelightName+".ta", LimelightHelpers.getTA(limelightName));
+
+        Logger.recordOutput("Crosshair","----------------------------------X-----------------------------"); 
         
         /* 
         String llname = LimelightConstants.llObjectDetectionName; 

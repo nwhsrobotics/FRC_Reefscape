@@ -304,13 +304,19 @@ public class VisionAprilTag {
         if (llr != null) {
     
             Pose2d targetInRobotCoords = llr.targets_Fiducials[0].getTargetPose_RobotSpace2D();
+            double robotFrontDist = 0.457;
     
+            Translation2d adjustedTranslation = new Translation2d(targetInRobotCoords.getX()-robotFrontDist, -targetInRobotCoords.getY());
+
+
             Pose2d targetOnField = pos.transformBy(
                 new Transform2d(
-                    targetInRobotCoords.getTranslation(),
+                    //targetInRobotCoords.getTranslation(),
+                    adjustedTranslation,
                     //TODO: get tx instead?
                     //LimelightHelpers.getTX(limelightName)
-                    targetInRobotCoords.getRotation()
+                    //targetInRobotCoords.getRotation()
+                    Rotation2d.fromDegrees(LimelightHelpers.getTX(limelightName))
                 )
             );
     
