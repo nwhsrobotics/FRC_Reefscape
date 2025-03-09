@@ -40,7 +40,7 @@ public class RobotContainer {
 
     //private final AlgaeArm algaeArm = new AlgaeArm();
 
-    private final IntakeOuttake intakeoutake = new IntakeOuttake();
+    public final IntakeOuttake intakeoutake = new IntakeOuttake();
 
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
@@ -109,7 +109,7 @@ public class RobotContainer {
 
         // autos (either PathPlanner or Auto with Vision) (cannot have both enabled, need to keep 1 commented out)
         // remove this comment below for pathplanner auto
-        autoChooser = AutoBuilder.buildAutoChooser("[A] to 6&1"); 
+        autoChooser = AutoBuilder.buildAutoChooser("Straight Auto"); 
         // remove all the autochooser comments below for Auto with Vision auto
         //autoChooser = new SendableChooser<>();
         //autoChooser.addOption("A*", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<>(List.of("[1A]", "[6B]", "[5A]", "[5B]")), Positions.START_A));
@@ -140,7 +140,7 @@ public class RobotContainer {
         // https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::resetOdometryWithVision, swerveSubsystem));
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
-        new JoystickButton(driver, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(swerveSubsystem.autonavigator::toggle));
+        //new JoystickButton(driver, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(swerveSubsystem.autonavigator::toggle));
         new JoystickButton(driver, Buttons.X).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.STATION_LEFT)));
         new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.STATION_RIGHT)));
         new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_REEF)));
@@ -148,6 +148,7 @@ public class RobotContainer {
         new POVButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> VisionAprilTag.offsetRight(Constants.LimelightConstants.llFront)));
         new POVButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> VisionAprilTag.offsetLeft(Constants.LimelightConstants.llFront)));
         new POVButton(driver, Buttons.POV_UP).onTrue(new InstantCommand(() -> VisionAprilTag.offsetCenter(Constants.LimelightConstants.llFront)));
+        //new POVButton(driver, Buttons.POV_DOWN).onTrue(swerveSubsystem.pathfindToPosition(limeLightForwards.scootRight(swerveSubsystem.getPose(), 0.2)));
 
         //new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_MID_REEF)));
         //new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));

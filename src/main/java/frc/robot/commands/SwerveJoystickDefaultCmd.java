@@ -61,9 +61,9 @@ public class SwerveJoystickDefaultCmd extends Command {
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if trigger(slow mode) not pressed
             fieldRelative = true;
             swerveSubsystem.drive(
-                    -MathUtil.applyDeadband(xbox.getLeftY(), OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(xbox.getLeftX(), OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(xbox.getRightX(), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(invertIfRed(xbox.getLeftY()), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(invertIfRed(xbox.getLeftX()), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(invertIfRed(xbox.getRightX()), OIConstants.kDriveDeadband),
                     swerveSubsystem.isFieldRelative() && fieldRelative, true);
             //invert if red so drivers dont have to abitarly reset gyro and field relative everytime
             /*swerveSubsystem.drive(
@@ -75,9 +75,9 @@ public class SwerveJoystickDefaultCmd extends Command {
             // slow mode *0.2 (or can be booster too) has no slew rate/rate limit
             fieldRelative = true;
             swerveSubsystem.drive(
-                    -MathUtil.applyDeadband(xbox.getLeftY()*0.2, OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(xbox.getLeftX()*0.2, OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(xbox.getRightX()*0.2, OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(invertIfRed(xbox.getLeftY()*0.2), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(invertIfRed(xbox.getLeftX()*0.2), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(invertIfRed(xbox.getRightX()*0.2), OIConstants.kDriveDeadband),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         /*fancy equation that probably would help us to get rid of speed coefficients (ratelimit probably false)
         swerveSubsystem.drive(
@@ -113,10 +113,10 @@ public class SwerveJoystickDefaultCmd extends Command {
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
             if (alliance.get() == DriverStation.Alliance.Red) {
-                return -1;
+                return -num;
             }
         }
-        return 1;
+        return num;
     }
 
 

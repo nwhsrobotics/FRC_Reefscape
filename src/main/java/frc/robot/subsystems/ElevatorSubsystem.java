@@ -106,8 +106,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     0.474, // L1
     0.7473, //L2
     1.1873,//L3
-    1.8173  //L4 
+    1.7873  //L4 
   };
+
  
   
   public double metersToRotations(double setpointNumMeters){
