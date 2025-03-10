@@ -130,8 +130,7 @@ public class RobotContainer {
         //new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> algaeArm.triggerAlgaeArm(), algaeArm));
         new JoystickButton(gunner, Buttons.Y).onTrue( new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.B).onTrue( new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem));
-        new JoystickButton(gunn
-        , Buttons.A).onTrue( new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.A).onTrue( new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.X).onTrue( new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
@@ -154,33 +153,22 @@ public class RobotContainer {
         // new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_REEF)));
         // new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_REEF)));
 
-        // new JoystickButton(driver, Buttons.X).onTrue(
-        //     new InstantCommand(() -> {
-        //         Pose2d target = limeLightForwards.scootLeft(
-        //             VisionAprilTag.transformTargetLocation(
-        //                 swerveSubsystem.getPose(), 
-        //                 LimelightConstants.llFront
-        //             ),
-        //             2
-        //         );
-        //         swerveSubsystem.autonavigator.enable();
-        //         swerveSubsystem.autonavigator.navigateTo(target);
-        //     })
-        // );
+        //TODO: Add PID based alligning, if pathplanner is inaccurate
+        new JoystickButton(driver, Buttons.X).onTrue(
+            new InstantCommand(() -> {
+                Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
+                swerveSubsystem.autonavigator.enable();
+                swerveSubsystem.autonavigator.navigateTo(target);
+            })
+        );
 
-        // new JoystickButton(driver, Buttons.B).onTrue(
-        //     new InstantCommand(() -> {
-        //         Pose2d target = limeLightForwards.scootLeft(
-        //             VisionAprilTag.transformTargetLocation(
-        //                 swerveSubsystem.getPose(), 
-        //                 LimelightConstants.llFront
-        //             ),
-        //             2
-        //         );
-        //         swerveSubsystem.autonavigator.enable();
-        //         swerveSubsystem.autonavigator.navigateTo(target);
-        //     })
-        // );
+        new JoystickButton(driver, Buttons.B).onTrue(
+            new InstantCommand(() -> {
+                Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
+                swerveSubsystem.autonavigator.enable();
+                swerveSubsystem.autonavigator.navigateTo(target);
+            })
+        );
 
         // new JoystickButton(driver, Buttons.Y).onTrue(
         //     new InstantCommand(() -> {

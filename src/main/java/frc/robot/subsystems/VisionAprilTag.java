@@ -313,7 +313,7 @@ public class VisionAprilTag {
                 new Transform2d(
                     //targetInRobotCoords.getTranslation(),
                     adjustedTranslation,
-                    //TODO: get tx instead?
+                    //get tx instead?
                     //LimelightHelpers.getTX(limelightName)
                     //targetInRobotCoords.getRotation()
                     Rotation2d.fromDegrees(LimelightHelpers.getTX(limelightName))
