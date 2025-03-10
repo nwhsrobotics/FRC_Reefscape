@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.util.LimelightHelpers;
 import frc.robot.util.LimelightHelpers.LimelightResults;
+import frc.robot.Constants.*;
 
 public class VisionSubsystem extends SubsystemBase {
     /**
@@ -141,24 +142,23 @@ public class VisionSubsystem extends SubsystemBase {
     // adjusts the robot position based on april tag position and a preset offset
     public Pose2d transformPosition(Pose2d aprilTagPos, double offsetDistance) {
 
-        double givenX = aprilTagPos.getX();
-        double givenY = aprilTagPos.getY();
-        double givenRot = aprilTagPos.getRotation().getRadians();
+        // double givenX = aprilTagPos.getX();
+        // double givenY = aprilTagPos.getY();
+        // double givenRot = aprilTagPos.getRotation().getRadians();
 
-        double adjustedX = givenX + offsetDistance * Math.cos(givenRot);
-        double adjustedY = givenY + offsetDistance * Math.sin(givenRot);
+        // double adjustedX = givenX + offsetDistance * Math.cos(givenRot);
+        // double adjustedY = givenY + offsetDistance * Math.sin(givenRot);
 
-        Pose2d endResult = new Pose2d(adjustedX, adjustedY, Rotation2d.fromRadians(givenRot));
+        // Pose2d endResult = new Pose2d(adjustedX, adjustedY, Rotation2d.fromRadians(givenRot));
 
-        return endResult;
+        // return endResult;
 
-        /* is no math fun?
+        // is no math fun?
             Transform2d dist = new Transform2d(
             new Translation2d(-offsetDistance, 0.0), 
             new Rotation2d(0.0)           
             );
-            return originalPos.transformBy(dist);
-         */
+            return aprilTagPos.transformBy(dist);
 
     }
 
@@ -229,5 +229,39 @@ public class VisionSubsystem extends SubsystemBase {
             targetId = Constants.AprilTags.blueAllianceIds.getOrDefault(location, -1);
         }
         return targetId; 
+    }
+
+    public Pose2d rightReef(Pose2d swervePos){
+        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
+        if (llf != null){
+            int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
+            double llfToFrontofRobot = 0.46;
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+                return transformPosition(scootLeft(AprilTags.aprilTags.get(aprilTagId-1), 0.16), llfToFrontofRobot);
+            }
+            else {
+                return transformPosition(scootRight(AprilTags.aprilTags.get(aprilTagId-1), 0.16), llfToFrontofRobot);
+            }
+        } else{
+            return swervePos;
+        }
+    }
+
+    public Pose2d leftReef(Pose2d swervePos){
+        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
+        if (llf != null){
+            int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
+            double llfToFrontofRobot = 0.46;
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+                return transformPosition(scootRight(AprilTags.aprilTags.get(aprilTagId-1), 0.16), llfToFrontofRobot);
+            }
+            else {
+                return transformPosition(scootLeft(AprilTags.aprilTags.get(aprilTagId-1), 0.16), llfToFrontofRobot);
+            }
+        } else{
+            return swervePos;
+        }
     }
 }
