@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -110,21 +112,25 @@ public class AutoNavigation {
      * before being overwritten.
      * <p>
      * If autonavigation is disabled, calls to this method will be ignored.
+     * Returning command, was void before
      *
      * @param destination - position to navigate to.
      */
-    public void navigateTo(Pose2d destination) {
+    public Command navigateTo(Pose2d destination) {
         if (!enabled || !RobotState.isTeleop()) {
-            return;
+            return new InstantCommand();
         }
 
         if (navigationCommand != null && navigationCommand.isScheduled()) {
             navigationCommand.cancel();
+            // navigationCommand.end(true);
+            // navigationCommand = null;
         }
 
         navigationCommand = swerve.pathfindToPosition(destination);
         navigationCommand.addRequirements(swerve);
         navigationCommand.schedule();
         Logger.recordOutput("autonavigator.destination", destination);
+        return navigationCommand;
     }
 }
