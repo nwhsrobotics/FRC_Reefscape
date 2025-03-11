@@ -265,7 +265,7 @@ public class VisionSubsystem extends SubsystemBase {
                 return transformPosition(scootRight(getAprilTagPos(aprilTagId), 0.16), llfToFrontofRobot);
             }
         } else{
-            return swervePos;
+            return getNearestReef(swervePos);
         }
     }
 
@@ -286,7 +286,25 @@ public class VisionSubsystem extends SubsystemBase {
                 return transformPosition(scootLeft(getAprilTagPos(aprilTagId), 0.16), llfToFrontofRobot);
             }
         } else{
-            return swervePos;
+            return getNearestReef(swervePos);
         }
+    }
+
+    public Pose2d getNearestReef(Pose2d swervePos){
+        // Pose2d closest = null;
+        // double dist = Integer.MAX_VALUE;
+        // for (int i = 0; i < AprilTags.aprilTags.size(); i++){
+        //     double targetDist = swervePos.getTranslation().getDistance(AprilTags.aprilTags.get(i).getTranslation());
+        //     if (targetDist < dist){
+        //         if (isBlueAllianceReef(i+1) || isRedAllianceReef(i+1)){
+        //             closest = AprilTags.aprilTags.get(i);
+        //             dist = targetDist;
+        //         }
+        //     }
+        // }
+        // return closest;
+
+
+        return swervePos.nearest(AprilTags.aprilTags);
     }
 }
