@@ -65,6 +65,27 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput(limelightName+".ta", LimelightHelpers.getTA(limelightName));
 
         Logger.recordOutput("Crosshair","----------------------------------X-----------------------------"); 
+        for (int i = 0; i < AprilTags.aprilTags.size(); i++){
+                Pose2d org = AprilTags.aprilTags.get(i);
+                Logger.recordOutput("ID:" + i + ".X", org.getX());
+                Logger.recordOutput("ID:" + i + ".Y", org.getY());
+                Logger.recordOutput("ID:" + i + ".Rot", org.getRotation());
+                double llfToFrontofRobot = 0.46;
+                var alliance = DriverStation.getAlliance();
+                if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+                    Pose2d left = transformPosition(scootLeft(org, 0.16), llfToFrontofRobot);
+                    Logger.recordOutput("ID:" + i + ".leftX", left.getX());
+                    Logger.recordOutput("ID:" + i + ".leftY", left.getY());
+                    Logger.recordOutput("ID:" + i + ".leftRot", left.getRotation());
+                }
+                else {
+                    Pose2d right = transformPosition(scootRight(org, 0.16), llfToFrontofRobot);
+                    Logger.recordOutput("ID:" + i + ".rightX", right.getX());
+                    Logger.recordOutput("ID:" + i + ".rightY", right.getY());
+                    Logger.recordOutput("ID:" + i + ".rightRot", right.getRotation());
+                }
+
+        }
         
         /* 
         String llname = LimelightConstants.llObjectDetectionName; 
@@ -238,14 +259,18 @@ public class VisionSubsystem extends SubsystemBase {
             double llfToFrontofRobot = 0.46;
             var alliance = DriverStation.getAlliance();
             if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-                return transformPosition(scootLeft(AprilTags.aprilTags.get(aprilTagId-1), 0.16), llfToFrontofRobot);
+                return transformPosition(scootLeft(getAprilTagPos(aprilTagId), 0.16), llfToFrontofRobot);
             }
             else {
-                return transformPosition(scootRight(AprilTags.aprilTags.get(aprilTagId-1), 0.16), llfToFrontofRobot);
+                return transformPosition(scootRight(getAprilTagPos(aprilTagId), 0.16), llfToFrontofRobot);
             }
         } else{
             return swervePos;
         }
+    }
+
+    public Pose2d getAprilTagPos(int id){
+        return AprilTags.aprilTags.get(id-1);
     }
 
     public Pose2d leftReef(Pose2d swervePos){
@@ -255,10 +280,10 @@ public class VisionSubsystem extends SubsystemBase {
             double llfToFrontofRobot = 0.46;
             var alliance = DriverStation.getAlliance();
             if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-                return transformPosition(scootRight(AprilTags.aprilTags.get(aprilTagId-1), 0.16), llfToFrontofRobot);
+                return transformPosition(scootRight(getAprilTagPos(aprilTagId), 0.16), llfToFrontofRobot);
             }
             else {
-                return transformPosition(scootLeft(AprilTags.aprilTags.get(aprilTagId-1), 0.16), llfToFrontofRobot);
+                return transformPosition(scootLeft(getAprilTagPos(aprilTagId), 0.16), llfToFrontofRobot);
             }
         } else{
             return swervePos;
