@@ -27,6 +27,7 @@ import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.Positions;
 import frc.robot.autos.AlternativePathfindAprilTag;
 import frc.robot.autos.Auto;
+import frc.robot.autos.VisionNavPID;
 import frc.robot.commands.*;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeOuttake;
@@ -154,7 +155,8 @@ public class RobotContainer {
         // new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_REEF)));
         // new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_REEF)));
 
-        //TODO: Add PID based alligning, if pathplanner is inaccurate
+        //Add PID based alligning, if pathplanner is inaccurate
+        //new NavPID(swerveSubsystem, limeLightForwards, true);
         new JoystickButton(driver, Buttons.X).onTrue(
             new InstantCommand(() -> {
                 Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
