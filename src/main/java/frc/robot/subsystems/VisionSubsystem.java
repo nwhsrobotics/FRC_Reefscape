@@ -67,22 +67,22 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput("Crosshair","----------------------------------X-----------------------------"); 
         for (int i = 0; i < AprilTags.aprilTags.size(); i++){
                 Pose2d org = AprilTags.aprilTags.get(i);
-                Logger.recordOutput("ID:" + i + ".X", org.getX());
-                Logger.recordOutput("ID:" + i + ".Y", org.getY());
-                Logger.recordOutput("ID:" + i + ".Rot", org.getRotation());
+                Logger.recordOutput("ID:" + i+1 + ".X", org.getX());
+                Logger.recordOutput("ID:" + i+1 + ".Y", org.getY());
+                Logger.recordOutput("ID:" + i+1 + ".Rot", org.getRotation().getDegrees());
                 double llfToFrontofRobot = 0.46;
                 var alliance = DriverStation.getAlliance();
                 if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
                     Pose2d left = transformPosition(scootLeft(org, 0.16), llfToFrontofRobot);
-                    Logger.recordOutput("ID:" + i + ".leftX", left.getX());
-                    Logger.recordOutput("ID:" + i + ".leftY", left.getY());
-                    Logger.recordOutput("ID:" + i + ".leftRot", left.getRotation());
+                    Logger.recordOutput("ID:" + i+1 + ".leftX", left.getX());
+                    Logger.recordOutput("ID:" + i+1 + ".leftY", left.getY());
+                    Logger.recordOutput("ID:" + i+1 + ".leftRot", left.getRotation().getDegrees());
                 }
                 else {
                     Pose2d right = transformPosition(scootRight(org, 0.16), llfToFrontofRobot);
-                    Logger.recordOutput("ID:" + i + ".rightX", right.getX());
-                    Logger.recordOutput("ID:" + i + ".rightY", right.getY());
-                    Logger.recordOutput("ID:" + i + ".rightRot", right.getRotation());
+                    Logger.recordOutput("ID:" + i+1 + ".rightX", right.getX());
+                    Logger.recordOutput("ID:" + i+1 + ".rightY", right.getY());
+                    Logger.recordOutput("ID:" + i+1 + ".rightRot", right.getRotation().getDegrees());
                 }
 
         }
@@ -176,7 +176,7 @@ public class VisionSubsystem extends SubsystemBase {
 
         // is no math fun?
             Transform2d dist = new Transform2d(
-            new Translation2d(-offsetDistance, 0.0), 
+            new Translation2d(offsetDistance, 0.0), 
             new Rotation2d(0.0)           
             );
             return aprilTagPos.transformBy(dist);
@@ -252,7 +252,8 @@ public class VisionSubsystem extends SubsystemBase {
         return targetId; 
     }
 
-    public Pose2d rightReef(Pose2d swervePos){
+    //TODO: Check if right alliance in drive station
+    public Pose2d leftReef(Pose2d swervePos){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         if (llf != null){
             int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
@@ -273,7 +274,7 @@ public class VisionSubsystem extends SubsystemBase {
         return AprilTags.aprilTags.get(id-1);
     }
 
-    public Pose2d leftReef(Pose2d swervePos){
+    public Pose2d rightReef(Pose2d swervePos){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         if (llf != null){
             int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;

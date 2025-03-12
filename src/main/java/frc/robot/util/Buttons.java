@@ -16,6 +16,6 @@ public final class Buttons {
     public static final int RIGHT_STICK_BUTTON = 10;
     public static final int POV_UP = 0;
     public static final int POV_DOWN = 180;
-    public static final int POV_RIGHT = 270;
-    public static final int POV_LEFT = 90;
+    public static final int POV_RIGHT = 90;
+    public static final int POV_LEFT = 270;
 }

@@ -361,7 +361,7 @@ public class SwerveSubsystem extends SubsystemBase {
      * @return - scheduled pathfinding command.
      */
     public Command pathfindToPosition(Pose2d position) {
-        //TODO: Maybe use on the fly path? Less overhead
+        //Maybe use on the fly path? Less overhead
         Command command = AutoBuilder.pathfindToPoseFlipped(
                 position,
                 AutoConstants.kPathfindingConstraints,
