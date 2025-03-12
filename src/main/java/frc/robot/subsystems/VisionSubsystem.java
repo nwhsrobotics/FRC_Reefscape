@@ -67,6 +67,7 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput("Crosshair","----------------------------------X-----------------------------"); 
         for (int i = 0; i < AprilTags.aprilTags.size(); i++){
                 Pose2d org = AprilTags.aprilTags.get(i);
+                
                 Logger.recordOutput("ID:" + i+1 + ".X", org.getX());
                 Logger.recordOutput("ID:" + i+1 + ".Y", org.getY());
                 Logger.recordOutput("ID:" + i+1 + ".Rot", org.getRotation().getDegrees());
@@ -255,19 +256,22 @@ public class VisionSubsystem extends SubsystemBase {
     //TODO: Check if right alliance in drive station
     public Pose2d leftReef(Pose2d swervePos){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
+        Pose2d finalPose = swervePos;
+        double llfToFrontofRobot = 0.46;
         if (llf != null){
             int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
-            double llfToFrontofRobot = 0.46;
-            var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-                return transformPosition(scootLeft(getAprilTagPos(aprilTagId), 0.16), llfToFrontofRobot);
-            }
-            else {
-                return transformPosition(scootRight(getAprilTagPos(aprilTagId), 0.16), llfToFrontofRobot);
-            }
-        } else{
-            return getNearestReef(swervePos);
+            finalPose = getAprilTagPos(aprilTagId);
+        } else {
+            finalPose = getNearestReef(swervePos);
         }
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+            finalPose = transformPosition(scootLeft(finalPose, 0.16), llfToFrontofRobot);
+        }
+        else {
+            finalPose = transformPosition(scootRight(finalPose, 0.16), llfToFrontofRobot);
+        }
+        return finalPose;
     }
 
     public Pose2d getAprilTagPos(int id){
@@ -276,36 +280,39 @@ public class VisionSubsystem extends SubsystemBase {
 
     public Pose2d rightReef(Pose2d swervePos){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
+        Pose2d finalPose = swervePos;
+        double llfToFrontofRobot = 0.46;
         if (llf != null){
             int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
-            double llfToFrontofRobot = 0.46;
-            var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-                return transformPosition(scootRight(getAprilTagPos(aprilTagId), 0.16), llfToFrontofRobot);
-            }
-            else {
-                return transformPosition(scootLeft(getAprilTagPos(aprilTagId), 0.16), llfToFrontofRobot);
-            }
-        } else{
-            return getNearestReef(swervePos);
+            finalPose = getAprilTagPos(aprilTagId);
+        } else {
+            finalPose = getNearestReef(swervePos);
         }
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+            finalPose = transformPosition(scootRight(finalPose, 0.16), llfToFrontofRobot);
+        }
+        else {
+            finalPose = transformPosition(scootLeft(finalPose, 0.16), llfToFrontofRobot);
+        }
+        return finalPose;
     }
 
     public Pose2d getNearestReef(Pose2d swervePos){
-        // Pose2d closest = null;
-        // double dist = Integer.MAX_VALUE;
-        // for (int i = 0; i < AprilTags.aprilTags.size(); i++){
-        //     double targetDist = swervePos.getTranslation().getDistance(AprilTags.aprilTags.get(i).getTranslation());
-        //     if (targetDist < dist){
-        //         if (isBlueAllianceReef(i+1) || isRedAllianceReef(i+1)){
-        //             closest = AprilTags.aprilTags.get(i);
-        //             dist = targetDist;
-        //         }
-        //     }
-        // }
-        // return closest;
+        Pose2d closest = swervePos;
+        double dist = Integer.MAX_VALUE;
+        for (int i = 0; i < AprilTags.aprilTags.size(); i++){
+            double targetDist = swervePos.getTranslation().getDistance(AprilTags.aprilTags.get(i).getTranslation());
+            if (targetDist < dist){
+                if (isBlueAllianceReef(i+1) || isRedAllianceReef(i+1)){
+                    closest = AprilTags.aprilTags.get(i);
+                    dist = targetDist;
+                }
+            }
+        }
+        return closest;
 
 
-        return swervePos.nearest(AprilTags.aprilTags);
+        // return swervePos.nearest(AprilTags.aprilTags);
     }
 }
