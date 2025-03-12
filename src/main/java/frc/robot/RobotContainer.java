@@ -143,9 +143,8 @@ public class RobotContainer {
         new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("L1CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
         new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
         new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("L3CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
-        new POVButton(gunner, Buttons.POV_LEFT).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
+        //new POVButton(gunner, Buttons.POV_LEFT).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
 
-        
         //Driver controlls 
         // https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::resetOdometryWithVision, swerveSubsystem));
@@ -169,12 +168,12 @@ public class RobotContainer {
         //last alligning resort
         new JoystickButton(driver, Buttons.Y).onTrue(
             new RunCommand(() -> swerveSubsystem.drive(0, 0.1, 0, false, true), swerveSubsystem)
-                .withTimeout(1).andThen(new InstantCommand(() -> swerveSubsystem.stopModules(), swerveSubsystem))
+                .withTimeout(0.32).andThen(new InstantCommand(() -> swerveSubsystem.stopModules(), swerveSubsystem))
         );
 
         new JoystickButton(driver, Buttons.A).onTrue(
-            new RunCommand(() -> swerveSubsystem.drive(0, 0.1, 0, false, true), swerveSubsystem)
-                .withTimeout(1).andThen(new InstantCommand(() -> swerveSubsystem.stopModules(), swerveSubsystem))
+            new RunCommand(() -> swerveSubsystem.drive(0, -0.1, 0, false, true), swerveSubsystem)
+                .withTimeout(0.32).andThen(new InstantCommand(() -> swerveSubsystem.stopModules(), swerveSubsystem))
         );
 
         new JoystickButton(driver, Buttons.B).onTrue(
