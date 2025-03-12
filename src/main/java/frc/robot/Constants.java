@@ -177,18 +177,18 @@ public final class Constants {
 
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 2;
-        public static final double kMaxAngularSpeedRadiansPerSecond = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 2;
+        public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
+        public static final double kMaxAngularSpeedRadiansPerSecond = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
         public static final double kMaxAccelerationMetersPerSecondSquared = 5;
-        public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI;
+        public static final double kMaxAngularAccelerationRadiansPerSecondSquared = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
         public static final double kPXController = 5;
         public static final double kPThetaController = 5;
 
         public static final PPHolonomicDriveController pathFollowerConfig = new PPHolonomicDriveController(
                 new PIDConstants(AutoConstants.kPXController, 0, 0), // Translation constants
-                new PIDConstants(AutoConstants.kPThetaController, 0, 0), // Rotation constants
+                new PIDConstants(AutoConstants.kPThetaController, 0, 0)// Rotation constants
                 //DriveConstants.kPhysicalMaxSpeedMetersPerSecond// Drive base radius (distance from center to furthest module)
-                0.02
+                //0.02
         );
 
         public static final PathConstraints kPathfindingConstraints = new PathConstraints(
@@ -281,6 +281,7 @@ public final class Constants {
         //it is tagDegree + 180
         //https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/2025FieldDrawings-FieldLayoutAndMarking.pdf
         //https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/Apriltag_Images_and_User_Guide.pdf
+        //NO 0 DEGREE rotation, pathpathplanner bugs, do 1 degree instead   
         public static final Pose2d ID_1  = new Pose2d(16.697, 0.655,  Rotation2d.fromDegrees(306));
         public static final Pose2d ID_2  = new Pose2d(16.697, 7.396,  Rotation2d.fromDegrees(54));
         public static final Pose2d ID_3  = new Pose2d(11.561, 8.056,  Rotation2d.fromDegrees(90));

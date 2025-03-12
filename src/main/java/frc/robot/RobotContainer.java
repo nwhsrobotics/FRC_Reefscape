@@ -191,7 +191,7 @@ public class RobotContainer {
         //                 swerveSubsystem.getPose(), 
         //                 LimelightConstants.llFront
         //             ),
-        //             0.2
+        //             0.1651
         //         );
         //         Command cmd = swerveSubsystem.pathfindToPosition(target)
         //             .andThen(
@@ -211,7 +211,7 @@ public class RobotContainer {
         //                 swerveSubsystem.getPose(), 
         //                 LimelightConstants.llFront
         //             ),
-        //             0.2
+        //             0.1651
         //         );
         //         Command cmd = swerveSubsystem.pathfindToPosition(target)
         //             .andThen(
@@ -230,7 +230,21 @@ public class RobotContainer {
         new POVButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> VisionAprilTag.offsetRight(Constants.LimelightConstants.llFront)));
         new POVButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> VisionAprilTag.offsetLeft(Constants.LimelightConstants.llFront)));
         new POVButton(driver, Buttons.POV_UP).onTrue(new InstantCommand(() -> VisionAprilTag.offsetCenter(Constants.LimelightConstants.llFront)));
-        //new POVButton(driver, Buttons.POV_DOWN).onTrue(swerveSubsystem.pathfindToPosition(limeLightForwards.scootRight(swerveSubsystem.getPose(), 0.2)));
+        new POVButton(driver, Buttons.POV_DOWN).onTrue(
+            new InstantCommand(() -> {
+                Pose2d target = VisionAprilTag.transformTargetLocation(swerveSubsystem.getPose(), LimelightConstants.llFront);
+                swerveSubsystem.autonavigator.enable();
+                swerveSubsystem.autonavigator.navigateTo(target);
+            })
+        );
+
+        // new POVButton(driver, Buttons.POV_DOWN).onTrue(
+        //     new InstantCommand(() -> {
+        //         Pose2d target = limeLightForwards.scootRight(swerveSubsystem.getPose(), 0.1651);
+        //         swerveSubsystem.autonavigator.enable();
+        //         swerveSubsystem.autonavigator.navigateTo(target);
+        //     })
+        // );
 
         //new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_MID_REEF)));
         //new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));

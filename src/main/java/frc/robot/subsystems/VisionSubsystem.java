@@ -65,28 +65,24 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput(limelightName+".ta", LimelightHelpers.getTA(limelightName));
 
         Logger.recordOutput("Crosshair","----------------------------------X-----------------------------"); 
-        for (int i = 0; i < AprilTags.aprilTags.size(); i++){
-                Pose2d org = AprilTags.aprilTags.get(i);
-                
-                Logger.recordOutput("ID:" + i+1 + ".X", org.getX());
-                Logger.recordOutput("ID:" + i+1 + ".Y", org.getY());
-                Logger.recordOutput("ID:" + i+1 + ".Rot", org.getRotation().getDegrees());
-                double llfToFrontofRobot = 0.46;
-                var alliance = DriverStation.getAlliance();
-                if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-                    Pose2d left = transformPosition(scootLeft(org, 0.16), llfToFrontofRobot);
-                    Logger.recordOutput("ID:" + i+1 + ".leftX", left.getX());
-                    Logger.recordOutput("ID:" + i+1 + ".leftY", left.getY());
-                    Logger.recordOutput("ID:" + i+1 + ".leftRot", left.getRotation().getDegrees());
-                }
-                else {
-                    Pose2d right = transformPosition(scootRight(org, 0.16), llfToFrontofRobot);
-                    Logger.recordOutput("ID:" + i+1 + ".rightX", right.getX());
-                    Logger.recordOutput("ID:" + i+1 + ".rightY", right.getY());
-                    Logger.recordOutput("ID:" + i+1 + ".rightRot", right.getRotation().getDegrees());
-                }
-
+        for (int i = 0; i < AprilTags.aprilTags.size(); i++) {
+            int tagID = i + 1;
+            Pose2d org = AprilTags.aprilTags.get(i);
+        
+            Pose2d left = transformPosition(scootLeft(org, 0.1651), 0.46);
+            Pose2d right = transformPosition(scootRight(org, 0.1651), 0.46);
+        
+            Logger.recordOutput(
+                "Tag:" + tagID,
+                String.format(
+                    " Original( x=%.3f, y=%.3f, rot=%.1f° ) | Left( x=%.3f, y=%.3f, rot=%.1f° ) | Right( x=%.3f, y=%.3f, rot=%.1f° )",
+                    org.getX(), org.getY(), org.getRotation().getDegrees(),
+                    left.getX(), left.getY(), left.getRotation().getDegrees(),
+                    right.getX(), right.getY(), right.getRotation().getDegrees()
+                )
+            );
         }
+        
         
         /* 
         String llname = LimelightConstants.llObjectDetectionName; 
@@ -123,7 +119,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     // This method takes in blue alliance april tags and checks if it is the processor
     public boolean isBlueAllianceProcessor(int id) {
-        return id == 4;
+        return id == 3;
     }
 
     //This method takes in blue alliance april tags and checks if it is the reef
@@ -145,7 +141,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     // this method takes in a parameter of the april tag and checks if it is at the processor
     public boolean isRedAllianceProcessor(int id) {
-        return id == 3;
+        return id == 16;
 
     }
 
@@ -157,7 +153,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     // this method takes in a parameter of the april tag and checks if it is at the barge
     public boolean isRedAllianceBarge(int id) {
-        return id == 5;
+        return id == 5 || id == 15;
 
     }
 
@@ -177,7 +173,7 @@ public class VisionSubsystem extends SubsystemBase {
 
         // is no math fun?
             Transform2d dist = new Transform2d(
-            new Translation2d(offsetDistance, 0.0), 
+            new Translation2d(-offsetDistance, 0.0), 
             new Rotation2d(0.0)           
             );
             return aprilTagPos.transformBy(dist);
@@ -266,10 +262,10 @@ public class VisionSubsystem extends SubsystemBase {
         }
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            finalPose = transformPosition(scootLeft(finalPose, 0.16), llfToFrontofRobot);
+            finalPose = transformPosition(scootLeft(finalPose, 0.1651), llfToFrontofRobot);
         }
         else {
-            finalPose = transformPosition(scootRight(finalPose, 0.16), llfToFrontofRobot);
+            finalPose = transformPosition(scootRight(finalPose, 0.1651), llfToFrontofRobot);
         }
         return finalPose;
     }
@@ -290,10 +286,10 @@ public class VisionSubsystem extends SubsystemBase {
         }
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            finalPose = transformPosition(scootRight(finalPose, 0.16), llfToFrontofRobot);
+            finalPose = transformPosition(scootRight(finalPose, 0.1651), llfToFrontofRobot);
         }
         else {
-            finalPose = transformPosition(scootLeft(finalPose, 0.16), llfToFrontofRobot);
+            finalPose = transformPosition(scootLeft(finalPose, 0.1651), llfToFrontofRobot);
         }
         return finalPose;
     }
