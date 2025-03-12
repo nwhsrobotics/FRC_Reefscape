@@ -306,7 +306,7 @@ public class VisionAprilTag {
             Pose2d targetInRobotCoords = llr.targets_Fiducials[0].getTargetPose_RobotSpace2D();
             double robotFrontDist = 0.457;
     
-            Translation2d adjustedTranslation = new Translation2d(targetInRobotCoords.getX()-robotFrontDist, -targetInRobotCoords.getY());
+            Translation2d adjustedTranslation = new Translation2d(targetInRobotCoords.getX()-robotFrontDist, -(targetInRobotCoords.getY() + scootOffsetX));
 
 
             Pose2d targetOnField = pos.transformBy(
@@ -385,13 +385,13 @@ public class VisionAprilTag {
     }
 
     public static void offsetRight(String limelightName){
-        scootOffsetX = -0.189;
+        scootOffsetX = 0.1651;
         LimelightHelpers.setFiducial3DOffset(limelightName, 0, scootOffsetX, 0);
         //LimelightHelpers.setFiducial3DOffset(limelightName, scootOffsetX, 0, 0);
     }
 
     public static void offsetLeft(String limelightName){
-        scootOffsetX = 0.189;
+        scootOffsetX = -0.1651;
         LimelightHelpers.setFiducial3DOffset(limelightName, 0, scootOffsetX, 0);
         //LimelightHelpers.setFiducial3DOffset(limelightName, scootOffsetX, 0, 0);
     }

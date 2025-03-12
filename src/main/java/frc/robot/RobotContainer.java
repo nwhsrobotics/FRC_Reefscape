@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -26,6 +28,7 @@ import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.Positions;
 import frc.robot.autos.AlternativePathfindAprilTag;
 import frc.robot.autos.Auto;
+import frc.robot.autos.VisionNavPID;
 import frc.robot.commands.*;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeOuttake;
@@ -125,8 +128,8 @@ public class RobotContainer {
 
         // Gunner controlls 
         // https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
-        new POVButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
-        new POVButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
+        //new POVButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
+        //new POVButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
         //new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> algaeArm.triggerAlgaeArm(), algaeArm));
         new JoystickButton(gunner, Buttons.Y).onTrue( new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.B).onTrue( new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem));
@@ -140,9 +143,8 @@ public class RobotContainer {
         new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("L1CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
         new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
         new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("L3CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
-        //new POVButton(gunner, Buttons.POV_LEFT).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
+        //new POVButton(gunner, Buttons.POV_LEFT).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
 
-        
         //Driver controlls 
         // https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::resetOdometryWithVision, swerveSubsystem));
@@ -153,13 +155,25 @@ public class RobotContainer {
         // new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_REEF)));
         // new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_REEF)));
 
-        //TODO: Add PID based alligning, if pathplanner is inaccurate
+        //Add PID based alligning, if pathplanner is inaccurate
+        //new NavPID(swerveSubsystem, limeLightForwards, true);
         new JoystickButton(driver, Buttons.X).onTrue(
             new InstantCommand(() -> {
                 Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
                 swerveSubsystem.autonavigator.enable();
                 swerveSubsystem.autonavigator.navigateTo(target);
             })
+        );
+
+        //last alligning resort
+        new JoystickButton(driver, Buttons.Y).onTrue(
+            new RunCommand(() -> swerveSubsystem.drive(0, 0.1, 0, false, true), swerveSubsystem)
+                .withTimeout(0.32).andThen(new InstantCommand(() -> swerveSubsystem.stopModules(), swerveSubsystem))
+        );
+
+        new JoystickButton(driver, Buttons.A).onTrue(
+            new RunCommand(() -> swerveSubsystem.drive(0, -0.1, 0, false, true), swerveSubsystem)
+                .withTimeout(0.32).andThen(new InstantCommand(() -> swerveSubsystem.stopModules(), swerveSubsystem))
         );
 
         new JoystickButton(driver, Buttons.B).onTrue(
@@ -177,7 +191,7 @@ public class RobotContainer {
         //                 swerveSubsystem.getPose(), 
         //                 LimelightConstants.llFront
         //             ),
-        //             0.2
+        //             0.1651
         //         );
         //         Command cmd = swerveSubsystem.pathfindToPosition(target)
         //             .andThen(
@@ -197,7 +211,7 @@ public class RobotContainer {
         //                 swerveSubsystem.getPose(), 
         //                 LimelightConstants.llFront
         //             ),
-        //             0.2
+        //             0.1651
         //         );
         //         Command cmd = swerveSubsystem.pathfindToPosition(target)
         //             .andThen(
@@ -216,7 +230,21 @@ public class RobotContainer {
         new POVButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> VisionAprilTag.offsetRight(Constants.LimelightConstants.llFront)));
         new POVButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> VisionAprilTag.offsetLeft(Constants.LimelightConstants.llFront)));
         new POVButton(driver, Buttons.POV_UP).onTrue(new InstantCommand(() -> VisionAprilTag.offsetCenter(Constants.LimelightConstants.llFront)));
-        //new POVButton(driver, Buttons.POV_DOWN).onTrue(swerveSubsystem.pathfindToPosition(limeLightForwards.scootRight(swerveSubsystem.getPose(), 0.2)));
+        new POVButton(driver, Buttons.POV_DOWN).onTrue(
+            new InstantCommand(() -> {
+                Pose2d target = VisionAprilTag.transformTargetLocation(swerveSubsystem.getPose(), LimelightConstants.llFront);
+                swerveSubsystem.autonavigator.enable();
+                swerveSubsystem.autonavigator.navigateTo(target);
+            })
+        );
+
+        // new POVButton(driver, Buttons.POV_DOWN).onTrue(
+        //     new InstantCommand(() -> {
+        //         Pose2d target = limeLightForwards.scootRight(swerveSubsystem.getPose(), 0.1651);
+        //         swerveSubsystem.autonavigator.enable();
+        //         swerveSubsystem.autonavigator.navigateTo(target);
+        //     })
+        // );
 
         //new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_MID_REEF)));
         //new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));

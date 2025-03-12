@@ -65,6 +65,24 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput(limelightName+".ta", LimelightHelpers.getTA(limelightName));
 
         Logger.recordOutput("Crosshair","----------------------------------X-----------------------------"); 
+        for (int i = 0; i < AprilTags.aprilTags.size(); i++) {
+            int tagID = i + 1;
+            Pose2d org = AprilTags.aprilTags.get(i);
+        
+            Pose2d left = transformPosition(scootLeft(org, 0.1651), 0.46);
+            Pose2d right = transformPosition(scootRight(org, 0.1651), 0.46);
+        
+            Logger.recordOutput(
+                "Tag:" + tagID,
+                String.format(
+                    " Original( x=%.3f, y=%.3f, rot=%.1f° ) | Left( x=%.3f, y=%.3f, rot=%.1f° ) | Right( x=%.3f, y=%.3f, rot=%.1f° )",
+                    org.getX(), org.getY(), org.getRotation().getDegrees(),
+                    left.getX(), left.getY(), left.getRotation().getDegrees(),
+                    right.getX(), right.getY(), right.getRotation().getDegrees()
+                )
+            );
+        }
+        
         
         /* 
         String llname = LimelightConstants.llObjectDetectionName; 
@@ -101,7 +119,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     // This method takes in blue alliance april tags and checks if it is the processor
     public boolean isBlueAllianceProcessor(int id) {
-        return id == 4;
+        return id == 3;
     }
 
     //This method takes in blue alliance april tags and checks if it is the reef
@@ -123,7 +141,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     // this method takes in a parameter of the april tag and checks if it is at the processor
     public boolean isRedAllianceProcessor(int id) {
-        return id == 3;
+        return id == 16;
 
     }
 
@@ -135,7 +153,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     // this method takes in a parameter of the april tag and checks if it is at the barge
     public boolean isRedAllianceBarge(int id) {
-        return id == 5;
+        return id == 5 || id == 15;
 
     }
 
@@ -231,37 +249,66 @@ public class VisionSubsystem extends SubsystemBase {
         return targetId; 
     }
 
-    public Pose2d rightReef(Pose2d swervePos){
-        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
-        if (llf != null){
-            int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
-            double llfToFrontofRobot = 0.46;
-            var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-                return transformPosition(scootLeft(AprilTags.aprilTags.get(aprilTagId-1), 0.16), llfToFrontofRobot);
-            }
-            else {
-                return transformPosition(scootRight(AprilTags.aprilTags.get(aprilTagId-1), 0.16), llfToFrontofRobot);
-            }
-        } else{
-            return swervePos;
-        }
-    }
-
+    //TODO: Check if right alliance in drive station
     public Pose2d leftReef(Pose2d swervePos){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
+        Pose2d finalPose = swervePos;
+        double llfToFrontofRobot = 0.46;
         if (llf != null){
             int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
-            double llfToFrontofRobot = 0.46;
-            var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-                return transformPosition(scootRight(AprilTags.aprilTags.get(aprilTagId-1), 0.16), llfToFrontofRobot);
-            }
-            else {
-                return transformPosition(scootLeft(AprilTags.aprilTags.get(aprilTagId-1), 0.16), llfToFrontofRobot);
-            }
-        } else{
-            return swervePos;
+            finalPose = getAprilTagPos(aprilTagId);
+        } else {
+            finalPose = getNearestReef(swervePos);
         }
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+            finalPose = transformPosition(scootLeft(finalPose, 0.1651), llfToFrontofRobot);
+        }
+        else {
+            finalPose = transformPosition(scootRight(finalPose, 0.1651), llfToFrontofRobot);
+        }
+        return finalPose;
+    }
+
+    public Pose2d getAprilTagPos(int id){
+        return AprilTags.aprilTags.get(id-1);
+    }
+
+    public Pose2d rightReef(Pose2d swervePos){
+        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
+        Pose2d finalPose = swervePos;
+        double llfToFrontofRobot = 0.46;
+        if (llf != null){
+            int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
+            finalPose = getAprilTagPos(aprilTagId);
+        } else {
+            finalPose = getNearestReef(swervePos);
+        }
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+            finalPose = transformPosition(scootRight(finalPose, 0.1651), llfToFrontofRobot);
+        }
+        else {
+            finalPose = transformPosition(scootLeft(finalPose, 0.1651), llfToFrontofRobot);
+        }
+        return finalPose;
+    }
+
+    public Pose2d getNearestReef(Pose2d swervePos){
+        Pose2d closest = swervePos;
+        double dist = Integer.MAX_VALUE;
+        for (int i = 0; i < AprilTags.aprilTags.size(); i++){
+            double targetDist = swervePos.getTranslation().getDistance(AprilTags.aprilTags.get(i).getTranslation());
+            if (targetDist < dist){
+                if (isBlueAllianceReef(i+1) || isRedAllianceReef(i+1)){
+                    closest = AprilTags.aprilTags.get(i);
+                    dist = targetDist;
+                }
+            }
+        }
+        return closest;
+
+
+        // return swervePos.nearest(AprilTags.aprilTags);
     }
 }
