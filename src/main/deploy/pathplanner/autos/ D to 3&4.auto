@@ -13,6 +13,12 @@
                 "data": {
                   "pathName": "[D] to 3B"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4CORAL"
+                }
               }
             ]
           }
@@ -20,19 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L4CORAL"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "Outtake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LoadStation"
           }
         },
         {
@@ -43,6 +37,12 @@
                 "type": "path",
                 "data": {
                   "pathName": "[3B] [S2]"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "LoadStation"
                 }
               }
             ]
@@ -63,6 +63,12 @@
                 "data": {
                   "pathName": "[S2] [4A]"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4CORAL"
+                }
               }
             ]
           }
@@ -70,19 +76,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L4CORAL"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "Outtake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LoadStation"
           }
         },
         {
@@ -93,6 +87,12 @@
                 "type": "path",
                 "data": {
                   "pathName": "[4A] [S2]"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "LoadStation"
                 }
               }
             ]
@@ -113,6 +113,12 @@
                 "data": {
                   "pathName": "[S2] [4B]"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4CORAL"
+                }
               }
             ]
           }
@@ -120,19 +126,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L4CORAL"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "Outtake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LoadStation"
           }
         }
       ]
