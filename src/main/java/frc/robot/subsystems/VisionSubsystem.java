@@ -249,31 +249,6 @@ public class VisionSubsystem extends SubsystemBase {
         return targetId; 
     }
 
-    //TODO: Check if right alliance in drive station
-    public Pose2d leftReef(Pose2d swervePos){
-        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
-        Pose2d finalPose = swervePos;
-        double llfToFrontofRobot = 0.46;
-        if (llf != null){
-            int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
-            finalPose = getAprilTagPos(aprilTagId);
-        } else {
-            finalPose = getNearestReef(swervePos);
-        }
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            finalPose = transformPosition(scootLeft(finalPose, 0.1651), llfToFrontofRobot);
-        }
-        else {
-            finalPose = transformPosition(scootRight(finalPose, 0.1651), llfToFrontofRobot);
-        }
-        return finalPose;
-    }
-
-    public Pose2d getAprilTagPos(int id){
-        return AprilTags.aprilTags.get(id-1);
-    }
-
     public Pose2d rightReef(Pose2d swervePos){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         Pose2d finalPose = swervePos;
@@ -284,13 +259,25 @@ public class VisionSubsystem extends SubsystemBase {
         } else {
             finalPose = getNearestReef(swervePos);
         }
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            finalPose = transformPosition(scootRight(finalPose, 0.1651), llfToFrontofRobot);
+        finalPose = transformPosition(scootRight(finalPose, 0.1651), llfToFrontofRobot);
+        return finalPose;
+    }
+
+    public Pose2d getAprilTagPos(int id){
+        return AprilTags.aprilTags.get(id-1);
+    }
+
+    public Pose2d leftReef(Pose2d swervePos){
+        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
+        Pose2d finalPose = swervePos;
+        double llfToFrontofRobot = 0.46;
+        if (llf != null){
+            int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
+            finalPose = getAprilTagPos(aprilTagId);
+        } else {
+            finalPose = getNearestReef(swervePos);
         }
-        else {
-            finalPose = transformPosition(scootLeft(finalPose, 0.1651), llfToFrontofRobot);
-        }
+        finalPose = transformPosition(scootLeft(finalPose, 0.1651), llfToFrontofRobot);
         return finalPose;
     }
 

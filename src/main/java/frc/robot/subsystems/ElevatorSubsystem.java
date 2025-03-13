@@ -203,8 +203,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
     rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
 
-    //System.out.println(elevatorHeights[currentElevatorLevel]);
-    //System.out.println(relativeEncoderRight.getPosition());
+    // System.out.println(elevatorHeights[currentElevatorLevel]);
+    // System.out.println(relativeEncoderRight.getPosition());
 
 
 
