@@ -69,8 +69,8 @@ public class VisionSubsystem extends SubsystemBase {
             int tagID = i + 1;
             Pose2d org = AprilTags.aprilTags.get(i);
         
-            Pose2d left = transformPosition(scootLeft(org, 0.1651), 0.46);
-            Pose2d right = transformPosition(scootRight(org, 0.1651), 0.46);
+            Pose2d left = transformPosition(scootLeft(org, 0.1651), 0.4445);
+            Pose2d right = transformPosition(scootRight(org, 0.1651), 0.4445);
         
             Logger.recordOutput(
                 "Tag:" + tagID,
@@ -249,10 +249,10 @@ public class VisionSubsystem extends SubsystemBase {
         return targetId; 
     }
 
-    public Pose2d rightReef(Pose2d swervePos){
+    public Pose2d leftReef(Pose2d swervePos){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         Pose2d finalPose = swervePos;
-        double llfToFrontofRobot = 0.46;
+        double llfToFrontofRobot = 0.4445;
         if (llf != null){
             int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
             finalPose = getAprilTagPos(aprilTagId);
@@ -267,10 +267,10 @@ public class VisionSubsystem extends SubsystemBase {
         return AprilTags.aprilTags.get(id-1);
     }
 
-    public Pose2d leftReef(Pose2d swervePos){
+    public Pose2d rightReef(Pose2d swervePos){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         Pose2d finalPose = swervePos;
-        double llfToFrontofRobot = 0.46;
+        double llfToFrontofRobot = 0.4445;
         if (llf != null){
             int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
             finalPose = getAprilTagPos(aprilTagId);
