@@ -2,8 +2,11 @@ package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.IdealStartingState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
@@ -15,11 +18,15 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.TimeUnit;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -33,8 +40,15 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.autos.PosePIDCommand;
 import frc.robot.util.LimelightHelpers;
 import frc.robot.util.SwerveUtils;
+
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Seconds;
+
+import java.util.List;
+
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -362,11 +376,13 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public Command pathfindToPosition(Pose2d position) {
         //Maybe use on the fly path? Less overhead
-        Command command = AutoBuilder.pathfindToPoseFlipped(
+        Command command = AutoBuilder.pathfindToPose(
                 position,
                 AutoConstants.kPathfindingConstraints,
                 0.0 // Goal end velocity in meters/sec
         );
+        //TODO
+        //.andThen(pathOnTheFlyToPosition(position));
         //Fix autonav (probably dont need addrequirements)
         //command.addRequirements(this);
         //and also don't need to schedule here? maybe schedule in autonav
@@ -374,6 +390,44 @@ public class SwerveSubsystem extends SubsystemBase {
 
         return command;
     }
+
+
+    public Command pathOnTheFlyToPosition(Pose2d targetPose) {
+        List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+            new Pose2d(getPose().getTranslation(), getPathVelocityHeading(getSpeeds(), targetPose)),
+            targetPose
+        );
+
+        //getPathVelocityHeading(getSpeeds(), targetPose)
+        PathPlannerPath path = new PathPlannerPath(
+            waypoints,
+            AutoConstants.kPathfindingConstraints,
+            new IdealStartingState(getVelocityMagnitude(getSpeeds()), getPose().getRotation()),
+            new GoalEndState(
+                0.0,                    
+                targetPose.getRotation()  
+            )
+        );
+
+        path.preventFlipping = true;
+
+        Command followPathCommand = AutoBuilder.followPath(path).andThen(PosePIDCommand.create(this, targetPose, Seconds.of(0.2)));
+
+        return followPathCommand;
+    }
+
+    public Rotation2d getPathVelocityHeading(ChassisSpeeds cs, Pose2d target){
+    if (getVelocityMagnitude(cs).in(MetersPerSecond) < 0.25) {
+        var diff = target.minus(getPose()).getTranslation();
+        return (diff.getNorm() < 0.01) ? target.getRotation() : diff.getAngle();
+    }
+    return new Rotation2d(cs.vxMetersPerSecond, cs.vyMetersPerSecond);
+    }
+
+    public LinearVelocity getVelocityMagnitude(ChassisSpeeds cs){
+        return MetersPerSecond.of(new Translation2d(cs.vxMetersPerSecond, cs.vyMetersPerSecond).getNorm());
+    }
+
 
     // This method is called periodically to update the robot's state and log data
     @Override
@@ -604,7 +658,6 @@ public class SwerveSubsystem extends SubsystemBase {
             } else {
                 directionSlewRate = 500.0; //some high number that means the slew rate is effectively instantaneous
             }
-
 
             double currentTime = WPIUtilJNI.now() * 1e-6;
             double elapsedTime = currentTime - prevTime;

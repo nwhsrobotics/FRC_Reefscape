@@ -128,6 +128,8 @@ public class AutoNavigation {
         }
 
         navigationCommand = swerve.pathfindToPosition(destination);
+        //TODO: Path on fly better?
+        //navigationCommand = swerve.pathOnTheFlyToPosition(destination);
         navigationCommand.addRequirements(swerve);
         navigationCommand.schedule();
         Logger.recordOutput("autonavigator.destination", destination);
