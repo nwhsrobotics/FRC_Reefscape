@@ -128,6 +128,25 @@
           "data": {
             "name": "Outtake"
           }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "[6B] [S1]"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "LoadStation"
+                }
+              }
+            ]
+          }
         }
       ]
     }
