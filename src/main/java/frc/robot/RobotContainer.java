@@ -231,13 +231,15 @@ public class RobotContainer {
         new POVButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> VisionAprilTag.offsetRight(Constants.LimelightConstants.llFront)));
         new POVButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> VisionAprilTag.offsetLeft(Constants.LimelightConstants.llFront)));
         new POVButton(driver, Buttons.POV_UP).onTrue(new InstantCommand(() -> VisionAprilTag.offsetCenter(Constants.LimelightConstants.llFront)));
-        new POVButton(driver, Buttons.POV_DOWN).onTrue(
-            new InstantCommand(() -> {
-                Pose2d target = VisionAprilTag.transformTargetLocation(swerveSubsystem.getPose(), LimelightConstants.llFront);
-                swerveSubsystem.autonavigator.enable();
-                swerveSubsystem.autonavigator.navigateTo(target);
-            })
-        );
+        // new POVButton(driver, Buttons.POV_DOWN).onTrue(
+        //     new InstantCommand(() -> {
+        //         Pose2d target = VisionAprilTag.transformTargetLocation(swerveSubsystem.getPose(), LimelightConstants.llFront);
+        //         swerveSubsystem.autonavigator.enable();
+        //         swerveSubsystem.autonavigator.navigateTo(target);
+        //     })
+        // );
+        new POVButton(driver, Buttons.POV_DOWN).onTrue(new InstantCommand(()
+                     -> swerveSubsystem.resetOdometry (new Pose2d(  swerveSubsystem.getPose().getX(), swerveSubsystem.getPose().getY(), limeLightForwards.getFakeAngle()))));
 
         // new POVButton(driver, Buttons.POV_DOWN).onTrue(
         //     new InstantCommand(() -> {

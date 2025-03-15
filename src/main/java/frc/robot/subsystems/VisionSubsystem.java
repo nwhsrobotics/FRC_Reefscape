@@ -298,4 +298,13 @@ public class VisionSubsystem extends SubsystemBase {
 
         // return swervePos.nearest(AprilTags.aprilTags);
     }
+
+    public Rotation2d getFakeAngle(){
+        LimelightResults llf = VisionAprilTag.isValid(limelightName);
+        if (llf != null){
+            int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
+            return getAprilTagPos(aprilTagId).getRotation();
+        }
+        return Rotation2d.fromDegrees(1);
+    }
 }
