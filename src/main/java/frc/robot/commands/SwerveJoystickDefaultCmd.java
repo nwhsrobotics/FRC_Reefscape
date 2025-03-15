@@ -59,11 +59,16 @@ public class SwerveJoystickDefaultCmd extends Command {
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if trigger(slow mode) not pressed
             fieldRelative = true;
+            // swerveSubsystem.drive(
+            //         -MathUtil.applyDeadband(invertIfRed(xbox.getLeftY()), OIConstants.kDriveDeadband),
+            //         -MathUtil.applyDeadband(invertIfRed(xbox.getLeftX()), OIConstants.kDriveDeadband),
+            //         -MathUtil.applyDeadband((xbox.getRightX()), OIConstants.kDriveDeadband),
+            //         swerveSubsystem.isFieldRelative() && fieldRelative, true);
             swerveSubsystem.drive(
-                    -MathUtil.applyDeadband(invertIfRed(xbox.getLeftY()), OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(invertIfRed(xbox.getLeftX()), OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband((xbox.getRightX()), OIConstants.kDriveDeadband),
-                    swerveSubsystem.isFieldRelative() && fieldRelative, true);
+                -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftY(), 2), xbox.getLeftY()))*0.5, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftX(), 2), xbox.getLeftX()))*0.5, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband((xbox.getRightX()), OIConstants.kDriveDeadband),
+                swerveSubsystem.isFieldRelative() && fieldRelative, true);
             //invert if red so drivers dont have to abitarly reset gyro and field relative everytime
             /*swerveSubsystem.drive(
                     -MathUtil.applyDeadband(invertIfRed(xbox.getLeftY()), OIConstants.kDriveDeadband),
@@ -74,8 +79,8 @@ public class SwerveJoystickDefaultCmd extends Command {
             // slow mode *0.2 (or can be booster too) has no slew rate/rate limit
             fieldRelative = true;
             swerveSubsystem.drive(
-                    -MathUtil.applyDeadband(invertIfRed(xbox.getLeftY()*0.3), OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband(invertIfRed(xbox.getLeftX()*0.3), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(invertIfRed(xbox.getLeftY()*0.5), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(invertIfRed(xbox.getLeftX()*0.5), OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband((xbox.getRightX()*0.2), OIConstants.kDriveDeadband),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         /*fancy equation that probably would help us to get rid of speed coefficients (ratelimit probably false)
