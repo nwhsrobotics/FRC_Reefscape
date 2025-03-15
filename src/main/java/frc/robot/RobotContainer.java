@@ -165,17 +165,34 @@ public class RobotContainer {
                 swerveSubsystem.autonavigator.navigateTo(target);
             })
         );
+        
 
-        //last alligning resort
-        new JoystickButton(driver, Buttons.Y).onTrue(
-            new RunCommand(() -> swerveSubsystem.drive(0, 0.1, 0, false, true), swerveSubsystem)
-                .withTimeout(0.32).andThen(new InstantCommand(() -> swerveSubsystem.stopModules(), swerveSubsystem))
-        );
+        // new JoystickButton(driver, Buttons.Y).onTrue(
+        //     new InstantCommand(() -> {
+        //         Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
+        //         swerveSubsystem.autonavigator.enable();
+        //         swerveSubsystem.autonavigator.navigateTo(target).alongWith(NamedCommands.getCommand("L4CORAL")).andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"));
+        //     })
+        // );
 
-        new JoystickButton(driver, Buttons.A).onTrue(
-            new RunCommand(() -> swerveSubsystem.drive(0, -0.1, 0, false, true), swerveSubsystem)
-                .withTimeout(0.32).andThen(new InstantCommand(() -> swerveSubsystem.stopModules(), swerveSubsystem))
-        );
+        // new JoystickButton(driver, Buttons.A).onTrue(
+        //     new InstantCommand(() -> {
+        //         Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
+        //         swerveSubsystem.autonavigator.enable();
+        //         swerveSubsystem.autonavigator.navigateTo(target).alongWith(NamedCommands.getCommand("L4CORAL")).andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"));
+        //     })
+        // );
+
+        // //last alligning resort
+        // new JoystickButton(driver, Buttons.Y).onTrue(
+        //     new RunCommand(() -> swerveSubsystem.drive(0, 0.1, 0, false, true), swerveSubsystem)
+        //         .withTimeout(0.32).andThen(new InstantCommand(() -> swerveSubsystem.stopModules(), swerveSubsystem))
+        // );
+
+        // new JoystickButton(driver, Buttons.A).onTrue(
+        //     new RunCommand(() -> swerveSubsystem.drive(0, -0.1, 0, false, true), swerveSubsystem)
+        //         .withTimeout(0.32).andThen(new InstantCommand(() -> swerveSubsystem.stopModules(), swerveSubsystem))
+        // );
 
         new JoystickButton(driver, Buttons.B).onTrue(
             new InstantCommand(() -> {

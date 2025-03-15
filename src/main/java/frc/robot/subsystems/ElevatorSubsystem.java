@@ -106,7 +106,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     0.574, // L1
     0.7473, //L2
     1.1573,//L3
-    1.7623  //L4 
+    1.7723  //L4 
   };
 
  
