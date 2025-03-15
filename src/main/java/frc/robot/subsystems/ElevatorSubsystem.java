@@ -103,10 +103,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public double[] elevatorHeights = new double[] {
     0.0, //loadSttion 
-    0.474, // L1
+    0.574, // L1
     0.7473, //L2
-    1.1873,//L3
-    1.7873  //L4 
+    1.1573,//L3
+    1.7623  //L4 
   };
 
  
@@ -202,9 +202,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     // rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
     leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
     rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
-
-    System.out.println(elevatorHeights[currentElevatorLevel]);
-    System.out.println(relativeEncoderRight.getPosition());
 
 
 
