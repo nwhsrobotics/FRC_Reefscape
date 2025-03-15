@@ -133,7 +133,7 @@ public final class Constants {
 
         public static final double kDirectionSlewRate = 0.9; // radians per second
         public static final double kMagnitudeSlewRate = 1.35; // percent per second (1 = 100%)
-        public static final double kRotationalSlewRate = 1.5; // percent per second (1 = 100%)
+        public static final double kRotationalSlewRate = 1; // percent per second (1 = 100%)
 
         public static final boolean kFrontLeftTurningEncoderReversed = false;
         public static final boolean kBackLeftTurningEncoderReversed = false;
@@ -192,7 +192,7 @@ public final class Constants {
         );
 
         public static final PathConstraints kPathfindingConstraints = new PathConstraints(
-                DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.33,
+                DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.2,
                 AutoConstants.kMaxAngularSpeedRadiansPerSecond, AutoConstants.kMaxAngularAccelerationRadiansPerSecondSquared);
     }
 
@@ -390,7 +390,7 @@ public final class Constants {
 
     public static final class LoggerConstants {
         public static final RuntimeEnvironment MODE = RuntimeEnvironment.REAL;
-        public static final String RUNNING_UNDER = "2025.q1";
+        public static final String RUNNING_UNDER = "2025.q2";
 
         // SET TO FALSE IF WE'RE RUNNING OUT OF BANDWIDTH.
         public static final boolean SILENT_NT4 = false;

@@ -380,8 +380,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 position,
                 AutoConstants.kPathfindingConstraints,
                 0.0 // Goal end velocity in meters/sec
-        );
-        //TODO
+        ).andThen(PosePIDCommand.create(this, position, Seconds.of(1)));;
         //.andThen(pathOnTheFlyToPosition(position));
         //Fix autonav (probably dont need addrequirements)
         //command.addRequirements(this);
@@ -411,7 +410,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
         path.preventFlipping = true;
 
-        Command followPathCommand = AutoBuilder.followPath(path).andThen(PosePIDCommand.create(this, targetPose, Seconds.of(0.2)));
+        Command followPathCommand = AutoBuilder.followPath(path).andThen(PosePIDCommand.create(this, targetPose, Seconds.of(1)));
 
         return followPathCommand;
     }
