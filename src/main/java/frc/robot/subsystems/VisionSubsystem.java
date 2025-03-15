@@ -259,7 +259,7 @@ public class VisionSubsystem extends SubsystemBase {
         } else {
             finalPose = getNearestReef(swervePos);
         }
-        finalPose = transformPosition(scootRight(finalPose, 0.1651), llfToFrontofRobot);
+        finalPose = transformPosition(scootRight(finalPose, 0.1451), llfToFrontofRobot);
         return finalPose;
     }
 
@@ -277,7 +277,7 @@ public class VisionSubsystem extends SubsystemBase {
         } else {
             finalPose = getNearestReef(swervePos);
         }
-        finalPose = transformPosition(scootLeft(finalPose, 0.1651), llfToFrontofRobot);
+        finalPose = transformPosition(scootLeft(finalPose, 0.1451), llfToFrontofRobot);
         return finalPose;
     }
 

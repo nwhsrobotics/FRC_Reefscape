@@ -106,9 +106,9 @@ public class RobotContainer {
         NamedCommands.registerCommand("L1", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.1)));
         NamedCommands.registerCommand("Load", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem).andThen(new WaitCommand(0.9)));
         //TODO: Tune intake/outtake time for 3 corals, intake 1 second and outtake 0.5 seconds
-        NamedCommands.registerCommand("Intake", new WaitCommand(1.5));
+        NamedCommands.registerCommand("Intake", new WaitCommand(1));
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
-                                                    .andThen(new WaitCommand(1))
+                                                    .andThen(new WaitCommand(0.5))
                                                     .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
         NamedCommands.registerCommand("MoveElevator", new InstantCommand());
 
