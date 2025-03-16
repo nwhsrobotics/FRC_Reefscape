@@ -167,21 +167,22 @@ public class RobotContainer {
         );
         
 
-        // new JoystickButton(driver, Buttons.Y).onTrue(
-        //     new InstantCommand(() -> {
-        //         Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
-        //         swerveSubsystem.autonavigator.enable();
-        //         swerveSubsystem.autonavigator.navigateTo(target).alongWith(NamedCommands.getCommand("L4CORAL")).andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"));
-        //     })
-        // );
+        new JoystickButton(driver, Buttons.Y).onTrue(
+            new InstantCommand(() -> {
+                Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
+                swerveSubsystem.autonavigator.enable();
+                swerveSubsystem.autonavigator.navigateToWithElevator(target);
+            })
+        );
 
-        // new JoystickButton(driver, Buttons.A).onTrue(
-        //     new InstantCommand(() -> {
-        //         Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
-        //         swerveSubsystem.autonavigator.enable();
-        //         swerveSubsystem.autonavigator.navigateTo(target).alongWith(NamedCommands.getCommand("L4CORAL")).andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"));
-        //     })
-        // );
+        new JoystickButton(driver, Buttons.A).onTrue(
+            new InstantCommand(() -> {
+                Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
+                swerveSubsystem.autonavigator.enable();
+                swerveSubsystem.autonavigator.navigateToWithElevator(target);
+            })
+        );
+
 
         // //last alligning resort
         // new JoystickButton(driver, Buttons.Y).onTrue(
