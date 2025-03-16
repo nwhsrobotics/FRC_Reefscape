@@ -106,7 +106,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     0.574, // L1
     0.7473, //L2
     1.1573,//L3
-    1.7723  //L4 
+    1.7723,  //L4
+    1.8223 //L5
   };
 
  
@@ -137,6 +138,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
   public void L4_Preset() {
     setPointRotations = metersToRotations(elevatorHeights[4]);  //183cm >>  179.3cm  >>   1.793m 
+  }
+  public void boost(){
+    setPointRotations = metersToRotations(elevatorHeights[5]);
   }
 
   

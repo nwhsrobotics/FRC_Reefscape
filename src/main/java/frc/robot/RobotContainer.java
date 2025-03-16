@@ -100,6 +100,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("L2CORAL", new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("L1CORAL", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("LoadStation", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
+        NamedCommands.registerCommand("Boost", new InstantCommand(() -> elevatorSubsystem.boost(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("L4", new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(new WaitCommand(2.0)));
         NamedCommands.registerCommand("L3", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.7)));
         NamedCommands.registerCommand("L2",new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.4)));
@@ -139,7 +140,10 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); 
-        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
+        //new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
+
+        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("Boost")).andThen(NamedCommands.getCommand("LoadStation")));
+
 
         new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("L1CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
         new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
@@ -167,21 +171,21 @@ public class RobotContainer {
         );
         
 
-        new JoystickButton(driver, Buttons.Y).onTrue(
-            new InstantCommand(() -> {
-                Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
-                swerveSubsystem.autonavigator.enable();
-                swerveSubsystem.autonavigator.navigateToWithElevator(target);
-            })
-        );
+        // new JoystickButton(driver, Buttons.Y).onTrue(
+        //     new InstantCommand(() -> {
+        //         Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
+        //         swerveSubsystem.autonavigator.enable();
+        //         swerveSubsystem.autonavigator.navigateToWithElevator(target);
+        //     })
+        // );
 
-        new JoystickButton(driver, Buttons.A).onTrue(
-            new InstantCommand(() -> {
-                Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
-                swerveSubsystem.autonavigator.enable();
-                swerveSubsystem.autonavigator.navigateToWithElevator(target);
-            })
-        );
+        // new JoystickButton(driver, Buttons.A).onTrue(
+        //     new InstantCommand(() -> {
+        //         Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
+        //         swerveSubsystem.autonavigator.enable();
+        //         swerveSubsystem.autonavigator.navigateToWithElevator(target);
+        //     })
+        // );
 
 
         // //last alligning resort
