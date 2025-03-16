@@ -252,14 +252,14 @@ public class VisionSubsystem extends SubsystemBase {
     public Pose2d leftReef(Pose2d swervePos){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         Pose2d finalPose = swervePos;
-        double llfToFrontofRobot = 0.4445;
+        double llfToFrontofRobot = 0.4645;
         if (llf != null){
             int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
             finalPose = getAprilTagPos(aprilTagId);
         } else {
             finalPose = getNearestReef(swervePos);
         }
-        finalPose = transformPosition(scootRight(finalPose, 0.1651), llfToFrontofRobot);
+        finalPose = transformPosition(scootRight(finalPose, 0.17145), llfToFrontofRobot);
         return finalPose;
     }
 
@@ -270,14 +270,14 @@ public class VisionSubsystem extends SubsystemBase {
     public Pose2d rightReef(Pose2d swervePos){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         Pose2d finalPose = swervePos;
-        double llfToFrontofRobot = 0.4445;
+        double llfToFrontofRobot = 0.4645;
         if (llf != null){
             int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
             finalPose = getAprilTagPos(aprilTagId);
         } else {
             finalPose = getNearestReef(swervePos);
         }
-        finalPose = transformPosition(scootLeft(finalPose, 0.1651), llfToFrontofRobot);
+        finalPose = transformPosition(scootLeft(finalPose, 0.15875), llfToFrontofRobot);
         return finalPose;
     }
 
