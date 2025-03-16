@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 /**
  * Helper class for autonavigation.
  * <p>
@@ -135,4 +137,27 @@ public class AutoNavigation {
         Logger.recordOutput("autonavigator.destination", destination);
         return navigationCommand;
     }
+
+    public Command navigateToWithElevator(Pose2d destination) {
+        if (!enabled || !RobotState.isTeleop()) {
+            return new InstantCommand();
+        }
+    
+        if (navigationCommand != null && navigationCommand.isScheduled()) {
+            navigationCommand.cancel();
+        }
+    
+        navigationCommand =
+            swerve.pathOnTheFlyToPosition(destination)
+                .alongWith(NamedCommands.getCommand("L4CORAL"))
+                .andThen(NamedCommands.getCommand("Outtake"))
+                .andThen(NamedCommands.getCommand("LoadStation"));
+    
+        navigationCommand.addRequirements(swerve);
+        navigationCommand.schedule();
+    
+        return navigationCommand;
+    }
+    
+
 }
