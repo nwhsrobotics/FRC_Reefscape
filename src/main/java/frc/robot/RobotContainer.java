@@ -169,7 +169,7 @@ public class RobotContainer {
 
         new JoystickButton(driver, Buttons.Y).onTrue(
             new InstantCommand(() -> {
-                Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
+                Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
                 swerveSubsystem.autonavigator.enable();
                 swerveSubsystem.autonavigator.navigateToWithElevator(target);
             })
