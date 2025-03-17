@@ -69,8 +69,8 @@ public class VisionSubsystem extends SubsystemBase {
             int tagID = i + 1;
             Pose2d org = AprilTags.aprilTags.get(i);
         
-            Pose2d left = transformPosition(scootLeft(org, 0.1651), 0.4445);
-            Pose2d right = transformPosition(scootRight(org, 0.1651), 0.4445);
+            Pose2d left = transformPosition(scootRight(org, 0.1651), 0.4445);
+            Pose2d right = transformPosition(scootLeft(org, 0.1651), 0.4445);
         
             Logger.recordOutput(
                 "Tag:" + tagID,
@@ -180,7 +180,14 @@ public class VisionSubsystem extends SubsystemBase {
 
     }
 
-    public Pose2d scootRight(Pose2d adjustedPos, double scootDist) {
+    /**
+     * NOTE: This method scoots left relative to the driver's camera POV
+     * NOT relative to april tag
+     * @param adjustedPos The position to scoot left
+     * @param scootDist How much left should it be scooted by?
+     * @return Lef positon of adjustedPos relative to driver's camera POV
+     */
+    public Pose2d scootLeft(Pose2d adjustedPos, double scootDist) {
         // double initialX = adjustedPos.getX();
         // double initialY = adjustedPos.getY();
         // double initialRot = adjustedPos.getRotation().getRadians();
@@ -201,7 +208,15 @@ public class VisionSubsystem extends SubsystemBase {
          
     }
 
-    public Pose2d scootLeft(Pose2d adjustedPos, double scootDist) {
+
+    /**
+     * NOTE: This method scoots right relative to the driver's camera POV
+     * NOT relative to april tag
+     * @param adjustedPos The position to scoot right
+     * @param scootDist How much right should it be scooted by?
+     * @return Right positon of adjustedPos relative to driver's camera POV
+     */
+    public Pose2d scootRight(Pose2d adjustedPos, double scootDist) {
         // double initialX = adjustedPos.getX();
         // double initialY = adjustedPos.getY();
         // double initialRot = adjustedPos.getRotation().getRadians();
@@ -249,35 +264,49 @@ public class VisionSubsystem extends SubsystemBase {
         return targetId; 
     }
 
+    
+    /**
+     * This is actually the LEFT REEF from the driver's camera POV
+     * <p>
+     * Relative to the april tag this is actually the right reef
+     */
     public Pose2d leftReef(Pose2d swervePos){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         Pose2d finalPose = swervePos;
-        double llfToFrontofRobot = 0.4645;
+        double llfToFrontofRobot = 0.46;
         if (llf != null){
             int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
             finalPose = getAprilTagPos(aprilTagId);
         } else {
             finalPose = getNearestReef(swervePos);
         }
-        finalPose = transformPosition(scootRight(finalPose, 0.17145), llfToFrontofRobot);
+        //0.1651
+        finalPose = transformPosition(scootLeft(finalPose, 0.15875), llfToFrontofRobot);
         return finalPose;
     }
 
-    public Pose2d getAprilTagPos(int id){
+    public Pose2d getAprilTagPos(int id){ 
         return AprilTags.aprilTags.get(id-1);
     }
 
+
+    /**
+     * This is actually the RIGHT REEF from the driver's camera POV
+     * <p>
+     * Relative to the april tag this is actually the left reef
+     */
     public Pose2d rightReef(Pose2d swervePos){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         Pose2d finalPose = swervePos;
-        double llfToFrontofRobot = 0.4645;
+        double llfToFrontofRobot = 0.46;
         if (llf != null){
             int aprilTagId = (int)llf.targets_Fiducials[0].fiducialID;
             finalPose = getAprilTagPos(aprilTagId);
         } else {
             finalPose = getNearestReef(swervePos);
         }
-        finalPose = transformPosition(scootLeft(finalPose, 0.15875), llfToFrontofRobot);
+        //0.1651
+        finalPose = transformPosition(scootRight(finalPose, 0.17145), llfToFrontofRobot);
         return finalPose;
     }
 
