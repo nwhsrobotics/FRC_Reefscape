@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.util.LimelightHelpers;
@@ -18,7 +17,7 @@ public class VisionGamePiece {
     public static double tagDist;
     public static ArrayList<Integer> tagIds = new ArrayList<>();
 
-    private static final long DETECTION_HOLD = 200; 
+    private static final long DETECTION_HOLD = 200;
     private static long timeDetected = 0;
     private static boolean isStableTv = false;
 
@@ -92,7 +91,7 @@ public class VisionGamePiece {
         return 0.0;
     }
 
-    public static double verticalYOffsetDistance(String limelightName){
+    public static double verticalYOffsetDistance(String limelightName) {
         double limelightLensHeightMeters = LimelightConstants.mountHeightForwards;
         double goalHeightMeters = LimelightConstants.targetHeightForwards;
         return goalHeightMeters - limelightLensHeightMeters;
@@ -139,7 +138,7 @@ public class VisionGamePiece {
             return targetPose2d;
         }
         return pos;
-        
+
         //is no math fun?
     }
 

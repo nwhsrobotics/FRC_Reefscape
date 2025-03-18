@@ -1,13 +1,11 @@
 package frc.robot.util;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.littletonrobotics.junction.Logger;
 
 public class RobotErrorHandler {
     private static int errorCount = 0;
-    
+
     public static void initialize() {
         try {
             Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
@@ -17,7 +15,7 @@ public class RobotErrorHandler {
             t.printStackTrace();
         }
     }
-    
+
     private static void handleException(Throwable throwable, String source) {
         try {
             errorCount++;
@@ -33,14 +31,6 @@ public class RobotErrorHandler {
         } catch (Throwable t) {
             System.err.println("ERROR IN ERROR HANDLER: " + t.getMessage());
             t.printStackTrace();
-        }
-    }
-    
-    public static void executeWithoutCrashing(Runnable runnable, String context) {
-        try {
-            runnable.run();
-        } catch (Throwable t) {
-            handleException(t, context);
         }
     }
 }

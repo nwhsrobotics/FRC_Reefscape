@@ -1,10 +1,8 @@
 package frc.robot.util;
 
-import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -33,7 +31,7 @@ public class ImprovedCanSpark extends SparkMax {
             configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         }
     }
-    
+
 
     public ImprovedCanSpark(int id, MotorKind motor, IdleMode mode, double P, double I, double D, double maxVel, double maxAccel, double allowedError) {
         super(id, MotorType.kBrushless);
@@ -46,13 +44,13 @@ public class ImprovedCanSpark extends SparkMax {
             case VORTEX -> config.smartCurrentLimit(80);
         }
         config.closedLoop
-        .p(P)
-        .i(I)
-        .d(D)
-        .maxMotion
-        .maxVelocity(maxVel)
-        .maxAcceleration(maxAccel).
-        allowedClosedLoopError(allowedError);
+                .p(P)
+                .i(I)
+                .d(D)
+                .maxMotion
+                .maxVelocity(maxVel)
+                .maxAcceleration(maxAccel).
+                allowedClosedLoopError(allowedError);
         config.voltageCompensation(11);
         //setVoltage(11);
         if (DriverStation.isFMSAttached()) {
@@ -61,13 +59,11 @@ public class ImprovedCanSpark extends SparkMax {
             configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         }
 
-        
+
     }
-        
-    
 
 
-    public ImprovedCanSpark(int id, MotorKind motor,SparkBaseConfig config, IdleMode mode) {
+    public ImprovedCanSpark(int id, MotorKind motor, SparkBaseConfig config, IdleMode mode) {
         super(id, MotorType.kBrushless);
         clearFaults();
         config.idleMode(mode);
