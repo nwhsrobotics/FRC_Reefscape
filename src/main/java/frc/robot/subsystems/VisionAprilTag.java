@@ -4,17 +4,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.LimelightConstants;
-import frc.robot.util.Elastic;
 import frc.robot.util.LimelightHelpers;
-import frc.robot.util.Elastic.Notification;
-import frc.robot.util.Elastic.Notification.NotificationLevel;
 import frc.robot.util.LimelightHelpers.LimelightResults;
-
 import org.littletonrobotics.junction.Logger;
 
 import java.util.ArrayList;
@@ -26,7 +17,7 @@ public class VisionAprilTag {
     public static ArrayList<Integer> tagIds = new ArrayList<>();
 
     // maybe 100?
-    private static double holdDuration = 200; 
+    private static double holdDuration = 200;
     private static long timeDetected = 0;
 
     private static LimelightResults stableResults = null;
@@ -57,11 +48,12 @@ public class VisionAprilTag {
      * <p>
      * Magic number is the fine tuned speed limiter value
      * <p>
-     * Imagine if distance is 8 meters, if we don't multiply by 
+     * Imagine if distance is 8 meters, if we don't multiply by
      * magic number (speed limiter) it will output 8 meters/second!
      * <p>
      * If distance is 8, and magic number is 0.25,
      * the output speed value will be a reasonable 2 meters/second
+     *
      * @return The speed
      */
     public static double limelight_aimSpeedX_proportional(String limelightName) {
@@ -73,17 +65,18 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     /**
      * Distance times Magic number = Speed.
      * <p>
      * Magic number is the fine tuned speed limiter value
      * <p>
-     * Imagine if distance is 8 meters, if we don't multiply by 
+     * Imagine if distance is 8 meters, if we don't multiply by
      * magic number (speed limiter) it will output 8 meters/second!
      * <p>
      * If distance is 8, and magic number is 0.25,
      * the output speed value will be reasonable 2 meters/second
+     *
      * @return The speed
      */
     public static double limelight_aimSpeedX_aprilTag(String limelightName) {
@@ -95,17 +88,18 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     /**
      * Distance times Magic number = Speed.
      * <p>
      * Magic number is the fine tuned speed limiter value
      * <p>
-     * Imagine if distance is 8 meters, if we don't multiply by 
+     * Imagine if distance is 8 meters, if we don't multiply by
      * magic number (speed limiter) it will output 8 meters/second!
      * <p>
      * If distance is 8, and magic number is 0.25,
      * the output speed value will be reasonable 2 meters/second
+     *
      * @return The speed
      */
     public static double limelight_rangeSpeedZ_proportional(String limelightName) {
@@ -121,11 +115,12 @@ public class VisionAprilTag {
      * <p>
      * Magic number is the fine tuned speed limiter value
      * <p>
-     * Imagine if distance is 8 meters, if we don't multiply by 
+     * Imagine if distance is 8 meters, if we don't multiply by
      * magic number (speed limiter) it will output 8 meters/second!
      * <p>
      * If distance is 8, and magic number is 0.25,
      * the output speed value will be reasonable 2 meters/second
+     *
      * @return The speed
      */
     public static double limelight_rangeSpeedZ_aprilTag(String limelightName) {
@@ -141,11 +136,12 @@ public class VisionAprilTag {
      * <p>
      * Magic number is the fine tuned speed limiter value
      * <p>
-     * Imagine if distance is 8 meters, if we don't multiply by 
+     * Imagine if distance is 8 meters, if we don't multiply by
      * magic number (speed limiter) it will output 8 meters/second!
      * <p>
      * If distance is 8, and magic number is 0.25,
      * the output speed value will be reasonable 2 meters/second
+     *
      * @return The speed
      */
     public static double horizontalOffsetSpeedX(String limelightName) {
@@ -155,17 +151,18 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     /**
      * Distance times Magic number = Speed.
      * <p>
      * Magic number is the fine tuned speed limiter value
      * <p>
-     * Imagine if distance is 8 meters, if we don't multiply by 
+     * Imagine if distance is 8 meters, if we don't multiply by
      * magic number (speed limiter) it will output 8 meters/second!
      * <p>
      * If distance is 8, and magic number is 0.25,
      * the output speed value will be reasonable 2 meters/second
+     *
      * @return The speed
      */
     public static double horizontalOffsetSpeedXAprilTag(String limelightName) {
@@ -175,7 +172,7 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     public static double straightLineZDistance(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
@@ -190,7 +187,7 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     public static double straightLineZAprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
@@ -199,7 +196,7 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     public static double hypotenuseDistanceXandZ(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
@@ -207,7 +204,7 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     public static double hypotenuseDistanceXandZAprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
@@ -215,7 +212,7 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     public static double full3DDistance(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
@@ -223,7 +220,7 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     public static double full3DDistanceAprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
@@ -231,7 +228,7 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     public static double horizontalOffsetXDistance(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
@@ -239,7 +236,7 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     public static double horizontalOffsetXAprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
@@ -247,7 +244,7 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     public static double verticalYOffsetDistance(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
@@ -255,7 +252,7 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     public static double verticalYOffsetAprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
@@ -263,9 +260,9 @@ public class VisionAprilTag {
         }
         return 0.0;
     }
-    
+
     /**
-     * Checks if the latest Limelight results are valid. 
+     * Checks if the latest Limelight results are valid.
      * Returns the results if valid, or null otherwise.
      */
     public static LimelightResults isValid(String limelightName) {
@@ -279,7 +276,7 @@ public class VisionAprilTag {
             // experimental distance adaptive stabilizer (make it greater than linear if needed) 
             int idealDist = 2;
             double distance = results.targets_Fiducials[0].getRobotPose_TargetSpace2D().getTranslation().getNorm();
-            holdDuration = Math.max((distance / idealDist) * 100, 20);            
+            holdDuration = Math.max((distance / idealDist) * 100, 20);
         } else {
             long time = now - timeDetected;
             if (time < holdDuration) {
@@ -289,7 +286,7 @@ public class VisionAprilTag {
         }
         return stableResults;
     }
-    
+
 
     /**
      * Transforms the target's location based on Limelight's data.
@@ -302,28 +299,28 @@ public class VisionAprilTag {
         // we could just use transform, but come on that's not fun like the normal math it does all the trig under the hood for us :(
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
-    
+
             Pose2d targetInRobotCoords = llr.targets_Fiducials[0].getTargetPose_RobotSpace2D();
             double robotFrontDist = 0.457;
-    
-            Translation2d adjustedTranslation = new Translation2d(targetInRobotCoords.getX()-robotFrontDist, -(targetInRobotCoords.getY() + scootOffsetX));
+
+            Translation2d adjustedTranslation = new Translation2d(targetInRobotCoords.getX() - robotFrontDist, -(targetInRobotCoords.getY() + scootOffsetX));
 
 
             Pose2d targetOnField = pos.transformBy(
-                new Transform2d(
-                    //targetInRobotCoords.getTranslation(),
-                    adjustedTranslation,
-                    //get tx instead?
-                    //LimelightHelpers.getTX(limelightName)
-                    //targetInRobotCoords.getRotation()
-                    Rotation2d.fromDegrees(LimelightHelpers.getTX(limelightName))
-                )
+                    new Transform2d(
+                            //targetInRobotCoords.getTranslation(),
+                            adjustedTranslation,
+                            //get tx instead?
+                            //LimelightHelpers.getTX(limelightName)
+                            //targetInRobotCoords.getRotation()
+                            Rotation2d.fromDegrees(LimelightHelpers.getTX(limelightName))
+                    )
             );
-    
+
             Logger.recordOutput("limelight.objectPos", targetOnField);
             return targetOnField;
         }
-    
+
         return pos;
     }
 
@@ -331,29 +328,27 @@ public class VisionAprilTag {
     //     LimelightResults llr = isValid(limelightName);
     //     if (llr != null) {
     //         Pose2d rawTarget = llr.targets_Fiducials[0].getTargetPose_RobotSpace2D();
-            
+
     //         Translation2d rawTranslation = rawTarget.getTranslation();
     //         Translation2d adjustedTranslation = new Translation2d(rawTranslation.getX(), -rawTranslation.getY());
-            
+
     //         Rotation2d rawRotation = rawTarget.getRotation();
     //         Rotation2d adjustedRotation = rawRotation.unaryMinus(); 
-            
+
     //         Pose2d adjustedTarget = new Pose2d(adjustedTranslation, adjustedRotation);
-            
+
     //         Pose2d targetOnField = pos.transformBy(
     //             new Transform2d(
     //                 adjustedTarget.getTranslation(),
     //                 adjustedTarget.getRotation()
     //             )
     //         );
-            
+
     //         Logger.recordOutput("limelight.objectPos", targetOnField);
     //         return targetOnField;
     //     }
     //     return pos;
     // }
-    
-    
 
 
     /**
@@ -384,19 +379,19 @@ public class VisionAprilTag {
         return LimelightHelpers.getCurrentPipelineIndex(limelightName) == 0;
     }
 
-    public static void offsetRight(String limelightName){
+    public static void offsetRight(String limelightName) {
         scootOffsetX = 0.1651;
         LimelightHelpers.setFiducial3DOffset(limelightName, 0, scootOffsetX, 0);
         //LimelightHelpers.setFiducial3DOffset(limelightName, scootOffsetX, 0, 0);
     }
 
-    public static void offsetLeft(String limelightName){
+    public static void offsetLeft(String limelightName) {
         scootOffsetX = -0.1651;
         LimelightHelpers.setFiducial3DOffset(limelightName, 0, scootOffsetX, 0);
         //LimelightHelpers.setFiducial3DOffset(limelightName, scootOffsetX, 0, 0);
     }
 
-    public static void offsetCenter(String limelightName){
+    public static void offsetCenter(String limelightName) {
         scootOffsetX = 0.0;
         //LimelightHelpers.setFiducial3DOffset(limelightName, 0, 0.0, 0);
         LimelightHelpers.setFiducial3DOffset(limelightName, scootOffsetX, 0, 0);

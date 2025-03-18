@@ -18,7 +18,7 @@ import java.util.Map;
 
 public final class Constants {
     public static final class CANAssignments {
-        
+
         // 2024 robot
         // public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6;
         // public static final int BACK_LEFT_DRIVE_MOTOR_ID = 1;
@@ -153,7 +153,6 @@ public final class Constants {
         //FOR ALL OFFSETS: turn wheels until they become straight, replace with the value of encoders
         //THE BLACK GEAR SHOULD BE ON THE OUTSIDE FOR ALL WHEELS, regardless of side
 
-        
 
         //THESE ONES ARE FOR THE 2025 ROBOT 
         public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 0.6212622190936846;//2.66 + Math.PI;
@@ -163,17 +162,16 @@ public final class Constants {
 
 
         //2024 ROBOT
-        
+
         // public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = -1.0998642249140047;//2.66 + Math.PI;
         // public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 2.1475731030398975;//5.24 - Math.PI;
         // public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = -1.0829904362472627;//0.61 + Math.PI;
         // public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 1.0737865515199487;//5.20 - Math.PI;
-        
+
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = 6380.0 / 60.0 * (ModuleConstants.kDriveMotorGearRatio) * ModuleConstants.kWheelDiameterMeters * Math.PI; // set up for NEOs to drive
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = kPhysicalMaxSpeedMetersPerSecond / Math.hypot(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0); //adapted from SDS
     }
-
 
 
     public static final class AutoConstants {
@@ -205,15 +203,15 @@ public final class Constants {
 
     public static final class Positions {
         //from driver perspective
-        
-        public static final Pose2d LEFT_GROUND_START_PIECES = new Pose2d(1.219, 5.855, Rotation2d.fromDegrees(180)); 
-        public static final Pose2d MID_GROUND_START_PIECES = new Pose2d(1.219, 4.022, Rotation2d.fromDegrees(180)); 
-        public static final Pose2d RIGHT_GROUND_START_PIECES = new Pose2d(1.219, 2.189, Rotation2d.fromDegrees(180)); 
+
+        public static final Pose2d LEFT_GROUND_START_PIECES = new Pose2d(1.219, 5.855, Rotation2d.fromDegrees(180));
+        public static final Pose2d MID_GROUND_START_PIECES = new Pose2d(1.219, 4.022, Rotation2d.fromDegrees(180));
+        public static final Pose2d RIGHT_GROUND_START_PIECES = new Pose2d(1.219, 2.189, Rotation2d.fromDegrees(180));
 
         //These are the starting positions near the respective cages, they are on starting line, not in the cage itself
-        public static final Pose2d START_A = new Pose2d(7.584, 7.283, Rotation2d.fromDegrees(180)); 
-        public static final Pose2d START_B = new Pose2d(7.584, 6.185, Rotation2d.fromDegrees(180)); 
-        public static final Pose2d START_C = new Pose2d(7.584, 5.056, Rotation2d.fromDegrees(180)); 
+        public static final Pose2d START_A = new Pose2d(7.584, 7.283, Rotation2d.fromDegrees(180));
+        public static final Pose2d START_B = new Pose2d(7.584, 6.185, Rotation2d.fromDegrees(180));
+        public static final Pose2d START_C = new Pose2d(7.584, 5.056, Rotation2d.fromDegrees(180));
 
         public static final Pose2d BACK_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60)); // POV_LEFT - Side 6
         public static final Pose2d BACK_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(0.01)); // A button - Side 5
@@ -227,11 +225,11 @@ public final class Constants {
 
         public static final Pose2d STATION_LEFT = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(126)); //this is for the center of the source 
         public static final Pose2d STATION_RIGHT = new Pose2d(1.149, 1.043, Rotation2d.fromDegrees(-126)); //this is for the center of the source 
-        
+
         public static final Pose2d PROCESSOR = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(-90));
 
 
-        public static final List<Pose2d> allNotes = new ArrayList<Pose2d>(); 
+        public static final List<Pose2d> allNotes = new ArrayList<Pose2d>();
         // get rid of temp fix
     }
 
@@ -240,17 +238,18 @@ public final class Constants {
         public static final double SYSIDMOTORGEARRATIO = 0.13;
         public static final double SYSIDSUBSYSTEMDIAMETER = 2;
         //equation needs to be reviewed
-        
+
         public static final double SYSIDENCOCERROT2METER = SYSIDMOTORGEARRATIO * Math.PI * SYSIDSUBSYSTEMDIAMETER;
-        public static final double SYSIDENCODERMETERPERSECONDS = SYSIDENCOCERROT2METER/60;
+        public static final double SYSIDENCODERMETERPERSECONDS = SYSIDENCOCERROT2METER / 60;
 
     }
-    public static final class ElevatorConstants{
+
+    public static final class ElevatorConstants {
         // Elevator Limits
         //units are most likely in roatations
         public static final double MAX_Elevator_HEIGHT = 100.0; // Adjust as needed
         public static final double MIN_Elevator_HEIGHT = 0.0;
-        public static final double ELEVATOR_GEAR_RATIO = 1.0/12.0; //3:1, change later to 12:1
+        public static final double ELEVATOR_GEAR_RATIO = 1.0 / 12.0; //3:1, change later to 12:1
 
         public static final double SPROCKET_TEETH = 22.0;
         public static final double CHAIN_PITCH_INCH = 0.25;
@@ -259,52 +258,49 @@ public final class Constants {
 
         public static final double ELEVATOR_STAGES = 3.0;
 
-        
-
-
 
         public static final double ELEVATOR_MOTOR_ENCODER_ROT2METER = ELEVATOR_GEAR_RATIO * SPROCKET_TEETH * CHAIN_PITCH_INCH * METERS_PER_INCH * ELEVATOR_STAGES;
-        public  static final double ELEVATOR_ENCODER_METER_PER_SECONDS = ELEVATOR_MOTOR_ENCODER_ROT2METER/60;
+        public static final double ELEVATOR_ENCODER_METER_PER_SECONDS = ELEVATOR_MOTOR_ENCODER_ROT2METER / 60;
 
         public static final double MAX_VELOCITY_M_S = 4.0;
 
         public static final double MAX_ACCEL_M_S2 = 2.5;
 
-        public static final double MAX_VELOCITY_RPM = ((MAX_VELOCITY_M_S)/ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60.0;
+        public static final double MAX_VELOCITY_RPM = ((MAX_VELOCITY_M_S) / ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60.0;
 
-        public static final double MAX_ACCEL_RPM_S =  ((MAX_ACCEL_M_S2)/ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60.0;
+        public static final double MAX_ACCEL_RPM_S = ((MAX_ACCEL_M_S2) / ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60.0;
 
     }
 
-    public static final class AprilTags{
-        //degress are facing inwards towards the tags (NOT THE ACTUAL TAG DEGREE)
+    public static final class AprilTags {
+        //degrees are facing inwards towards the tags (NOT THE ACTUAL TAG DEGREE)
         //it is tagDegree + 180
         //https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/2025FieldDrawings-FieldLayoutAndMarking.pdf
         //https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/Apriltag_Images_and_User_Guide.pdf
         //NO 0 DEGREE rotation, pathpathplanner bugs, do 1 degree instead   
-        public static final Pose2d ID_1  = new Pose2d(16.697, 0.655,  Rotation2d.fromDegrees(306));
-        public static final Pose2d ID_2  = new Pose2d(16.697, 7.396,  Rotation2d.fromDegrees(54));
-        public static final Pose2d ID_3  = new Pose2d(11.561, 8.056,  Rotation2d.fromDegrees(90));
-        public static final Pose2d ID_4  = new Pose2d(9.276,  6.137,  Rotation2d.fromDegrees(180));
-        public static final Pose2d ID_5  = new Pose2d(9.276,  1.915,  Rotation2d.fromDegrees(180));
-        public static final Pose2d ID_6  = new Pose2d(13.474, 3.306,  Rotation2d.fromDegrees(120));
-        public static final Pose2d ID_7  = new Pose2d(13.890, 4.026,  Rotation2d.fromDegrees(180));
-        public static final Pose2d ID_8  = new Pose2d(13.474, 4.745,  Rotation2d.fromDegrees(240));
-        public static final Pose2d ID_9  = new Pose2d(12.643, 4.745,  Rotation2d.fromDegrees(300));
-        public static final Pose2d ID_10 = new Pose2d(12.227, 4.026,  Rotation2d.fromDegrees(0.01));
-        public static final Pose2d ID_11 = new Pose2d(12.643, 3.306,  Rotation2d.fromDegrees(60));
-        public static final Pose2d ID_12 = new Pose2d(0.851,  0.655,  Rotation2d.fromDegrees(234));
-        public static final Pose2d ID_13 = new Pose2d(0.851,  7.396,  Rotation2d.fromDegrees(126));
-        public static final Pose2d ID_14 = new Pose2d(8.272,  6.137,  Rotation2d.fromDegrees(0.01));
-        public static final Pose2d ID_15 = new Pose2d(8.272,  1.915,  Rotation2d.fromDegrees(0.01));
-        public static final Pose2d ID_16 = new Pose2d(5.987,  -0.004,  Rotation2d.fromDegrees(270));
-        public static final Pose2d ID_17 = new Pose2d(4.073,  3.306,  Rotation2d.fromDegrees(60));
-        public static final Pose2d ID_18 = new Pose2d(3.657,  4.026,  Rotation2d.fromDegrees(0.01));
-        public static final Pose2d ID_19 = new Pose2d(4.074,  4.745,  Rotation2d.fromDegrees(300));
-        public static final Pose2d ID_20 = new Pose2d(4.905,  4.745,  Rotation2d.fromDegrees(240));
-        public static final Pose2d ID_21 = new Pose2d(5.321,  4.026,  Rotation2d.fromDegrees(180));
-        public static final Pose2d ID_22 = new Pose2d(4.905,  3.306,  Rotation2d.fromDegrees(120));        
-        public static final List<Pose2d> aprilTags = new ArrayList<Pose2d>(List.of(ID_1,ID_2,ID_3,ID_4,ID_5,ID_6,ID_7,ID_8,ID_9,ID_10,ID_11,ID_12,ID_13,ID_14,ID_15,ID_16,ID_17,ID_18,ID_19,ID_20,ID_21,ID_22));
+        public static final Pose2d ID_1 = new Pose2d(16.697, 0.655, Rotation2d.fromDegrees(306));
+        public static final Pose2d ID_2 = new Pose2d(16.697, 7.396, Rotation2d.fromDegrees(54));
+        public static final Pose2d ID_3 = new Pose2d(11.561, 8.056, Rotation2d.fromDegrees(90));
+        public static final Pose2d ID_4 = new Pose2d(9.276, 6.137, Rotation2d.fromDegrees(180));
+        public static final Pose2d ID_5 = new Pose2d(9.276, 1.915, Rotation2d.fromDegrees(180));
+        public static final Pose2d ID_6 = new Pose2d(13.474, 3.306, Rotation2d.fromDegrees(120));
+        public static final Pose2d ID_7 = new Pose2d(13.890, 4.026, Rotation2d.fromDegrees(180));
+        public static final Pose2d ID_8 = new Pose2d(13.474, 4.745, Rotation2d.fromDegrees(240));
+        public static final Pose2d ID_9 = new Pose2d(12.643, 4.745, Rotation2d.fromDegrees(300));
+        public static final Pose2d ID_10 = new Pose2d(12.227, 4.026, Rotation2d.fromDegrees(0.01));
+        public static final Pose2d ID_11 = new Pose2d(12.643, 3.306, Rotation2d.fromDegrees(60));
+        public static final Pose2d ID_12 = new Pose2d(0.851, 0.655, Rotation2d.fromDegrees(234));
+        public static final Pose2d ID_13 = new Pose2d(0.851, 7.396, Rotation2d.fromDegrees(126));
+        public static final Pose2d ID_14 = new Pose2d(8.272, 6.137, Rotation2d.fromDegrees(0.01));
+        public static final Pose2d ID_15 = new Pose2d(8.272, 1.915, Rotation2d.fromDegrees(0.01));
+        public static final Pose2d ID_16 = new Pose2d(5.987, -0.004, Rotation2d.fromDegrees(270));
+        public static final Pose2d ID_17 = new Pose2d(4.073, 3.306, Rotation2d.fromDegrees(60));
+        public static final Pose2d ID_18 = new Pose2d(3.657, 4.026, Rotation2d.fromDegrees(0.01));
+        public static final Pose2d ID_19 = new Pose2d(4.074, 4.745, Rotation2d.fromDegrees(300));
+        public static final Pose2d ID_20 = new Pose2d(4.905, 4.745, Rotation2d.fromDegrees(240));
+        public static final Pose2d ID_21 = new Pose2d(5.321, 4.026, Rotation2d.fromDegrees(180));
+        public static final Pose2d ID_22 = new Pose2d(4.905, 3.306, Rotation2d.fromDegrees(120));
+        public static final List<Pose2d> aprilTags = new ArrayList<Pose2d>(List.of(ID_1, ID_2, ID_3, ID_4, ID_5, ID_6, ID_7, ID_8, ID_9, ID_10, ID_11, ID_12, ID_13, ID_14, ID_15, ID_16, ID_17, ID_18, ID_19, ID_20, ID_21, ID_22));
         public static final Map<String, Integer> blueAllianceIds = new HashMap<>() {{
             put("[1A]", 20);
             put("[1B]", 20);
@@ -328,14 +324,14 @@ public final class Constants {
             put("[1B]", 11);
             put("[2A]", 10);
             put("[2B]", 10);
-            put("[3A]",  9);
-            put("[3B]",  9);
-            put("[4A]",  8);
-            put("[4B]",  8);
-            put("[5A]",  7);
-            put("[5B]",  7);
-            put("[6A]",  6);
-            put("[6B]",  6);
+            put("[3A]", 9);
+            put("[3B]", 9);
+            put("[4A]", 8);
+            put("[4B]", 8);
+            put("[5A]", 7);
+            put("[5B]", 7);
+            put("[6A]", 6);
+            put("[6B]", 6);
             put("[S1]", 1);
             put("[S2]", 2);
             put("[P]", 3);
@@ -355,7 +351,7 @@ public final class Constants {
         public static String llObjectDetectionNameForwards = "limelight-llf";
         public static String llFront = "limelight-llf";
         public static double targetHeightForwards = 0;
-        
+
         //Rear Limelight
         public static final double mountHeightBackwards = 0.8814; //in meters
         public static final double mountAngleBackwards = 0.0; //in degrees with straight being 0 up being 90 and down being -90
@@ -367,9 +363,9 @@ public final class Constants {
         public static String llObjectDetectionNameBackwards = "limelight-llb";
         public static String llBack = "limelight-llb";
         public static double targetHeightBackwards = 0;
-        
+
     }
-    
+
 
     public enum RuntimeEnvironment {
         /**

@@ -1,10 +1,8 @@
 package frc.robot.util;
 
-import com.revrobotics.sim.SparkFlexExternalEncoderSim;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
 import com.revrobotics.spark.config.SparkFlexConfig;
 import edu.wpi.first.wpilibj.DriverStation;
 

@@ -1,45 +1,27 @@
 package frc.robot;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.LimelightConstants;
-import frc.robot.Constants.Positions;
-import frc.robot.autos.AlternativePathfindAprilTag;
-import frc.robot.autos.Auto;
-import frc.robot.autos.VisionNavPID;
-import frc.robot.commands.*;
-import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.IntakeOuttake;
-import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.VisionAprilTag;
-//import frc.robot.subsystems.SysId;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.commands.SwerveJoystickDefaultCmd;
+import frc.robot.subsystems.*;
 import frc.robot.util.Buttons;
 
 public class RobotContainer {
-    
+
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 
     //private final AlgaeArm algaeArm = new AlgaeArm();
@@ -52,7 +34,7 @@ public class RobotContainer {
 
     private final VisionSubsystem limeLightForwards = new VisionSubsystem(LimelightConstants.llFront);
 
-   // public final SysId sysIdSubsystem = new SysId();
+    // public final SysId sysIdSubsystem = new SysId();
     private final VisionSubsystem limeLightBackwards = new VisionSubsystem(LimelightConstants.llBack);
 
     private final Field2d field;
@@ -90,12 +72,12 @@ public class RobotContainer {
         Command L4CMD = new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem);
         Command L3CMD = new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem);
         Command L2CMD = new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem);
-        Command L1CMD =  new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem);
+        Command L1CMD = new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem);
         Command LoadStation = new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem);
 
         //INIT after registering named commands
         //maybe wait until commands instead of separate classes?
-        NamedCommands.registerCommand("L4CORAL",  new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
+        NamedCommands.registerCommand("L4CORAL", new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("L3CORAL", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("L2CORAL", new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("L1CORAL", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
@@ -103,19 +85,19 @@ public class RobotContainer {
         NamedCommands.registerCommand("Boost", new InstantCommand(() -> elevatorSubsystem.boost(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("L4", new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(new WaitCommand(2.0)));
         NamedCommands.registerCommand("L3", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.7)));
-        NamedCommands.registerCommand("L2",new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.4)));
+        NamedCommands.registerCommand("L2", new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.4)));
         NamedCommands.registerCommand("L1", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.1)));
         NamedCommands.registerCommand("Load", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem).andThen(new WaitCommand(0.9)));
         //Tune intake/outtake time for 3 corals, intake 1 second and outtake 0.5 seconds
         NamedCommands.registerCommand("Intake", new WaitCommand(1.5));
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
-                                                    .andThen(new WaitCommand(1))
-                                                    .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
+                .andThen(new WaitCommand(1))
+                .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
         NamedCommands.registerCommand("MoveElevator", new InstantCommand());
 
         // autos (either PathPlanner or Auto with Vision) (cannot have both enabled, need to keep 1 commented out)
         // remove this comment below for pathplanner auto
-        autoChooser = AutoBuilder.buildAutoChooser("Straight Auto"); 
+        autoChooser = AutoBuilder.buildAutoChooser("Straight Auto");
         // remove all the autochooser comments below for Auto with Vision auto
         //autoChooser = new SendableChooser<>();
         //autoChooser.addOption("A*", new Auto(swerveSubsystem, limeLightForwards, limeLightBackwards, new ArrayList<>(List.of("[1A]", "[6B]", "[5A]", "[5B]")), Positions.START_A));
@@ -133,21 +115,21 @@ public class RobotContainer {
         //new POVButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> elevatorSubsystem.increaseCurrentLevel(), elevatorSubsystem));
         //new POVButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> elevatorSubsystem.decreaseCurrentLevel(), elevatorSubsystem));
         //new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> algaeArm.triggerAlgaeArm(), algaeArm));
-        new JoystickButton(gunner, Buttons.Y).onTrue( new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.B).onTrue( new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.A).onTrue( new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.X).onTrue( new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.Y).onTrue(new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
-        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)); 
+        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake));
         //new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
 
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("Boost")).andThen(NamedCommands.getCommand("LoadStation")));
 
 
-        new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("L1CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
-        new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
-        new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("L3CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
+        new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("L1CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
+        new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
+        new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("L3CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         //new POVButton(gunner, Buttons.POV_LEFT).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
 
         //Driver controlls 
@@ -163,29 +145,29 @@ public class RobotContainer {
         //Add PID based alligning, if pathplanner is inaccurate
         //new NavPID(swerveSubsystem, limeLightForwards, true);
         new JoystickButton(driver, Buttons.X).onTrue(
-            new InstantCommand(() -> {
-                Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
-                swerveSubsystem.autonavigator.enable();
-                swerveSubsystem.autonavigator.navigateTo(target);
-            })
+                new InstantCommand(() -> {
+                    Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
+                    swerveSubsystem.autonavigator.enable();
+                    swerveSubsystem.autonavigator.navigateTo(target);
+                })
         );
-        
 
-        // new JoystickButton(driver, Buttons.Y).onTrue(
-        //     new InstantCommand(() -> {
-        //         Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
-        //         swerveSubsystem.autonavigator.enable();
-        //         swerveSubsystem.autonavigator.navigateToWithElevator(target);
-        //     })
-        // );
 
-        // new JoystickButton(driver, Buttons.A).onTrue(
-        //     new InstantCommand(() -> {
-        //         Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
-        //         swerveSubsystem.autonavigator.enable();
-        //         swerveSubsystem.autonavigator.navigateToWithElevator(target);
-        //     })
-        // );
+         new JoystickButton(driver, Buttons.Y).onTrue(
+             new InstantCommand(() -> {
+                 Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
+                 swerveSubsystem.autonavigator.enable();
+                 swerveSubsystem.autonavigator.navigateToWithElevator(target);
+             })
+         );
+
+         new JoystickButton(driver, Buttons.A).onTrue(
+             new InstantCommand(() -> {
+                 Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
+                 swerveSubsystem.autonavigator.enable();
+                 swerveSubsystem.autonavigator.navigateToWithElevator(target);
+             })
+         );
 
 
         // //last alligning resort
@@ -200,11 +182,11 @@ public class RobotContainer {
         // );
 
         new JoystickButton(driver, Buttons.B).onTrue(
-            new InstantCommand(() -> {
-                Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
-                swerveSubsystem.autonavigator.enable();
-                swerveSubsystem.autonavigator.navigateTo(target);
-            })
+                new InstantCommand(() -> {
+                    Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
+                    swerveSubsystem.autonavigator.enable();
+                    swerveSubsystem.autonavigator.navigateTo(target);
+                })
         );
 
         // new JoystickButton(driver, Buttons.Y).onTrue(
@@ -247,9 +229,7 @@ public class RobotContainer {
         //     })
         // );
 
-        
-                                
-        
+
         new POVButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> VisionAprilTag.offsetRight(Constants.LimelightConstants.llFront)));
         new POVButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> VisionAprilTag.offsetLeft(Constants.LimelightConstants.llFront)));
         new POVButton(driver, Buttons.POV_UP).onTrue(new InstantCommand(() -> VisionAprilTag.offsetCenter(Constants.LimelightConstants.llFront)));
@@ -261,7 +241,7 @@ public class RobotContainer {
         //     })
         // );
         new POVButton(driver, Buttons.POV_DOWN).onTrue(new InstantCommand(()
-                     -> swerveSubsystem.resetOdometry (new Pose2d(  swerveSubsystem.getPose().getX(), swerveSubsystem.getPose().getY(), limeLightForwards.getFakeAngle()))));
+                -> swerveSubsystem.resetOdometry(new Pose2d(swerveSubsystem.getPose().getX(), swerveSubsystem.getPose().getY(), limeLightForwards.getFakeAngle()))));
 
         // new POVButton(driver, Buttons.POV_DOWN).onTrue(
         //     new InstantCommand(() -> {
@@ -273,7 +253,7 @@ public class RobotContainer {
 
         //new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_MID_REEF)));
         //new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));
-    
+
         //new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_RIGHT_REEF)));
         //new JoystickButton(driver, Buttons.B).onTrue(swerveSubsystem.pathFindThenFollowPath("[A1] [6A]"));
         //This can work
@@ -285,22 +265,21 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.B).onTrue(elevatorSysID.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
         */
 
-        
+
         //new POVButton(driver, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_RIGHT_REEF)));
         //new POVButton(driver, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_LEFT_REEF)));
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
-        
 
         swerveSubsystem.setDefaultCommand(new SwerveJoystickDefaultCmd(swerveSubsystem, driver));
 
-        
+
         //intakeoutake.setDefaultCommand(new IntakeOuttakeCommand(intakeoutake, gunner));
     }
 
     public Command getAutonomousCommand() {
-      //return new AlternativePathfindAprilTag(1, swerveSubsystem, limeLightForwards, "");
-       return autoChooser.getSelected();
-    
+        //return new AlternativePathfindAprilTag(1, swerveSubsystem, limeLightForwards, "");
+        return autoChooser.getSelected();
+
     }
 }

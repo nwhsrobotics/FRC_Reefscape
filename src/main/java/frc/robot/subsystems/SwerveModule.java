@@ -2,13 +2,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkFlexConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -16,7 +13,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.util.ImprovedCanSpark;
-import frc.robot.util.ImprovedCanSparkFlex;
 
 /**
  * Represents a swerve module with independent drive and turning motors.
@@ -67,8 +63,7 @@ public class SwerveModule {
         absoluteEncoder = new CANcoder(absoluteEncoderId);
 
         // Initialize the drive and turning motors using the given ids
-        
-        
+
 
         // Set the inversion of the drive and turning motors based on the given values
 
@@ -83,7 +78,7 @@ public class SwerveModule {
         driveMotorConfig.encoder.velocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
         driveMotor = new ImprovedCanSpark(driveMotorId, ImprovedCanSpark.MotorKind.NEO, driveMotorConfig, IdleMode.kBrake);
         //driveMotor.configure(driveMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-        
+
         //2025 robot
         //turningMotorConfig = new SparkFlexConfig();
         //turningMotor = new ImprovedCanSparkFlex(turningMotorId, ImprovedCanSparkFlex.MotorKind.NEO, turningMotorConfig, IdleMode.kBrake);
@@ -102,7 +97,7 @@ public class SwerveModule {
 
         // Set the position of the turning encoder based on the absolute encoder value
         turningEncoder.setPosition(getAbsoluteEncoderRad());
-        
+
         // Set the conversion factors for the drive and turning encoders
 
 

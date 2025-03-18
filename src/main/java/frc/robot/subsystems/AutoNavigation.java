@@ -1,14 +1,11 @@
 package frc.robot.subsystems;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-
 import org.littletonrobotics.junction.Logger;
-
-import com.pathplanner.lib.auto.NamedCommands;
 
 /**
  * Helper class for autonavigation.
@@ -143,23 +140,24 @@ public class AutoNavigation {
         if (!enabled || !RobotState.isTeleop()) {
             return new InstantCommand();
         }
-    
+
         if (navigationCommand != null && navigationCommand.isScheduled()) {
             navigationCommand.cancel();
         }
-    
+
+
         navigationCommand =
-            swerve.pathOnTheFlyToPosition(destination)
-                .alongWith(NamedCommands.getCommand("L4CORAL"))
-                .andThen(new WaitCommand(1))
-                .andThen(NamedCommands.getCommand("Outtake"))
-                .andThen(NamedCommands.getCommand("LoadStation"));
-    
+                swerve.pathOnTheFlyToPosition(destination)
+                        .alongWith(NamedCommands.getCommand("L4CORAL"))
+//              .andThen(new WaitCommand(1))
+                        .andThen(NamedCommands.getCommand("Outtake"))
+                        .andThen(NamedCommands.getCommand("LoadStation"));
+
         navigationCommand.addRequirements(swerve);
         navigationCommand.schedule();
-    
+
         return navigationCommand;
     }
-    
+
 
 }

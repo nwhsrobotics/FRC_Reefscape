@@ -2,17 +2,12 @@ package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.IdealStartingState;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.Waypoint;
+import com.pathplanner.lib.path.*;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
-
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -24,14 +19,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.TimeUnit;
 import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.util.WPIUtilJNI;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -43,13 +33,12 @@ import frc.robot.Constants.LimelightConstants;
 import frc.robot.autos.PosePIDCommand;
 import frc.robot.util.LimelightHelpers;
 import frc.robot.util.SwerveUtils;
-
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Seconds;
+import org.littletonrobotics.junction.Logger;
 
 import java.util.List;
 
-import org.littletonrobotics.junction.Logger;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Seconds;
 
 /**
  * Represents the swerve drive subsystem, managing four swerve modules and handling overall robot control.
@@ -172,8 +161,8 @@ public class SwerveSubsystem extends SubsystemBase {
             //gyro.reset();
             Commands.waitUntil(() -> !gyro.isCalibrating()).andThen(new InstantCommand(() -> gyro.zeroYaw()));
             setpointGenerator = new SwerveSetpointGenerator(
-                config, // The robot configuration. This is the same config used for generating trajectories and running path following commands.
-                Units.rotationsToRadians(10.0) // The max rotation velocity of a swerve module in radians per second. This should probably be stored in your Constants file
+                    config, // The robot configuration. This is the same config used for generating trajectories and running path following commands.
+                    Units.rotationsToRadians(10.0) // The max rotation velocity of a swerve module in radians per second. This should probably be stored in your Constants file
             );
             // Initialize the previous setpoint to the robot's current speeds & module states
             ChassisSpeeds currentSpeeds = getSpeeds(); // Method to get current robot-relative chassis speeds
@@ -236,7 +225,7 @@ public class SwerveSubsystem extends SubsystemBase {
         //     0.02 // The loop time of the robot code, in seconds
         // );
         // setModuleStates(previousSetpoint.moduleStates()); // Method that will drive the robot given target module states
-        
+
         // earlier code
         ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
         SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
@@ -377,15 +366,13 @@ public class SwerveSubsystem extends SubsystemBase {
     public Command pathfindToPosition(Pose2d position) {
         //Maybe use on the fly path? Less overhead
         Command command = AutoBuilder.pathfindToPose(
-                position,
-                AutoConstants.kPathfindingConstraints,
-                0.0 // Goal end velocity in meters/sec
-        ).andThen(PosePIDCommand.create(this, position, Seconds.of(1)));;
+                        position,
+                        AutoConstants.kPathfindingConstraints,
+                        0.0 // Goal end velocity in meters/sec
+                ).andThen(PosePIDCommand.create(this, position, Seconds.of(1)))
+                .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
+                .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
         //.andThen(pathOnTheFlyToPosition(position));
-        //Fix autonav (probably dont need addrequirements)
-        //command.addRequirements(this);
-        //and also don't need to schedule here? maybe schedule in autonav
-        //command.schedule();
 
         return command;
     }
@@ -393,37 +380,41 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public Command pathOnTheFlyToPosition(Pose2d targetPose) {
         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-            new Pose2d(getPose().getTranslation(), getPathVelocityHeading(getSpeeds(), targetPose)),
-            targetPose
+                new Pose2d(getPose().getTranslation(), getPathVelocityHeading(getSpeeds(), targetPose)),
+                targetPose
         );
 
         //getPathVelocityHeading(getSpeeds(), targetPose)
         PathPlannerPath path = new PathPlannerPath(
-            waypoints,
-            AutoConstants.kPathfindingConstraints,
-            new IdealStartingState(getVelocityMagnitude(getSpeeds()), getPose().getRotation()),
-            new GoalEndState(
-                0.0,                    
-                targetPose.getRotation()  
-            )
+                waypoints,
+                AutoConstants.kPathfindingConstraints,
+                new IdealStartingState(getVelocityMagnitude(getSpeeds()), getPose().getRotation()),
+                new GoalEndState(
+                        0.0,
+                        targetPose.getRotation()
+                )
         );
 
         path.preventFlipping = true;
 
-        Command followPathCommand = AutoBuilder.followPath(path).andThen(PosePIDCommand.create(this, targetPose, Seconds.of(1)));
+        //TODO: Reduce PosePIDCommand time to 0.2s
+        Command followPathCommand = AutoBuilder.followPath(path)
+                .andThen(PosePIDCommand.create(this, targetPose, Seconds.of(1)))
+                .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
+                .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
 
         return followPathCommand;
     }
 
-    public Rotation2d getPathVelocityHeading(ChassisSpeeds cs, Pose2d target){
-    if (getVelocityMagnitude(cs).in(MetersPerSecond) < 0.25) {
-        var diff = target.minus(getPose()).getTranslation();
-        return (diff.getNorm() < 0.01) ? target.getRotation() : diff.getAngle();
-    }
-    return new Rotation2d(cs.vxMetersPerSecond, cs.vyMetersPerSecond);
+    public Rotation2d getPathVelocityHeading(ChassisSpeeds cs, Pose2d target) {
+        if (getVelocityMagnitude(cs).in(MetersPerSecond) < 0.25) {
+            var diff = target.minus(getPose()).getTranslation();
+            return (diff.getNorm() < 0.01) ? target.getRotation() : diff.getAngle();
+        }
+        return new Rotation2d(cs.vxMetersPerSecond, cs.vyMetersPerSecond);
     }
 
-    public LinearVelocity getVelocityMagnitude(ChassisSpeeds cs){
+    public LinearVelocity getVelocityMagnitude(ChassisSpeeds cs) {
         return MetersPerSecond.of(new Translation2d(cs.vxMetersPerSecond, cs.vyMetersPerSecond).getNorm());
     }
 
@@ -434,7 +425,6 @@ public class SwerveSubsystem extends SubsystemBase {
         updateOdometry();
 
 
-        
         // Log position of robot.
         Logger.recordOutput("swerve.pose", getPose());
 
@@ -464,27 +454,27 @@ public class SwerveSubsystem extends SubsystemBase {
         Logger.recordOutput("swerve.drive.back.right.velocity", backRight.getDriveVelocity());
 
         // Below code is just to test elastic dashboard custom widget
-    //    SmartDashboard.putData("Swerve Drive", new Sendable() {
-    //         @Override
-    //         public void initSendable(SendableBuilder builder) {
-    //             builder.setSmartDashboardType("SwerveDrive");
+        //    SmartDashboard.putData("Swerve Drive", new Sendable() {
+        //         @Override
+        //         public void initSendable(SendableBuilder builder) {
+        //             builder.setSmartDashboardType("SwerveDrive");
 
-    //             builder.addDoubleProperty("Front Left Angle", () -> frontLeft.getTurningPosition(), null);
-    //             builder.addDoubleProperty("Front Left Velocity", () -> frontLeft.getDriveVelocity(), null);
+        //             builder.addDoubleProperty("Front Left Angle", () -> frontLeft.getTurningPosition(), null);
+        //             builder.addDoubleProperty("Front Left Velocity", () -> frontLeft.getDriveVelocity(), null);
 
-    //             builder.addDoubleProperty("Front Right Angle", () -> frontRight.getTurningPosition(), null);
-    //             builder.addDoubleProperty("Front Right Velocity", () -> frontRight.getDriveVelocity(), null);
+        //             builder.addDoubleProperty("Front Right Angle", () -> frontRight.getTurningPosition(), null);
+        //             builder.addDoubleProperty("Front Right Velocity", () -> frontRight.getDriveVelocity(), null);
 
-    //             builder.addDoubleProperty("Back Left Angle", () -> backLeft.getTurningPosition(), null);
-    //             builder.addDoubleProperty("Back Left Velocity", () -> backLeft.getDriveVelocity(), null);
+        //             builder.addDoubleProperty("Back Left Angle", () -> backLeft.getTurningPosition(), null);
+        //             builder.addDoubleProperty("Back Left Velocity", () -> backLeft.getDriveVelocity(), null);
 
-    //             builder.addDoubleProperty("Back Right Angle", () -> backRight.getTurningPosition(), null);
-    //             builder.addDoubleProperty("Back Right Velocity", () -> backRight.getDriveVelocity(), null);
+        //             builder.addDoubleProperty("Back Right Angle", () -> backRight.getTurningPosition(), null);
+        //             builder.addDoubleProperty("Back Right Velocity", () -> backRight.getDriveVelocity(), null);
 
-    //             builder.addDoubleProperty("Robot Angle", () -> gyro.getAngle(), null);
-    //         }
-    //         });
-        
+        //             builder.addDoubleProperty("Robot Angle", () -> gyro.getAngle(), null);
+        //         }
+        //         });
+
     }
 
     /**
@@ -528,106 +518,106 @@ public class SwerveSubsystem extends SubsystemBase {
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
         try {
-        if (VisionAprilTag.isAprilTagPipeline(LimelightConstants.llFront)) {
+            if (VisionAprilTag.isAprilTagPipeline(LimelightConstants.llFront)) {
 
-            boolean useMegaTag2 = true; //set to false to use MegaTag1
-            // we might use megatag1 when disabled to auto orient and megatag2 when enable
-            // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78 
-            boolean doRejectUpdate = false;
-            if (!useMegaTag2) {
-                LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llFront);
+                boolean useMegaTag2 = true; //set to false to use MegaTag1
+                // we might use megatag1 when disabled to auto orient and megatag2 when enable
+                // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78
+                boolean doRejectUpdate = false;
+                if (!useMegaTag2) {
+                    LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llFront);
 
-                if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
-                    if (mt1.rawFiducials[0].ambiguity > .7) {
+                    if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
+                        if (mt1.rawFiducials[0].ambiguity > .7) {
+                            doRejectUpdate = true;
+                        }
+                        if (mt1.rawFiducials[0].distToCamera > 3) {
+                            doRejectUpdate = true;
+                        }
+                    }
+                    if (mt1.tagCount == 0) {
                         doRejectUpdate = true;
                     }
-                    if (mt1.rawFiducials[0].distToCamera > 3) {
+
+                    if (!doRejectUpdate) {
+                        odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
+                        odometer.addVisionMeasurement(
+                                mt1.pose,
+                                mt1.timestampSeconds);
+                    }
+                } else if (useMegaTag2) {
+                    LimelightHelpers.SetRobotOrientation(LimelightConstants.llFront, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+                    LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.llFront);
+                    if (Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+                    {
                         doRejectUpdate = true;
                     }
-                }
-                if (mt1.tagCount == 0) {
-                    doRejectUpdate = true;
-                }
-
-                if (!doRejectUpdate) {
-                    odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
-                    odometer.addVisionMeasurement(
-                            mt1.pose,
-                            mt1.timestampSeconds);
-                }
-            } else if (useMegaTag2) {
-                LimelightHelpers.SetRobotOrientation(LimelightConstants.llFront, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-                LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.llFront);
-                if (Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
-                {
-                    doRejectUpdate = true;
-                }
-                if (mt2.tagCount == 0) {
-                    doRejectUpdate = true;
-                }
-                if (!doRejectUpdate) {
-                    odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.05, .05, 9999999));
-                    odometer.addVisionMeasurement(
-                            mt2.pose,
-                            mt2.timestampSeconds);
+                    if (mt2.tagCount == 0) {
+                        doRejectUpdate = true;
+                    }
+                    if (!doRejectUpdate) {
+                        odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.05, .05, 9999999));
+                        odometer.addVisionMeasurement(
+                                mt2.pose,
+                                mt2.timestampSeconds);
+                    }
                 }
             }
-        }
 
-        if (VisionAprilTag.isAprilTagPipeline(LimelightConstants.llBack)) {
+            if (VisionAprilTag.isAprilTagPipeline(LimelightConstants.llBack)) {
 
-            boolean useMegaTag2 = true; //set to false to use MegaTag1
-            // we might use megatag1 when disabled to auto orient and megatag2 when enable
-            // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78 
-            boolean doRejectUpdate = false;
-            if (!useMegaTag2) {
-                LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llBack);
+                boolean useMegaTag2 = true; //set to false to use MegaTag1
+                // we might use megatag1 when disabled to auto orient and megatag2 when enable
+                // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78
+                boolean doRejectUpdate = false;
+                if (!useMegaTag2) {
+                    LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llBack);
 
-                if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
-                    if (mt1.rawFiducials[0].ambiguity > .7) {
+                    if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
+                        if (mt1.rawFiducials[0].ambiguity > .7) {
+                            doRejectUpdate = true;
+                        }
+                        if (mt1.rawFiducials[0].distToCamera > 3) {
+                            doRejectUpdate = true;
+                        }
+                    }
+                    if (mt1.tagCount == 0) {
                         doRejectUpdate = true;
                     }
-                    if (mt1.rawFiducials[0].distToCamera > 3) {
+
+                    if (!doRejectUpdate) {
+                        odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
+                        odometer.addVisionMeasurement(
+                                mt1.pose,
+                                mt1.timestampSeconds);
+                    }
+                } else if (useMegaTag2) {
+                    LimelightHelpers.SetRobotOrientation(LimelightConstants.llBack, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+                    LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.llBack);
+                    if (Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+                    {
                         doRejectUpdate = true;
                     }
-                }
-                if (mt1.tagCount == 0) {
-                    doRejectUpdate = true;
-                }
-
-                if (!doRejectUpdate) {
-                    odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
-                    odometer.addVisionMeasurement(
-                            mt1.pose,
-                            mt1.timestampSeconds);
-                }
-            } else if (useMegaTag2) {
-                LimelightHelpers.SetRobotOrientation(LimelightConstants.llBack, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-                LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.llBack);
-                if (Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
-                {
-                    doRejectUpdate = true;
-                }
-                if (mt2.tagCount == 0) {
-                    doRejectUpdate = true;
-                }
-                if (!doRejectUpdate) {
-                    odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.2, .2, 9999999));
-                    odometer.addVisionMeasurement(
-                            mt2.pose,
-                            mt2.timestampSeconds);
+                    if (mt2.tagCount == 0) {
+                        doRejectUpdate = true;
+                    }
+                    if (!doRejectUpdate) {
+                        odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.2, .2, 9999999));
+                        odometer.addVisionMeasurement(
+                                mt2.pose,
+                                mt2.timestampSeconds);
+                    }
                 }
             }
+
+            Logger.recordOutput("swerve.odometer", odometer.getEstimatedPosition());
+            Logger.recordOutput("swerve.odometer.xCoordinate", odometer.getEstimatedPosition().getX());
+            Logger.recordOutput("swerve.odometer.yCoordinate", odometer.getEstimatedPosition().getY());
+            Logger.recordOutput("swerve.odometer.rotation", odometer.getEstimatedPosition().getRotation().getDegrees());
+        } catch (Exception io) {
+
         }
 
-        Logger.recordOutput("swerve.odometer", odometer.getEstimatedPosition());
-        Logger.recordOutput("swerve.odometer.xCoordinate", odometer.getEstimatedPosition().getX());
-        Logger.recordOutput("swerve.odometer.yCoordinate", odometer.getEstimatedPosition().getY());
-        Logger.recordOutput("swerve.odometer.rotation", odometer.getEstimatedPosition().getRotation().getDegrees());
-    } catch (Exception io){
-        
-    }
-            
     }
 
     /**
