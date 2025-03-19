@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -318,10 +319,10 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
 
-    public String getCurrentAllingment(Pose2d pose){
+    public String getCurrentAllingment(Pose2d swervePose){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         if (llf != null) {
-            int aprilTag = getCurrentDetectedAprilTag();
+            int aprilTag = getCurrentDetectedAprilTag(swervePose);
             TagOffset offset = AprilTagOffsets.getOffset(aprilTag);
             Pose2d aprilTagPose = getAprilTagPos(aprilTag);
             double distLeft = scootLeft(aprilTagPose, offset.right).getTranslation().getDistance(aprilTagPose.getTranslation());
@@ -335,34 +336,34 @@ public class VisionSubsystem extends SubsystemBase {
         return "";
     }
 
-    public double getOffsetY(Pose2d pose){
+    public double getOffsetY(Pose2d swervePose){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         if (llf != null) {
-            int aprilTag = getCurrentDetectedAprilTag();
+            int aprilTag = getCurrentDetectedAprilTag(swervePose);
             Pose2d aprilTagPose = getAprilTagPos(aprilTag);
-            Pose2d relativePose = pose.relativeTo(aprilTagPose);
+            Pose2d relativePose = swervePose.relativeTo(aprilTagPose);
             double yOffset = relativePose.getY();
             return Math.abs(yOffset);
         }
         return 0;
     }
 
-    public double getOffsetX(Pose2d pose){
+    public double getOffsetX(Pose2d swervePose){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         if (llf != null) {
-            int aprilTag = getCurrentDetectedAprilTag();
+            int aprilTag = getCurrentDetectedAprilTag(swervePose);
             Pose2d aprilTagPose = getAprilTagPos(aprilTag);
-            Pose2d relativePose = pose.relativeTo(aprilTagPose);
+            Pose2d relativePose = swervePose.relativeTo(aprilTagPose);
             double xOffset = relativePose.getX();
             return Math.abs(xOffset);
         }
         return 0;
     }
 
-    public void correctTheOffset(double offsetDifY, double offsetDifX, boolean isRight){
+    public void correctTheOffset(double offsetDifY, double offsetDifX, boolean isRight, int id){
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         if (llf != null) {
-            int aprilTag = getCurrentDetectedAprilTag();
+            int aprilTag = getCurrentDetectedAprilTag(getAprilTagPos(id));
             TagOffset offset = AprilTagOffsets.getOffset(aprilTag);
             if (isRight){
                 if (Math.abs(offsetDifY) > 0.014){
@@ -397,23 +398,30 @@ public class VisionSubsystem extends SubsystemBase {
 
         // return swervePos.nearest(AprilTags.aprilTags);
     }
+    
 
-    public Rotation2d getFakeAngle() {
+    public int getNearestAprilTag(Pose2d swervePose){
+        Pose2d nearest = swervePose.nearest(AprilTags.aprilTags);
+        int id = AprilTags.aprilTags.indexOf(nearest)+1;
+        return id;
+    }
+
+    public Rotation2d getFakeAngle(Pose2d swervePos) {
         LimelightResults llf = VisionAprilTag.isValid(limelightName);
         if (llf != null) {
             int aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
             return getAprilTagPos(aprilTagId).getRotation();
         }
-        return Rotation2d.fromDegrees(1);
+        return getNearestReef(swervePos).getRotation();
     }
 
     
-    public int getCurrentDetectedAprilTag() {
+    public int getCurrentDetectedAprilTag(Pose2d swervePos) {
         LimelightResults llf = VisionAprilTag.isValid(limelightName);
         if (llf != null) {
             int aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
             return aprilTagId;
         }
-        return -1;
+        return getNearestAprilTag(swervePos);
     }
 }

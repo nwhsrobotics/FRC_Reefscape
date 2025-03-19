@@ -134,6 +134,7 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("Boost")).andThen(NamedCommands.getCommand("LoadStation")));
 
 
+        //TODO: Add feedforward to elevator for higher accel, reduce allowed error
         new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("L1CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("L3CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
@@ -152,7 +153,7 @@ public class RobotContainer {
 
         //Add PID based alligning, if pathplanner is inaccurate
         //new NavPID(swerveSubsystem, limeLightForwards, true);
-        //TODO: Invert controls, left/right reef
+        //Invert controls, left/right reef
         new JoystickButton(driver, Buttons.X).onTrue(
                 new InstantCommand(() -> {
                     Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
@@ -254,7 +255,7 @@ public class RobotContainer {
         //     })
         // );
         new POVButton(driver, Buttons.POV_DOWN).onTrue(new InstantCommand(()
-                -> swerveSubsystem.resetOdometry(new Pose2d(swerveSubsystem.getPose().getX(), swerveSubsystem.getPose().getY(), limeLightForwards.getFakeAngle()))));
+                -> swerveSubsystem.resetOdometry(new Pose2d(swerveSubsystem.getPose().getX(), swerveSubsystem.getPose().getY(), limeLightForwards.getFakeAngle(swerveSubsystem.getPose())))));
 
         // new POVButton(driver, Buttons.POV_DOWN).onTrue(
         //     new InstantCommand(() -> {
@@ -298,7 +299,7 @@ public class RobotContainer {
 
     public void recordAttempt() {
         Pose2d currentPose = swerveSubsystem.getPose();
-        int currentTagId = limeLightForwards.getCurrentDetectedAprilTag();
+        int currentTagId = limeLightForwards.getCurrentDetectedAprilTag(currentPose);
         String alignmentDir = limeLightForwards.getCurrentAllingment(currentPose);
         double offsetY = limeLightForwards.getOffsetY(currentPose);
         double offsetX = limeLightForwards.getOffsetX(currentPose);
@@ -311,6 +312,7 @@ public class RobotContainer {
 
         Logger.recordOutput("attempt." + scoresAttempted + ".swerve", currentPose);
         Logger.recordOutput("attempt." + scoresAttempted + ".aprilTag", currentTagId);
+        SmartDashboard.putNumber("attempt." + scoresAttempted + ".aprilTag", currentTagId);
         Logger.recordOutput("attempt." + scoresAttempted + ".alignmentDirection", alignmentDir);
         Logger.recordOutput("attempt." + scoresAttempted + ".offsetYRelative", offsetY);
         Logger.recordOutput("attempt." + scoresAttempted + ".offsetXRelative", offsetX);
@@ -341,8 +343,9 @@ public class RobotContainer {
         double diffY = SmartDashboard.getNumber("attempt." + attemptIndex + ".offsetYRelativeDifference", 0.0);
         double diffX = SmartDashboard.getNumber("attempt." + attemptIndex + ".offsetXRelativeDifference", 0.0);
         boolean wasRight = SmartDashboard.getBoolean("attempt." + attemptIndex + ".isAllignRight", false);
+        int tagID = (int) SmartDashboard.getNumber("attempt." + attemptIndex + ".aprilTag", -1);
 
-        limeLightForwards.correctTheOffset(diffY, diffX, wasRight);
+        limeLightForwards.correctTheOffset(diffY, diffX, wasRight, tagID);
     }
     
 }

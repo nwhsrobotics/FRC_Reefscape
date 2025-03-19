@@ -276,7 +276,7 @@ public class VisionAprilTag {
             // experimental distance adaptive stabilizer (make it greater than linear if needed) 
             int idealDist = 2;
             double distance = results.targets_Fiducials[0].getRobotPose_TargetSpace2D().getTranslation().getNorm();
-            holdDuration = Math.max((distance / idealDist) * 100, 20);
+            holdDuration = Math.max((distance / idealDist) * 100, 50);
         } else {
             long time = now - timeDetected;
             if (time < holdDuration) {
