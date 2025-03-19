@@ -366,6 +366,42 @@ public final class Constants {
 
     }
 
+    public static class TagOffset {
+        public double left;
+        public double right;
+        public double back;
+    
+        public TagOffset(double left, double right, double back) {
+            this.left = left;
+            this.right = right;
+            this.back = back;
+        }
+    }
+    
+
+    public static final class AprilTagOffsets {
+        private static final double DEFAULT_LEFT_OFFSET  = 0.1651;
+        private static final double DEFAULT_RIGHT_OFFSET = 0.1651;
+        private static final double DEFAULT_BACK_OFFSET  = 0.4445;
+    
+        public static final Map<Integer, TagOffset> tagOffsets = new HashMap<>();
+    
+        static {
+            for(int tagID = 1; tagID <= 22; tagID++){
+                tagOffsets.put(
+                    tagID,
+                    new TagOffset(DEFAULT_LEFT_OFFSET, DEFAULT_RIGHT_OFFSET, DEFAULT_BACK_OFFSET)
+                );
+            }
+            //tagOffsets.get(10).left += 0.01;
+        }
+    
+        public static TagOffset getOffset(int tagID){
+            return tagOffsets.getOrDefault(tagID, new TagOffset(0.1651,0.1651,0.46));
+        }
+    }
+    
+
 
     public enum RuntimeEnvironment {
         /**

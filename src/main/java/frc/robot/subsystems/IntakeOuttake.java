@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeOuttake extends SubsystemBase {
     private final Servo servoMoter; //Initiative variable for Servo object
-    private boolean isIntakeOpen;
+    public boolean isIntakeOpen;
 
 
     public IntakeOuttake() {

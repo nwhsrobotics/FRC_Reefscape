@@ -1,6 +1,8 @@
 package frc.robot;
 
 
+import org.littletonrobotics.junction.Logger;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -15,7 +17,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Constants.AprilTagOffsets;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.TagOffset;
+import frc.robot.autos.PosePIDCommand;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
 import frc.robot.subsystems.*;
 import frc.robot.util.Buttons;
@@ -23,6 +28,7 @@ import frc.robot.util.Buttons;
 public class RobotContainer {
 
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+    public int scoresAttempted = 0;
 
     //private final AlgaeArm algaeArm = new AlgaeArm();
 
@@ -32,10 +38,10 @@ public class RobotContainer {
 
     //public final ElevatorSysID elevatorSysID = new ElevatorSysID();
 
-    private final VisionSubsystem limeLightForwards = new VisionSubsystem(LimelightConstants.llFront);
+    public final VisionSubsystem limeLightForwards = new VisionSubsystem(LimelightConstants.llFront);
 
     // public final SysId sysIdSubsystem = new SysId();
-    private final VisionSubsystem limeLightBackwards = new VisionSubsystem(LimelightConstants.llBack);
+    public final VisionSubsystem limeLightBackwards = new VisionSubsystem(LimelightConstants.llBack);
 
     private final Field2d field;
 
@@ -91,6 +97,7 @@ public class RobotContainer {
         //Tune intake/outtake time for 3 corals, intake 1 second and outtake 0.5 seconds
         NamedCommands.registerCommand("Intake", new WaitCommand(1.5));
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
+                .andThen(new InstantCommand(() -> recordAttempt()))
                 .andThen(new WaitCommand(1))
                 .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
         NamedCommands.registerCommand("MoveElevator", new InstantCommand());
@@ -120,7 +127,7 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
+        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(((new InstantCommand(() -> recordAttempt()).onlyIf((() -> !intakeoutake.isIntakeOpen)))).andThen(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake));
         //new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
 
@@ -131,6 +138,7 @@ public class RobotContainer {
         new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("L3CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         //new POVButton(gunner, Buttons.POV_LEFT).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
+        new JoystickButton(gunner, Buttons.MENU).onTrue(new InstantCommand(() -> successfulAttempt()));
 
         //Driver controlls 
         // https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
@@ -144,6 +152,7 @@ public class RobotContainer {
 
         //Add PID based alligning, if pathplanner is inaccurate
         //new NavPID(swerveSubsystem, limeLightForwards, true);
+        //TODO: Invert controls, left/right reef
         new JoystickButton(driver, Buttons.X).onTrue(
                 new InstantCommand(() -> {
                     Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
@@ -161,13 +170,17 @@ public class RobotContainer {
              })
          );
 
+        //  new JoystickButton(driver, Buttons.A).onTrue(
+        //      new InstantCommand(() -> {
+        //          Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
+        //          swerveSubsystem.autonavigator.enable();
+        //          swerveSubsystem.autonavigator.navigateToWithElevator(target);
+        //      })
+        //  );
+
          new JoystickButton(driver, Buttons.A).onTrue(
-             new InstantCommand(() -> {
-                 Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
-                 swerveSubsystem.autonavigator.enable();
-                 swerveSubsystem.autonavigator.navigateToWithElevator(target);
-             })
-         );
+            new PosePIDCommand(swerveSubsystem, limeLightForwards.rightReef(swerveSubsystem.getPose())
+        ));
 
 
         // //last alligning resort
@@ -282,4 +295,54 @@ public class RobotContainer {
         return autoChooser.getSelected();
 
     }
+
+    public void recordAttempt() {
+        Pose2d currentPose = swerveSubsystem.getPose();
+        int currentTagId = limeLightForwards.getCurrentDetectedAprilTag();
+        String alignmentDir = limeLightForwards.getCurrentAllingment(currentPose);
+        double offsetY = limeLightForwards.getOffsetY(currentPose);
+        double offsetX = limeLightForwards.getOffsetX(currentPose);
+        boolean isRight = "RIGHT".equals(alignmentDir);
+        TagOffset offset = AprilTagOffsets.getOffset(currentTagId);
+        double offsetYDifference = isRight
+                ? (offset.right - offsetY)
+                : (offset.left - offsetY);
+        double offsetXDifference = offset.back - offsetX;
+
+        Logger.recordOutput("attempt." + scoresAttempted + ".swerve", currentPose);
+        Logger.recordOutput("attempt." + scoresAttempted + ".aprilTag", currentTagId);
+        Logger.recordOutput("attempt." + scoresAttempted + ".alignmentDirection", alignmentDir);
+        Logger.recordOutput("attempt." + scoresAttempted + ".offsetYRelative", offsetY);
+        Logger.recordOutput("attempt." + scoresAttempted + ".offsetXRelative", offsetX);
+        Logger.recordOutput("attempt." + scoresAttempted + ".isAllignRight", isRight);
+        SmartDashboard.putBoolean("attempt." + scoresAttempted + ".isAllignRight", isRight);
+        Logger.recordOutput("attempt." + scoresAttempted + ".offsetYRelativeDifference", offsetYDifference);
+        Logger.recordOutput("attempt." + scoresAttempted + ".offsetXRelativeDifference", offsetXDifference);
+        SmartDashboard.putNumber("attempt." + scoresAttempted + ".offsetYRelativeDifference", offsetYDifference);
+        SmartDashboard.putNumber("attempt." + scoresAttempted + ".offsetXRelativeDifference", offsetXDifference);
+        Logger.recordOutput("attempt." + scoresAttempted + ".wasScored", false);
+
+        if (SmartDashboard.getNumber("at.ID." + currentTagId + ".Y", 0.0) == 0.0){
+            SmartDashboard.putNumber("at.ID" + currentTagId + ".Y", offsetY);
+            SmartDashboard.putNumber("at.ID" + currentTagId + ".X", offsetX);
+            SmartDashboard.putBoolean("at.ID" + currentTagId + ".isRight", isRight);
+            SmartDashboard.putNumber("at.ID." + currentTagId + ".YDiff", offsetYDifference);
+            SmartDashboard.putNumber("at.ID." + currentTagId + ".XDiff", offsetXDifference);
+        }
+
+        scoresAttempted++;
+    }
+    
+    public void successfulAttempt() {
+        int attemptIndex = scoresAttempted - 1;
+
+        Logger.recordOutput("attempt." + attemptIndex + ".wasScored", true);
+
+        double diffY = SmartDashboard.getNumber("attempt." + attemptIndex + ".offsetYRelativeDifference", 0.0);
+        double diffX = SmartDashboard.getNumber("attempt." + attemptIndex + ".offsetXRelativeDifference", 0.0);
+        boolean wasRight = SmartDashboard.getBoolean("attempt." + attemptIndex + ".isAllignRight", false);
+
+        limeLightForwards.correctTheOffset(diffY, diffX, wasRight);
+    }
+    
 }
