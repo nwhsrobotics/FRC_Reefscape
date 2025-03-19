@@ -369,9 +369,9 @@ public class SwerveSubsystem extends SubsystemBase {
                         position,
                         AutoConstants.kPathfindingConstraints,
                         0.0 // Goal end velocity in meters/sec
-                ).andThen(PosePIDCommand.create(this, position, Seconds.of(1)))
-                .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
-                .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
+                ).andThen(PosePIDCommand.create(this, position, Seconds.of(1)));
+                // .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
+                // .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
         //.andThen(pathOnTheFlyToPosition(position));
 
         return command;
@@ -399,9 +399,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
         //TODO: Reduce PosePIDCommand time to 0.2s
         Command followPathCommand = AutoBuilder.followPath(path)
-                .andThen(PosePIDCommand.create(this, targetPose, Seconds.of(1)))
-                .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
-                .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
+                .andThen(PosePIDCommand.create(this, targetPose, Seconds.of(1)));
+                // .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
+                // .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
 
         return followPathCommand;
     }
@@ -556,7 +556,7 @@ public class SwerveSubsystem extends SubsystemBase {
                         doRejectUpdate = true;
                     }
                     if (!doRejectUpdate) {
-                        odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.05, .05, 9999999));
+                        odometer.setVisionMeasurementStdDevs(VecBuilder.fill(.0, .0, 9999999));
                         odometer.addVisionMeasurement(
                                 mt2.pose,
                                 mt2.timestampSeconds);

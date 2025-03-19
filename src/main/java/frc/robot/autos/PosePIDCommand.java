@@ -24,7 +24,7 @@ public class PosePIDCommand extends Command {
     private final PPHolonomicDriveController driveController;
 
     private static final Rotation2d ROTATION_TOLERANCE = Rotation2d.fromDegrees(2.0);
-    private static final Distance POSITION_TOLERANCE = Centimeter.of(2.0);
+    private static final Distance POSITION_TOLERANCE = Centimeter.of(1.0);
     private static final LinearVelocity SPEED_TOLERANCE = InchesPerSecond.of(1);
     private static final Time TRIGGER_DEBOUNCE_DELAY = Seconds.of(0.05);
 
