@@ -319,45 +319,29 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
 
-    public String getCurrentAllingment(Pose2d swervePose){
-        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
-        if (llf != null) {
-            int aprilTag = getCurrentDetectedAprilTag(swervePose);
-            TagOffset offset = AprilTagOffsets.getOffset(aprilTag);
-            Pose2d aprilTagPose = getAprilTagPos(aprilTag);
-            double distLeft = scootLeft(aprilTagPose, offset.right).getTranslation().getDistance(aprilTagPose.getTranslation());
-            double distRight = scootRight(aprilTagPose, offset.left).getTranslation().getDistance(aprilTagPose.getTranslation());
-            if (distLeft < distRight){
-                return "RIGHT";
-            } else {
-                return "LEFT";
-            }
+    public String getCurrentAlignment(Pose2d swervePose) {
+        int aprilTag = getCurrentDetectedAprilTag(swervePose);
+        Pose2d aprilTagPose = getAprilTagPos(aprilTag);
+        Pose2d relativePose = swervePose.relativeTo(aprilTagPose);
+        if (relativePose.getTranslation().getY() > 0){
+            return "RIGHT";
         }
-        return "";
+        return "LEFT";
+    }
+    
+
+    public double getOffsetY(Pose2d swervePose) {
+        int aprilTag = getCurrentDetectedAprilTag(swervePose);
+        Pose2d aprilTagPose = getAprilTagPos(aprilTag);
+        Pose2d relativePose = swervePose.relativeTo(aprilTagPose);
+        return Math.abs(relativePose.getTranslation().getY());
     }
 
-    public double getOffsetY(Pose2d swervePose){
-        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
-        if (llf != null) {
-            int aprilTag = getCurrentDetectedAprilTag(swervePose);
-            Pose2d aprilTagPose = getAprilTagPos(aprilTag);
-            Pose2d relativePose = swervePose.relativeTo(aprilTagPose);
-            double yOffset = relativePose.getY();
-            return Math.abs(yOffset);
-        }
-        return 0;
-    }
-
-    public double getOffsetX(Pose2d swervePose){
-        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
-        if (llf != null) {
-            int aprilTag = getCurrentDetectedAprilTag(swervePose);
-            Pose2d aprilTagPose = getAprilTagPos(aprilTag);
-            Pose2d relativePose = swervePose.relativeTo(aprilTagPose);
-            double xOffset = relativePose.getX();
-            return Math.abs(xOffset);
-        }
-        return 0;
+    public double getOffsetX(Pose2d swervePose) {
+        int aprilTag = getCurrentDetectedAprilTag(swervePose);
+        Pose2d aprilTagPose = getAprilTagPos(aprilTag);
+        Pose2d relativePose = swervePose.relativeTo(aprilTagPose);
+        return Math.abs(relativePose.getTranslation().getX());
     }
 
     public void correctTheOffset(double offsetDifY, double offsetDifX, boolean isRight, int id){
@@ -365,16 +349,17 @@ public class VisionSubsystem extends SubsystemBase {
         if (llf != null) {
             int aprilTag = getCurrentDetectedAprilTag(getAprilTagPos(id));
             TagOffset offset = AprilTagOffsets.getOffset(aprilTag);
+            //TODO: tune the tolerance here
             if (isRight){
-                if (Math.abs(offsetDifY) > 0.014){
+                if (Math.abs(offsetDifY) > 0.025){
                     offset.right -= offsetDifY;
                 }
             } else {
-                if (Math.abs(offsetDifY) > 0.014){
+                if (Math.abs(offsetDifY) > 0.025){
                     offset.left -= offsetDifY;
                 }
             }
-            if (Math.abs(offsetDifX) > 0.02){
+            if (Math.abs(offsetDifX) > 0.05){
                 offset.back -= offsetDifX;
             }
         }

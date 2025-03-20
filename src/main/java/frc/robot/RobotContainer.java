@@ -28,7 +28,8 @@ import frc.robot.util.Buttons;
 public class RobotContainer {
 
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-    public int scoresAttempted = 0;
+    public int coralsAttempted = 0;
+    public int coralsScored = 0;
 
     //private final AlgaeArm algaeArm = new AlgaeArm();
 
@@ -134,7 +135,7 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("Boost")).andThen(NamedCommands.getCommand("LoadStation")));
 
 
-        //TODO: Add feedforward to elevator for higher accel, reduce allowed error
+        //Add feedforward to elevator for higher accel, reduce allowed error
         new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("L1CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("L3CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
@@ -300,52 +301,79 @@ public class RobotContainer {
     public void recordAttempt() {
         Pose2d currentPose = swerveSubsystem.getPose();
         int currentTagId = limeLightForwards.getCurrentDetectedAprilTag(currentPose);
-        String alignmentDir = limeLightForwards.getCurrentAllingment(currentPose);
+        String alignmentDir = limeLightForwards.getCurrentAlignment(currentPose);
         double offsetY = limeLightForwards.getOffsetY(currentPose);
         double offsetX = limeLightForwards.getOffsetX(currentPose);
         boolean isRight = "RIGHT".equals(alignmentDir);
         TagOffset offset = AprilTagOffsets.getOffset(currentTagId);
-        double offsetYDifference = isRight
-                ? (offset.right - offsetY)
-                : (offset.left - offsetY);
+        double offsetYDifference = isRight ? (offset.right - offsetY) : (offset.left - offsetY);
         double offsetXDifference = offset.back - offsetX;
-
-        Logger.recordOutput("attempt." + scoresAttempted + ".swerve", currentPose);
-        Logger.recordOutput("attempt." + scoresAttempted + ".aprilTag", currentTagId);
-        SmartDashboard.putNumber("attempt." + scoresAttempted + ".aprilTag", currentTagId);
-        Logger.recordOutput("attempt." + scoresAttempted + ".alignmentDirection", alignmentDir);
-        Logger.recordOutput("attempt." + scoresAttempted + ".offsetYRelative", offsetY);
-        Logger.recordOutput("attempt." + scoresAttempted + ".offsetXRelative", offsetX);
-        Logger.recordOutput("attempt." + scoresAttempted + ".isAllignRight", isRight);
-        SmartDashboard.putBoolean("attempt." + scoresAttempted + ".isAllignRight", isRight);
-        Logger.recordOutput("attempt." + scoresAttempted + ".offsetYRelativeDifference", offsetYDifference);
-        Logger.recordOutput("attempt." + scoresAttempted + ".offsetXRelativeDifference", offsetXDifference);
-        SmartDashboard.putNumber("attempt." + scoresAttempted + ".offsetYRelativeDifference", offsetYDifference);
-        SmartDashboard.putNumber("attempt." + scoresAttempted + ".offsetXRelativeDifference", offsetXDifference);
-        Logger.recordOutput("attempt." + scoresAttempted + ".wasScored", false);
-
-        if (SmartDashboard.getNumber("at.ID." + currentTagId + ".Y", 0.0) == 0.0){
-            SmartDashboard.putNumber("at.ID" + currentTagId + ".Y", offsetY);
-            SmartDashboard.putNumber("at.ID" + currentTagId + ".X", offsetX);
-            SmartDashboard.putBoolean("at.ID" + currentTagId + ".isRight", isRight);
-            SmartDashboard.putNumber("at.ID." + currentTagId + ".YDiff", offsetYDifference);
-            SmartDashboard.putNumber("at.ID." + currentTagId + ".XDiff", offsetXDifference);
-        }
-
-        scoresAttempted++;
+    
+        Logger.recordOutput("attempt." + coralsAttempted + ".swerve", currentPose);
+        Logger.recordOutput("attempt." + coralsAttempted + ".aprilTag", currentTagId);
+        SmartDashboard.putNumber("attempt." + coralsAttempted + ".aprilTag", currentTagId);
+        Logger.recordOutput("attempt." + coralsAttempted + ".alignmentDirection", alignmentDir);
+        
+        Logger.recordOutput("attempt." + coralsAttempted + ".offsetYRelative", offsetY);
+        Logger.recordOutput("attempt." + coralsAttempted + ".offsetXRelative", offsetX);
+        SmartDashboard.putNumber("attempt." + coralsAttempted + ".offsetYRelative", offsetY);
+        SmartDashboard.putNumber("attempt." + coralsAttempted + ".offsetXRelative", offsetX);
+        
+        Logger.recordOutput("attempt." + coralsAttempted + ".isAllignRight", isRight);
+        SmartDashboard.putBoolean("attempt." + coralsAttempted + ".isAllignRight", isRight);
+        
+        Logger.recordOutput("attempt." + coralsAttempted + ".offsetYRelativeDifference", offsetYDifference);
+        Logger.recordOutput("attempt." + coralsAttempted + ".offsetXRelativeDifference", offsetXDifference);
+        SmartDashboard.putNumber("attempt." + coralsAttempted + ".offsetYRelativeDifference", offsetYDifference);
+        SmartDashboard.putNumber("attempt." + coralsAttempted + ".offsetXRelativeDifference", offsetXDifference);
+        
+        Logger.recordOutput("attempt." + coralsAttempted + ".wasScored", false);
+    
+        Logger.recordOutput("corals.attempted", coralsAttempted);
+    
+        coralsAttempted++;
     }
     
     public void successfulAttempt() {
-        int attemptIndex = scoresAttempted - 1;
-
+        int attemptIndex = coralsAttempted - 1;
+    
         Logger.recordOutput("attempt." + attemptIndex + ".wasScored", true);
-
+        coralsScored++;
+    
         double diffY = SmartDashboard.getNumber("attempt." + attemptIndex + ".offsetYRelativeDifference", 0.0);
         double diffX = SmartDashboard.getNumber("attempt." + attemptIndex + ".offsetXRelativeDifference", 0.0);
+        double offsetY = SmartDashboard.getNumber("attempt." + attemptIndex + ".offsetYRelative", 0.0);
+        double offsetX = SmartDashboard.getNumber("attempt." + attemptIndex + ".offsetXRelative", 0.0);
         boolean wasRight = SmartDashboard.getBoolean("attempt." + attemptIndex + ".isAllignRight", false);
         int tagID = (int) SmartDashboard.getNumber("attempt." + attemptIndex + ".aprilTag", -1);
-
+    
         limeLightForwards.correctTheOffset(diffY, diffX, wasRight, tagID);
+    
+        if (wasRight) {
+            SmartDashboard.putNumber("at.ID." + tagID + ".right.Y", offsetY);
+            Logger.recordOutput("at.ID." + tagID + ".right.Y", offsetY);
+            SmartDashboard.putNumber("at.ID." + tagID + ".right.X", offsetX);
+            Logger.recordOutput("at.ID." + tagID + ".right.X", offsetX);
+            SmartDashboard.putNumber("at.ID." + tagID + ".right.YDiff", diffY);
+            Logger.recordOutput("at.ID." + tagID + ".right.YDiff", diffY);
+            SmartDashboard.putNumber("at.ID." + tagID + ".right.XDiff", diffX);
+            Logger.recordOutput("at.ID." + tagID + ".right.XDiff", diffX);
+        } else {
+            SmartDashboard.putNumber("at.ID." + tagID + ".left.Y", offsetY);
+            Logger.recordOutput("at.ID." + tagID + ".left.Y", offsetY);
+            SmartDashboard.putNumber("at.ID." + tagID + ".left.X", offsetX);
+            Logger.recordOutput("at.ID." + tagID + ".left.X", offsetX);
+            SmartDashboard.putNumber("at.ID." + tagID + ".left.YDiff", diffY);
+            Logger.recordOutput("at.ID." + tagID + ".left.YDiff", diffY);
+            SmartDashboard.putNumber("at.ID." + tagID + ".left.XDiff", diffX);
+            Logger.recordOutput("at.ID." + tagID + ".left.XDiff", diffX);
+        }
+    
+        //account for auto
+        Logger.recordOutput("corals.scored", coralsScored);
+        Logger.recordOutput("corals.missRate", String.valueOf((1 - (coralsScored / coralsAttempted)) * 100) + "%");
     }
+    
+    
     
 }
