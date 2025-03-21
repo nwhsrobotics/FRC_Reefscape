@@ -131,8 +131,8 @@ public final class Constants {
                 new Translation2d(-kWheelBase / 2, kTrackWidth / 2), //back left
                 new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)); //back right
 
-        public static final double kDirectionSlewRate = 0.9; // radians per second
-        public static final double kMagnitudeSlewRate = 1.35; // percent per second (1 = 100%)
+        public static final double kDirectionSlewRate = 0.95; // radians per second
+        public static final double kMagnitudeSlewRate = 1.425; // percent per second (1 = 100%)
         public static final double kRotationalSlewRate = 1; // percent per second (1 = 100%)
 
         public static final boolean kFrontLeftTurningEncoderReversed = false;
@@ -264,7 +264,7 @@ public final class Constants {
 
         public static final double MAX_VELOCITY_M_S = 4.0;
 
-        public static final double MAX_ACCEL_M_S2 = 2.5;
+        public static final double MAX_ACCEL_M_S2 = 3.5;
 
         public static final double MAX_VELOCITY_RPM = ((MAX_VELOCITY_M_S) / ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60.0;
 
@@ -382,8 +382,8 @@ public final class Constants {
 
     public static final class AprilTagOffsets {
         //0.1651
-        private static final double DEFAULT_LEFT_OFFSET  = 0.2051;
-        private static final double DEFAULT_RIGHT_OFFSET = 0.1251;
+        private static final double DEFAULT_LEFT_OFFSET  = 0.1251;
+        private static final double DEFAULT_RIGHT_OFFSET = 0.2051;
         private static final double DEFAULT_BACK_OFFSET  = 0.4445;
     
         public static final Map<Integer, TagOffset> tagOffsets = new HashMap<>();
