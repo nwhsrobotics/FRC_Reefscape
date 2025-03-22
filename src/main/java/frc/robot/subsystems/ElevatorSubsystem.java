@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.MAXMotionConfig;
@@ -39,8 +41,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     // Create ele(vator) motors
 
 
-    private SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, configEl, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake, 0.8, 0.0, 0.13, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02 / ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
-    private SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, configEl, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake, 0.8, 0.0, 0.13, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02 / ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
+    private SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, configEl, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake, 0.8, 0.0, 0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02 / ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
+    private SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, configEl, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake, 0.8, 0.0, 0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02 / ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
 
     SparkClosedLoopController leftElevatorController = leftElevatorMotor.getClosedLoopController();
     SparkClosedLoopController rightElevatorController = rightElevatorMotor.getClosedLoopController();
@@ -105,8 +107,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     //Drive bace in 3.8cm off the ground
     public void loadStation_Preset() {
+        // configEl.closedLoop.maxMotion.apply(new MAXMotionConfig().maxAcceleration((2.5/ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60));
+        // leftElevatorMotor.configure(configEl, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+        // rightElevatorMotor.configure(configEl, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         setPointRotations = metersToRotations(elevatorHeights[0]);
-        configEl.closedLoop.maxMotion.apply(new MAXMotionConfig().maxAcceleration((2.5/ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60));
         
     }
 
@@ -123,8 +127,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void L4_Preset() {
+        // configEl.closedLoop.maxMotion.apply(new MAXMotionConfig().maxAcceleration((4.0/ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60));
+        // leftElevatorMotor.configure(configEl, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+        // rightElevatorMotor.configure(configEl, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         setPointRotations = metersToRotations(elevatorHeights[4]);  //183cm >>  179.3cm  >>   1.793m
-        configEl.closedLoop.maxMotion.apply(new MAXMotionConfig().maxAcceleration((3.5/ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60));
     }
 
     public void boost() {
