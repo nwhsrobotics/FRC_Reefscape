@@ -1,4 +1,4 @@
-package frc.robot.util;
+package frc.robot.legacy;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import org.littletonrobotics.junction.Logger;

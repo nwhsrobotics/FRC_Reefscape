@@ -76,11 +76,11 @@ public class RobotContainer {
         });
 
         //make these instantcommands and reuse them for auto and manual
-        Command L4CMD = new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem);
-        Command L3CMD = new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem);
-        Command L2CMD = new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem);
-        Command L1CMD = new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem);
-        Command LoadStation = new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem);
+        // Command L4CMD = new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem);
+        // Command L3CMD = new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem);
+        // Command L2CMD = new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem);
+        // Command L1CMD = new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem);
+        // Command LoadStation = new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem);
 
         //INIT after registering named commands
         //maybe wait until commands instead of separate classes?
@@ -90,18 +90,19 @@ public class RobotContainer {
         NamedCommands.registerCommand("L1CORAL", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("LoadStation", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
         NamedCommands.registerCommand("Boost", new InstantCommand(() -> elevatorSubsystem.boost(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
-        NamedCommands.registerCommand("L4", new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(new WaitCommand(2.0)));
-        NamedCommands.registerCommand("L3", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.7)));
-        NamedCommands.registerCommand("L2", new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.4)));
-        NamedCommands.registerCommand("L1", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.1)));
-        NamedCommands.registerCommand("Load", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem).andThen(new WaitCommand(0.9)));
+        // NamedCommands.registerCommand("L4", new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(new WaitCommand(2.0)));
+        // NamedCommands.registerCommand("L3", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.7)));
+        // NamedCommands.registerCommand("L2", new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.4)));
+        // NamedCommands.registerCommand("L1", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.1)));
+        // NamedCommands.registerCommand("Load", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem).andThen(new WaitCommand(0.9)));
         //Tune intake/outtake time for 3 corals, intake 1 second and outtake 0.5 seconds
-        NamedCommands.registerCommand("Intake", new WaitCommand(1.5));
+        //TODO: Wait until command until ultrasonic (only if in intake not below that)
+        NamedCommands.registerCommand("Intake", new WaitCommand(0.75));
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
                 .andThen(new InstantCommand(() -> recordAttempt()))
-                .andThen(new WaitCommand(1))
+                .andThen(new WaitCommand(0.5))
                 .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
-        NamedCommands.registerCommand("MoveElevator", new InstantCommand());
+        // NamedCommands.registerCommand("MoveElevator", new InstantCommand());
 
         // autos (either PathPlanner or Auto with Vision) (cannot have both enabled, need to keep 1 commented out)
         // remove this comment below for pathplanner auto
@@ -128,7 +129,7 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(((new InstantCommand(() -> recordAttempt()).onlyIf((() -> !intakeoutake.isIntakeOpen)))).andThen(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)));
+        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(((new InstantCommand(() -> recordAttempt())).andThen(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake))).onlyIf(() -> !intakeoutake.isIntakeOpen));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake));
         //new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
 
@@ -141,6 +142,7 @@ public class RobotContainer {
         new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("L3CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         //new POVButton(gunner, Buttons.POV_LEFT).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         new JoystickButton(gunner, Buttons.MENU).onTrue(new InstantCommand(() -> successfulAttempt()));
+        new JoystickButton(gunner, Buttons.VIEW).onTrue(new InstantCommand(() -> successfulAttempt()));
 
         //Driver controlls 
         // https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
@@ -347,7 +349,7 @@ public class RobotContainer {
         boolean wasRight = SmartDashboard.getBoolean("attempt." + attemptIndex + ".isAllignRight", false);
         int tagID = (int) SmartDashboard.getNumber("attempt." + attemptIndex + ".aprilTag", -1);
     
-        limeLightForwards.correctTheOffset(diffY, diffX, wasRight, tagID);
+        //limeLightForwards.correctTheOffset(diffY, diffX, wasRight, tagID);
     
         if (wasRight) {
             SmartDashboard.putNumber("at.ID." + tagID + ".right.Y", offsetY);

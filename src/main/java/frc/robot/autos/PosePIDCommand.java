@@ -49,7 +49,7 @@ public class PosePIDCommand extends Command {
                         1.0
                 );
                 boolean isPositionAligned = poseDifference.getTranslation().getNorm() < POSITION_TOLERANCE.in(Meters);
-                boolean isSpeedLow = swerveSubsystem.getVelocityMagnitude(swerveSubsystem.getSpeeds()).baseUnitMagnitude() < SPEED_TOLERANCE.in(MetersPerSecond);
+                boolean isSpeedLow = swerveSubsystem.autonavigator.getVelocityMagnitude(swerveSubsystem.getSpeeds()).baseUnitMagnitude() < SPEED_TOLERANCE.in(MetersPerSecond);
                 return isRotationAligned && isPositionAligned && isSpeedLow;
             }
         });

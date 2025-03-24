@@ -38,7 +38,7 @@ public class PathFindAprilTag extends Command {
             Pose2d temp = object;
             object = vision.scootRight(temp, 0.5);
         }
-        pathFind = swerve.pathfindToPosition(object);
+        pathFind = swerve.autonavigator.pathfindToPosition(object);
     }
 
     // Called when the command is initially scheduled.
