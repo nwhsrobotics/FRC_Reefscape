@@ -13,9 +13,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.legacy.RobotErrorHandler;
 import frc.robot.util.ImprovedPowerDistribution;
 import frc.robot.util.LocalADStarAK;
-import frc.robot.util.RobotErrorHandler;
+
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -24,12 +25,6 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 public class Robot extends LoggedRobot {
-
-    static {
-        // This is the last (very bad) resort
-        RobotErrorHandler.initialize();
-    }
-
 
     private Command autonomousCommand;
     public RobotContainer robotContainer;
@@ -42,11 +37,11 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotInit() {
-        SmartDashboard.putBoolean("INITIALIZED", false);
+        SmartDashboard.putBoolean("auto.initialized", false);
         DriverStation.silenceJoystickConnectionWarning(true);
         Pathfinding.setPathfinder(new LocalADStarAK());
         FollowPathCommand.warmupCommand().schedule();
-        PathfindingCommand.warmupCommand().andThen(new InstantCommand(() -> SmartDashboard.putBoolean("INITIALIZED", true))).schedule();
+        (PathfindingCommand.warmupCommand().andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)))).schedule();
         robotPD = new ImprovedPowerDistribution(CANAssignments.PDU_ID, Constants.PDU_TYPE);
 
         Logger.recordMetadata("version", LoggerConstants.RUNNING_UNDER);
