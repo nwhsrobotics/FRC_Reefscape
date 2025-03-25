@@ -14,6 +14,7 @@ import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.legacy.RobotErrorHandler;
+import frc.robot.subsystems.LED_Subsystem;
 import frc.robot.util.ImprovedPowerDistribution;
 import frc.robot.util.LocalADStarAK;
 
@@ -87,6 +88,10 @@ public class Robot extends LoggedRobot {
             // http://roborio-(teamnum)-FRC.local:5811
         }
 
+
+        //LED code 
+        robotContainer.led_sybsystem.LED_Pattern_CANBUS_Error();
+        
 
     }
 
