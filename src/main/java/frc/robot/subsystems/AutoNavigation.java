@@ -135,10 +135,15 @@ public class AutoNavigation {
      *
      * @param destination - position to navigate to.
      */
-    public Command navigateTo(Pose2d destination) {
-        if (!enabled || !RobotState.isTeleop()) {
-            return new InstantCommand();
+    public void navigateTo(Pose2d destination) {
+        // if (!enabled || !RobotState.isTeleop()) {
+        //     //return new InstantCommand();
+        //     return;
+        // }
+        if (!RobotState.isTeleop()){
+            return;
         }
+        enable();
 
         if (navigationCommand != null && navigationCommand.isScheduled()) {
             navigationCommand.cancel();
@@ -152,33 +157,11 @@ public class AutoNavigation {
         navigationCommand.addRequirements(swerve);
         navigationCommand.schedule();
         Logger.recordOutput("autonavigator.destination", destination);
-        return navigationCommand;
+        //return navigationCommand;
+        
     }
-
-    public Command navigateToWithElevator(Pose2d destination) {
-        if (!enabled || !RobotState.isTeleop()) {
-            return new InstantCommand();
-        }
-
-        if (navigationCommand != null && navigationCommand.isScheduled()) {
-            navigationCommand.cancel();
-        }
-
-
-        navigationCommand =
-                pathOnTheFlyToPosition(destination)
-                        .alongWith(NamedCommands.getCommand("L4CORAL"))
-//              .andThen(new WaitCommand(1))
-                        .andThen(NamedCommands.getCommand("Outtake"))
-                        .andThen(NamedCommands.getCommand("LoadStation"));
-
-        navigationCommand.addRequirements(swerve);
-        navigationCommand.schedule();
-
-        return navigationCommand;
-    }
-
-        /**
+    
+    /**
      * Finds a path and follows it based on the specified path name.
      * Loads the path from a file, sets constraints, and uses AutoBuilder to create a pathfinding command.
      *
