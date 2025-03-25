@@ -164,7 +164,7 @@ public class RobotContainer {
         //Invert controls, left/right reef
         new JoystickButton(driver, Buttons.X).onTrue(
                 new InstantCommand(() -> {
-                    Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
+                    Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
                     swerveSubsystem.autonavigator.navigateTo(target);
                 })
         );
@@ -204,7 +204,7 @@ public class RobotContainer {
 
         new JoystickButton(driver, Buttons.B).onTrue(
                 new InstantCommand(() -> {
-                    Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
+                    Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
                     swerveSubsystem.autonavigator.navigateTo(target);
                 })
         );

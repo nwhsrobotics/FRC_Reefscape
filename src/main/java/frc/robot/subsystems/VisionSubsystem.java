@@ -208,7 +208,7 @@ public class VisionSubsystem extends SubsystemBase {
 
         // is no math fun?
         Transform2d right = new Transform2d(
-                new Translation2d(0.0, scootDist),
+                new Translation2d(0.0, -scootDist),
                 new Rotation2d(0.0)
         );
         return adjustedPos.transformBy(right);
@@ -238,7 +238,7 @@ public class VisionSubsystem extends SubsystemBase {
 
         // is no math fun?
         Transform2d left = new Transform2d(
-                new Translation2d(0.0, -scootDist),
+                new Translation2d(0.0, scootDist),
                 new Rotation2d(0.0)
         );
         return adjustedPos.transformBy(left);
@@ -277,7 +277,7 @@ public class VisionSubsystem extends SubsystemBase {
      * <p>
      * Relative to the april tag this is actually the right reef
      */
-    public Pose2d rightReef(Pose2d swervePos) {
+    public Pose2d leftReef(Pose2d swervePos) {
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         Pose2d finalPose = swervePos;
         int aprilTagId = -1;
@@ -288,7 +288,7 @@ public class VisionSubsystem extends SubsystemBase {
             finalPose = getNearestReef(swervePos);
         }
         TagOffset offset = AprilTagOffsets.getOffset(aprilTagId);
-        finalPose = scootRight(finalPose, offset.right);
+        finalPose = scootLeft(finalPose, offset.left);
         finalPose = transformPosition(finalPose, offset.back);
         return finalPose;
     }
@@ -304,7 +304,7 @@ public class VisionSubsystem extends SubsystemBase {
      * <p>
      * Relative to the april tag this is actually the left reef
      */
-    public Pose2d leftReef(Pose2d swervePos) {
+    public Pose2d rightReef(Pose2d swervePos) {
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         Pose2d finalPose = swervePos;
         int aprilTagId = -1;
@@ -315,7 +315,7 @@ public class VisionSubsystem extends SubsystemBase {
             finalPose = getNearestReef(swervePos);
         }
         TagOffset offset = AprilTagOffsets.getOffset(aprilTagId);
-        finalPose = scootLeft(finalPose, offset.left);
+        finalPose = scootRight(finalPose, offset.right);
         finalPose = transformPosition(finalPose, offset.back);
         return finalPose;
     }
