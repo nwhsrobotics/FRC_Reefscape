@@ -37,6 +37,8 @@ public class RobotContainer {
 
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
+    public final LED_Subsystem led_sybsystem = new LED_Subsystem();
+
     //public final ElevatorSysID elevatorSysID = new ElevatorSysID();
 
     public final VisionSubsystem limeLightForwards = new VisionSubsystem(LimelightConstants.llFront);

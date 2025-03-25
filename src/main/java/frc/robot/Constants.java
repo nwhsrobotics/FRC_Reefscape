@@ -133,7 +133,7 @@ public final class Constants {
 
         public static final double kDirectionSlewRate = 0.95; // radians per second
         public static final double kMagnitudeSlewRate = 1.425; // percent per second (1 = 100%)
-        public static final double kRotationalSlewRate = 1; // percent per second (1 = 100%)
+        public static final double kRotationalSlewRate = 1.3; // percent per second (1 = 100%)
 
         public static final boolean kFrontLeftTurningEncoderReversed = false;
         public static final boolean kBackLeftTurningEncoderReversed = false;
@@ -190,7 +190,7 @@ public final class Constants {
         );
 
         public static final PathConstraints kPathfindingConstraints = new PathConstraints(
-                DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.2,
+                DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.3,
                 AutoConstants.kMaxAngularSpeedRadiansPerSecond, AutoConstants.kMaxAngularAccelerationRadiansPerSecondSquared);
     }
 
@@ -384,7 +384,7 @@ public final class Constants {
         //0.1651
         private static final double DEFAULT_LEFT_OFFSET  = 0.1251;
         private static final double DEFAULT_RIGHT_OFFSET = 0.2051;
-        private static final double DEFAULT_BACK_OFFSET  = 0.4445;
+        private static final double DEFAULT_BACK_OFFSET  = 0.5445;
     
         public static final Map<Integer, TagOffset> tagOffsets = new HashMap<>();
     

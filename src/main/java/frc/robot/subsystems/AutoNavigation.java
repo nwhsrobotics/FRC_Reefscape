@@ -229,7 +229,7 @@ public class AutoNavigation {
                         position,
                         AutoConstants.kPathfindingConstraints,
                         0.0 // Goal end velocity in meters/sec
-                ).andThen(PosePIDCommand.create(swerve, position, Seconds.of(1)));
+                ).andThen(PosePIDCommand.create(swerve, position, Seconds.of(1/3)));
                 // .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
                 // .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
         //.andThen(pathOnTheFlyToPosition(position));
@@ -259,7 +259,7 @@ public class AutoNavigation {
 
         //TODO: Reduce PosePIDCommand time to 0.2s
         Command followPathCommand = AutoBuilder.followPath(path)
-                .andThen(PosePIDCommand.create(swerve, targetPose, Seconds.of(1)));
+                .andThen(PosePIDCommand.create(swerve, targetPose, Seconds.of(1/3)));
                 // .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
                 // .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
 
