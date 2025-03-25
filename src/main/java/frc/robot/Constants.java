@@ -133,7 +133,7 @@ public final class Constants {
 
         public static final double kDirectionSlewRate = 0.95; // radians per second
         public static final double kMagnitudeSlewRate = 1.425; // percent per second (1 = 100%)
-        public static final double kRotationalSlewRate = 1.3; // percent per second (1 = 100%)
+        public static final double kRotationalSlewRate = 1; // percent per second (1 = 100%)
 
         public static final boolean kFrontLeftTurningEncoderReversed = false;
         public static final boolean kBackLeftTurningEncoderReversed = false;

@@ -40,25 +40,25 @@ public class SwerveJoystickDefaultCmd extends Command {
         }*/
         if (xbox.getLeftBumperButton()) {  //for back vision april tag detection aligning
             //while using Limelight, turn off field-relative driving.
-            fieldRelative = false;
-            swerveSubsystem.drive(
-                    -VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llBack),
-                    -VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llBack),
-                    VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llBack),
-                    swerveSubsystem.isFieldRelative() && fieldRelative, false);
+            // fieldRelative = false;
+            // swerveSubsystem.drive(
+            //         -VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llBack),
+            //         -VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llBack),
+            //         VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llBack),
+            //         swerveSubsystem.isFieldRelative() && fieldRelative, false);
         } else if (xbox.getRightBumperButton()) { //for forwards april tag align
             fieldRelative = false;
-            swerveSubsystem.drive(
-                    VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llFront),
-                    VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
-                    VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llFront),
-                    swerveSubsystem.isFieldRelative() && fieldRelative, false);
+            // swerveSubsystem.drive(
+            //         VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llFront),
+            //         VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
+            //         VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llFront),
+            //         swerveSubsystem.isFieldRelative() && fieldRelative, false);
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if trigger(booster) not pressed
             fieldRelative = true;
             swerveSubsystem.drive(
                     -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftY(), 2), xbox.getLeftY())) * 0.5, OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftX(), 2), xbox.getLeftX())) * 0.5, OIConstants.kDriveDeadband),
-                    -MathUtil.applyDeadband((xbox.getRightX()), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband((xbox.getRightX()) * 0.25, OIConstants.kDriveDeadband),
                     swerveSubsystem.isFieldRelative() && fieldRelative, true);
         } else {
             // fast mode (or can be booster too) has no slew rate/rate limit
