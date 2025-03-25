@@ -382,8 +382,8 @@ public final class Constants {
 
     public static final class AprilTagOffsets {
         //0.1651
-        private static final double DEFAULT_LEFT_OFFSET  = 0.1251;
-        private static final double DEFAULT_RIGHT_OFFSET = 0.2051;
+        private static final double DEFAULT_LEFT_OFFSET  = 0.2051;
+        private static final double DEFAULT_RIGHT_OFFSET = 0.1251;
         private static final double DEFAULT_BACK_OFFSET  = 0.5445;
     
         public static final Map<Integer, TagOffset> tagOffsets = new HashMap<>();
