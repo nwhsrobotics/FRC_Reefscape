@@ -11,26 +11,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[E] to 3B"
+                  "pathName": "Angled [B] [1A]"
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.4
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "L4CORAL"
-                      }
-                    }
-                  ]
+                  "name": "L4CORAL"
                 }
               }
             ]
@@ -49,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[3B] [S2]"
+                  "pathName": "[1A] [S1]"
                 }
               },
               {
@@ -74,26 +61,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[S2] [4B]"
+                  "pathName": "[S1] [6A]"
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.4
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "L4CORAL"
-                      }
-                    }
-                  ]
+                  "name": "L4CORAL"
                 }
               }
             ]
@@ -112,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[4B][S2]"
+                  "pathName": "[6A] [S1]"
                 }
               },
               {
@@ -137,26 +111,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "[S2] [4A]"
+                  "pathName": "[S1] [6B]"
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.4
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "L4CORAL"
-                      }
-                    }
-                  ]
+                  "name": "L4CORAL"
                 }
               }
             ]
@@ -169,22 +130,9 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "[4A] [S2]"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "LoadStation"
-                }
-              }
-            ]
+            "name": "LoadStation"
           }
         }
       ]
