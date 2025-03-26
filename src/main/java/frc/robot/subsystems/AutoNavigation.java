@@ -240,7 +240,7 @@ public class AutoNavigation {
 
         path.preventFlipping = true;
 
-        //TODO: Reduce PosePIDCommand time to 0.2s
+        //Reduce PosePIDCommand time to 0.2s
         Command followPathCommand = AutoBuilder.followPath(path)
                 .andThen(PosePIDCommand.create(swerve, targetPose, Seconds.of(1/3)));
                 // .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
