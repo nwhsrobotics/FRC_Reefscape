@@ -4,6 +4,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.Constants.AprilTagOffsets;
+import frc.robot.Constants.TagOffset;
 import frc.robot.util.LimelightHelpers;
 import frc.robot.util.LimelightHelpers.LimelightResults;
 import org.littletonrobotics.junction.Logger;
@@ -176,6 +178,7 @@ public class VisionAprilTag {
     public static double straightLineZDistance(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
+            double llToFrontOfRobot = 0.5;
             /*
             var fiducials = llr.getRawFiducials();
             if (fiducials.length > 0) {
@@ -183,7 +186,7 @@ public class VisionAprilTag {
             }
             */
             // Use Z-axis distance to the target
-            return llr.targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ();
+            return llr.targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ() - AprilTagOffsets.getOffset((int)llr.targets_Fiducials[0].fiducialID).relative - llToFrontOfRobot;
         }
         return 0.0;
     }
@@ -191,8 +194,9 @@ public class VisionAprilTag {
     public static double straightLineZAprilTag(String limelightName) {
         LimelightResults llr = isValid(limelightName);
         if (llr != null) {
+            double llToFrontOfRobot = 0.5;
             // Use Z-axis distance to the target
-            return llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getZ();
+            return llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getZ() - AprilTagOffsets.getOffset((int)llr.targets_Fiducials[0].fiducialID).relative - llToFrontOfRobot;
         }
         return 0.0;
     }

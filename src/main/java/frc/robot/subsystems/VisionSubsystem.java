@@ -411,4 +411,20 @@ public class VisionSubsystem extends SubsystemBase {
         }
         return getNearestAprilTag(swervePos);
     }
+
+    public static double getStraightLineZDistance(){
+        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
+        double llToFrontOfRobot = 0.5;
+        int aprilTagId = -1;
+        if (llf != null) {
+            aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
+        } else {
+            Pose2d nearest = SwerveSubsystem.currentPose.nearest(AprilTags.aprilTags);
+            aprilTagId = AprilTags.aprilTags.indexOf(nearest)+1;
+        }
+        double distance = Math.abs(SwerveSubsystem.currentPose.relativeTo(AprilTags.aprilTags.get(aprilTagId - 1)).getX())
+        - AprilTagOffsets.getOffset(aprilTagId).relative - llToFrontOfRobot;
+
+        return distance;
+    }
 }

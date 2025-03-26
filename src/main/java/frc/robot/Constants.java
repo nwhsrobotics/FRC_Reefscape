@@ -371,11 +371,13 @@ public final class Constants {
         public double left;
         public double right;
         public double back;
+        public double relative;
     
-        public TagOffset(double left, double right, double back) {
+        public TagOffset(double left, double right, double back, double relative) {
             this.left = left;
             this.right = right;
             this.back = back;
+            this.relative = relative;
         }
     }
     
@@ -392,14 +394,14 @@ public final class Constants {
             for(int tagID = 1; tagID <= 22; tagID++){
                 tagOffsets.put(
                     tagID,
-                    new TagOffset(DEFAULT_LEFT_OFFSET, DEFAULT_RIGHT_OFFSET, DEFAULT_BACK_OFFSET)
+                    new TagOffset(DEFAULT_LEFT_OFFSET, DEFAULT_RIGHT_OFFSET, DEFAULT_BACK_OFFSET, DEFAULT_BACK_OFFSET- DEFAULT_BACK_OFFSET)
                 );
             }
             //tagOffsets.get(10).left += 0.01;
         }
     
         public static TagOffset getOffset(int tagID){
-            return tagOffsets.getOrDefault(tagID, new TagOffset(DEFAULT_LEFT_OFFSET, DEFAULT_RIGHT_OFFSET, DEFAULT_BACK_OFFSET));
+            return tagOffsets.getOrDefault(tagID, new TagOffset(DEFAULT_LEFT_OFFSET, DEFAULT_RIGHT_OFFSET, DEFAULT_BACK_OFFSET, 0));
         }
     }
     

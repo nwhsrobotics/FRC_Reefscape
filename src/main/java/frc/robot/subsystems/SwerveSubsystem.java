@@ -121,6 +121,8 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SlewRateLimiter rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
     private double prevTime = WPIUtilJNI.now() * 1e-6;
 
+    public static Pose2d currentPose = new Pose2d();
+
     /**
      * Constructor for the SwerveSubsystem class.
      * Configures the AutoBuilder for holonomic/swerve path planning and initializes the gyro.
@@ -324,7 +326,7 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         updateOdometry();
-
+        currentPose = getPose();
 
         // Log position of robot.
         Logger.recordOutput("swerve.pose", getPose());
@@ -423,9 +425,9 @@ public class SwerveSubsystem extends SubsystemBase {
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
         
-        addVisionMeasurement(LimelightConstants.llFront, 0.0, 0.0, 9999999);
+        addVisionMeasurement(LimelightConstants.llFront, 0.025, 0.025, 9999999);
         //dont need the back one most likely
-        addVisionMeasurement(LimelightConstants.llBack, 0.2, 0.2, 9999999);
+        //addVisionMeasurement(LimelightConstants.llBack, 0.2, 0.2, 9999999);
     }
     
 
