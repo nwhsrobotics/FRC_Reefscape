@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class LED_Subsystem extends SubsystemBase {
   
   //LED strip lengths 
-  private int elevatorLED1Length = 0;
+  private int elevatorLED1Length = 20;
   //private int elevatorLED2Length = 0;
   //private int baseLEDLength = 0;
 
@@ -54,7 +54,7 @@ public class LED_Subsystem extends SubsystemBase {
   //LED presets ======================================================
 
   public void LED_Pattern_CANBUS_Error(){
-    red.applyTo(elevatorLED1_Buffer);
+    rainbow.applyTo(elevatorLED1_Buffer);
     elevatorLED1.setData(elevatorLED1_Buffer);
     elevatorLED1.start();
 
@@ -66,7 +66,7 @@ public class LED_Subsystem extends SubsystemBase {
   } 
 
   public void LED_Pattern_Rainbow(){
-    red.applyTo(elevatorLED1_Buffer);
+    orange.applyTo(elevatorLED1_Buffer);
     elevatorLED1.setData(elevatorLED1_Buffer);
 
     //red.applyTo(elevatorLED2_Buffer);
