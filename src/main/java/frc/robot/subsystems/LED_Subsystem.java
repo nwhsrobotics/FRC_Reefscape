@@ -1,16 +1,24 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Centimeters;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Percent;
+import static edu.wpi.first.units.Units.Second;
+
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.AddressableLEDBufferView;
 import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.LEDPattern.GradientType;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LED_Subsystem extends SubsystemBase {
   
   //LED strip lengths 
-  private int elevatorLED1Length = 20;
+  private int elevatorLED1Length = 80;
   //private int elevatorLED2Length = 0;
   //private int baseLEDLength = 0;
 
@@ -28,7 +36,8 @@ public class LED_Subsystem extends SubsystemBase {
   //private AddressableLED[] LED_List = {elevatorLED1, elevatorLED2};
 
 
-  //LED patterns =====================================================    
+  //LED patterns =====================================================  
+  private Color orangeRGB = new Color(255,40,0);  
   private LEDPattern red = LEDPattern.solid(Color.kRed);
   private LEDPattern orange = LEDPattern.solid(Color.kOrange);
   private LEDPattern yellow = LEDPattern.solid(Color.kYellow);
@@ -36,8 +45,17 @@ public class LED_Subsystem extends SubsystemBase {
   private LEDPattern blue = LEDPattern.solid(Color.kBlue);
   private LEDPattern violet  = LEDPattern.solid(Color.kViolet);
   private LEDPattern white  = LEDPattern.solid(Color.kWhite); 
+  private LEDPattern customOrange = LEDPattern.solid(orangeRGB);
     //can set the rainbow to only spacific colors, Needs to have correct LED density 
-  private final LEDPattern rainbow = LEDPattern.rainbow(255, 128);
+  //private final LEDPattern rainbow = LEDPattern.rainbow(255, 128);
+   //private static final Distance kLedSpacing = Meters.of(1 / 80.0);
+   //private final LEDPattern m_scrollingRainbow = rainbow.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), kLedSpacing);
+  Distance ledSpacing = Meters.of(1 / 120.0);
+  LEDPattern base = LEDPattern.gradient(GradientType.kDiscontinuous,Color.kBlack, Color.kBlack, orangeRGB,Color.kBlack, Color.kBlack, orangeRGB,Color.kBlack, Color.kBlack, orangeRGB);
+  LEDPattern pattern = base.scrollAtRelativeSpeed(Percent.per(Second).of(25));
+  LEDPattern absolute = base.scrollAtAbsoluteSpeed(Centimeters.per(Second).of(12.5), ledSpacing);
+
+
    
 
   //setting LED length, should only be done on startup 
@@ -54,7 +72,7 @@ public class LED_Subsystem extends SubsystemBase {
   //LED presets ======================================================
 
   public void LED_Pattern_CANBUS_Error(){
-    rainbow.applyTo(elevatorLED1_Buffer);
+    pattern.applyTo(elevatorLED1_Buffer);
     elevatorLED1.setData(elevatorLED1_Buffer);
     elevatorLED1.start();
 
@@ -88,6 +106,6 @@ public class LED_Subsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
+    LED_Pattern_CANBUS_Error();
   }
 }
