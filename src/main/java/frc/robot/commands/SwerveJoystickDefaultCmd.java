@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -12,6 +13,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.Positions;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionAprilTag;
+import frc.robot.util.SwerveUtils;
 
 public class SwerveJoystickDefaultCmd extends Command {
     private final SwerveSubsystem swerveSubsystem;
@@ -54,6 +56,7 @@ public class SwerveJoystickDefaultCmd extends Command {
             fieldRelative = false;
             double radius = (swerveSubsystem.getPose().nearest(Positions.REEF_CENTERS).getTranslation().getDistance(swerveSubsystem.getPose().getTranslation()));
             double currentTheta = (Math.acos(swerveSubsystem.getPose().getX() / radius) + Math.acos(swerveSubsystem.getPose().getX() / radius))/2.0;
+            reefRelativeDrive();
             // swerveSubsystem.drive(
             //         VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llFront),
             //         VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
@@ -97,6 +100,39 @@ public class SwerveJoystickDefaultCmd extends Command {
         }
         return num;
     }
+
+
+
+private void reefRelativeDrive() {
+    Pose2d currentPose = swerveSubsystem.getPose();
+    Pose2d nearestReef = currentPose.nearest(Positions.REEF_CENTERS);
+    double robotX = currentPose.getX();
+    double robotY = currentPose.getY();
+    double centerX = nearestReef.getX();
+    double centerY = nearestReef.getY();
+    double dx = robotX - centerX;
+    double dy = robotY - centerY;
+    double angleToCenter = Math.atan2(dy, dx);
+    double forwardVal = -xbox.getLeftY(); 
+    double sidewaysVal = xbox.getLeftX();  
+    double radialAngle = angleToCenter + Math.PI;
+    double radialUnitX = Math.cos(radialAngle);
+    double radialUnitY = Math.sin(radialAngle);
+    double tangentialAngle = radialAngle + (Math.PI / 2.0);
+    double tangentialUnitX = Math.cos(tangentialAngle);
+    double tangentialUnitY = Math.sin(tangentialAngle);
+    double fieldX = forwardVal * radialUnitX + sidewaysVal * tangentialUnitX;
+    double fieldY = forwardVal * radialUnitY + sidewaysVal * tangentialUnitY;
+    double desiredHeading = angleToCenter + Math.PI; 
+    double currentHeading = currentPose.getRotation().getRadians();
+    double headingError = SwerveUtils.AngleDifference(desiredHeading, currentHeading);
+    double kRot = 1.5; 
+    double rotCmd = kRot * headingError;
+    //   rotCmd = MathUtil.clamp(rotCmd, -3.0, 3.0);  // (radians/sec)
+
+    swerveSubsystem.drive(fieldX, fieldY, rotCmd, false, false);
+}
+
 
 
 }
