@@ -322,7 +322,7 @@ public class VisionSubsystem extends SubsystemBase {
         int aprilTag = getCurrentDetectedAprilTag(swervePose);
         Pose2d aprilTagPose = getAprilTagPos(aprilTag);
         Pose2d relativePose = swervePose.relativeTo(aprilTagPose);
-        if (relativePose.getTranslation().getY() > 0){
+        if (relativePose.getTranslation().getY() < 0){
             return "RIGHT";
         }
         return "LEFT";

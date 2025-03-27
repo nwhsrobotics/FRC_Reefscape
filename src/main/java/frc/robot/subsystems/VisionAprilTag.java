@@ -186,7 +186,7 @@ public class VisionAprilTag {
             }
             */
             // Use Z-axis distance to the target
-            return llr.targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ() - AprilTagOffsets.getOffset((int)llr.targets_Fiducials[0].fiducialID).relative - llToFrontOfRobot;
+            return Math.abs(llr.targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ()) - AprilTagOffsets.getOffset((int)llr.targets_Fiducials[0].fiducialID).relative - llToFrontOfRobot;
         }
         return 0.0;
     }
@@ -196,7 +196,7 @@ public class VisionAprilTag {
         if (llr != null) {
             double llToFrontOfRobot = 0.5;
             // Use Z-axis distance to the target
-            return llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getZ() - AprilTagOffsets.getOffset((int)llr.targets_Fiducials[0].fiducialID).relative - llToFrontOfRobot;
+            return Math.abs(llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getZ()) - AprilTagOffsets.getOffset((int)llr.targets_Fiducials[0].fiducialID).relative - llToFrontOfRobot;
         }
         return 0.0;
     }
