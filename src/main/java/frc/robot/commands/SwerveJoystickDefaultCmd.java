@@ -1,11 +1,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.Positions;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionAprilTag;
 
@@ -48,6 +52,8 @@ public class SwerveJoystickDefaultCmd extends Command {
             //         swerveSubsystem.isFieldRelative() && fieldRelative, false);
         } else if (xbox.getRightBumperButton()) { //for forwards april tag align
             fieldRelative = false;
+            double radius = (swerveSubsystem.getPose().nearest(Positions.REEF_CENTERS).getTranslation().getDistance(swerveSubsystem.getPose().getTranslation()));
+            double currentTheta = (Math.acos(swerveSubsystem.getPose().getX() / radius) + Math.acos(swerveSubsystem.getPose().getX() / radius))/2.0;
             // swerveSubsystem.drive(
             //         VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llFront),
             //         VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
