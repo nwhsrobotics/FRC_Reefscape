@@ -273,9 +273,8 @@ public class VisionSubsystem extends SubsystemBase {
 
 
     /**
-     * This is actually the LEFT REEF from the driver's camera POV
+     * Closest left reef from position
      * <p>
-     * Relative to the april tag this is actually the right reef
      */
     public Pose2d leftReef(Pose2d swervePos) {
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
@@ -300,9 +299,7 @@ public class VisionSubsystem extends SubsystemBase {
 
 
     /**
-     * This is actually the RIGHT REEF from the driver's camera POV
-     * <p>
-     * Relative to the april tag this is actually the left reef
+     * Closet right reef from position
      */
     public Pose2d rightReef(Pose2d swervePos) {
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
