@@ -288,6 +288,8 @@ public class VisionSubsystem extends SubsystemBase {
         }
         TagOffset offset = AprilTagOffsets.getOffset(aprilTagId);
         finalPose = scootLeft(finalPose, offset.left);
+        //offset.backLeft (try not to use this because then you would need relative, rightRelative, and leftRelative offsets) and then getCurrentAlignment
+        //finalPose = transformPosition(finalPose, offset.backLeft);
         finalPose = transformPosition(finalPose, offset.back);
         return finalPose;
     }
@@ -313,6 +315,8 @@ public class VisionSubsystem extends SubsystemBase {
         }
         TagOffset offset = AprilTagOffsets.getOffset(aprilTagId);
         finalPose = scootRight(finalPose, offset.right);
+        //offset.backRight (try not to use this because then you would need relative, rightRelative, and leftRelative offsets) and then getCurrentAlignment in straightLine
+        //finalPose = transformPosition(finalPose, offset.backRight);
         finalPose = transformPosition(finalPose, offset.back);
         return finalPose;
     }
@@ -419,6 +423,16 @@ public class VisionSubsystem extends SubsystemBase {
             Pose2d nearest = SwerveSubsystem.currentPose.nearest(AprilTags.aprilTags);
             aprilTagId = AprilTags.aprilTags.indexOf(nearest)+1;
         }
+        // double distance = 0;
+        // Pose2d relativePose = SwerveSubsystem.currentPose.relativeTo(AprilTags.aprilTags.get(aprilTagId-1));
+        // if (relativePose.getTranslation().getY() < 0){
+        //     distance = Math.abs(SwerveSubsystem.currentPose.relativeTo(AprilTags.aprilTags.get(aprilTagId - 1)).getX())
+        //     - AprilTagOffsets.getOffset(aprilTagId).relativeRight - llToFrontOfRobot;
+        // } else {
+        //     distance = Math.abs(SwerveSubsystem.currentPose.relativeTo(AprilTags.aprilTags.get(aprilTagId - 1)).getX())
+        //     - AprilTagOffsets.getOffset(aprilTagId).relativeLeft - llToFrontOfRobot;
+        // }
+
         double distance = Math.abs(SwerveSubsystem.currentPose.relativeTo(AprilTags.aprilTags.get(aprilTagId - 1)).getX())
         - AprilTagOffsets.getOffset(aprilTagId).relative - llToFrontOfRobot;
 

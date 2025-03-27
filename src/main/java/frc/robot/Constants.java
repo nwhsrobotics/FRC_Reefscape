@@ -378,22 +378,30 @@ public final class Constants {
         public double left;
         public double right;
         public double back;
+        public double backRight;
+        public double backLeft;
         public double relative;
+        public double relativeRight;
+        public double relativeLeft;
     
-        public TagOffset(double left, double right, double back, double relative) {
+        public TagOffset(double left, double right, double back, double backLeft, double backRight, double relative, double relativeLeft, double relativeRight) {
             this.left = left;
             this.right = right;
             this.back = back;
             this.relative = relative;
+            this.backLeft = backLeft;
+            this.backRight = backRight;
+            this.relativeLeft = relativeLeft;
+            this.relativeRight = relativeRight;
         }
     }
     
 
     public static final class AprilTagOffsets {
         //0.1651
-        private static final double DEFAULT_LEFT_OFFSET  = 0.2051;
-        private static final double DEFAULT_RIGHT_OFFSET = 0.1251;
-        private static final double DEFAULT_BACK_OFFSET  = 0.5445;
+        private static final double LEFT_OFFSET  = 0.2051;
+        private static final double RIGHT_OFFSET = 0.1251;
+        private static final double BACK_OFFSET  = 0.5445;
     
         public static final Map<Integer, TagOffset> tagOffsets = new HashMap<>();
     
@@ -401,14 +409,14 @@ public final class Constants {
             for(int tagID = 1; tagID <= 22; tagID++){
                 tagOffsets.put(
                     tagID,
-                    new TagOffset(DEFAULT_LEFT_OFFSET, DEFAULT_RIGHT_OFFSET, DEFAULT_BACK_OFFSET, DEFAULT_BACK_OFFSET- DEFAULT_BACK_OFFSET)
+                    new TagOffset(LEFT_OFFSET, RIGHT_OFFSET, BACK_OFFSET, BACK_OFFSET, BACK_OFFSET, 0, 0, 0)
                 );
             }
             //tagOffsets.get(10).left += 0.01;
         }
     
         public static TagOffset getOffset(int tagID){
-            return tagOffsets.getOrDefault(tagID, new TagOffset(DEFAULT_LEFT_OFFSET, DEFAULT_RIGHT_OFFSET, DEFAULT_BACK_OFFSET, 0));
+            return tagOffsets.getOrDefault(tagID, new TagOffset(LEFT_OFFSET, RIGHT_OFFSET, BACK_OFFSET, BACK_OFFSET, BACK_OFFSET, 0, 0, 0));
         }
     }
     
