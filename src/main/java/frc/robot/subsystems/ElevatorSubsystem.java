@@ -135,7 +135,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void dynamic_Height(){
-        setPointRotations = Math.min(metersToRotations(setPointRotations + (VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35)))), 2.0);
+        setPointRotations = Math.min(metersToRotations(setPointRotations + (VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35)))), metersToRotations(2.0));
         //you can preset this to a seperate button or make this the new l4 button
         //this method assumes that 0 is the base of the april tag
         //this method will correct any preset based off of its position, so you would press a standard preset and adjust it with this one
