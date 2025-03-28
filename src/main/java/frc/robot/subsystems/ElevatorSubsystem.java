@@ -89,8 +89,8 @@ public class ElevatorSubsystem extends SubsystemBase {
             0.574, // L1
             0.7473, //L2
             1.1573,//L3
-            //1.7723,  //L4
-            1.8293,
+            1.7723,  //L4
+            //1.8293,
             1.8223 //L5
     };
 
@@ -132,6 +132,23 @@ public class ElevatorSubsystem extends SubsystemBase {
         // leftElevatorMotor.configure(configEl, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         // rightElevatorMotor.configure(configEl, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         setPointRotations = metersToRotations(elevatorHeights[4]);  //183cm >>  179.3cm  >>   1.793m
+    }
+
+    public void dynamic_Height(){
+        setPointRotations = Math.min(metersToRotations(setPointRotations + (VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35)))), 2.0);
+        //you can preset this to a seperate button or make this the new l4 button
+        //this method assumes that 0 is the base of the april tag
+        //this method will correct any preset based off of its position, so you would press a standard preset and adjust it with this one
+    }
+
+    public void dynamic_L4_Preset(){
+        
+        
+        setPointRotations = Math.min(metersToRotations(elevatorHeights[4] + (VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35)))), metersToRotations(2.0));
+        //you can preset this to a seperate button or make this the new l4 button
+        //this method assumes that 0 is the base of the april tag
+        //I reccomend using the old l4 elevator height from comp for the initial setpoint rotations
+        //this preset is just an l4 preset itself, so if you want to go to l4 based on your position, just hit this one
     }
 
     public void boost() {
