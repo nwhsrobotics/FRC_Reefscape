@@ -35,13 +35,20 @@ public class LED_Subsystem extends SubsystemBase {
    
 
 
-  //LED patterns 
+  //solid color LED patterns 
+  //coral pattern(if coral is in outtake)
   private LEDPattern coral = LEDPattern.solid(Color.kCoral);
-
+  //
   //broken orange gradient 
   private LEDPattern brokenGradientBase = LEDPattern.gradient(GradientType.kDiscontinuous,Color.kBlack, Color.kBlack, orange,Color.kBlack, Color.kBlack, orange,Color.kBlack, Color.kBlack, orange);
   private LEDPattern idle = brokenGradientBase.scrollAtRelativeSpeed(Percent.per(Second).of(25));
   private LEDPattern absolute = brokenGradientBase.scrollAtAbsoluteSpeed(Centimeters.per(Second).of(12.5), ledSpacing);
+  //breathe pattern
+  private LEDPattern base = LEDPattern.discontinuousGradient(Color.orange);
+  private LEDPattern pattern = base.breathe(Seconds.of(2));
+  //progress mask (elevator pattern)
+  LEDPattern pattern = LEDPattern.progressMaskLayer(() -> m_elevator.getHeight() / m_elevator.getMaxHeight());
+
 
 
    
