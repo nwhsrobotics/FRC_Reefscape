@@ -5,9 +5,11 @@ import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -98,7 +100,7 @@ public class RobotContainer {
         // NamedCommands.registerCommand("L1", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitCommand(1.1)));
         // NamedCommands.registerCommand("Load", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem).andThen(new WaitCommand(0.9)));
         //Tune intake/outtake time for 3 corals, intake 1 second and outtake 0.5 seconds
-        //TODO: Wait until command until ultrasonic (only if in intake not below that)
+        //Wait until command until ultrasonic (only if in intake not below that)
         NamedCommands.registerCommand("Intake", new WaitCommand(0.75));
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
                 .andThen(new InstantCommand(() -> recordAttempt()))
@@ -132,7 +134,11 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(((new InstantCommand(() -> recordAttempt())).andThen(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake))).onlyIf(() -> !intakeoutake.isIntakeOpen));
-        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake));
+        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake).andThen(
+            new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 1))
+                .andThen(new WaitCommand(1))
+                .andThen(new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 0)))
+        ));
         //new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
 
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("Boost")).andThen(NamedCommands.getCommand("LoadStation")));
@@ -158,6 +164,8 @@ public class RobotContainer {
         // new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.STATION_RIGHT)));
         // new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_REEF)));
         // new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_REEF)));
+        new POVButton(driver, Buttons.POV_DOWN).onTrue(AutoBuilder.buildAuto("Reset Odometry"));
+
 
         //Add PID based alligning, if pathplanner is inaccurate
         //new NavPID(swerveSubsystem, limeLightForwards, true);
@@ -166,8 +174,12 @@ public class RobotContainer {
                 new InstantCommand(() -> {
                     Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
                     swerveSubsystem.autonavigator.navigateTo(target);
-                })
-        );
+                }).andThen(
+                    new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 1))
+                        .andThen(new WaitCommand(1))
+                        .andThen(new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 0)))
+                )
+            );
 
 
         //  new JoystickButton(driver, Buttons.Y).onTrue(
@@ -206,8 +218,12 @@ public class RobotContainer {
                 new InstantCommand(() -> {
                     Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
                     swerveSubsystem.autonavigator.navigateTo(target);
-                })
-        );
+                }).andThen(
+                    new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 1))
+                        .andThen(new WaitCommand(1))
+                        .andThen(new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 0)))
+                )
+            );
 
         // new JoystickButton(driver, Buttons.Y).onTrue(
         //     new InstantCommand(() -> {
