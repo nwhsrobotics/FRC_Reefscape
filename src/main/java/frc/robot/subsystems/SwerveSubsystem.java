@@ -440,45 +440,49 @@ public class SwerveSubsystem extends SubsystemBase {
      * @param stdTheta      The standard deviation for the rotation (radians, but usually 9999999 since vision rotation is very inaccurate).
      */
     private void addVisionMeasurement(String limelightName, double stdX, double stdY, double stdTheta) {
-        if (!VisionAprilTag.isAprilTagPipeline(limelightName)) {
-            return;
-        }
-        boolean useMegaTag2 = true; // Set to false to use the MegaTag1 branch if desired.
-        // we might use megatag1 when disabled to auto orient and megatag2 when enable
-        // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78
-        boolean doRejectUpdate = false;
+        try {
+            if (!VisionAprilTag.isAprilTagPipeline(limelightName)) {
+                return;
+            }
+            boolean useMegaTag2 = true; // Set to false to use the MegaTag1 branch if desired.
+            // we might use megatag1 when disabled to auto orient and megatag2 when enable
+            // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78
+            boolean doRejectUpdate = false;
 
-        if (!useMegaTag2) {
-            LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
-            if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
-                if (mt1.rawFiducials[0].ambiguity > 0.7) {
+            if (!useMegaTag2) {
+                LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
+                if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
+                    if (mt1.rawFiducials[0].ambiguity > 0.7) {
+                        doRejectUpdate = true;
+                    }
+                    if (mt1.rawFiducials[0].distToCamera > 3) {
+                        doRejectUpdate = true;
+                    }
+                }
+                if (mt1.tagCount == 0) {
                     doRejectUpdate = true;
                 }
-                if (mt1.rawFiducials[0].distToCamera > 3) {
+                if (!doRejectUpdate) {
+                    odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
+                    odometer.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
+                }
+            } else {
+                // Always set robot orientation before getting MegaTag2 measurement
+                LimelightHelpers.SetRobotOrientation(limelightName, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+                LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+                if (Math.abs(gyro.getRate()) > 720) { // reject if the robot is spinning too fast
                     doRejectUpdate = true;
                 }
+                if (mt2.tagCount == 0) {
+                    doRejectUpdate = true;
+                }
+                if (!doRejectUpdate) {
+                    odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
+                    odometer.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+                }
             }
-            if (mt1.tagCount == 0) {
-                doRejectUpdate = true;
-            }
-            if (!doRejectUpdate) {
-                odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
-                odometer.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
-            }
-        } else {
-            // Always set robot orientation before getting MegaTag2 measurement
-            LimelightHelpers.SetRobotOrientation(limelightName, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-            LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
-            if (Math.abs(gyro.getRate()) > 720) { // reject if the robot is spinning too fast
-                doRejectUpdate = true;
-            }
-            if (mt2.tagCount == 0) {
-                doRejectUpdate = true;
-            }
-            if (!doRejectUpdate) {
-                odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
-                odometer.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
-            }
+        } catch (Exception error) {
+            error.printStackTrace();
         }
     }
 
