@@ -16,7 +16,6 @@ public class AlternativePathfindAprilTag extends Command {
     private final int targetAprilTagId;
     private Command pathFind;
 
-
     // A-> Right, B-> Left, S-> Center (always end with center)
 
     /**

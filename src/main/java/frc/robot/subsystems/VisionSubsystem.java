@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -16,7 +15,6 @@ import frc.robot.Constants.AprilTagOffsets;
 import frc.robot.Constants.AprilTags;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.TagOffset;
-import frc.robot.util.LimelightHelpers;
 import frc.robot.util.LimelightHelpers.LimelightResults;
 import org.littletonrobotics.junction.Logger;
 
@@ -87,30 +85,6 @@ public class VisionSubsystem extends SubsystemBase {
                     )
             );
         }
-        
-        
-        /* 
-        String llname = LimelightConstants.llObjectDetectionName; 
-        Vision.visionTargetLocation = Vision.transformTargetLocation(robotContainer.swerveSubsystem.getPose(), llname); 
-        HashSet<Integer> tagsFound = new HashSet<>();
-        for (int i = 0; i < LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llLocalizationName).tagCount; i++) {
-            tagsFound.add(LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llLocalizationName).rawFiducials[i].id);
-        }
-        Vision.tagIds.removeIf(tagId -> !tagsFound.contains(tagId));
-        tagsFound.forEach(tagId -> {
-            if(!Vision.tagIds.contains(tagId)){
-                Vision.tagIds.add(tagId);
-            }
-        });
-        */
-        //Logger.recordOutput(llname + ".pipelineIndex", LimelightHelpers.getCurrentPipelineIndex(llname));
-        //Logger.recordOutput(llname + ".pipelineName", Vision.getPipelineName(llname));
-        //Logger.recordOutput(llname + ".objectDetected", LimelightHelpers.getTV(llname));
-
-        //VisionGamePiece.stabilize(limelightName);
-        //VisionAprilTag.isValid(limelightName);
-
-        //Logger.recordOutput("detectingValid", isDetectingTargetID("[1A]"));
     }
 
     public String getLimelightName() {
@@ -160,30 +134,15 @@ public class VisionSubsystem extends SubsystemBase {
     // this method takes in a parameter of the april tag and checks if it is at the barge
     public boolean isRedAllianceBarge(int id) {
         return id == 5 || id == 15;
-
     }
 
     // adjusts the robot position based on april tag position and a preset offset
     public Pose2d transformPosition(Pose2d aprilTagPos, double offsetDistance) {
-
-        // double givenX = aprilTagPos.getX();
-        // double givenY = aprilTagPos.getY();
-        // double givenRot = aprilTagPos.getRotation().getRadians();
-
-        // double adjustedX = givenX + offsetDistance * Math.cos(givenRot);
-        // double adjustedY = givenY + offsetDistance * Math.sin(givenRot);
-
-        // Pose2d endResult = new Pose2d(adjustedX, adjustedY, Rotation2d.fromRadians(givenRot));
-
-        // return endResult;
-
-        // is no math fun?
         Transform2d dist = new Transform2d(
                 new Translation2d(-offsetDistance, 0.0),
                 new Rotation2d(0.0)
         );
         return aprilTagPos.transformBy(dist);
-
     }
 
     /**
@@ -195,26 +154,12 @@ public class VisionSubsystem extends SubsystemBase {
      * @return Lef positon of adjustedPos relative to driver's camera POV
      */
     public Pose2d scootRight(Pose2d adjustedPos, double scootDist) {
-        // double initialX = adjustedPos.getX();
-        // double initialY = adjustedPos.getY();
-        // double initialRot = adjustedPos.getRotation().getRadians();
-
-        // double scootedX = initialX + scootDist * Math.sin(initialRot);
-        // double scootedY = initialY - scootDist * Math.cos(initialRot);
-
-        // Pose2d scootingRight = new Pose2d(scootedX, scootedY, Rotation2d.fromRadians(initialRot));
-
-        // return scootingRight;
-
-        // is no math fun?
         Transform2d right = new Transform2d(
                 new Translation2d(0.0, -scootDist),
                 new Rotation2d(0.0)
         );
         return adjustedPos.transformBy(right);
-
     }
-
 
     /**
      * NOTE: This method scoots right relative to the driver's camera POV
@@ -225,25 +170,12 @@ public class VisionSubsystem extends SubsystemBase {
      * @return Right positon of adjustedPos relative to driver's camera POV
      */
     public Pose2d scootLeft(Pose2d adjustedPos, double scootDist) {
-        // double initialX = adjustedPos.getX();
-        // double initialY = adjustedPos.getY();
-        // double initialRot = adjustedPos.getRotation().getRadians();
-
-        // double scootedX = initialX - scootDist * Math.sin(initialRot);
-        // double scootedY = initialY + scootDist * Math.cos(initialRot);
-
-        // Pose2d scootingRight = new Pose2d(scootedX, scootedY, Rotation2d.fromRadians(initialRot));
-
-        // return scootingRight;
-
-        // is no math fun?
         Transform2d left = new Transform2d(
                 new Translation2d(0.0, scootDist),
                 new Rotation2d(0.0)
         );
         return adjustedPos.transformBy(left);
     }
-
 
     /**
      * @param targetLocation The location we are trying to go to (our convention)
@@ -270,7 +202,6 @@ public class VisionSubsystem extends SubsystemBase {
         }
         return targetId;
     }
-
 
     /**
      * Closest left reef from position
@@ -326,12 +257,12 @@ public class VisionSubsystem extends SubsystemBase {
         int aprilTag = getCurrentDetectedAprilTag(swervePose);
         Pose2d aprilTagPose = getAprilTagPos(aprilTag);
         Pose2d relativePose = swervePose.relativeTo(aprilTagPose);
-        if (relativePose.getTranslation().getY() < 0){
+        if (relativePose.getTranslation().getY() < 0) {
             return "RIGHT";
         }
         return "LEFT";
     }
-    
+
 
     public double getOffsetY(Pose2d swervePose) {
         int aprilTag = getCurrentDetectedAprilTag(swervePose);
@@ -347,27 +278,27 @@ public class VisionSubsystem extends SubsystemBase {
         return Math.abs(relativePose.getTranslation().getX());
     }
 
-    public void correctTheOffset(double offsetDifY, double offsetDifX, boolean isRight, int id){
+    public void correctTheOffset(double offsetDifY, double offsetDifX, boolean isRight, int id) {
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         if (llf != null) {
             int aprilTag = getCurrentDetectedAprilTag(getAprilTagPos(id));
             TagOffset offset = AprilTagOffsets.getOffset(aprilTag);
             //tune the tolerance here
-            if (isRight){
-                if (Math.abs(offsetDifY) > 0.025){
+            if (isRight) {
+                if (Math.abs(offsetDifY) > 0.025) {
                     offset.right -= offsetDifY;
                 }
             } else {
-                if (Math.abs(offsetDifY) > 0.025){
+                if (Math.abs(offsetDifY) > 0.025) {
                     offset.left -= offsetDifY;
                 }
             }
-            if (Math.abs(offsetDifX) > 0.05){
+            if (Math.abs(offsetDifX) > 0.05) {
                 offset.back -= offsetDifX;
             }
         }
     }
-    
+
 
     public Pose2d getNearestReef(Pose2d swervePos) {
         Pose2d closest = swervePos;
@@ -386,11 +317,11 @@ public class VisionSubsystem extends SubsystemBase {
 
         // return swervePos.nearest(AprilTags.aprilTags);
     }
-    
 
-    public int getNearestAprilTag(Pose2d swervePose){
+
+    public int getNearestAprilTag(Pose2d swervePose) {
         Pose2d nearest = swervePose.nearest(AprilTags.aprilTags);
-        int id = AprilTags.aprilTags.indexOf(nearest)+1;
+        int id = AprilTags.aprilTags.indexOf(nearest) + 1;
         return id;
     }
 
@@ -403,7 +334,7 @@ public class VisionSubsystem extends SubsystemBase {
         return getNearestReef(swervePos).getRotation();
     }
 
-    
+
     public int getCurrentDetectedAprilTag(Pose2d swervePos) {
         LimelightResults llf = VisionAprilTag.isValid(limelightName);
         if (llf != null) {
@@ -413,7 +344,7 @@ public class VisionSubsystem extends SubsystemBase {
         return getNearestAprilTag(swervePos);
     }
 
-    public static double getStraightLineZDistance(){
+    public static double getStraightLineZDistance() {
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         double llToFrontOfRobot = 0.5;
         int aprilTagId = -1;
@@ -421,7 +352,7 @@ public class VisionSubsystem extends SubsystemBase {
             aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
         } else {
             Pose2d nearest = SwerveSubsystem.currentPose.nearest(AprilTags.aprilTags);
-            aprilTagId = AprilTags.aprilTags.indexOf(nearest)+1;
+            aprilTagId = AprilTags.aprilTags.indexOf(nearest) + 1;
         }
         // double distance = 0;
         // Pose2d relativePose = SwerveSubsystem.currentPose.relativeTo(AprilTags.aprilTags.get(aprilTagId-1));
@@ -434,7 +365,7 @@ public class VisionSubsystem extends SubsystemBase {
         // }
 
         double distance = Math.abs(SwerveSubsystem.currentPose.relativeTo(AprilTags.aprilTags.get(aprilTagId - 1)).getX())
-        - AprilTagOffsets.getOffset(aprilTagId).relative - llToFrontOfRobot;
+                - AprilTagOffsets.getOffset(aprilTagId).relative - llToFrontOfRobot;
 
         return distance;
     }

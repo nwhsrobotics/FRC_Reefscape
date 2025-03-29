@@ -6,16 +6,12 @@ package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.MAXMotionConfig;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.ElevatorConstants;
@@ -23,8 +19,6 @@ import frc.robot.util.ImprovedCanSpark;
 
 
 public class ElevatorSubsystem extends SubsystemBase {
-
-
     // k values
     private final double kS = 0.0;
     private final double kG = 0.0;
@@ -32,21 +26,16 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final double kA = 0.0;
     // Create a new ElevatorFeedforward with gains kS, kG, kV, and kA
     ElevatorFeedforward feedforward = new ElevatorFeedforward(kS, kG, kV, kA);
-    private SparkBaseConfig configEl = new SparkMaxConfig();
-
-
+    private final SparkBaseConfig configEl = new SparkMaxConfig();
 
     //Encoder absoluteEncoder = new Encoder(null, null);
-
     // Create ele(vator) motors
 
-
-    private SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, configEl, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake, 0.8, 0.0, 0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02 / ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
-    private SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, configEl, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake, 0.8, 0.0, 0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02 / ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
+    private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, configEl, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake, 0.8, 0.0, 0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02 / ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
+    private final SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, configEl, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake, 0.8, 0.0, 0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02 / ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
 
     SparkClosedLoopController leftElevatorController = leftElevatorMotor.getClosedLoopController();
     SparkClosedLoopController rightElevatorController = rightElevatorMotor.getClosedLoopController();
-
 
     //private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO, SparkBaseConfig.IdleMode.kBrake);
 
@@ -61,11 +50,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     // set up relative encoders for elevator
     public RelativeEncoder relativeEncoderLeft = leftElevatorMotor.getEncoder();
     public RelativeEncoder relativeEncoderRight = rightElevatorMotor.getEncoder();
-
-
-    //PID controllers
-    public PIDController pidControllerLeft = new PIDController(0.1, 0, 0);
-    public PIDController pidControllerRight = new PIDController(0.1, 0, 0);
 
     //Create limit switches
     //DigitalInput toplimitSwitch = new DigitalInput(0);
@@ -112,7 +96,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         // leftElevatorMotor.configure(configEl, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         // rightElevatorMotor.configure(configEl, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         setPointRotations = metersToRotations(elevatorHeights[0]);
-        
+
     }
 
     public void L1_Preset() {
@@ -134,16 +118,14 @@ public class ElevatorSubsystem extends SubsystemBase {
         setPointRotations = metersToRotations(elevatorHeights[4]);  //183cm >>  179.3cm  >>   1.793m
     }
 
-    public void dynamic_Height(){
+    public void dynamic_Height() {
         setPointRotations = Math.min(setPointRotations + metersToRotations((VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35)))), metersToRotations(2.0));
         //you can preset this to a seperate button or make this the new l4 button
         //this method assumes that 0 is the base of the april tag
         //this method will correct any preset based off of its position, so you would press a standard preset and adjust it with this one
     }
 
-    public void dynamic_L4_Preset(){
-        
-        
+    public void dynamic_L4_Preset() {
         setPointRotations = Math.min(metersToRotations((elevatorHeights[4] + VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35)))), metersToRotations(2.0));
         //you can preset this to a seperate button or make this the new l4 button
         //this method assumes that 0 is the base of the april tag
@@ -155,65 +137,18 @@ public class ElevatorSubsystem extends SubsystemBase {
         setPointRotations = metersToRotations(elevatorHeights[5]);
     }
 
-
-    //Seting elevator heights
-    public void increaseCurrentLevel() {
-        if (currentElevatorLevel >= elevatorHeights.length - 1) {
-            System.out.println("LEVEL IS CURRENTLY 4 AND CAN NOT GO UP ANYMORE!");
-        } else {
-            currentElevatorLevel++;
-            setPointRotations = metersToRotations(elevatorHeights[currentElevatorLevel]);
-        }
-    }
-
-
-    public void decreaseCurrentLevel() {
-        if (currentElevatorLevel <= 0) {
-            System.out.println("LEVEL IS CURRENTLY 1 AND CAN NOT GO DOWN ANYMORE!");
-        } else {
-            currentElevatorLevel--;
-            setPointRotations = metersToRotations(elevatorHeights[currentElevatorLevel]);
-        }
-    }
-  
-  
-  /*private void emergencyLimitSwitchLogic(){
-
-    if(toplimitSwitch.get()){
-      setPointRotations = elevatorHeights[elevatorHeights.length-1]; 
-      System.out.println("[WARNING] Elevator height maxed out (Hint: this should have not happened)!");
-    }
-    if(bottomlimitSwitch.get()){
-      setPointRotations = elevatorHeights[0]; 
-      System.out.println("[WARNING] Elevator height at 0 (Hint: Stop doing what u doing rn)!");
-    }
-
-  }*/
-
-
     public ElevatorSubsystem() {
-
-
     }
 
     @Override
     public void periodic() {
         // System.out.println(currentElevatorLevel);
-        // System.out.println(pidControllerLeft.calculate(relativeEncoderLeft.getPosition(), -setPointRotations));
-        // System.out.println(pidControllerRight.calculate(relativeEncoderLeft.getPosition(), setPointRotations));
         // System.out.println(setPointRotations);
-
-        // This method will be called once per scheduler run
-        //emergencyLimitSwitchLogic();
-        //leftElevatorMotor.setVoltage(pidControllerLeft.calculate(relativeEncoderLeft.getPosition(), -setPointRotations));
-        //rightElevatorMotor.setVoltage(pidControllerRight.calculate(relativeEncoderRight.getPosition(), setPointRotations));
 
         // leftElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
         // rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
         leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
         rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
-
-
     }
 
 

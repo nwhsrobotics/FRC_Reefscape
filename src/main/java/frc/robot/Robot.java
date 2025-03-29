@@ -13,11 +13,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.legacy.RobotErrorHandler;
-import frc.robot.subsystems.LED_Subsystem;
 import frc.robot.util.ImprovedPowerDistribution;
 import frc.robot.util.LocalADStarAK;
-
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -46,10 +43,6 @@ public class Robot extends LoggedRobot {
         robotPD = new ImprovedPowerDistribution(CANAssignments.PDU_ID, Constants.PDU_TYPE);
 
         Logger.recordMetadata("version", LoggerConstants.RUNNING_UNDER);
-        Logger.recordMetadata("build_commit", BuildConstants.GIT_SHA);
-        Logger.recordMetadata("build_branch", BuildConstants.GIT_BRANCH);
-        Logger.recordMetadata("build_git_uncommitted_changes", String.valueOf(BuildConstants.DIRTY));
-        Logger.recordMetadata("build_timestamp", BuildConstants.BUILD_DATE);
 
         switch (LoggerConstants.MODE) {
             case REAL:
@@ -88,9 +81,6 @@ public class Robot extends LoggedRobot {
             // http://roborio-(teamnum)-FRC.local:5811
         }
 
-
-        
-        
 
     }
 
