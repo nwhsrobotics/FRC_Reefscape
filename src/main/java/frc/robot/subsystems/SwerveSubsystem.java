@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.path.*;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
@@ -13,16 +12,13 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,15 +26,9 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.LimelightConstants;
-import frc.robot.autos.PosePIDCommand;
 import frc.robot.util.LimelightHelpers;
 import frc.robot.util.SwerveUtils;
 import org.littletonrobotics.junction.Logger;
-
-import java.util.List;
-
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Seconds;
 
 /**
  * Represents the swerve drive subsystem, managing four swerve modules and handling overall robot control.
@@ -424,12 +414,12 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
-        
+
         //addVisionMeasurement(LimelightConstants.llFront, 0.00, 0.00, 9999999);
         //dont need the back one most likely
         //addVisionMeasurement(LimelightConstants.llBack, 0.2, 0.2, 9999999);
     }
-    
+
 
     /**
      * Adds a vision measurement from the specified limelight.
@@ -482,6 +472,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 }
             }
         } catch (Exception error) {
+            Logger.recordOutput("errors.vision", error.toString());
             error.printStackTrace();
         }
     }
@@ -538,8 +529,6 @@ public class SwerveSubsystem extends SubsystemBase {
             xSpeedCommanded = currentTranslationMag * Math.cos(currentTranslationDir);
             ySpeedCommanded = currentTranslationMag * Math.sin(currentTranslationDir);
             currentRotation = rotLimiter.calculate(rot);
-
-
         } else {
             xSpeedCommanded = xSpeed;
             ySpeedCommanded = ySpeed;
@@ -581,5 +570,4 @@ public class SwerveSubsystem extends SubsystemBase {
         //use this logger key to log important evvents 
         Logger.recordOutput("robot.events", "ResetOdometryWithVision");
     }
-
 }

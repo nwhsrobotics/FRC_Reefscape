@@ -4,6 +4,7 @@ import edu.wpi.first.hal.PowerDistributionFaults;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 public class ImprovedPowerDistribution extends PowerDistribution {
     private final Map<Integer, Boolean> channelTracker = new HashMap<>();
-    private final InstantCommand watchdogCommand = new InstantCommand(() -> watchdog());
+    private final ParallelRaceGroup watchdogCommand = new InstantCommand(() -> watchdog()).withTimeout(1);
 
     private void watchdog() {
         PowerDistributionFaults activeFaults = getFaults();

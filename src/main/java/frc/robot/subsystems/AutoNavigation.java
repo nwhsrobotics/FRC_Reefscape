@@ -1,13 +1,7 @@
 package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.IdealStartingState;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.Waypoint;
-
+import com.pathplanner.lib.path.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,12 +13,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.autos.PosePIDCommand;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Seconds;
+import org.littletonrobotics.junction.Logger;
 
 import java.util.List;
 
-import org.littletonrobotics.junction.Logger;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Seconds;
 
 /**
  * Helper class for autonavigation.
@@ -136,11 +130,7 @@ public class AutoNavigation {
      * @param destination - position to navigate to.
      */
     public void navigateTo(Pose2d destination) {
-        // if (!enabled || !RobotState.isTeleop()) {
-        //     //return new InstantCommand();
-        //     return;
-        // }
-        if (!RobotState.isTeleop()){
+        if (!RobotState.isTeleop()) {
             return;
         }
         enable();
@@ -158,9 +148,9 @@ public class AutoNavigation {
         navigationCommand.schedule();
         Logger.recordOutput("autonavigator.destination", destination);
         //return navigationCommand;
-        
+
     }
-    
+
     /**
      * Finds a path and follows it based on the specified path name.
      * Loads the path from a file, sets constraints, and uses AutoBuilder to create a pathfinding command.
@@ -209,12 +199,12 @@ public class AutoNavigation {
     public Command pathfindToPosition(Pose2d position) {
         //Maybe use on the fly path? Less overhead
         Command command = AutoBuilder.pathfindToPose(
-                        position,
-                        AutoConstants.kPathfindingConstraints,
-                        0.0 // Goal end velocity in meters/sec
-                ).andThen(PosePIDCommand.create(swerve, position, Seconds.of(1/3)));
-                // .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
-                // .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
+                position,
+                AutoConstants.kPathfindingConstraints,
+                0.0 // Goal end velocity in meters/sec
+        ).andThen(PosePIDCommand.create(swerve, position, Seconds.of(1 / 3)));
+        // .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
+        // .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
         //.andThen(pathOnTheFlyToPosition(position));
 
         return command;
@@ -243,8 +233,8 @@ public class AutoNavigation {
         //Reduce PosePIDCommand time to 0.2s
         Command followPathCommand = AutoBuilder.followPath(path)
                 .andThen(PosePIDCommand.create(swerve, targetPose, Seconds.of(1)));
-                // .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
-                // .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
+        // .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
+        // .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
 
         return followPathCommand;
     }
