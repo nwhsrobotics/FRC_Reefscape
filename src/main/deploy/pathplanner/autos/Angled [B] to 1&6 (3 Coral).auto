@@ -15,15 +15,22 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "sequential",
                 "data": {
-                  "waitTime": 0.34
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "L4CORAL"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.34
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "L4CORAL"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -71,15 +78,22 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "sequential",
                 "data": {
-                  "waitTime": 0.72
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "L4CORAL"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.72
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "L4CORAL"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -127,15 +141,22 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "sequential",
                 "data": {
-                  "waitTime": 0.75
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "L4CORAL"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.72
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "L4CORAL"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -145,12 +166,6 @@
           "type": "named",
           "data": {
             "name": "Outtake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LoadStation"
           }
         }
       ]
