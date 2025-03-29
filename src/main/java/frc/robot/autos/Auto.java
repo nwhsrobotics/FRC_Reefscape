@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.Positions;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
@@ -26,15 +25,13 @@ public class Auto extends SequentialCommandGroup {
         this.initialPos = initialPos;
         this.visionForwards = visionForwards;
         this.visionBackwards = visionBackwards;
-        // LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront);
-        // LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront);
-        // Elastic.Notification.notif("Auto done");
         addCommands(
                 // Reset robot odometry to a initial position.
                 new InstantCommand(() -> flipResetOdometry(initialPos)),
-                //new InstantCommand(() -> Elastic.Notification.notif("AUTO RUNNING")),
+
+                NamedCommands.getCommand("autoInit"),
+                NamedCommands.getCommand("Output"),
                 scoreCoral()
-                //new InstantCommand(() -> Elastic.Notification.notif("AUTO RUNNING"))
         );
     }
 
@@ -49,85 +46,71 @@ public class Auto extends SequentialCommandGroup {
      */
     public SequentialCommandGroup scoreCoral() {
         SequentialCommandGroup exitReturnCommands = new SequentialCommandGroup();
+        return exitReturnCommands;
+        /*
         //Checks if robot is at position A
-        if (initialPos.equals(Positions.START_A)) {
+        if (swerve.getPose().getY() > 7 && swerve.getPose().getY() < 7.50) {
             //Starts from position A and then goes to first position in list
-            exitReturnCommands.addCommands(swerve.autonavigator.pathFindThenFollowPath("[A] " + locationsToGo.get(0)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
+            exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[A] " + locationsToGo.get(0)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
             //once the april tag is detected, pathFindAprilTag comes in and adjusts the robot to the april tag
-            exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
-            exitReturnCommands.addCommands(NamedCommands.getCommand("L4CORAL"));
-            exitReturnCommands.addCommands(NamedCommands.getCommand("Outtake"));
-            //exitReturnCommands.addCommands(new ParallelCommandGroup(NamedCommands.getCommand("L4CORAL"), swerve.pathFindThenFollowPath("[A] " + locationsToGo.get(0)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(0)))));
-
+            exitReturnCommands.addCommands(new pathFindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
 
             for (int i = 0; i < locationsToGo.size() - 1; i++) {
                 //Iterates through each position in the list to station 1
-                exitReturnCommands.addCommands(NamedCommands.getCommand("LoadStation"));
-                exitReturnCommands.addCommands(swerve.autonavigator.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(() -> !visionBackwards.isDetectingTargetID("[S1]")));
-                exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
-                exitReturnCommands.addCommands(NamedCommands.getCommand("Intake"));
-                //exitReturnCommands.addCommands(new WaitCommand(2));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(() -> !visionBackwards.isDetectingTargetID("[S1]")));
+                exitReturnCommands.addCommands(new pathFindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
                 //Move robot from station 1 to next station
                 int finalI = i;
                 exitReturnCommands.addCommands(swerve.autonavigator.pathFindThenFollowPath("[S1] " + locationsToGo.get(i + 1)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(finalI + 1))));
-                exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(i + 1)), swerve, visionForwards, locationsToGo.get(i + 1)));
-                exitReturnCommands.addCommands(NamedCommands.getCommand("L4CORAL"));
-                exitReturnCommands.addCommands(NamedCommands.getCommand("Outtake"));
+                exitReturnCommands.addCommands(new pathFindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(i + 1)), swerve, visionForwards, locationsToGo.get(i + 1)));
             }
-
 
         }
         //Checks if robot is at position B
-        if (initialPos.equals(Positions.START_B)) {
-            //exitReturnCommands.addCommands(new InstantCommand(() -> Elastic.Notification.notif("B AUTO")));
+        if (swerve.getPose().getY() > 5.90 && swerve.getPose().getY() < 6.50) {
             //Starts from position B and then goes to first position in list
-            exitReturnCommands.addCommands(swerve.autonavigator.pathFindThenFollowPath("[B] " + locationsToGo.get(0)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
-            exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
-            exitReturnCommands.addCommands(NamedCommands.getCommand("L4CORAL"));
-            exitReturnCommands.addCommands(NamedCommands.getCommand("Outtake"));
+            exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[B] " + locationsToGo.get(0)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
+            exitReturnCommands.addCommands(new pathFindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
 
             for (int i = 0; i < locationsToGo.size() - 1; i++) {
                 //Iterates through each position in the list to station 1
-                exitReturnCommands.addCommands(NamedCommands.getCommand("LoadStation"));
-                exitReturnCommands.addCommands(swerve.autonavigator.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(() -> !visionBackwards.isDetectingTargetID("[S1]")));
-                exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
-                exitReturnCommands.addCommands(NamedCommands.getCommand("Intake"));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S1]").onlyWhile(() -> !visionBackwards.isDetectingTargetID("[S1]")));
+                exitReturnCommands.addCommands(new pathFindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
+
                 //Move robot from station 1 to next station
                 int finalI = i;
-                exitReturnCommands.addCommands(swerve.autonavigator.pathFindThenFollowPath("[S1] " + locationsToGo.get(i + 1)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(finalI + 1))));
-                exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(i + 1)), swerve, visionForwards, locationsToGo.get(i + 1)));
-                exitReturnCommands.addCommands(NamedCommands.getCommand("L4CORAL"));
-                exitReturnCommands.addCommands(NamedCommands.getCommand("Outtake"));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S1] " + locationsToGo.get(i + 1)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(finalI + 1))));
+                exitReturnCommands.addCommands(new pathFindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(i + 1)), swerve, visionForwards, locationsToGo.get(i + 1)));
+
             }
 
         }
 
         //Checks if robot is at position C
-        if (initialPos.equals(Positions.START_C)) {
+        if (swerve.getPose().getY() > 4.80 && swerve.getPose().getY() < 5.40) {
             //Starts from position C and then goes to first position in list
-            exitReturnCommands.addCommands(swerve.autonavigator.pathFindThenFollowPath("[C] " + locationsToGo.get(0)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
-            exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
-            exitReturnCommands.addCommands(NamedCommands.getCommand("L4CORAL"));
-            exitReturnCommands.addCommands(NamedCommands.getCommand("Outtake"));
+            exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[C] " + locationsToGo.get(0)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(0))));
+            exitReturnCommands.addCommands(new pathFindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(0)), swerve, visionForwards, locationsToGo.get(0)));
 
             for (int i = 0; i < locationsToGo.size() - 1; i++) {
                 //Iterates through each position in the list to station 2
-                exitReturnCommands.addCommands(NamedCommands.getCommand("LoadStation"));
-                exitReturnCommands.addCommands(swerve.autonavigator.pathFindThenFollowPath(locationsToGo.get(i) + " [S2]").onlyWhile(() -> !visionBackwards.isDetectingTargetID("[S2]")));
-                exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
-                exitReturnCommands.addCommands(NamedCommands.getCommand("Intake"));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath(locationsToGo.get(i) + " [S2]").onlyWhile(() -> !visionBackwards.isDetectingTargetID("[S2]")));
+                exitReturnCommands.addCommands(new pathFindAprilTag(visionBackwards.getAprilTagId(locationsToGo.get(i)), swerve, visionBackwards, locationsToGo.get(i)));
+
                 //Move robot from station 2 to next station
                 int finalI = i;
-                exitReturnCommands.addCommands(swerve.autonavigator.pathFindThenFollowPath("[S2] " + locationsToGo.get(i + 1)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(finalI + 1))));
-                exitReturnCommands.addCommands(new AlternativePathfindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(i + 1)), swerve, visionForwards, locationsToGo.get(i + 1)));
-                exitReturnCommands.addCommands(NamedCommands.getCommand("L4CORAL"));
-                exitReturnCommands.addCommands(NamedCommands.getCommand("Outtake"));
+                exitReturnCommands.addCommands(swerve.pathFindThenFollowPath("[S2] " + locationsToGo.get(i + 1)).onlyWhile(() -> !visionForwards.isDetectingTargetID(locationsToGo.get(finalI + 1))));
+                exitReturnCommands.addCommands(new pathFindAprilTag(visionForwards.getAprilTagId(locationsToGo.get(i + 1)), swerve, visionForwards, locationsToGo.get(i + 1)));
+
             }
 
         }
+        exitReturnCommands.addCommands();
 
         return exitReturnCommands;
+         */
     }
+
 
     /**
      * Resets robot odometry to a flipped position if the alliance is red.
@@ -136,15 +119,15 @@ public class Auto extends SequentialCommandGroup {
      */
 
     public void flipResetOdometry(Pose2d loc) {
-        swerve.resetOdometry(getLocation(loc));
-    }
-
-    public Pose2d getLocation(Pose2d loc) {
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            return FlippingUtil.flipFieldPose(loc);
+            swerve.resetOdometry(FlippingUtil.flipFieldPose(loc));
         } else {
-            return loc;
+            swerve.resetOdometry(loc);
         }
+    }
+
+    public void addCommandActions(SequentialCommandGroup commands, String startLocation, String station) {
+
     }
 }

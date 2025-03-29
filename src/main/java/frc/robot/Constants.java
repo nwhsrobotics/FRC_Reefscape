@@ -240,17 +240,6 @@ public final class Constants {
         // get rid of temp fix
     }
 
-    public static final class SysIdConstants {
-        //Place holder ratio
-        public static final double SYSIDMOTORGEARRATIO = 0.13;
-        public static final double SYSIDSUBSYSTEMDIAMETER = 2;
-        //equation needs to be reviewed
-
-        public static final double SYSIDENCOCERROT2METER = SYSIDMOTORGEARRATIO * Math.PI * SYSIDSUBSYSTEMDIAMETER;
-        public static final double SYSIDENCODERMETERPERSECONDS = SYSIDENCOCERROT2METER / 60;
-
-    }
-
     public static final class ElevatorConstants {
         // Elevator Limits
         //units are most likely in roatations
@@ -383,7 +372,7 @@ public final class Constants {
         public double relative;
         public double relativeRight;
         public double relativeLeft;
-    
+
         public TagOffset(double left, double right, double back, double backLeft, double backRight, double relative, double relativeLeft, double relativeRight) {
             this.left = left;
             this.right = right;
@@ -395,31 +384,30 @@ public final class Constants {
             this.relativeRight = relativeRight;
         }
     }
-    
+
 
     public static final class AprilTagOffsets {
         //0.1651
-        private static final double LEFT_OFFSET  = 0.2051;
+        private static final double LEFT_OFFSET = 0.2051;
         private static final double RIGHT_OFFSET = 0.1251;
-        private static final double BACK_OFFSET  = 0.5445;
-    
+        private static final double BACK_OFFSET = 0.5445;
+
         public static final Map<Integer, TagOffset> tagOffsets = new HashMap<>();
-    
+
         static {
-            for(int tagID = 1; tagID <= 22; tagID++){
+            for (int tagID = 1; tagID <= 22; tagID++) {
                 tagOffsets.put(
-                    tagID,
-                    new TagOffset(LEFT_OFFSET, RIGHT_OFFSET, BACK_OFFSET, BACK_OFFSET, BACK_OFFSET, 0, 0, 0)
+                        tagID,
+                        new TagOffset(LEFT_OFFSET, RIGHT_OFFSET, BACK_OFFSET, BACK_OFFSET, BACK_OFFSET, 0, 0, 0)
                 );
             }
             //tagOffsets.get(10).left += 0.01;
         }
-    
-        public static TagOffset getOffset(int tagID){
+
+        public static TagOffset getOffset(int tagID) {
             return tagOffsets.getOrDefault(tagID, new TagOffset(LEFT_OFFSET, RIGHT_OFFSET, BACK_OFFSET, BACK_OFFSET, BACK_OFFSET, 0, 0, 0));
         }
     }
-    
 
 
     public enum RuntimeEnvironment {

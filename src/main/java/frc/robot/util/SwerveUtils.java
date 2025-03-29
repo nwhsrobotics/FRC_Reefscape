@@ -87,7 +87,7 @@ public class SwerveUtils {
     /**
      * Returns a signed difference between 2 angles (in radians).
      * The result is in (-pi, pi].
-     *
+     * <p>
      * If result is positive, 'angleA' is ahead of 'angleB' in CCW sense.
      * If result is negative, 'angleA' is behind 'angleB' in CCW sense.
      */

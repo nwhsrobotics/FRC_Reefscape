@@ -36,7 +36,7 @@ public class ImprovedCanSpark extends SparkMax {
     public ImprovedCanSpark(int id, SparkBaseConfig config, MotorKind motor, IdleMode mode, double P, double I, double D, double maxVel, double maxAccel, double allowedError) {
         super(id, MotorType.kBrushless);
         clearFaults();
-        
+
         config.idleMode(mode);
         switch (motor) {
             case NEO -> config.smartCurrentLimit(30);
@@ -58,8 +58,6 @@ public class ImprovedCanSpark extends SparkMax {
         } else {
             configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         }
-
-
     }
 
 
