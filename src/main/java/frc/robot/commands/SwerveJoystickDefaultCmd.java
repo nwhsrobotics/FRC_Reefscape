@@ -151,7 +151,7 @@ private void reefRelativeDrive() {
     // Finally you combine all componenets together to get a reef relative mode
     // Let me explain how this works
     // Forward and sideway values are supplied by controllers and they are the % of max speed to go
-    // Since we are doing reef relative, we need to convert it into field x and y axis (0,0 at reef cebter) so you can get the moving forward/backward relative to reef (radialUnit/forwardUnit) and moving in a circle (sidewaysUnit/tangentialUnit) and combine their x and y's to get final x and y units
+    // Since we are doing reef relative, we need to convert it into field x and y axis (0,0 at reef center) so you can get the moving forward/backward relative to reef (radialUnit/forwardUnit) and moving in a circle (sidewaysUnit/tangentialUnit) and combine their x and y's to get final x and y units
     // With speed limits from controllers
     double fieldX = forwardVal * forwardUnitX + sidewaysVal * sidewaysUnitX;
     double fieldY = forwardVal * forwardUnitY + sidewaysVal * sidewaysUnitY;
@@ -169,6 +169,35 @@ private void reefRelativeDrive() {
     double rotCmd = profiledRotController.calculate(currentHeading) / DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
 
     swerveSubsystem.drive(fieldX, fieldY, rotCmd, false, true);
+}
+
+private void reefRelativeDrivev2() {
+    Pose2d currentPose = swerveSubsystem.getPose();
+    Pose2d nearestReef = currentPose.nearest(Positions.REEF_CENTERS);
+    double robotX = currentPose.getX();
+    double robotY = currentPose.getY();
+    double centerX = nearestReef.getX();
+    double centerY = nearestReef.getY();
+    double dx = robotX - centerX;
+    double dy = robotY - centerY;
+    double angleToCenter = Math.atan2(dy, dx);
+    double forwardVal = -xbox.getLeftY(); 
+    double sidewaysVal = xbox.getLeftX();  
+    double radialAngle = angleToCenter + Math.PI;
+    double radialUnitX = Math.cos(radialAngle);
+    double radialUnitY = Math.sin(radialAngle);
+    double tangentialAngle = radialAngle + (Math.PI / 2.0);
+    double tangentialUnitX = Math.cos(tangentialAngle);
+    double tangentialUnitY = Math.sin(tangentialAngle);
+    double fieldX = forwardVal * radialUnitX + sidewaysVal * tangentialUnitX;
+    double fieldY = forwardVal * radialUnitY + sidewaysVal * tangentialUnitY;
+    double desiredHeading = angleToCenter + Math.PI; 
+    double currentHeading = currentPose.getRotation().getRadians();
+    double headingError = SwerveUtils.angleDifferenceSigned(desiredHeading, currentHeading);
+    double kRot = Math.PI / 25.0; 
+    double rotCmd = kRot * headingError;
+
+    swerveSubsystem.drive(fieldX, fieldY, rotCmd, false, false);
 }
 
 
