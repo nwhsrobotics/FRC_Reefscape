@@ -78,10 +78,13 @@ public class LED_Subsystem extends SubsystemBase {
 
   private boolean isCANBUS_Error = false;
 
-  public void triggerLED(LEDPattern ledPattern){
+  public void triggerLED(String mode){
     if(isCANBUS_Error){
       setLED_Pattern(canBusError);
+      return; 
     }
+    
+
 
 
   }
