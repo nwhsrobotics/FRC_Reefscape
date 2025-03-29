@@ -35,51 +35,57 @@ public class LED_Subsystem extends SubsystemBase {
    
 
 
-  //solid color LED patterns 
-  //coral pattern(if coral is in outtake)
+  //LED patterns ===================================================                                           
   private LEDPattern coral = LEDPattern.solid(Color.kCoral);
-  //
+  private LEDPattern canBusError = LEDPattern.solid(Color.kRed);
+  private LEDPattern autoModeRunning = LEDPattern.solid(Color.kGold);
+  private LEDPattern autoAlineRunning = LEDPattern.solid(Color.kPurple);
+  private LEDPattern eleDroping = LEDPattern.solid(Color.kGreen); 
+  
+
   //broken orange gradient 
   private LEDPattern brokenGradientBase = LEDPattern.gradient(GradientType.kDiscontinuous,Color.kBlack, Color.kBlack, orange,Color.kBlack, Color.kBlack, orange,Color.kBlack, Color.kBlack, orange);
-  private LEDPattern idle = brokenGradientBase.scrollAtRelativeSpeed(Percent.per(Second).of(25));
-  private LEDPattern absolute = brokenGradientBase.scrollAtAbsoluteSpeed(Centimeters.per(Second).of(12.5), ledSpacing);
-  //breathe pattern
-  private LEDPattern base = LEDPattern.discontinuousGradient(Color.orange);
-  private LEDPattern pattern = base.breathe(Seconds.of(2));
-  //progress mask (elevator pattern)
-  LEDPattern pattern = LEDPattern.progressMaskLayer(() -> m_elevator.getHeight() / m_elevator.getMaxHeight());
-
-
-
+  private LEDPattern idle = brokenGradientBase.scrollAtRelativeSpeed(Percent.per(Second).of(25)); 
+  
+  //ele going up 
+  /*static LEDPattern elePattern = LEDPattern.LEDprogressMaskLayer();
+  LEDPattern basePattern = LEDPattern.gradient(Color.kRed, Color.kBlue);
+  LEDPattern progressPattern = basePattern.mask(progressMaskLayer(() -> elevator.getHeight() / elevator.maxHeight());*/
    
 
   //setting LED length, should only be done on startup 
   public LED_Subsystem() {
- 
     elevatorLEDLeft.setLength(elevatorLEDLeft_Buffer.getLength()); 
     elevatorLEDRight.setLength(elevatorLEDRight_Buffer.getLength()); 
-    
 
   }
 
 
-
-  //LED presets ======================================================
-
-  public void LED_Pattern_Idle(){
-    idle.applyTo(elevatorLEDLeft_Buffer);
+  //Set LEDs to a pattern 
+  private void setLED_Pattern(LEDPattern pattern){
+    pattern.applyTo(elevatorLEDLeft_Buffer);
     elevatorLEDLeft.setData(elevatorLEDLeft_Buffer); 
     elevatorLEDLeft.start();
 
-    idle.applyTo(elevatorLEDLeft_Buffer);
+    pattern.applyTo(elevatorLEDLeft_Buffer);
     elevatorLEDLeft.setData(elevatorLEDLeft_Buffer); 
     elevatorLEDLeft.start(); 
   } 
 
 
 
+  //hadleing toggling difrent LED patterns 
 
-  //Things to trigger LEDs ===========================================
+  private boolean isCANBUS_Error = false;
+
+  public void triggerLED(LEDPattern ledPattern){
+    if(isCANBUS_Error){
+      setLED_Pattern(canBusError);
+    }
+
+
+  }
+
 
 
   @Override
