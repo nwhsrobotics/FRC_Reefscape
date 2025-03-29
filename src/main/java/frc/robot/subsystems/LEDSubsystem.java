@@ -52,7 +52,6 @@ public class LEDSubsystem extends SubsystemBase {
     public LEDSubsystem() {
         elevatorLEDLeft.setLength(elevatorLEDLeft_Buffer.getLength());
         elevatorLEDRight.setLength(elevatorLEDRight_Buffer.getLength());
-
     }
 
 
@@ -70,12 +69,23 @@ public class LEDSubsystem extends SubsystemBase {
 
     //hadleing toggling difrent LED patterns
 
-    private final boolean isCANBUS_Error = false;
+    boolean isCANBUS_Error = false;
 
-    public void triggerLED(LEDPattern ledPattern) {
+    public void triggerLED(String mode) {
         if (isCANBUS_Error) {
             setLED_Pattern(canBusError);
+            return;
         }
+
+        if(mode.equals("CANBUS_Error")){
+            isCANBUS_Error = true;
+            triggerLED("CANBUS_Error");
+        }
+
+        
+
+
+
 
 
     }
