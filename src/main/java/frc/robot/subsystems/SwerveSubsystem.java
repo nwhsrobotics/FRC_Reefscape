@@ -425,7 +425,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
         
-        addVisionMeasurement(LimelightConstants.llFront, 0.00, 0.00, 9999999);
+        //addVisionMeasurement(LimelightConstants.llFront, 0.00, 0.00, 9999999);
         //dont need the back one most likely
         //addVisionMeasurement(LimelightConstants.llBack, 0.2, 0.2, 9999999);
     }

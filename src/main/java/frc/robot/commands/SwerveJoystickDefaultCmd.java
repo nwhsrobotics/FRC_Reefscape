@@ -59,16 +59,16 @@ public class SwerveJoystickDefaultCmd extends Command {
             //         VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
             //         VisionAprilTag.limelight_aimSpeedX_proportional(LimelightConstants.llFront),
             //         swerveSubsystem.isFieldRelative() && fieldRelative, false);
-        } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if trigger(booster) not pressed
+        } else if ((xbox.getLeftTriggerAxis() > 0.1)) {  //if reef relative mode pressed
+            reefRelativeDrive();
+            //headingLockRobotRelative();
+         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if trigger(booster) not pressed
             fieldRelative = true;
             swerveSubsystem.drive(
                     -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftY(), 2), xbox.getLeftY())) * 0.5, OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftX(), 2), xbox.getLeftX())) * 0.5, OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband((xbox.getRightX()) * 0.25, OIConstants.kDriveDeadband),
                     swerveSubsystem.isFieldRelative() && fieldRelative, true);
-        } else if ((xbox.getLeftTriggerAxis() > 0.1)) {  //if reef relative mode pressed
-            reefRelativeDrive();
-            //headingLockRobotRelative();
         } else {
             // fast mode (or can be booster too) has no slew rate/rate limit
             fieldRelative = true;
@@ -144,7 +144,7 @@ private void reefRelativeDrive() {
     double headingError = SwerveUtils.AngleDifference(angleToCenter, currentHeading);
     // Now based on that difference we can run a simple P (proportional) based control
     // kRot is the P value (we need to fine tune this) to help with rotation
-    double kRot = Math.PI / 10.0;
+    double kRot = Math.PI / 50.0;
     // Using this, we can essentially run a P based control where you just multiply the error diff by P to get the speed it should be going as a %
     double rotCmd = kRot * headingError;
 

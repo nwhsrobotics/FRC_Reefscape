@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -39,7 +40,7 @@ public class RobotContainer {
 
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
-    public final LED_Subsystem led_sybsystem = new LED_Subsystem();
+    //public final LED_Subsystem led_sybsystem = new LED_Subsystem();
 
     //public final ElevatorSysID elevatorSysID = new ElevatorSysID();
 
@@ -137,7 +138,7 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake).andThen(
             new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 1))
                 .andThen(new WaitCommand(1))
-                .andThen(new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 0)))
+                .andThen(new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 0)))
         ));
         //new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation"))); 
 
@@ -164,7 +165,9 @@ public class RobotContainer {
         // new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.STATION_RIGHT)));
         // new JoystickButton(driver, Buttons.Y).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.FRONT_REEF)));
         // new JoystickButton(driver, Buttons.A).onTrue(new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(Positions.BACK_REEF)));
-        new POVButton(driver, Buttons.POV_DOWN).onTrue(AutoBuilder.buildAuto("Reset Odometry"));
+        new POVButton(driver, Buttons.POV_UP).onTrue(new InstantCommand(()
+        -> swerveSubsystem.resetOdometry(new Pose2d(3.829, 5.143, Rotation2d.fromDegrees(-60)))));
+
 
 
         //Add PID based alligning, if pathplanner is inaccurate
