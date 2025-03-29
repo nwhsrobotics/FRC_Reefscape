@@ -82,4 +82,44 @@ public class SwerveUtils {
             return _angle;
         }
     }
+
+
+    /**
+     * Returns a signed difference between 2 angles (in radians).
+     * The result is in (-pi, pi].
+     *
+     * If result is positive, 'angleA' is ahead of 'angleB' in CCW sense.
+     * If result is negative, 'angleA' is behind 'angleB' in CCW sense.
+     */
+    public static double angleDifferenceSigned(double angleA, double angleB) {
+        // Wrap angles so they lie within [-pi, pi)
+        double a = wrapToPi(angleA);
+        double b = wrapToPi(angleB);
+
+        double diff = a - b; // raw difference
+        // Now ensure diff is in (-pi, +pi]
+        if (diff > Math.PI) {
+            diff -= 2.0 * Math.PI;
+        } else if (diff <= -Math.PI) {
+            diff += 2.0 * Math.PI;
+        }
+        return diff;
+    }
+
+    /**
+     * Wrap an angle (in radians) to the range [-pi, pi).
+     */
+    public static double wrapToPi(double angle) {
+        // shift everything by +pi, mod 2π, shift back
+        // or handle directly:
+        double wrapped = ((angle + Math.PI) % (2.0 * Math.PI)) - Math.PI;
+        // in Java, % can yield negative for negative inputs, so we might do:
+        // wrapped = wrapped < -Math.PI ? wrapped + 2.0*Math.PI : wrapped;
+        // or something to force into [-pi, pi)
+        if (wrapped <= -Math.PI) {
+            wrapped += 2.0 * Math.PI;
+        }
+        return wrapped;
+    }
+
 }
