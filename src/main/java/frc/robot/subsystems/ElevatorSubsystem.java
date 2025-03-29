@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -72,7 +74,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             0.0, //loadSttion
             0.574, // L1
             0.7473, //L2
-            1.1573,//L3
+            1.1373,//L3
             1.7723,  //L4
             //1.8293,
             1.8223 //L5
@@ -126,7 +128,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void dynamic_L4_Preset() {
-        setPointRotations = Math.min(metersToRotations((elevatorHeights[4] + VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35)))), metersToRotations(2.0));
+        setPointRotations = metersToRotations((elevatorHeights[4] + Math.min(VisionSubsystem.getStraightLineZDistance(), 0.08)  * Math.sin(Math.toRadians(35))));
         //you can preset this to a seperate button or make this the new l4 button
         //this method assumes that 0 is the base of the april tag
         //I reccomend using the old l4 elevator height from comp for the initial setpoint rotations
@@ -149,6 +151,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         // rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
         leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
         rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
+
+        Logger.recordOutput("elevator_height", rotationsToMeters(setPointRotations));
     }
 
 

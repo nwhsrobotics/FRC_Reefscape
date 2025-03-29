@@ -52,7 +52,9 @@ public class SwerveJoystickDefaultCmd extends Command {
                     VisionGamePiece.limelight_aimX_proportional(LimelightConstants.llObjectDetectionNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         }*/
-        if (xbox.getLeftBumperButton()) {  //for back vision april tag detection aligning
+        if (xbox.getLeftBumperButton()) {
+            headingLockRobotRelative();
+           //for back vision april tag detection aligning
             //while using Limelight, turn off field-relative driving.
             // fieldRelative = false;
             // swerveSubsystem.drive(
@@ -62,6 +64,7 @@ public class SwerveJoystickDefaultCmd extends Command {
             //         swerveSubsystem.isFieldRelative() && fieldRelative, false);
         } else if (xbox.getRightBumperButton()) { //for forwards april tag align
             fieldRelative = false;
+            reefRelativeDrivev2();
             // swerveSubsystem.drive(
             //         VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llFront),
             //         VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
@@ -159,7 +162,7 @@ public class SwerveJoystickDefaultCmd extends Command {
         profiledRotController.setGoal(angleToCenter);
         double rotCmd = profiledRotController.calculate(currentHeading) / DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
 
-        swerveSubsystem.drive(fieldX, fieldY, rotCmd, false, true);
+        swerveSubsystem.drive(fieldX, fieldY, rotCmd, true, true);
     }
 
     private void reefRelativeDrivev2() {
