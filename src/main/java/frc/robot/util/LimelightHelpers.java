@@ -1,4 +1,4 @@
-//LimelightHelpers v1.12 (REQUIRES LLOS 2025.0 OR LATER)
+//LimelightHelpers v1.11 (REQUIRES LLOS 2025.0 OR LATER)
 
 package frc.robot.util;
 
@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -472,21 +471,6 @@ public class LimelightHelpers {
             this.distToRobot = distToRobot;
             this.ambiguity = ambiguity;
         }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
-            RawFiducial other = (RawFiducial) obj;
-            return id == other.id &&
-                    Double.compare(txnc, other.txnc) == 0 &&
-                    Double.compare(tync, other.tync) == 0 &&
-                    Double.compare(ta, other.ta) == 0 &&
-                    Double.compare(distToCamera, other.distToCamera) == 0 &&
-                    Double.compare(distToRobot, other.distToRobot) == 0 &&
-                    Double.compare(ambiguity, other.ambiguity) == 0;
-        }
-
     }
 
     /**
@@ -572,22 +556,6 @@ public class LimelightHelpers {
             this.isMegaTag2 = isMegaTag2;
         }
 
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
-            PoseEstimate that = (PoseEstimate) obj;
-            // We don't compare the timestampSeconds as it isn't relevant for equality and makes
-            // unit testing harder
-            return Double.compare(that.latency, latency) == 0
-                    && tagCount == that.tagCount
-                    && Double.compare(that.tagSpan, tagSpan) == 0
-                    && Double.compare(that.avgTagDist, avgTagDist) == 0
-                    && Double.compare(that.avgTagArea, avgTagArea) == 0
-                    && pose.equals(that.pose)
-                    && Arrays.equals(rawFiducials, that.rawFiducials);
-        }
-
     }
 
     /**
@@ -633,7 +601,7 @@ public class LimelightHelpers {
     static boolean profileJSON = false;
 
     static final String sanitizeName(String name) {
-        if ("".equals(name) || name == null) {
+        if (name == "" || name == null) {
             return "limelight";
         }
         return name;
@@ -1202,8 +1170,8 @@ public class LimelightHelpers {
         return getLimelightNTStringArray(limelightName, "rawbarcodes");
     }
 
-    /////
-    /////
+    /// //
+    /// //
 
     public static Pose3d getBotPose3d(String limelightName) {
         double[] poseArray = getLimelightNTDoubleArray(limelightName, "botpose");
@@ -1387,8 +1355,8 @@ public class LimelightHelpers {
         return new IMUData(imuData);
     }
 
-    /////
-    /////
+    /// //
+    /// //
 
     public static void setPipelineIndex(String limelightName, int pipelineIndex) {
         setLimelightNTDouble(limelightName, "pipeline", pipelineIndex);
@@ -1528,27 +1496,6 @@ public class LimelightHelpers {
     }
 
     /**
-     * Configures the complementary filter alpha value for IMU Assist Modes (Modes 3 and 4)
-     *
-     * @param limelightName Name/identifier of the Limelight
-     * @param alpha         Defaults to .001. Higher values will cause the internal IMU to converge onto the assist source more rapidly.
-     */
-    public static void SetIMUAssistAlpha(String limelightName, double alpha) {
-        setLimelightNTDouble(limelightName, "imuassistalpha_set", alpha);
-    }
-
-
-    /**
-     * Configures the throttle value. Set to 100-200 while disabled to reduce thermal output/temperature.
-     *
-     * @param limelightName Name/identifier of the Limelight
-     * @param throttle      Defaults to 0. Your Limelgiht will process one frame after skipping <throttle> frames.
-     */
-    public static void SetThrottle(String limelightName, int throttle) {
-        setLimelightNTDouble(limelightName, "throttle_set", throttle);
-    }
-
-    /**
      * Sets the 3D point-of-interest offset for the current fiducial pipeline.
      * https://docs.limelightvision.io/docs/docs-limelight/pipeline-apriltag/apriltag-3d#point-of-interest-tracking
      *
@@ -1631,8 +1578,8 @@ public class LimelightHelpers {
         setLimelightNTDoubleArray(limelightName, "camerapose_robotspace_set", entries);
     }
 
-    /////
-    /////
+    /// //
+    /// //
 
     public static void setPythonScriptData(String limelightName, double[] outgoingPythonData) {
         setLimelightNTDoubleArray(limelightName, "llrobot", outgoingPythonData);
@@ -1659,7 +1606,7 @@ public class LimelightHelpers {
         try {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            if (snapshotName != null && !"".equals(snapshotName)) {
+            if (snapshotName != null && snapshotName != "") {
                 connection.setRequestProperty("snapname", snapshotName);
             }
 
@@ -1704,4 +1651,4 @@ public class LimelightHelpers {
 
         return results;
     }
-}
+}   
