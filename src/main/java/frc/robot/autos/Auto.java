@@ -46,8 +46,7 @@ public class Auto extends SequentialCommandGroup {
      */
     public SequentialCommandGroup scoreCoral() {
         SequentialCommandGroup exitReturnCommands = new SequentialCommandGroup();
-        return exitReturnCommands;
-        /*
+
         //Checks if robot is at position A
         if (swerve.getPose().getY() > 7 && swerve.getPose().getY() < 7.50) {
             //Starts from position A and then goes to first position in list
@@ -108,7 +107,7 @@ public class Auto extends SequentialCommandGroup {
         exitReturnCommands.addCommands();
 
         return exitReturnCommands;
-         */
+        
     }
 
 

@@ -31,43 +31,11 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run\
-        // Logger.recordOutput(limelightName + ".straightLineDist", VisionGamePiece.straightLineZDistance(limelightName));
-        // Logger.recordOutput(limelightName + ".verticalDist", VisionGamePiece.verticalYOffsetDistance(limelightName));
-        // Logger.recordOutput(limelightName + ".horizontalDist", VisionGamePiece.horizontalOffestXDistance(limelightName));
-        // Logger.recordOutput(limelightName + ".3dHypotnuese", VisionGamePiece.full3DDistance(limelightName));
-        // Logger.recordOutput(limelightName + ".2dHypotnuese", VisionGamePiece.hypotenuseDistanceXandZ(limelightName));
-        // Logger.recordOutput(limelightName + ".rot", VisionGamePiece.hypotenuseDistanceXandZ(limelightName));
-        // Logger.recordOutput(limelightName + ".detect", LimelightHelpers.getTY(limelightName));
-        // Pose2d targetPose = VisionGamePiece.transformTargetLocation(new Pose2d(), limelightName);
-        // Logger.recordOutput(limelightName + ".target", targetPose.toString());
-        // Logger.recordOutput(limelightName + ".targetX", targetPose.getX());
-        // Logger.recordOutput(limelightName + ".targetY", targetPose.getY());
-        // Logger.recordOutput(limelightName + ".targetDegrees", targetPose.getRotation().getDegrees());
-        // Logger.recordOutput(limelightName + ".targetRadians", targetPose.getRotation().getRadians());
-        // Logger.recordOutput(limelightName + ".targetRotation", targetPose.getRotation().getRotations());
-        // Logger.recordOutput(limelightName + ".getOriginDistance", targetPose.getTranslation().getNorm());
-
         Logger.recordOutput(limelightName + ".aprilTag.straightLineDist", VisionAprilTag.straightLineZAprilTag(limelightName));
         Logger.recordOutput(limelightName + ".aprilTag.verticalDist", VisionAprilTag.verticalYOffsetDistance(limelightName));
         Logger.recordOutput(limelightName + ".aprilTag.horizontalDist", VisionAprilTag.horizontalOffsetXAprilTag(limelightName));
-        
 
         Logger.recordOutput(limelightName + ".aprilTag.Zdist", VisionSubsystem.getStraightLineZDistance());
-        // Logger.recordOutput(limelightName + ".aprilTag.3dHypotnuese", VisionAprilTag.hypotenuseDistanceXandZ(limelightName));
-        // Logger.recordOutput(limelightName + ".aprilTag.detect", LimelightHelpers.getTY(limelightName));
-        // Pose2d aprilTag = VisionAprilTag.transformTargetLocation(new Pose2d(), limelightName);
-        // Logger.recordOutput(limelightName + ".aprilTag.target", aprilTag.toString());
-        // Logger.recordOutput(limelightName + ".aprilTag.targetX", aprilTag.getX());
-        // Logger.recordOutput(limelightName + ".aprilTag.targetY", aprilTag.getY());
-        // Logger.recordOutput(limelightName + ".aprilTag.targetDegrees", aprilTag.getRotation().getDegrees());
-        // Logger.recordOutput(limelightName + ".aprilTag.targetRadians", aprilTag.getRotation().getRadians());
-        // Logger.recordOutput(limelightName + ".aprilTag.targetRotation", aprilTag.getRotation().getRotations());
-        // Logger.recordOutput(limelightName + ".aprilTag.getOriginDistance", aprilTag.getTranslation().getNorm());
-
-        // Logger.recordOutput(limelightName + ".tx", LimelightHelpers.getTX(limelightName));
-        // Logger.recordOutput(limelightName + ".ty", LimelightHelpers.getTY(limelightName));
-        // Logger.recordOutput(limelightName + ".ta", LimelightHelpers.getTA(limelightName));
 
         Logger.recordOutput("Crosshair", "----------------------------------X-----------------------------");
         for (int i = 0; i < AprilTags.aprilTags.size(); i++) {
@@ -349,7 +317,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     public static double getStraightLineZDistance() {
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
-        double llToFrontOfRobot = 0.5;
+        double llToFrontOfRobot = 0.46;
         int aprilTagId = -1;
         if (llf != null) {
             aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;

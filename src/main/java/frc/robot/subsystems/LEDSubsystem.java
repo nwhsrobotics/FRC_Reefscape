@@ -77,15 +77,10 @@ public class LEDSubsystem extends SubsystemBase {
             return;
         }
 
-        if(mode.equals("CANBUS_Error")){
+        if (mode.equals("CANBUS_Error")) {
             isCANBUS_Error = true;
             triggerLED("CANBUS_Error");
         }
-
-        
-
-
-
 
 
     }
