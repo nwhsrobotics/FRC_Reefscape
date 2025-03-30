@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import org.littletonrobotics.junction.Logger;
-
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -18,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.util.ImprovedCanSpark;
+import org.littletonrobotics.junction.Logger;
 
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -128,7 +127,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void dynamic_L4_Preset() {
-        setPointRotations = metersToRotations((elevatorHeights[4] + Math.min(VisionSubsystem.getStraightLineZDistance(), 0.08)  * Math.sin(Math.toRadians(35))));
+        setPointRotations = metersToRotations((elevatorHeights[4] + Math.min(VisionSubsystem.getStraightLineZDistance(), 0.08) * Math.sin(Math.toRadians(35))));
         //you can preset this to a seperate button or make this the new l4 button
         //this method assumes that 0 is the base of the april tag
         //I reccomend using the old l4 elevator height from comp for the initial setpoint rotations

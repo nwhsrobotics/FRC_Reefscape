@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
@@ -35,11 +36,13 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotInit() {
-        SmartDashboard.putBoolean("auto.initialized", false);
         DriverStation.silenceJoystickConnectionWarning(true);
         Pathfinding.setPathfinder(new LocalADStarAK());
         FollowPathCommand.warmupCommand().schedule();
-        (PathfindingCommand.warmupCommand().andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)))).schedule();
+        PathfindingCommand.warmupCommand().schedule();
+        SmartDashboard.putBoolean("auto.initialized", false);
+        new WaitCommand(45).andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true))).schedule();
+        //.andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)))).schedule();
         robotPD = new ImprovedPowerDistribution(CANAssignments.PDU_ID, Constants.PDU_TYPE);
 
         Logger.recordMetadata("version", LoggerConstants.RUNNING_UNDER);
@@ -67,7 +70,7 @@ public class Robot extends LoggedRobot {
         Logger.start();
 
         // if you want to stop the robot, use the boolean returned by this method.
-        Constants.CANAssignments.checkAssignments();
+        CANAssignments.checkAssignments();
 
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
@@ -127,7 +130,6 @@ public class Robot extends LoggedRobot {
     @Override
     public void autonomousInit() {
         autonomousCommand = robotContainer.getAutonomousCommand();
-        //autonomousCommand.addRequirements(robotContainer.swerveSubsystem);
 
         // schedule the autonomous command (example)
         if (autonomousCommand != null) {
@@ -140,7 +142,6 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-        // System.out.println(robotContainer.swerveSubsystem.getPose());
     }
 
     @Override
@@ -169,7 +170,6 @@ public class Robot extends LoggedRobot {
                     MathUtil.applyDeadband(robotContainer.driver.getRightY(), OIConstants.kDriveDeadband) != 0) {
                 robotContainer.swerveSubsystem.autonavigator.disable();
             } else {
-                //robotContainer.swerveSubsystem.autonavigator.resumeNavigation();
             }
         }
 
