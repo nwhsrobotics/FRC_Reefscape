@@ -164,7 +164,7 @@ public class SwerveSubsystem extends SubsystemBase {
                     .andThen(new RunCommand(() -> gyro.zeroYaw()));*/
         } catch (Exception e) {
             e.printStackTrace();
-            Logger.recordOutput("errors.autobuilder", "initializing: "e.toString());
+            Logger.recordOutput("errors.autobuilder", "initializing: " + e.toString());
             setpointGenerator = null;
         }
 
