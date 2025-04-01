@@ -1,33 +1,70 @@
+
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
-import edu.wpi.first.wpilibj.Encoder;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.util.ImprovedCanSpark;
 
 public class AlgaeArm extends SubsystemBase {
 
-    private final double knockoutSpeed = .1;
+    
+    //private final SparkBaseConfig alageConfig = new SparkBaseConfig();
 
-    Encoder algaeEncoder = new Encoder(null, null);
-    private final SparkMax motor = new ImprovedCanSpark(CANAssignments.ALGAE_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO550, null, SparkBaseConfig.IdleMode.kBrake);
+    private final SparkBaseConfig algaeConfig = new SparkMaxConfig();
+    
+
+    private final SparkMax motor = new ImprovedCanSpark(CANAssignments.ALGAE_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO550, algaeConfig, SparkBaseConfig.IdleMode.kBrake, 0.1, 0.0, 0.0);
+    private final RelativeEncoder  algaeEncoder = motor.getEncoder();
+    SparkClosedLoopController AlgaeController = motor.getClosedLoopController();
+    private final double Target = 90.0;
+    private double Algaerotations = 0;
+
+    
+
+    
+
+    
+    
+    private double degreesToMotorRotation(double degrees) {
+        return (degrees / 360.0) * 100.0;
+    }
+   
+   
+    @Override
+    
+    public void periodic(){
+    
+    AlgaeController.setReference(Algaerotations, ControlType.kPosition);
+    
+
+    
 
 
-    public void triggerAlgaeArm() {
-
+}
+    public void knockoutAlgae(){
+        Algaerotations  = degreesToMotorRotation(90);
+        
 
     }
 
 
-    public AlgaeArm() {
+
+    public void Homeposition(){
+        Algaerotations = degreesToMotorRotation(0);
+
 
     }
 
-    public void stop() {
-
-    }
+      
+    
 
 
 }
