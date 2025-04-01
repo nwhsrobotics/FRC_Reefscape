@@ -50,7 +50,7 @@ public class AlgaeArm extends SubsystemBase {
 
 }
     public void knockoutAlgae(){
-        Algaerotations  = degreesToMotorRotation(90);
+        Algaerotations  = degreesToMotorRotation(Target);
         
 
     }
