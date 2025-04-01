@@ -186,8 +186,6 @@ public final class Constants {
         public static final PPHolonomicDriveController pathFollowerConfig = new PPHolonomicDriveController(
                 new PIDConstants(AutoConstants.kPXController, 0, 0), // Translation constants
                 new PIDConstants(AutoConstants.kPThetaController, 0, 0)// Rotation constants
-                //DriveConstants.kPhysicalMaxSpeedMetersPerSecond// Drive base radius (distance from center to furthest module)
-                //0.02
         );
 
         public static final PathConstraints kPathfindingConstraints = new PathConstraints(

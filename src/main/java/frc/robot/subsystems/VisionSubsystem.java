@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -16,6 +17,12 @@ import frc.robot.Constants.AprilTags;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.TagOffset;
 import frc.robot.util.LimelightHelpers.LimelightResults;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.littletonrobotics.junction.Logger;
 
 public class VisionSubsystem extends SubsystemBase {
@@ -31,40 +38,11 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run\
-        // Logger.recordOutput(limelightName + ".straightLineDist", VisionGamePiece.straightLineZDistance(limelightName));
-        // Logger.recordOutput(limelightName + ".verticalDist", VisionGamePiece.verticalYOffsetDistance(limelightName));
-        // Logger.recordOutput(limelightName + ".horizontalDist", VisionGamePiece.horizontalOffestXDistance(limelightName));
-        // Logger.recordOutput(limelightName + ".3dHypotnuese", VisionGamePiece.full3DDistance(limelightName));
-        // Logger.recordOutput(limelightName + ".2dHypotnuese", VisionGamePiece.hypotenuseDistanceXandZ(limelightName));
-        // Logger.recordOutput(limelightName + ".rot", VisionGamePiece.hypotenuseDistanceXandZ(limelightName));
-        // Logger.recordOutput(limelightName + ".detect", LimelightHelpers.getTY(limelightName));
-        // Pose2d targetPose = VisionGamePiece.transformTargetLocation(new Pose2d(), limelightName);
-        // Logger.recordOutput(limelightName + ".target", targetPose.toString());
-        // Logger.recordOutput(limelightName + ".targetX", targetPose.getX());
-        // Logger.recordOutput(limelightName + ".targetY", targetPose.getY());
-        // Logger.recordOutput(limelightName + ".targetDegrees", targetPose.getRotation().getDegrees());
-        // Logger.recordOutput(limelightName + ".targetRadians", targetPose.getRotation().getRadians());
-        // Logger.recordOutput(limelightName + ".targetRotation", targetPose.getRotation().getRotations());
-        // Logger.recordOutput(limelightName + ".getOriginDistance", targetPose.getTranslation().getNorm());
-
         Logger.recordOutput(limelightName + ".aprilTag.straightLineDist", VisionAprilTag.straightLineZAprilTag(limelightName));
         Logger.recordOutput(limelightName + ".aprilTag.verticalDist", VisionAprilTag.verticalYOffsetDistance(limelightName));
         Logger.recordOutput(limelightName + ".aprilTag.horizontalDist", VisionAprilTag.horizontalOffsetXAprilTag(limelightName));
-        // Logger.recordOutput(limelightName + ".aprilTag.3dHypotnuese", VisionAprilTag.hypotenuseDistanceXandZ(limelightName));
-        // Logger.recordOutput(limelightName + ".aprilTag.detect", LimelightHelpers.getTY(limelightName));
-        // Pose2d aprilTag = VisionAprilTag.transformTargetLocation(new Pose2d(), limelightName);
-        // Logger.recordOutput(limelightName + ".aprilTag.target", aprilTag.toString());
-        // Logger.recordOutput(limelightName + ".aprilTag.targetX", aprilTag.getX());
-        // Logger.recordOutput(limelightName + ".aprilTag.targetY", aprilTag.getY());
-        // Logger.recordOutput(limelightName + ".aprilTag.targetDegrees", aprilTag.getRotation().getDegrees());
-        // Logger.recordOutput(limelightName + ".aprilTag.targetRadians", aprilTag.getRotation().getRadians());
-        // Logger.recordOutput(limelightName + ".aprilTag.targetRotation", aprilTag.getRotation().getRotations());
-        // Logger.recordOutput(limelightName + ".aprilTag.getOriginDistance", aprilTag.getTranslation().getNorm());
 
-        // Logger.recordOutput(limelightName + ".tx", LimelightHelpers.getTX(limelightName));
-        // Logger.recordOutput(limelightName + ".ty", LimelightHelpers.getTY(limelightName));
-        // Logger.recordOutput(limelightName + ".ta", LimelightHelpers.getTA(limelightName));
+        Logger.recordOutput(limelightName + ".aprilTag.Zdist", VisionSubsystem.getStraightLineZDistance());
 
         Logger.recordOutput("Crosshair", "----------------------------------X-----------------------------");
         for (int i = 0; i < AprilTags.aprilTags.size(); i++) {
@@ -346,13 +324,25 @@ public class VisionSubsystem extends SubsystemBase {
 
     public static double getStraightLineZDistance() {
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
-        double llToFrontOfRobot = 0.5;
+        double llToFrontOfRobot = 0.46;
         int aprilTagId = -1;
         if (llf != null) {
             aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
         } else {
-            Pose2d nearest = SwerveSubsystem.currentPose.nearest(AprilTags.aprilTags);
+            List<Pose2d> reefTags = IntStream.range(0, AprilTags.aprilTags.size())
+                .filter(i -> {
+                    int id = i + 1;
+                    return id == 6 || id == 7 || id == 8 || id == 9 || id == 10 || id == 11 ||
+                        id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22;
+                })
+                .mapToObj(i -> AprilTags.aprilTags.get(i))
+                .collect(Collectors.toList());
+
+            Pose2d nearest = SwerveSubsystem.currentPose.nearest(reefTags);
             aprilTagId = AprilTags.aprilTags.indexOf(nearest) + 1;
+            
+            // Pose2d nearest = SwerveSubsystem.currentPose.nearest(AprilTags.aprilTags);
+            // aprilTagId = AprilTags.aprilTags.indexOf(nearest) + 1;
         }
         // double distance = 0;
         // Pose2d relativePose = SwerveSubsystem.currentPose.relativeTo(AprilTags.aprilTags.get(aprilTagId-1));
@@ -366,7 +356,7 @@ public class VisionSubsystem extends SubsystemBase {
 
         double distance = Math.abs(SwerveSubsystem.currentPose.relativeTo(AprilTags.aprilTags.get(aprilTagId - 1)).getX())
                 - AprilTagOffsets.getOffset(aprilTagId).relative - llToFrontOfRobot;
-
         return distance;
     }
+
 }

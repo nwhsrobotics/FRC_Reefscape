@@ -164,6 +164,7 @@ public class SwerveSubsystem extends SubsystemBase {
                     .andThen(new RunCommand(() -> gyro.zeroYaw()));*/
         } catch (Exception e) {
             e.printStackTrace();
+            Logger.recordOutput("errors.autobuilder", "initializing: " + e.toString());
             setpointGenerator = null;
         }
 
@@ -415,7 +416,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public void updateOdometry() {
         odometer.update(Rotation2d.fromDegrees(getHeading()), getModulePositions());
 
-        //addVisionMeasurement(LimelightConstants.llFront, 0.00, 0.00, 9999999);
+        addVisionMeasurement(LimelightConstants.llFront, 0.00, 0.00, 9999999);
         //dont need the back one most likely
         //addVisionMeasurement(LimelightConstants.llBack, 0.2, 0.2, 9999999);
     }
@@ -472,8 +473,8 @@ public class SwerveSubsystem extends SubsystemBase {
                 }
             }
         } catch (Exception error) {
-            Logger.recordOutput("errors.vision", error.toString());
-            error.printStackTrace();
+            Logger.recordOutput("errors.vision", "Limelight disconnected: " + error);
+            //error.printStackTrace();
         }
     }
 
@@ -555,19 +556,26 @@ public class SwerveSubsystem extends SubsystemBase {
      * Update odometry using precise vision measurements with high accuracy.
      * <p>
      * It is RECOMMENDED to stand still and be close to the April tag when resetting this way as it solely relies on vision
+     * Use Megatag 2 if gryo rotation is accurate, otherwise use megatag 1 to also fix gyro rotation.
      */
-    public void resetOdometryWithVision() {
+    public void resetOdometryWithVision(boolean useMegaTag2) {
         String name = LimelightConstants.llFront;
         int pipeline = (int) LimelightHelpers.getCurrentPipelineIndex(name);
         //set the pipeline index to the high resolution april tag (less fps but high accuracy)
         LimelightHelpers.setPipelineIndex(name, 0);
         LimelightHelpers.SetRobotOrientation(LimelightConstants.llFront, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.llFront);
+        LimelightHelpers.PoseEstimate llmtg1Measurement = LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llFront);
         odometer.setVisionMeasurementStdDevs(VecBuilder.fill(0, 0, Units.degreesToRadians(0)));
-        odometer.addVisionMeasurement(limelightMeasurement.pose, limelightMeasurement.timestampSeconds);
+
+        //megatag 1, will also fix gyro rotation
+        if (!useMegaTag2) {
+            odometer.addVisionMeasurement(llmtg1Measurement.pose, llmtg1Measurement.timestampSeconds);
+        } else {
+            //megatag 2 (assume already accurate gyro rotation)
+            odometer.addVisionMeasurement(limelightMeasurement.pose, limelightMeasurement.timestampSeconds);
+        }
         //set back to normal april tag pipeline
         LimelightHelpers.setPipelineIndex(name, pipeline);
-        //use this logger key to log important evvents 
-        Logger.recordOutput("robot.events", "ResetOdometryWithVision");
     }
 }

@@ -186,6 +186,7 @@ public class AutoNavigation {
             return e;
         } catch (Exception io) {
             io.printStackTrace();
+            Logger.recordOutput("errors.autobuilder", "pathFindThenFollowPath: " + io.toString());
         }
         return new InstantCommand();
     }
