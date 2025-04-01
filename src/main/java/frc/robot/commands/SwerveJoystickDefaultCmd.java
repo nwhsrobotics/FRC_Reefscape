@@ -52,7 +52,9 @@ public class SwerveJoystickDefaultCmd extends Command {
                     VisionGamePiece.limelight_aimX_proportional(LimelightConstants.llObjectDetectionNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         }*/
-        if (xbox.getLeftBumperButton()) {  //for back vision april tag detection aligning
+        if (xbox.getLeftBumperButton()) {
+            headingLockRobotRelative();
+            //for back vision april tag detection aligning
             //while using Limelight, turn off field-relative driving.
             // fieldRelative = false;
             // swerveSubsystem.drive(
@@ -62,6 +64,7 @@ public class SwerveJoystickDefaultCmd extends Command {
             //         swerveSubsystem.isFieldRelative() && fieldRelative, false);
         } else if (xbox.getRightBumperButton()) { //for forwards april tag align
             fieldRelative = false;
+            reefRelativeDrivev2();
             // swerveSubsystem.drive(
             //         VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llFront),
             //         VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
@@ -152,14 +155,17 @@ public class SwerveJoystickDefaultCmd extends Command {
         double headingError = SwerveUtils.angleDifferenceSigned(angleToCenter, currentHeading);
         // Now based on that difference we can run a simple P (proportional) based control
         // kRot is the P value (we need to fine tune this) to help with rotation
-        //double kRot = Math.PI / 25.0;
+        // double kRot = Math.PI / 25.0;
         // Using this, we can essentially run a P based control where you just multiply the error diff by P to get the speed it should be going as a %
-        //double rotCmd = kRot * headingError;
+        // double rotCmd = kRot * headingError;
 
         profiledRotController.setGoal(angleToCenter);
         double rotCmd = profiledRotController.calculate(currentHeading) / DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
 
-        swerveSubsystem.drive(fieldX, fieldY, rotCmd, false, true);
+        // double kRot = Math.PI / 25.0;
+        // double rotCmd = kRot * headingError;
+
+        swerveSubsystem.drive(fieldX, fieldY, rotCmd, true, true);
     }
 
     private void reefRelativeDrivev2() {
@@ -172,7 +178,7 @@ public class SwerveJoystickDefaultCmd extends Command {
         double dx = robotX - centerX;
         double dy = robotY - centerY;
         double angleToCenter = Math.atan2(dy, dx);
-        double forwardVal = -xbox.getLeftY();
+        double forwardVal = xbox.getLeftY();
         double sidewaysVal = xbox.getLeftX();
         double radialAngle = angleToCenter + Math.PI;
         double radialUnitX = Math.cos(radialAngle);
@@ -187,10 +193,12 @@ public class SwerveJoystickDefaultCmd extends Command {
         double headingError = SwerveUtils.angleDifferenceSigned(desiredHeading, currentHeading);
         double kRot = Math.PI / 25.0;
         double rotCmd = kRot * headingError;
+        // profiledRotController.setGoal(desiredHeading);
+        // double rotCmd = profiledRotController.calculate(currentHeading) / DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
 
-        swerveSubsystem.drive(fieldX, fieldY, rotCmd, false, false);
+
+        swerveSubsystem.drive(fieldX, fieldY, rotCmd, true, false);
     }
-
 
     public void headingLockRobotRelative() {
         Pose2d currentPose = swerveSubsystem.getPose();
@@ -205,12 +213,39 @@ public class SwerveJoystickDefaultCmd extends Command {
 
         double currentHeading = currentPose.getRotation().getRadians();
         double headingError = SwerveUtils.angleDifferenceSigned(angleToCenter, currentHeading);
-        // double kRot = Math.PI / 10.0;
-        // double rotCmd = kRot * headingError;
         profiledRotController.setGoal(angleToCenter);
         double rotCmd = profiledRotController.calculate(currentHeading) / DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
+        // double kRot = Math.PI / 10.0;
+        // double rotCmd = kRot * headingError;
+
 
         swerveSubsystem.drive(strafeVal, forwardVal, rotCmd, false, true);
+    }
+
+    private void reefRelativeDriveRobotFrame() {
+        Pose2d currentPose = swerveSubsystem.getPose();
+        Pose2d nearestReef = currentPose.nearest(Positions.REEF_CENTERS);
+        double robotX = currentPose.getX();
+        double robotY = currentPose.getY();
+        double centerX = nearestReef.getX();
+        double centerY = nearestReef.getY();
+        double dx = centerX - robotX;
+        double dy = centerY - robotY;
+        double angleToCenter = Math.atan2(dy, dx);
+        double forwardVal = xbox.getLeftY();
+        double sidewaysVal = xbox.getLeftX();
+        double currentHeading = currentPose.getRotation().getRadians();
+        double headingError = SwerveUtils.angleDifferenceSigned(angleToCenter, currentHeading);
+        double angleDiff = SwerveUtils.angleDifferenceSigned(angleToCenter, currentHeading);
+        double localVx = forwardVal * Math.cos(angleDiff) + sidewaysVal * Math.sin(angleDiff);
+        double localVy = -forwardVal * Math.sin(angleDiff) + sidewaysVal * Math.cos(angleDiff);
+        double kRot = Math.PI / 25.0;
+        double rotCmd = kRot * headingError;
+        // profiledRotController.setGoal(angleToCenter);
+        // double rotCmd = profiledRotController.calculate(currentHeading) / DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
+
+
+        swerveSubsystem.drive(localVx, localVy, rotCmd, false, true);
     }
 
 

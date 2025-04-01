@@ -1,5 +1,9 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.Percent;
+import static edu.wpi.first.units.Units.Second;
+
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
@@ -7,8 +11,6 @@ import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.LEDPattern.GradientType;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import static edu.wpi.first.units.Units.*;
 
 public class LEDSubsystem extends SubsystemBase {
 
@@ -52,7 +54,6 @@ public class LEDSubsystem extends SubsystemBase {
     public LEDSubsystem() {
         elevatorLEDLeft.setLength(elevatorLEDLeft_Buffer.getLength());
         elevatorLEDRight.setLength(elevatorLEDRight_Buffer.getLength());
-
     }
 
 
@@ -70,11 +71,17 @@ public class LEDSubsystem extends SubsystemBase {
 
     //hadleing toggling difrent LED patterns
 
-    private final boolean isCANBUS_Error = false;
+    boolean isCANBUS_Error = false;
 
-    public void triggerLED(LEDPattern ledPattern) {
+    public void triggerLED(String mode) {
         if (isCANBUS_Error) {
             setLED_Pattern(canBusError);
+            return;
+        }
+
+        if (mode.equals("CANBUS_Error")) {
+            isCANBUS_Error = true;
+            triggerLED("CANBUS_Error");
         }
 
 
@@ -83,6 +90,6 @@ public class LEDSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-
+        setLED_Pattern(idle);
     }
 }
