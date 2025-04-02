@@ -36,12 +36,11 @@ public class LEDSubsystem extends SubsystemBase {
 
 
     //LED patterns ===================================================
-    private final LEDPattern robotNotReady = LEDPattern.solid(Color.kRed); 
-    private final LEDPattern coral = LEDPattern.solid(Color.kCoral);
-    private final LEDPattern idleRoundRunning = LEDPattern.solid(orange); 
-    private final LEDPattern autoRunning = LEDPattern.solid(Color.kHotPink); 
-    private final LEDPattern autoAlineRunning = LEDPattern.solid(Color.kPurple);//DONE
-    private final LEDPattern eleDroping = LEDPattern.solid(Color.kGreen);//DONE 
+    private final LEDPattern robotNotReady = LEDPattern.solid(Color.kRed); //Done
+    private final LEDPattern idleRoundRunning = LEDPattern.solid(orange); //
+    private final LEDPattern autoRunning = LEDPattern.solid(Color.kCoral); //
+    private final LEDPattern autoAlineRunning = LEDPattern.solid(Color.kPurple); //Done 
+    private final LEDPattern eleDroping = LEDPattern.solid(Color.kGreen);// Done 
 
 
     //broken orange gradient
@@ -81,9 +80,7 @@ public class LEDSubsystem extends SubsystemBase {
         
         AUTOALINERUNNING, 
         
-        AUTORUNNING,
-
-        CORAL,    
+        AUTORUNNING,    
 
         IDLEROUNDRUNNING,
 
@@ -105,10 +102,7 @@ public class LEDSubsystem extends SubsystemBase {
                 break; 
             case AUTORUNNING:
                 setLED_Pattern(autoRunning); 
-                break;
-            case CORAL:
-                setLED_Pattern(coral);                                     
-                break;
+                break; 
             case IDLEROUNDRUNNING:
                 setLED_Pattern(idleRoundRunning);  
                 break;
