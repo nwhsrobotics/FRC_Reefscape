@@ -42,7 +42,7 @@ public class AlgaeArm extends SubsystemBase {
     
     public void periodic(){
     
-    AlgaeController.setReference(Algaerotations, ControlType.kPosition);
+    AlgaeController.setReference(-Algaerotations, ControlType.kPosition);
     
 
     
