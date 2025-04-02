@@ -1,53 +1,53 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Percent;
 import static edu.wpi.first.units.Units.Second;
 
-import edu.wpi.first.units.measure.Distance;
+import com.revrobotics.spark.SparkBase.ControlType;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.LEDPattern.GradientType;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.Elastic;
+import frc.robot.util.Elastic.Notification.NotificationLevel;
 
 public class LEDSubsystem extends SubsystemBase {
 
     //LED strip lengths
-    private final int elevatorLEDLength = 80;
+    private final int elevatorLEDLengthLEFT = 49;
+    private final int elevatorLEDLengthRIGHT = 50;
 
     //LED objects
-    private final AddressableLED elevatorLEDLeft = new AddressableLED(1);
-    private final AddressableLED elevatorLEDRight = new AddressableLED(2);
+    private final AddressableLED elevatorLEDLeft = new AddressableLED(8);
+    private final AddressableLED elevatorLEDRight = new AddressableLED(7); 
 
     //LED buffers
-    private final AddressableLEDBuffer elevatorLEDLeft_Buffer = new AddressableLEDBuffer(elevatorLEDLength);
-    private final AddressableLEDBuffer elevatorLEDRight_Buffer = new AddressableLEDBuffer(elevatorLEDLength);
+    private final AddressableLEDBuffer elevatorLEDLeft_Buffer = new AddressableLEDBuffer(elevatorLEDLengthLEFT);
+    private final AddressableLEDBuffer elevatorLEDRight_Buffer = new AddressableLEDBuffer(elevatorLEDLengthRIGHT);
 
 
-    private final Distance ledSpacing = Meters.of(1 / 120.0);
+
 
     //LED colors =====================================================
     private final Color orange = new Color(255, 40, 0);
 
 
     //LED patterns ===================================================
+    private final LEDPattern robotNotReady = LEDPattern.solid(Color.kRed); 
     private final LEDPattern coral = LEDPattern.solid(Color.kCoral);
-    private final LEDPattern canBusError = LEDPattern.solid(Color.kRed);
-    private final LEDPattern autoModeRunning = LEDPattern.solid(Color.kGold);
-    private final LEDPattern autoAlineRunning = LEDPattern.solid(Color.kPurple);
-    private final LEDPattern eleDroping = LEDPattern.solid(Color.kGreen);
+    private final LEDPattern idleRoundRunning = LEDPattern.solid(orange); 
+    private final LEDPattern autoRunning = LEDPattern.solid(Color.kHotPink); 
+    private final LEDPattern autoAlineRunning = LEDPattern.solid(Color.kPurple);//DONE
+    private final LEDPattern eleDroping = LEDPattern.solid(Color.kGreen);//DONE 
 
 
     //broken orange gradient
     private final LEDPattern brokenGradientBase = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kBlack, Color.kBlack, orange, Color.kBlack, Color.kBlack, orange, Color.kBlack, Color.kBlack, orange);
-    private final LEDPattern idle = brokenGradientBase.scrollAtRelativeSpeed(Percent.per(Second).of(25));
-
-    //ele going up
-  /*static LEDPattern elePattern = LEDPattern.LEDprogressMaskLayer();
-  LEDPattern basePattern = LEDPattern.gradient(Color.kRed, Color.kBlue);
-  LEDPattern progressPattern = basePattern.mask(progressMaskLayer(() -> elevator.getHeight() / elevator.maxHeight());*/
+    private final LEDPattern idle = brokenGradientBase.scrollAtRelativeSpeed(Percent.per(Second).of(25));    
+    
 
 
     //setting LED length, should only be done on startup
@@ -63,33 +63,62 @@ public class LEDSubsystem extends SubsystemBase {
         elevatorLEDLeft.setData(elevatorLEDLeft_Buffer);
         elevatorLEDLeft.start();
 
-        pattern.applyTo(elevatorLEDLeft_Buffer);
-        elevatorLEDLeft.setData(elevatorLEDLeft_Buffer);
-        elevatorLEDLeft.start();
+        pattern.applyTo(elevatorLEDRight_Buffer);
+        elevatorLEDRight.setData(elevatorLEDRight_Buffer);
+        elevatorLEDRight.start();
     }
 
 
     //hadleing toggling difrent LED patterns
 
-    boolean isCANBUS_Error = false;
+    public static LEDState state = LEDState.ROBOTNOTREADY;       
 
-    public void triggerLED(String mode) {
-        if (isCANBUS_Error) {
-            setLED_Pattern(canBusError);
-            return;
-        }
+    public static enum LEDState {
+        
+        IDLE,
+        
+        ELEDROPING,
+        
+        AUTOALINERUNNING, 
+        
+        AUTORUNNING,
 
-        if (mode.equals("CANBUS_Error")) {
-            isCANBUS_Error = true;
-            triggerLED("CANBUS_Error");
-        }
+        CORAL,    
 
+        IDLEROUNDRUNNING,
 
+        ROBOTNOTREADY,
     }
 
 
     @Override
     public void periodic() {
-        setLED_Pattern(idle);
+        switch (state) {
+            case IDLE:
+                setLED_Pattern(idle); 
+                break;
+            case ELEDROPING:
+                setLED_Pattern(eleDroping);
+                break;
+            case AUTOALINERUNNING:
+                setLED_Pattern(autoAlineRunning); 
+                break; 
+            case AUTORUNNING:
+                setLED_Pattern(autoRunning); 
+                break;
+            case CORAL:
+                setLED_Pattern(coral);                                     
+                break;
+            case IDLEROUNDRUNNING:
+                setLED_Pattern(idleRoundRunning);  
+                break;
+            case ROBOTNOTREADY:
+                setLED_Pattern(robotNotReady);  
+            break;
+            default:
+                break;
+        }
+
+        
     }
 }
