@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.util.ImprovedPowerDistribution;
 import frc.robot.util.LocalADStarAK;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -41,7 +42,7 @@ public class Robot extends LoggedRobot {
         FollowPathCommand.warmupCommand().schedule();
         PathfindingCommand.warmupCommand().schedule();
         SmartDashboard.putBoolean("auto.initialized", false);
-        new WaitCommand(45).andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true))).schedule();
+        new WaitCommand(45).andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.IDLE))).schedule();
         //.andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)))).schedule();
         robotPD = new ImprovedPowerDistribution(CANAssignments.PDU_ID, Constants.PDU_TYPE);
 
@@ -131,6 +132,7 @@ public class Robot extends LoggedRobot {
     public void autonomousInit() {
         autonomousCommand = robotContainer.getAutonomousCommand();
 
+        LEDSubsystem.state=LEDSubsystem.LEDState.AUTORUNNING;
         // schedule the autonomous command (example)
         if (autonomousCommand != null) {
             autonomousCommand.schedule();
@@ -147,6 +149,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void teleopInit() {
 
+        LEDSubsystem.state=LEDSubsystem.LEDState.IDLE;
         robotContainer.intakeoutake.outtakeClose();
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
@@ -169,6 +172,7 @@ public class Robot extends LoggedRobot {
                     MathUtil.applyDeadband(robotContainer.driver.getRightX(), OIConstants.kDriveDeadband) != 0 ||
                     MathUtil.applyDeadband(robotContainer.driver.getRightY(), OIConstants.kDriveDeadband) != 0) {
                 robotContainer.swerveSubsystem.autonavigator.disable();
+                LEDSubsystem.state=LEDSubsystem.LEDState.IDLEROUNDRUNNING; 
             } else {
             }
         }
