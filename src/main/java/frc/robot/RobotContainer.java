@@ -72,8 +72,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("LoadStation", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
         NamedCommands.registerCommand("Boost", new InstantCommand(() -> elevatorSubsystem.boost(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("Intake", new WaitCommand(0.75));
+        //               .andThen(new InstantCommand(() -> recordAttempt()))
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
-                .andThen(new InstantCommand(() -> recordAttempt()))
                 .andThen(new WaitCommand(0.5))
                 .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
 
@@ -94,6 +94,12 @@ public class RobotContainer {
                         .andThen(new WaitCommand(1))
                         .andThen(new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 0)))
         ));
+        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(((new InstantCommand(() -> recordAttempt()))
+                                                            .andThen(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem)))
+                                                            .andThen(new WaitCommand(0.05))
+                                                            .andThen(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake))
+                                                            .andThen(new WaitCommand(0.5))
+                                                            .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
         //new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("Boost")).andThen(NamedCommands.getCommand("LoadStation")).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.IDLEROUNDRUNNING)));
         //new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("L1CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         //new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.IDLEROUNDRUNNING)));
@@ -153,6 +159,9 @@ public class RobotContainer {
         TagOffset offset = AprilTagOffsets.getOffset(currentTagId);
         double offsetYDifference = isRight ? (offset.right - offsetY) : (offset.left - offsetY);
         double offsetXDifference = offset.back - offsetX;
+        double elevatorHeight = elevatorSubsystem.rotationsToMeters(elevatorSubsystem.setPointRotations);
+        double elevatorLeftMotor = elevatorSubsystem.rotationsToMeters(elevatorSubsystem.currentPositionLeft);
+        double elevatorRightMotor = elevatorSubsystem.rotationsToMeters(elevatorSubsystem.currentPositionRight);
 
         Logger.recordOutput("attempt." + coralsAttempted + ".swerve", currentPose);
         Logger.recordOutput("attempt." + coralsAttempted + ".aprilTag", currentTagId);
@@ -171,6 +180,10 @@ public class RobotContainer {
         Logger.recordOutput("attempt." + coralsAttempted + ".offsetXRelativeDifference", offsetXDifference);
         SmartDashboard.putNumber("attempt." + coralsAttempted + ".offsetYRelativeDifference", offsetYDifference);
         SmartDashboard.putNumber("attempt." + coralsAttempted + ".offsetXRelativeDifference", offsetXDifference);
+
+        Logger.recordOutput("attempt." + elevatorHeight + ".elevatorHeightSetpoint", offsetX);
+        Logger.recordOutput("attempt." + elevatorLeftMotor + ".elevatorLeftHeight", offsetX);
+        Logger.recordOutput("attempt." + elevatorRightMotor + ".elevatorRightHeight", offsetX);
 
         Logger.recordOutput("attempt." + coralsAttempted + ".wasScored", false);
 
