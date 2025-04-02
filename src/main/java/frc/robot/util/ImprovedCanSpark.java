@@ -76,6 +76,28 @@ public class ImprovedCanSpark extends SparkMax {
             configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         }
     }
+    public ImprovedCanSpark(int id, MotorKind motor, SparkBaseConfig config, IdleMode mode, double p, double i, double d) {
+        super(id, MotorType.kBrushless);
+        clearFaults();
+        config.idleMode(mode);
+        switch (motor) {
+            case NEO -> config.smartCurrentLimit(80);
+            case NEO550 -> config.smartCurrentLimit(20);
+            case VORTEX -> config.smartCurrentLimit(80);
+        }
+
+        config
+        .closedLoop
+        .p(p)
+        .i(i)
+        .d(d);
+
+        if (DriverStation.isFMSAttached()) {
+            configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        } else {
+            configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+        }
+    }
 
     public ImprovedCanSpark(int id, MotorKind motor, IdleMode mode, double volComp) {
         super(id, MotorType.kBrushless);
