@@ -141,18 +141,6 @@
                 }
               },
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.75
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "L4CORAL"
-                }
-              },
-              {
                 "type": "sequential",
                 "data": {
                   "commands": [
