@@ -42,11 +42,7 @@ public class AlgaeArm extends SubsystemBase {
     
     public void periodic(){
     
-<<<<<<< Updated upstream
-    AlgaeController.setReference(-Algaerotations, ControlType.kPosition);
-=======
     AlgaeController.setReference(-Algaerotations, ControlType.kMAXMotionPositionControl);
->>>>>>> Stashed changes
     
 
     
