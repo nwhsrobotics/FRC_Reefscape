@@ -34,7 +34,7 @@ public class AlgaeArm extends SubsystemBase {
     
     
     private double degreesToMotorRotation(double degrees) {
-        return (degrees / 360.0) * 100.0;
+        return (degrees / 360.0) * 98.7;
     }
    
    
@@ -42,7 +42,11 @@ public class AlgaeArm extends SubsystemBase {
     
     public void periodic(){
     
+<<<<<<< Updated upstream
     AlgaeController.setReference(-Algaerotations, ControlType.kPosition);
+=======
+    AlgaeController.setReference(-Algaerotations, ControlType.kMAXMotionPositionControl);
+>>>>>>> Stashed changes
     
 
     
@@ -58,7 +62,7 @@ public class AlgaeArm extends SubsystemBase {
 
 
     public void Homeposition(){
-        Algaerotations = degreesToMotorRotation(0);
+        Algaerotations = degreesToMotorRotation(0.0);
 
 
     }

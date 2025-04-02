@@ -90,7 +90,11 @@ public class ImprovedCanSpark extends SparkMax {
         .closedLoop
         .p(p)
         .i(i)
-        .d(d);
+        .d(d)
+        .maxMotion
+        .maxVelocity(11844.0)
+        .maxAcceleration(11844.0)
+        .allowedClosedLoopError(0.6);
 
         if (DriverStation.isFMSAttached()) {
             configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
