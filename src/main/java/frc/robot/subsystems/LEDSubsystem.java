@@ -17,8 +17,8 @@ import frc.robot.util.Elastic.Notification.NotificationLevel;
 public class LEDSubsystem extends SubsystemBase {
 
     //LED strip lengths
-    private final int elevatorLEDLengthLEFT = 49;
-    private final int elevatorLEDLengthRIGHT = 50;
+    private final int elevatorLEDLengthLEFT = 10;
+    private final int elevatorLEDLengthRIGHT = 10;
 
     //LED objects
     private final AddressableLED elevatorLEDLeft = new AddressableLED(8);
@@ -36,23 +36,28 @@ public class LEDSubsystem extends SubsystemBase {
 
 
     //LED patterns ===================================================
-    private final LEDPattern robotNotReady = LEDPattern.solid(Color.kRed); //Done
-    private final LEDPattern idleRoundRunning = LEDPattern.solid(orange); //
-    private final LEDPattern autoRunning = LEDPattern.solid(Color.kCoral); //
-    private final LEDPattern autoAlineRunning = LEDPattern.solid(Color.kPurple); //Done 
-    private final LEDPattern eleDroping = LEDPattern.solid(Color.kGreen);// Done 
+    private final LEDPattern robotNotReady = LEDPattern.solid(Color.kRed); 
+    private final LEDPattern idleRoundRunning = LEDPattern.solid(orange); 
+    private final LEDPattern autoRunning = LEDPattern.solid(Color.kCoral); 
+    private final LEDPattern autoAlineRunning = LEDPattern.solid(Color.kPurple);  
+    private final LEDPattern eleDroping = LEDPattern.solid(Color.kGreen); 
 
 
     //broken orange gradient
     private final LEDPattern brokenGradientBase = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kBlack, Color.kBlack, orange, Color.kBlack, Color.kBlack, orange, Color.kBlack, Color.kBlack, orange);
     private final LEDPattern idle = brokenGradientBase.scrollAtRelativeSpeed(Percent.per(Second).of(25));    
     
+    //EleUp 
+    private final LEDPattern bacePattern = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kBlack, orange);
+    private final LEDPattern eleUp = bacePattern.mask(LEDPattern.progressMaskLayer(()-> ElevatorSubsystem.currentHeight/1.9));
 
 
     //setting LED length, should only be done on startup
     public LEDSubsystem() {
         elevatorLEDLeft.setLength(elevatorLEDLeft_Buffer.getLength());
         elevatorLEDRight.setLength(elevatorLEDRight_Buffer.getLength());
+        
+        
     }
 
 
@@ -65,6 +70,7 @@ public class LEDSubsystem extends SubsystemBase {
         pattern.applyTo(elevatorLEDRight_Buffer);
         elevatorLEDRight.setData(elevatorLEDRight_Buffer);
         elevatorLEDRight.start();
+        
     }
 
 
@@ -85,6 +91,8 @@ public class LEDSubsystem extends SubsystemBase {
         IDLEROUNDRUNNING,
 
         ROBOTNOTREADY,
+
+        ELEUP,
     }
 
 
@@ -109,6 +117,8 @@ public class LEDSubsystem extends SubsystemBase {
             case ROBOTNOTREADY:
                 setLED_Pattern(robotNotReady);  
             break;
+            case ELEUP:
+                setLED_Pattern(eleUp);
             default:
                 break;
         }
