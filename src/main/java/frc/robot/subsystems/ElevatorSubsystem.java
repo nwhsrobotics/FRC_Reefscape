@@ -52,6 +52,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     public RelativeEncoder relativeEncoderLeft = leftElevatorMotor.getEncoder();
     public RelativeEncoder relativeEncoderRight = rightElevatorMotor.getEncoder();
 
+    public double currentPositionLeft = 0.0;
+    public double currentPositionRight = 0.0;
+    public static double currentHeight = 0.0;
+
     //Create limit switches
     //DigitalInput toplimitSwitch = new DigitalInput(0);
     //DigitalInput bottomlimitSwitch = new DigitalInput(0);
@@ -160,8 +164,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         
         //leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
         //rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
-
+        currentPositionLeft = relativeEncoderLeft.getPosition();
+        currentPositionRight = relativeEncoderRight.getPosition();
         Logger.recordOutput("elevator_height", rotationsToMeters(setPointRotations));
+
+        currentHeight = rotationsToMeters(currentPositionLeft);
+
     }
 
 

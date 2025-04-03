@@ -357,7 +357,7 @@ public final class Constants {
         public static String llObjectDetectionNameBackwards = "limelight-llb";
         public static String llBack = "limelight-llb";
         public static double targetHeightBackwards = 0;
-        //TODO: Fix ll name
+        //Fix ll name
 
     }
 
