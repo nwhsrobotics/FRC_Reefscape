@@ -34,7 +34,7 @@ public class RobotContainer {
     public int coralsAttempted = 0;
     public int coralsScored = 0;
 
-    //private final AlgaeArm algaeArm = new AlgaeArm();
+    private final AlgaeArm algaeArm = new AlgaeArm();
 
     public final IntakeOuttake intakeoutake = new IntakeOuttake();
 
@@ -80,8 +80,8 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser("Straight Auto");
 
         // Control diagram: https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
-        //new POVButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm));
-        //new POVButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> algaeArm.Homeposition(), algaeArm));
+        new POVButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm));
+        new POVButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> algaeArm.Homeposition(), algaeArm));
         new JoystickButton(gunner, Buttons.Y).onTrue(new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
         new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
         new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
