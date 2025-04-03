@@ -34,8 +34,7 @@ public final class Constants {
         // public static final int BACK_LEFT_STEER_ABSOLUTE_ENCODER_ID = 20;
         // public static final int FRONT_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 21;
         // public static final int BACK_RIGHT_STEER_ABSOLUTE_ENCODER_ID = 23;
-        public static final int ALGAE_ABSOLUTE_ENCODER_ID = 24;
-        public static final int ALGAE_MOTOR_ID = 25;
+        public static final int ALGAE_MOTOR_ID = 19;
 
         // 2025 robot
         public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 1;

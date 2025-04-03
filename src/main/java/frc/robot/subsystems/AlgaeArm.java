@@ -25,7 +25,7 @@ public class AlgaeArm extends SubsystemBase {
     private final RelativeEncoder  algaeEncoder = motor.getEncoder();
     SparkClosedLoopController AlgaeController = motor.getClosedLoopController();
     private final double Target = 90.0;
-    private double Algaerotations;
+    private double Algaerotations = 0.0;
 
     
 
@@ -44,7 +44,8 @@ public class AlgaeArm extends SubsystemBase {
     
     AlgaeController.setReference(-Algaerotations, ControlType.kMAXMotionPositionControl);
     
-
+    System.out.println(motor.getEncoder().getPosition());
+    System.out.println(Algaerotations);
     
 
 

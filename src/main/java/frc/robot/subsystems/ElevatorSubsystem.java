@@ -149,9 +149,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void periodic() {
         leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
         rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
-        System.out.println("leftElevatorController:" + relativeEncoderLeft.getPosition());
-        System.out.println("rightElevatorController:" + relativeEncoderRight.getPosition());
-        System.out.println("difference:" + String.valueOf(Math.abs(relativeEncoderRight.getPosition()) - Math.abs(relativeEncoderLeft.getPosition())));
+        // System.out.println("leftElevatorController:" + relativeEncoderLeft.getPosition());
+        // System.out.println("rightElevatorController:" + relativeEncoderRight.getPosition());
+        // System.out.println("difference:" + String.valueOf(Math.abs(relativeEncoderRight.getPosition()) - Math.abs(relativeEncoderLeft.getPosition())));
 
         // leftElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
         // rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
