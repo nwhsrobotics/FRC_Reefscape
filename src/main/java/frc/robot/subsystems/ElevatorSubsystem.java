@@ -149,8 +149,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void periodic() {
         leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
         rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
-        // System.out.println(currentElevatorLevel);
-        // System.out.println(setPointRotations);
+        System.out.println("leftElevatorController:" + relativeEncoderLeft.getPosition());
+        System.out.println("rightElevatorController:" + relativeEncoderRight.getPosition());
+        System.out.println("difference:" + String.valueOf(Math.abs(relativeEncoderRight.getPosition()) - Math.abs(relativeEncoderLeft.getPosition())));
 
         // leftElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
         // rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
@@ -158,7 +159,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         //     leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
         //     rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
         // }
-        // else if(VisionSubsystem.getStraightLineZDistance() <= 0.1){
+        // else if(VisionSubsystem.getStraightLineZDistance() <= 0.1 && setPointRotations != 0.0){
         //     leftElevatorController.setReference(-setPointRotations + -metersToRotations(VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35))), ControlType.kMAXMotionPositionControl);
         //     rightElevatorController.setReference(setPointRotations + metersToRotations(VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35))), ControlType.kMAXMotionPositionControl);
         // }
@@ -168,7 +169,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         //rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
         currentPositionLeft = relativeEncoderLeft.getPosition();
         currentPositionRight = relativeEncoderRight.getPosition();
-        Logger.recordOutput("elevator_height", rotationsToMeters(setPointRotations));
+        // Logger.recordOutput("elevator_height", rotationsToMeters(setPointRotations));
 
         currentHeight = rotationsToMeters(currentPositionLeft);
 
