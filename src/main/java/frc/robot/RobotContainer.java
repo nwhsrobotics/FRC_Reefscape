@@ -23,6 +23,7 @@ import frc.robot.commands.SwerveJoystickDefaultCmd;
 import frc.robot.subsystems.AlgaeArm;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeOuttake;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.Buttons;
@@ -39,7 +40,7 @@ public class RobotContainer {
 
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
-    //public final LED_Subsystem led_sybsystem = new LED_Subsystem();
+    public final LEDSubsystem led_sybsystem = new LEDSubsystem();
 
     public final VisionSubsystem limeLightForwards = new VisionSubsystem(LimelightConstants.llFront);
 
@@ -71,8 +72,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("LoadStation", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
         NamedCommands.registerCommand("Boost", new InstantCommand(() -> elevatorSubsystem.boost(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("Intake", new WaitCommand(0.75));
+        //               .andThen(new InstantCommand(() -> recordAttempt()))
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
-                .andThen(new InstantCommand(() -> recordAttempt()))
                 .andThen(new WaitCommand(0.5))
                 .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
 
@@ -81,21 +82,27 @@ public class RobotContainer {
         // Control diagram: https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
         new JoystickButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm));
         new JoystickButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> algaeArm.Homeposition(), algaeArm));
-        new JoystickButton(gunner, Buttons.Y).onTrue(new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
-        new POVButton(gunner, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> elevatorSubsystem.dynamic_L4_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.Y).onTrue(new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
+        new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
+        new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
+        new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
+        new POVButton(gunner, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> elevatorSubsystem.dynamic_L4_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
+        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEDROPING)));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(((new InstantCommand(() -> recordAttempt())).andThen(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake))).onlyIf(() -> !intakeoutake.isIntakeOpen));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake).andThen(
                 new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 1))
                         .andThen(new WaitCommand(1))
                         .andThen(new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 0)))
         ));
-        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("Boost")).andThen(NamedCommands.getCommand("LoadStation")));
+        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(((new InstantCommand(() -> recordAttempt()))
+                                                            .andThen(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem)))
+                                                            .andThen(new WaitCommand(0.05))
+                                                            .andThen(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake))
+                                                            .andThen(new WaitCommand(0.5))
+                                                            .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
+        //new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("Boost")).andThen(NamedCommands.getCommand("LoadStation")).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.IDLEROUNDRUNNING)));
         //new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("L1CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
-        new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
+        //new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.IDLEROUNDRUNNING)));
         //new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("L3CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         new JoystickButton(gunner, Buttons.MENU).onTrue(new InstantCommand(() -> successfulAttempt()));
         new JoystickButton(gunner, Buttons.VIEW).onTrue(new InstantCommand(() -> successfulAttempt()));
@@ -113,6 +120,7 @@ public class RobotContainer {
                     swerveSubsystem.autonavigator.navigateTo(target);
                 }).andThen(
                         new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 1))
+                                .andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.AUTOALINERUNNING))
                                 .andThen(new WaitCommand(1))
                                 .andThen(new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 0)))
                 )
@@ -124,6 +132,7 @@ public class RobotContainer {
                     swerveSubsystem.autonavigator.navigateTo(target);
                 }).andThen(
                         new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 1))
+                                .andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.AUTOALINERUNNING))    
                                 .andThen(new WaitCommand(1))
                                 .andThen(new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 0)))
                 )
@@ -150,6 +159,9 @@ public class RobotContainer {
         TagOffset offset = AprilTagOffsets.getOffset(currentTagId);
         double offsetYDifference = isRight ? (offset.right - offsetY) : (offset.left - offsetY);
         double offsetXDifference = offset.back - offsetX;
+        double elevatorHeight = elevatorSubsystem.rotationsToMeters(elevatorSubsystem.setPointRotations);
+        double elevatorLeftMotor = elevatorSubsystem.rotationsToMeters(elevatorSubsystem.currentPositionLeft);
+        double elevatorRightMotor = elevatorSubsystem.rotationsToMeters(elevatorSubsystem.currentPositionRight);
 
         Logger.recordOutput("attempt." + coralsAttempted + ".swerve", currentPose);
         Logger.recordOutput("attempt." + coralsAttempted + ".aprilTag", currentTagId);
@@ -168,6 +180,10 @@ public class RobotContainer {
         Logger.recordOutput("attempt." + coralsAttempted + ".offsetXRelativeDifference", offsetXDifference);
         SmartDashboard.putNumber("attempt." + coralsAttempted + ".offsetYRelativeDifference", offsetYDifference);
         SmartDashboard.putNumber("attempt." + coralsAttempted + ".offsetXRelativeDifference", offsetXDifference);
+
+        Logger.recordOutput("attempt." + elevatorHeight + ".elevatorHeightSetpoint", offsetX);
+        Logger.recordOutput("attempt." + elevatorLeftMotor + ".elevatorLeftHeight", offsetX);
+        Logger.recordOutput("attempt." + elevatorRightMotor + ".elevatorRightHeight", offsetX);
 
         Logger.recordOutput("attempt." + coralsAttempted + ".wasScored", false);
 
