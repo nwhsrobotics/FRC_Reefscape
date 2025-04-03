@@ -38,11 +38,11 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        Logger.recordOutput(limelightName + ".aprilTag.straightLineDist", VisionAprilTag.straightLineZAprilTag(limelightName));
-        Logger.recordOutput(limelightName + ".aprilTag.verticalDist", VisionAprilTag.verticalYOffsetDistance(limelightName));
-        Logger.recordOutput(limelightName + ".aprilTag.horizontalDist", VisionAprilTag.horizontalOffsetXAprilTag(limelightName));
+        // Logger.recordOutput(limelightName + ".aprilTag.straightLineDist", VisionAprilTag.straightLineZAprilTag(limelightName));
+        // Logger.recordOutput(limelightName + ".aprilTag.verticalDist", VisionAprilTag.verticalYOffsetDistance(limelightName));
+        // Logger.recordOutput(limelightName + ".aprilTag.horizontalDist", VisionAprilTag.horizontalOffsetXAprilTag(limelightName));
 
-        Logger.recordOutput(limelightName + ".aprilTag.Zdist", VisionSubsystem.getStraightLineZDistance());
+        //Logger.recordOutput(limelightName + ".aprilTag.Zdist", VisionSubsystem.getStraightLineZDistance());
 
         Logger.recordOutput("Crosshair", "----------------------------------X-----------------------------");
         for (int i = 0; i < AprilTags.aprilTags.size(); i++) {
