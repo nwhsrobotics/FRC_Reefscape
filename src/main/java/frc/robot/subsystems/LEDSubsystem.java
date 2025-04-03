@@ -17,16 +17,16 @@ import frc.robot.util.Elastic.Notification.NotificationLevel;
 public class LEDSubsystem extends SubsystemBase {
 
     //LED strip lengths
-    private final int elevatorLEDLengthLEFT = 10;
-    private final int elevatorLEDLengthRIGHT = 10;
+    private final int elevatorLEDLengthLEFT = 49;
+    //private final int elevatorLEDLengthRIGHT = 10;
 
     //LED objects
     private final AddressableLED elevatorLEDLeft = new AddressableLED(8);
-    private final AddressableLED elevatorLEDRight = new AddressableLED(7); 
+    //private final AddressableLED elevatorLEDRight = new AddressableLED(7); 
 
     //LED buffers
     private final AddressableLEDBuffer elevatorLEDLeft_Buffer = new AddressableLEDBuffer(elevatorLEDLengthLEFT);
-    private final AddressableLEDBuffer elevatorLEDRight_Buffer = new AddressableLEDBuffer(elevatorLEDLengthRIGHT);
+    //private final AddressableLEDBuffer elevatorLEDRight_Buffer = new AddressableLEDBuffer(elevatorLEDLengthRIGHT);
 
 
 
@@ -55,7 +55,7 @@ public class LEDSubsystem extends SubsystemBase {
     //setting LED length, should only be done on startup
     public LEDSubsystem() {
         elevatorLEDLeft.setLength(elevatorLEDLeft_Buffer.getLength());
-        elevatorLEDRight.setLength(elevatorLEDRight_Buffer.getLength());
+        //elevatorLEDRight.setLength(elevatorLEDRight_Buffer.getLength());
         
         
     }
@@ -67,9 +67,9 @@ public class LEDSubsystem extends SubsystemBase {
         elevatorLEDLeft.setData(elevatorLEDLeft_Buffer);
         elevatorLEDLeft.start();
 
-        pattern.applyTo(elevatorLEDRight_Buffer);
-        elevatorLEDRight.setData(elevatorLEDRight_Buffer);
-        elevatorLEDRight.start();
+        //pattern.applyTo(elevatorLEDRight_Buffer);
+        //elevatorLEDRight.setData(elevatorLEDRight_Buffer);
+        //elevatorLEDRight.start();
         
     }
 
