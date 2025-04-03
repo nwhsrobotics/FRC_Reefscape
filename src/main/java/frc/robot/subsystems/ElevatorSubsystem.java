@@ -147,19 +147,21 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
+        rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
         // System.out.println(currentElevatorLevel);
         // System.out.println(setPointRotations);
 
         // leftElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
         // rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(0.0));
-        if( VisionSubsystem.getStraightLineZDistance() > 0.1){
-            leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
-            rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
-        }
-        else if(VisionSubsystem.getStraightLineZDistance() <= 0.1){
-            leftElevatorController.setReference(-setPointRotations + -metersToRotations(VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35))), ControlType.kMAXMotionPositionControl);
-            rightElevatorController.setReference(setPointRotations + metersToRotations(VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35))), ControlType.kMAXMotionPositionControl);
-        }
+        // if( VisionSubsystem.getStraightLineZDistance() > 0.1){
+        //     leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
+        //     rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
+        // }
+        // else if(VisionSubsystem.getStraightLineZDistance() <= 0.1){
+        //     leftElevatorController.setReference(-setPointRotations + -metersToRotations(VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35))), ControlType.kMAXMotionPositionControl);
+        //     rightElevatorController.setReference(setPointRotations + metersToRotations(VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35))), ControlType.kMAXMotionPositionControl);
+        // }
         
         
         //leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
