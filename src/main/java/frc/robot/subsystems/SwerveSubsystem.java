@@ -334,22 +334,22 @@ public class SwerveSubsystem extends SubsystemBase {
         Logger.recordOutput("swerve.heading", getHeading());
 
 
-        // Log steering direction.
-        Logger.recordOutput("swerve.steer.front.left.abs", frontLeft.getAbsoluteEncoderRad());
-        Logger.recordOutput("swerve.steer.front.right.abs", frontRight.getAbsoluteEncoderRad());
-        Logger.recordOutput("swerve.steer.back.left.abs", backLeft.getAbsoluteEncoderRad());
-        Logger.recordOutput("swerve.steer.back.right.abs", backRight.getAbsoluteEncoderRad());
+        // // Log steering direction.
+        // Logger.recordOutput("swerve.steer.front.left.abs", frontLeft.getAbsoluteEncoderRad());
+        // Logger.recordOutput("swerve.steer.front.right.abs", frontRight.getAbsoluteEncoderRad());
+        // Logger.recordOutput("swerve.steer.back.left.abs", backLeft.getAbsoluteEncoderRad());
+        // Logger.recordOutput("swerve.steer.back.right.abs", backRight.getAbsoluteEncoderRad());
 
-        Logger.recordOutput("swerve.steer.front.left.absraw", frontLeft.getAbsoluteEncoderRadRaw());
-        Logger.recordOutput("swerve.steer.front.right.absraw", frontRight.getAbsoluteEncoderRadRaw());
-        Logger.recordOutput("swerve.steer.back.left.absraw", backLeft.getAbsoluteEncoderRadRaw());
-        Logger.recordOutput("swerve.steer.back.right.absraw", backRight.getAbsoluteEncoderRadRaw());
+        // Logger.recordOutput("swerve.steer.front.left.absraw", frontLeft.getAbsoluteEncoderRadRaw());
+        // Logger.recordOutput("swerve.steer.front.right.absraw", frontRight.getAbsoluteEncoderRadRaw());
+        // Logger.recordOutput("swerve.steer.back.left.absraw", backLeft.getAbsoluteEncoderRadRaw());
+        // Logger.recordOutput("swerve.steer.back.right.absraw", backRight.getAbsoluteEncoderRadRaw());
 
-        // Log travel velocity.
-        Logger.recordOutput("swerve.drive.front.left.velocity", frontLeft.getDriveVelocity());
-        Logger.recordOutput("swerve.drive.front.right.velocity", frontRight.getDriveVelocity());
-        Logger.recordOutput("swerve.drive.back.left.velocity", backLeft.getDriveVelocity());
-        Logger.recordOutput("swerve.drive.back.right.velocity", backRight.getDriveVelocity());
+        // // Log travel velocity.
+        // Logger.recordOutput("swerve.drive.front.left.velocity", frontLeft.getDriveVelocity());
+        // Logger.recordOutput("swerve.drive.front.right.velocity", frontRight.getDriveVelocity());
+        // Logger.recordOutput("swerve.drive.back.left.velocity", backLeft.getDriveVelocity());
+        // Logger.recordOutput("swerve.drive.back.right.velocity", backRight.getDriveVelocity());
 
         // Below code is just to test elastic dashboard custom widget
         //    SmartDashboard.putData("Swerve Drive", new Sendable() {

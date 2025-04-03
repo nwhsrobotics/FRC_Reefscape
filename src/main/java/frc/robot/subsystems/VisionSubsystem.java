@@ -38,31 +38,32 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // Logger.recordOutput(limelightName + ".aprilTag.straightLineDist", VisionAprilTag.straightLineZAprilTag(limelightName));
-        // Logger.recordOutput(limelightName + ".aprilTag.verticalDist", VisionAprilTag.verticalYOffsetDistance(limelightName));
-        // Logger.recordOutput(limelightName + ".aprilTag.horizontalDist", VisionAprilTag.horizontalOffsetXAprilTag(limelightName));
+        //TODO: Move this instead to robotcontainer and log only once not repeatedly 
+        Logger.recordOutput(limelightName + ".aprilTag.straightLineDist", VisionAprilTag.straightLineZAprilTag(limelightName));
+        //Logger.recordOutput(limelightName + ".aprilTag.verticalDist", VisionAprilTag.verticalYOffsetDistance(limelightName));
+        Logger.recordOutput(limelightName + ".aprilTag.horizontalDist", VisionAprilTag.horizontalOffsetXAprilTag(limelightName));
 
-        //Logger.recordOutput(limelightName + ".aprilTag.Zdist", VisionSubsystem.getStraightLineZDistance());
+        Logger.recordOutput(limelightName + ".aprilTag.Zdist", VisionSubsystem.getStraightLineZDistance());
 
-        Logger.recordOutput("Crosshair", "----------------------------------X-----------------------------");
-        for (int i = 0; i < AprilTags.aprilTags.size(); i++) {
-            int tagID = i + 1;
-            Pose2d org = AprilTags.aprilTags.get(i);
-            TagOffset offsets = AprilTagOffsets.getOffset(tagID);
+        // Logger.recordOutput("Crosshair", "----------------------------------X-----------------------------");
+        // for (int i = 0; i < AprilTags.aprilTags.size(); i++) {
+        //     int tagID = i + 1;
+        //     Pose2d org = AprilTags.aprilTags.get(i);
+        //     TagOffset offsets = AprilTagOffsets.getOffset(tagID);
 
-            Pose2d left = transformPosition(scootRight(org, offsets.right), offsets.back);
-            Pose2d right = transformPosition(scootLeft(org, offsets.left), offsets.back);
+        //     Pose2d left = transformPosition(scootRight(org, offsets.right), offsets.back);
+        //     Pose2d right = transformPosition(scootLeft(org, offsets.left), offsets.back);
 
-            Logger.recordOutput(
-                    "Tag:" + tagID,
-                    String.format(
-                            " Original( x=%.3f, y=%.3f, rot=%.1f° ) | Left( x=%.3f, y=%.3f, rot=%.1f° ) | Right( x=%.3f, y=%.3f, rot=%.1f° )",
-                            org.getX(), org.getY(), org.getRotation().getDegrees(),
-                            left.getX(), left.getY(), left.getRotation().getDegrees(),
-                            right.getX(), right.getY(), right.getRotation().getDegrees()
-                    )
-            );
-        }
+        //     Logger.recordOutput(
+        //             "Tag:" + tagID,
+        //             String.format(
+        //                     " Original( x=%.3f, y=%.3f, rot=%.1f° ) | Left( x=%.3f, y=%.3f, rot=%.1f° ) | Right( x=%.3f, y=%.3f, rot=%.1f° )",
+        //                     org.getX(), org.getY(), org.getRotation().getDegrees(),
+        //                     left.getX(), left.getY(), left.getRotation().getDegrees(),
+        //                     right.getX(), right.getY(), right.getRotation().getDegrees()
+        //             )
+        //     );
+        // }
     }
 
     public String getLimelightName() {
