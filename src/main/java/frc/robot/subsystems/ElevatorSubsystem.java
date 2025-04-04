@@ -126,6 +126,11 @@ public class ElevatorSubsystem extends SubsystemBase {
         setPointRotations = metersToRotations(elevatorHeights[4]);  //183cm >>  179.3cm  >>   1.793m
     }
 
+    public void elevator_zero(){
+        relativeEncoderLeft.setPosition(0.0);
+        relativeEncoderRight.setPosition(0.0);
+    }
+
     public void dynamic_Height() {
         setPointRotations = Math.min(setPointRotations + metersToRotations((VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35)))), metersToRotations(2.0));
         //you can preset this to a seperate button or make this the new l4 button

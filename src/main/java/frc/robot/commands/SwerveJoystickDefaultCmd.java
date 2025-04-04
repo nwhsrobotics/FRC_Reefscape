@@ -20,7 +20,7 @@ public class SwerveJoystickDefaultCmd extends Command {
     private static final double kMaxRotVelocity = 4.0;
     private static final double kMaxRotAcceleration = 2.0;
     private static final TrapezoidProfile.Constraints rotConstraints = new TrapezoidProfile.Constraints(kMaxRotVelocity, kMaxRotAcceleration);
-    private final ProfiledPIDController profiledRotController = new ProfiledPIDController(1.0, 0.0, 0.0, rotConstraints);
+    private final ProfiledPIDController profiledRotController = new ProfiledPIDController(15.0, 0.0, 0.0, rotConstraints);
     private boolean wasReefMode = false;
 
     public SwerveJoystickDefaultCmd(SwerveSubsystem swerveSubsystem, XboxController xbox) {
@@ -132,7 +132,7 @@ public class SwerveJoystickDefaultCmd extends Command {
         // Remember with reef relative driving, forward is towards the reef's center and backwards is away
         // Left would be moving clockwise in a circle around reef and right is counterclockwise
         // These get the current controller values (from -1 to 1) to determine % speed of max and direction 
-        double forwardVal = xbox.getLeftY();
+        double forwardVal = -xbox.getLeftY();
         double sidewaysVal = xbox.getLeftX();
         // Remember SOHCAHTOA again, we can get the x component with cos and y with sin (these components are for helping go forward or backwards relative to the reef)
         double forwardUnitX = Math.cos(angleToCenter);
