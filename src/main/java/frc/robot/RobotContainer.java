@@ -74,7 +74,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake", new WaitCommand(0.75));
         //               .andThen(new InstantCommand(() -> recordAttempt()))
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
-                .andThen(new WaitCommand(0.5))
+                .andThen(new WaitCommand(0.7))
                 .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
 
         autoChooser = AutoBuilder.buildAutoChooser("Straight Auto");
