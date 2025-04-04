@@ -125,6 +125,8 @@ public class Robot extends LoggedRobot {
     @Override
     public void disabledPeriodic() {
         System.out.println("heading: " + robotContainer.swerveSubsystem.getPose().getRotation());
+        System.out.println("x: " + robotContainer.swerveSubsystem.getPose().getX());
+        System.out.println("y: " + robotContainer.swerveSubsystem.getPose().getY());
     }
 
     /**
