@@ -44,8 +44,8 @@ public class AlgaeArm extends SubsystemBase {
     
     AlgaeController.setReference(-Algaerotations, ControlType.kMAXMotionPositionControl);
     
-    System.out.println(motor.getEncoder().getPosition());
-    System.out.println(Algaerotations);
+    //System.out.println(motor.getEncoder().getPosition());
+    // System.out.println(Algaerotations);
     
 
 
@@ -59,7 +59,7 @@ public class AlgaeArm extends SubsystemBase {
 
 
     public void Homeposition(){
-        Algaerotations = degreesToMotorRotation(0.0);
+        Algaerotations = degreesToMotorRotation(10.0);
 
 
     }

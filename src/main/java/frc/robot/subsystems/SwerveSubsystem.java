@@ -19,6 +19,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -438,25 +439,41 @@ public class SwerveSubsystem extends SubsystemBase {
             boolean useMegaTag2 = true; // Set to false to use the MegaTag1 branch if desired.
             // we might use megatag1 when disabled to auto orient and megatag2 when enable
             // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78
+            if (RobotState.isDisabled()){
+                //TODO: If doing this, untick mark reset odometry in pathplanner
+                useMegaTag2 = false;
+            }
             boolean doRejectUpdate = false;
 
             if (!useMegaTag2) {
+                // LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
+                // if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
+                //     if (mt1.rawFiducials[0].ambiguity > 0.7) {
+                //         doRejectUpdate = true;
+                //     }
+                //     if (mt1.rawFiducials[0].distToCamera > 3) {
+                //         doRejectUpdate = true;
+                //     }
+                // }
+                // if (mt1.tagCount == 0) {
+                //     doRejectUpdate = true;
+                // }
+                // if (!doRejectUpdate) {
+                //     odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
+                //     odometer.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
                 LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
-                if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
-                    if (mt1.rawFiducials[0].ambiguity > 0.7) {
-                        doRejectUpdate = true;
-                    }
-                    if (mt1.rawFiducials[0].distToCamera > 3) {
-                        doRejectUpdate = true;
-                    }
-                }
-                if (mt1.tagCount == 0) {
-                    doRejectUpdate = true;
-                }
-                if (!doRejectUpdate) {
-                    odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
-                    odometer.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
-                }
+                Pose2d currentPose = getPose();
+                Logger.recordOutput("mt1.rotation", mt1.pose.getRotation());
+                Pose2d finalPoseRotated = new Pose2d(currentPose.getX(), currentPose.getY(), mt1.pose.getRotation());
+                resetOdometry(finalPoseRotated);
+                Logger.recordOutput("mt1.pose", finalPoseRotated);
+                Logger.recordOutput("mt1.poseReset", getPose());
+                LimelightHelpers.SetRobotOrientation(limelightName, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+                LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+                Logger.recordOutput("mt2.pose", mt2.pose);
+                odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
+                odometer.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+                Logger.recordOutput("mt2.final", getPose());
             } else {
                 // Always set robot orientation before getting MegaTag2 measurement
                 LimelightHelpers.SetRobotOrientation(limelightName, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
