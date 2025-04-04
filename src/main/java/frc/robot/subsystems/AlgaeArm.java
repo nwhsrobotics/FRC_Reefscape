@@ -24,7 +24,7 @@ public class AlgaeArm extends SubsystemBase {
     private final SparkMax motor = new ImprovedCanSpark(CANAssignments.ALGAE_MOTOR_ID, ImprovedCanSpark.MotorKind.NEO550, algaeConfig, SparkBaseConfig.IdleMode.kBrake, 0.1, 0.0, 0.0);
     private final RelativeEncoder  algaeEncoder = motor.getEncoder();
     SparkClosedLoopController AlgaeController = motor.getClosedLoopController();
-    private final double Target = 90.0;
+    private final double Target = 52.5;
     private double Algaerotations = 0.0;
 
     
