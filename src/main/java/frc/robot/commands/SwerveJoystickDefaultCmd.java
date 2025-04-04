@@ -20,7 +20,7 @@ public class SwerveJoystickDefaultCmd extends Command {
     private static final double kMaxRotVelocity = 4.0;
     private static final double kMaxRotAcceleration = 2.0;
     private static final TrapezoidProfile.Constraints rotConstraints = new TrapezoidProfile.Constraints(kMaxRotVelocity, kMaxRotAcceleration);
-    private final ProfiledPIDController profiledRotController = new ProfiledPIDController(1.0, 0.0, 0.1, rotConstraints);
+    private final ProfiledPIDController profiledRotController = new ProfiledPIDController(1.0, 0.0, 0.0, rotConstraints);
     private boolean wasReefMode = false;
 
     public SwerveJoystickDefaultCmd(SwerveSubsystem swerveSubsystem, XboxController xbox) {
@@ -52,6 +52,7 @@ public class SwerveJoystickDefaultCmd extends Command {
                     VisionGamePiece.limelight_aimX_proportional(LimelightConstants.llObjectDetectionNameForwards),
                     swerveSubsystem.isFieldRelative() && fieldRelative, false);
         }*/
+        //TODO: This
         if (xbox.getLeftBumperButton()) {
             headingLockRobotRelative();
             //for back vision april tag detection aligning
