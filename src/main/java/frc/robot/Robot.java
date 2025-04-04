@@ -124,9 +124,9 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
-        System.out.println("heading: " + robotContainer.swerveSubsystem.getPose().getRotation());
-        System.out.println("x: " + robotContainer.swerveSubsystem.getPose().getX());
-        System.out.println("y: " + robotContainer.swerveSubsystem.getPose().getY());
+        // System.out.println("heading: " + robotContainer.swerveSubsystem.getPose().getRotation());
+        // System.out.println("x: " + robotContainer.swerveSubsystem.getPose().getX());
+        // System.out.println("y: " + robotContainer.swerveSubsystem.getPose().getY());
     }
 
     /**
@@ -184,8 +184,8 @@ public class Robot extends LoggedRobot {
             }
         }
         //System.out.println(robotContainer.swerveSubsystem.getHeading());
-        System.out.println("mt1: " + LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llFront).pose.getRotation());
-        System.out.println("mt2: " + LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.llFront).pose.getRotation());
+        // System.out.println("mt1: " + LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llFront).pose.getRotation());
+        // System.out.println("mt2: " + LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.llFront).pose.getRotation());
 
 
     }
