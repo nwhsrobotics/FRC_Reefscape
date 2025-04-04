@@ -12,10 +12,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.CANAssignments;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.util.ImprovedPowerDistribution;
+import frc.robot.util.LimelightHelpers;
 import frc.robot.util.LocalADStarAK;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -122,6 +124,7 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
+        System.out.println("heading: " + robotContainer.swerveSubsystem.getPose().getRotation());
     }
 
     /**
@@ -133,6 +136,7 @@ public class Robot extends LoggedRobot {
         autonomousCommand = robotContainer.getAutonomousCommand();
 
         LEDSubsystem.state=LEDSubsystem.LEDState.AUTORUNNING;
+        robotContainer.algaeArm.Homeposition();
         // schedule the autonomous command (example)
         if (autonomousCommand != null) {
             autonomousCommand.schedule();
@@ -151,6 +155,7 @@ public class Robot extends LoggedRobot {
 
         LEDSubsystem.state=LEDSubsystem.LEDState.IDLE;
         robotContainer.intakeoutake.outtakeClose();
+        robotContainer.algaeArm.Homeposition();
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
@@ -176,6 +181,9 @@ public class Robot extends LoggedRobot {
             } else {
             }
         }
+        //System.out.println(robotContainer.swerveSubsystem.getHeading());
+        System.out.println("mt1: " + LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llFront).pose.getRotation());
+        System.out.println("mt2: " + LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.llFront).pose.getRotation());
 
 
     }

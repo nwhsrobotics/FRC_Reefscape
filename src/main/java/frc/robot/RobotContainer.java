@@ -34,7 +34,7 @@ public class RobotContainer {
     public int coralsAttempted = 0;
     public int coralsScored = 0;
 
-    private final AlgaeArm algaeArm = new AlgaeArm();
+    public final AlgaeArm algaeArm = new AlgaeArm();
 
     public final IntakeOuttake intakeoutake = new IntakeOuttake();
 
@@ -80,14 +80,18 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser("Straight Auto");
 
         // Control diagram: https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
-        new POVButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm));
-        new POVButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> algaeArm.Homeposition(), algaeArm));
+        new POVButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> algaeArm.Homeposition(), algaeArm));
+        new POVButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm));
         new JoystickButton(gunner, Buttons.Y).onTrue(new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
         new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
         new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
         new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
         new POVButton(gunner, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> elevatorSubsystem.dynamic_L4_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
-        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
+        //new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
+        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue((NamedCommands.getCommand("L1CORAL")
+                                                                    .alongWith(new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm)))
+                                                                    .andThen(new InstantCommand(() -> algaeArm.Homeposition(), algaeArm))
+                                                                    .andThen(NamedCommands.getCommand("LoadStation")));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(((new InstantCommand(() -> recordAttempt())).andThen(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake))).onlyIf(() -> !intakeoutake.isIntakeOpen));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake).andThen(
                 new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 1))
@@ -96,7 +100,7 @@ public class RobotContainer {
         ));
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(((new InstantCommand(() -> recordAttempt()))
                                                             .andThen(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem)))
-                                                            .andThen(new WaitCommand(0.05))
+                                                            //.andThen(new WaitCommand(0.0005))
                                                             .andThen(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake))
                                                             .andThen(new WaitCommand(0.5))
                                                             .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
