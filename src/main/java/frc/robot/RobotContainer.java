@@ -21,6 +21,7 @@ import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.TagOffset;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
 import frc.robot.subsystems.AlgaeArm;
+import frc.robot.subsystems.CoralEjection;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeOuttake;
 import frc.robot.subsystems.LEDSubsystem;
@@ -35,6 +36,8 @@ public class RobotContainer {
     public int coralsScored = 0;
 
     public final AlgaeArm algaeArm = new AlgaeArm();
+
+    public final CoralEjection coralEjection = new CoralEjection();
 
     public final IntakeOuttake intakeoutake = new IntakeOuttake();
 
@@ -71,11 +74,11 @@ public class RobotContainer {
         NamedCommands.registerCommand("L1CORAL", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("LoadStation", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
         NamedCommands.registerCommand("Boost", new InstantCommand(() -> elevatorSubsystem.boost(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
-        NamedCommands.registerCommand("Intake", new WaitCommand(0.75));
+        NamedCommands.registerCommand("Intake", new WaitCommand(1));
         //               .andThen(new InstantCommand(() -> recordAttempt()))
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
                 .andThen(new WaitCommand(0.7))
-                .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
+                .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake))); 
 
         autoChooser = AutoBuilder.buildAutoChooser("Straight Auto");
 
@@ -98,18 +101,21 @@ public class RobotContainer {
                         .andThen(new WaitCommand(1))
                         .andThen(new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 0)))
         ));
-        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(((new InstantCommand(() -> recordAttempt()))
-                                                            .andThen(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem)))
-                                                            //.andThen(new WaitCommand(0.0005))
-                                                            .andThen(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake))
-                                                            .andThen(new WaitCommand(0.5))
-                                                            .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
+        // new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(((new InstantCommand(() -> recordAttempt()))
+        //                                                     .andThen(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem)))
+        //                                                     //.andThen(new WaitCommand(0.0005))
+        //                                                     .andThen(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake))
+        //                                                     .andThen(new WaitCommand(0.5))
+        //                                                     .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
+        new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> elevatorSubsystem.elevator_zero()));
         //new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(NamedCommands.getCommand("L4CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("Boost")).andThen(NamedCommands.getCommand("LoadStation")).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.IDLEROUNDRUNNING)));
         //new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("L1CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         //new POVButton(gunner, Buttons.POV_RIGHT).onTrue(NamedCommands.getCommand("L2CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.IDLEROUNDRUNNING)));
         //new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("L3CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
-        new JoystickButton(gunner, Buttons.MENU).onTrue(new InstantCommand(() -> successfulAttempt()));
-        new JoystickButton(gunner, Buttons.VIEW).onTrue(new InstantCommand(() -> successfulAttempt()));
+        //new JoystickButton(gunner, Buttons.MENU).onTrue(new InstantCommand(() -> successfulAttempt()));
+        //new JoystickButton(gunner, Buttons.VIEW).onTrue(new InstantCommand(() -> successfulAttempt()));
+        new JoystickButton(gunner, Buttons.MENU).onTrue(new InstantCommand(() -> coralEjection.eject()));
+        new JoystickButton(gunner, Buttons.VIEW).onTrue(new InstantCommand(() -> coralEjection.home()));
 
         // don't need reset odometry with vision because you can fake angle it (for rotation) + the april tag corrects odometry live
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
