@@ -440,7 +440,7 @@ public class SwerveSubsystem extends SubsystemBase {
             // we might use megatag1 when disabled to auto orient and megatag2 when enable
             // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78
             if (RobotState.isDisabled()){
-                //TODO: If doing this, untick mark reset odometry in pathplanner
+                // If doing this, untick mark reset odometry in pathplanner
                 useMegaTag2 = false;
             }
             boolean doRejectUpdate = false;
@@ -463,6 +463,9 @@ public class SwerveSubsystem extends SubsystemBase {
                 //     odometer.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
                 LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
                 Pose2d currentPose = getPose();
+                if (mt1.pose.getRotation().getDegrees() == 0.0){
+                    return;
+                }
                 Logger.recordOutput("mt1.rotation", mt1.pose.getRotation());
                 Pose2d finalPoseRotated = new Pose2d(currentPose.getX(), currentPose.getY(), mt1.pose.getRotation());
                 resetOdometry(finalPoseRotated);
@@ -474,6 +477,9 @@ public class SwerveSubsystem extends SubsystemBase {
                 Logger.recordOutput("mt2.posex", mt2.pose.getX());
                 Logger.recordOutput("mt2.posey", mt2.pose.getY());
                 odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
+                if (mt2.pose.getX() == 0.0 || mt2.pose.getY() == 0.0 || mt2.pose.getRotation().getDegrees() == 0.0){
+                    return;
+                }
                 resetOdometry(mt2.pose);
                 Logger.recordOutput("mt2.final", getPose());
                 Logger.recordOutput("mt2.finalx", getPose().getX());
