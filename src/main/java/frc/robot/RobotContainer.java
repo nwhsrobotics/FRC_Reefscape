@@ -87,8 +87,8 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
         new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
         new POVButton(gunner, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> elevatorSubsystem.dynamic_L4_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
-        //new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue((NamedCommands.getCommand("L1CORAL")
+        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
+        new POVButton(gunner, Buttons.POV_LEFT).onTrue((NamedCommands.getCommand("L1CORAL")
                                                                     .alongWith(new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm)))
                                                                     .andThen(new InstantCommand(() -> algaeArm.Homeposition(), algaeArm))
                                                                     .andThen(NamedCommands.getCommand("LoadStation")));
