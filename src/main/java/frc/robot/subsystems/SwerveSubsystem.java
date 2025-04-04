@@ -471,9 +471,13 @@ public class SwerveSubsystem extends SubsystemBase {
                 LimelightHelpers.SetRobotOrientation(limelightName, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
                 LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
                 Logger.recordOutput("mt2.pose", mt2.pose);
+                Logger.recordOutput("mt2.posex", mt2.pose.getX());
+                Logger.recordOutput("mt2.posey", mt2.pose.getY());
                 odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
-                odometer.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+                resetOdometry(mt2.pose);
                 Logger.recordOutput("mt2.final", getPose());
+                Logger.recordOutput("mt2.finalx", getPose().getX());
+                Logger.recordOutput("mt2.finaly", getPose().getY());
             } else {
                 // Always set robot orientation before getting MegaTag2 measurement
                 LimelightHelpers.SetRobotOrientation(limelightName, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
