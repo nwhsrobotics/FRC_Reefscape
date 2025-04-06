@@ -39,17 +39,6 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotInit() {
-        DriverStation.silenceJoystickConnectionWarning(true);
-        Pathfinding.setPathfinder(new LocalADStarAK());
-        FollowPathCommand.warmupCommand().schedule();
-        PathfindingCommand.warmupCommand().schedule();
-        SmartDashboard.putBoolean("auto.initialized", false);
-        new WaitCommand(45).andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.IDLE))).schedule();
-        //.andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)))).schedule();
-        robotPD = new ImprovedPowerDistribution(CANAssignments.PDU_ID, Constants.PDU_TYPE);
-
-        Logger.recordMetadata("version", LoggerConstants.RUNNING_UNDER);
-
         switch (LoggerConstants.MODE) {
             case REAL:
                 // /media/sda1/
@@ -71,6 +60,16 @@ public class Robot extends LoggedRobot {
         }
 
         Logger.start();
+        DriverStation.silenceJoystickConnectionWarning(true);
+        Logger.recordOutput("auto.initialized", false);
+        Pathfinding.setPathfinder(new LocalADStarAK());
+        FollowPathCommand.warmupCommand().schedule();
+        PathfindingCommand.warmupCommand().andThen(new InstantCommand(() -> Logger.recordOutput("auto.initialized", true))) .schedule();
+        //new WaitCommand(45).andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.IDLE))).schedule();
+        //.andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)))).schedule();
+        robotPD = new ImprovedPowerDistribution(CANAssignments.PDU_ID, Constants.PDU_TYPE);
+
+        Logger.recordMetadata("version", LoggerConstants.RUNNING_UNDER);
 
         // if you want to stop the robot, use the boolean returned by this method.
         CANAssignments.checkAssignments();

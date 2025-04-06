@@ -54,7 +54,7 @@ public class SwerveJoystickDefaultCmd extends Command {
         }*/
         //TODO: This
         if (xbox.getLeftBumperButton()) {
-            headingLockRobotRelative();
+            //headingLockRobotRelative();
             //for back vision april tag detection aligning
             //while using Limelight, turn off field-relative driving.
             // fieldRelative = false;
@@ -65,7 +65,7 @@ public class SwerveJoystickDefaultCmd extends Command {
             //         swerveSubsystem.isFieldRelative() && fieldRelative, false);
         } else if (xbox.getRightBumperButton()) { //for forwards april tag align
             fieldRelative = false;
-            reefRelativeDrivev2();
+            //reefRelativeDrivev2();
             // swerveSubsystem.drive(
             //         VisionAprilTag.limelight_rangeSpeedZ_aprilTag(LimelightConstants.llFront),
             //         VisionAprilTag.horizontalOffsetSpeedXAprilTag(LimelightConstants.llFront),
