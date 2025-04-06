@@ -192,9 +192,9 @@ public class RobotContainer {
         SmartDashboard.putNumber("attempt." + coralsAttempted + ".offsetYRelativeDifference", offsetYDifference);
         SmartDashboard.putNumber("attempt." + coralsAttempted + ".offsetXRelativeDifference", offsetXDifference);
 
-        Logger.recordOutput("attempt." + elevatorHeight + ".elevatorHeightSetpoint", offsetX);
-        Logger.recordOutput("attempt." + elevatorLeftMotor + ".elevatorLeftHeight", offsetX);
-        Logger.recordOutput("attempt." + elevatorRightMotor + ".elevatorRightHeight", offsetX);
+        Logger.recordOutput("attempt." + coralsAttempted + ".elevatorHeightSetpoint", elevatorHeight);
+        Logger.recordOutput("attempt." + coralsAttempted + ".elevatorLeftHeight", elevatorLeftMotor);
+        Logger.recordOutput("attempt." + coralsAttempted + ".elevatorRightHeight", elevatorRightMotor);
 
         Logger.recordOutput("attempt." + coralsAttempted + ".wasScored", false);
 
