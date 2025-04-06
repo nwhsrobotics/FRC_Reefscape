@@ -37,7 +37,7 @@ public class RobotContainer {
 
     public final AlgaeArm algaeArm = new AlgaeArm();
 
-    public final CoralEjection coralEjection = new CoralEjection();
+    //public final CoralEjection coralEjection = new CoralEjection();
 
     public final IntakeOuttake intakeoutake = new IntakeOuttake();
 
@@ -101,6 +101,7 @@ public class RobotContainer {
                         .andThen(new WaitCommand(1))
                         .andThen(new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 0)))
         ));
+        new POVButton(gunner, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> elevatorSubsystem.elevator_top()));
         // new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(((new InstantCommand(() -> recordAttempt()))
         //                                                     .andThen(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem)))
         //                                                     //.andThen(new WaitCommand(0.0005))
@@ -114,8 +115,8 @@ public class RobotContainer {
         //new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("L3CORAL").andThen(NamedCommands.getCommand("Outtake")).andThen(NamedCommands.getCommand("LoadStation")));
         //new JoystickButton(gunner, Buttons.MENU).onTrue(new InstantCommand(() -> successfulAttempt()));
         //new JoystickButton(gunner, Buttons.VIEW).onTrue(new InstantCommand(() -> successfulAttempt()));
-        new JoystickButton(gunner, Buttons.MENU).onTrue(new InstantCommand(() -> coralEjection.eject()));
-        new JoystickButton(gunner, Buttons.VIEW).onTrue(new InstantCommand(() -> coralEjection.home()));
+        //new JoystickButton(gunner, Buttons.MENU).onTrue(new InstantCommand(() -> coralEjection.eject()));
+        //new JoystickButton(gunner, Buttons.VIEW).onTrue(new InstantCommand(() -> coralEjection.home()));
 
         // don't need reset odometry with vision because you can fake angle it (for rotation) + the april tag corrects odometry live
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));

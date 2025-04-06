@@ -155,10 +155,10 @@ public final class Constants {
 
 
         //THESE ONES ARE FOR THE 2025 ROBOT 
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 0.6212622190936846;//2.66 + Math.PI;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = -0.679553489033339;//5.24 - Math.PI;
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 2.103087660191214;//0.61 + Math.PI;
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = -2.2534177774040067;//5.20 - Math.PI;
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 0.607456392002714;//2.66 + Math.PI;
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = -0.6902913545485385;//5.24 - Math.PI;
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 2.06934008285773;//0.61 + Math.PI;
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = -2.2779614700101773;//5.20 - Math.PI;
 
 
         //2024 ROBOT
