@@ -186,15 +186,17 @@ public class VisionSubsystem extends SubsystemBase {
      * <p>
      */
     public Pose2d leftReef(Pose2d swervePos) {
-        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
-        Pose2d finalPose = swervePos;
-        int aprilTagId = -1;
-        if (llf != null) {
-            aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
-            finalPose = getAprilTagPos(aprilTagId);
-        } else {
-            finalPose = getNearestReef(swervePos);
-        }
+        // LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
+        // Pose2d finalPose = swervePos;
+        // int aprilTagId = -1;
+        // if (llf != null) {
+        //     aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
+        //     finalPose = getAprilTagPos(aprilTagId);
+        // } else {
+        //     finalPose = getNearestReef(swervePos);
+        // }
+        Pose2d finalPose = getNearestReef(swervePos);
+        int aprilTagId = AprilTags.aprilTags.indexOf(finalPose) + 1;
         TagOffset offset = AprilTagOffsets.getOffset(aprilTagId);
         finalPose = scootLeft(finalPose, offset.left);
         //offset.backLeft (try not to use this because then you would need relative, rightRelative, and leftRelative offsets) and then getCurrentAlignment
@@ -213,15 +215,17 @@ public class VisionSubsystem extends SubsystemBase {
      * Closet right reef from position
      */
     public Pose2d rightReef(Pose2d swervePos) {
-        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
-        Pose2d finalPose = swervePos;
-        int aprilTagId = -1;
-        if (llf != null) {
-            aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
-            finalPose = getAprilTagPos(aprilTagId);
-        } else {
-            finalPose = getNearestReef(swervePos);
-        }
+        // LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
+        // Pose2d finalPose = swervePos;
+        // int aprilTagId = -1;
+        // if (llf != null) {
+        //     aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
+        //     finalPose = getAprilTagPos(aprilTagId);
+        // } else {
+        //     finalPose = getNearestReef(swervePos);
+        // }
+        Pose2d finalPose = getNearestReef(swervePos);
+        int aprilTagId = AprilTags.aprilTags.indexOf(finalPose) + 1;
         TagOffset offset = AprilTagOffsets.getOffset(aprilTagId);
         finalPose = scootRight(finalPose, offset.right);
         //offset.backRight (try not to use this because then you would need relative, rightRelative, and leftRelative offsets) and then getCurrentAlignment in straightLine

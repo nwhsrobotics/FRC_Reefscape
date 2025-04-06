@@ -461,29 +461,29 @@ public class SwerveSubsystem extends SubsystemBase {
                 // if (!doRejectUpdate) {
                 //     odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
                 //     odometer.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
-                // LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
-                // Pose2d currentPose = getPose();
-                // if (mt1.pose.getRotation().getDegrees() == 0.0){
-                //     return;
-                // }
-                // Logger.recordOutput("mt1.rotation", mt1.pose.getRotation());
-                // Pose2d finalPoseRotated = new Pose2d(currentPose.getX(), currentPose.getY(), mt1.pose.getRotation());
-                // resetOdometry(finalPoseRotated);
-                // Logger.recordOutput("mt1.pose", finalPoseRotated);
-                // Logger.recordOutput("mt1.poseReset", getPose());
-                // LimelightHelpers.SetRobotOrientation(limelightName, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-                // LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
-                // Logger.recordOutput("mt2.pose", mt2.pose);
-                // Logger.recordOutput("mt2.posex", mt2.pose.getX());
-                // Logger.recordOutput("mt2.posey", mt2.pose.getY());
-                // odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
-                // if (mt2.pose.getX() == 0.0 || mt2.pose.getY() == 0.0 || mt2.pose.getRotation().getDegrees() == 0.0){
-                //     return;
-                // }
-                // resetOdometry(mt2.pose);
-                // Logger.recordOutput("mt2.final", getPose());
-                // Logger.recordOutput("mt2.finalx", getPose().getX());
-                // Logger.recordOutput("mt2.finaly", getPose().getY());
+                LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
+                Pose2d currentPose = getPose();
+                if (mt1.pose.getRotation().getDegrees() == 0.0){
+                    return;
+                }
+                Logger.recordOutput("mt1.rotation", mt1.pose.getRotation());
+                Pose2d finalPoseRotated = new Pose2d(currentPose.getX(), currentPose.getY(), mt1.pose.getRotation());
+                resetOdometry(finalPoseRotated);
+                Logger.recordOutput("mt1.pose", finalPoseRotated);
+                Logger.recordOutput("mt1.poseReset", getPose());
+                LimelightHelpers.SetRobotOrientation(limelightName, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+                LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+                Logger.recordOutput("mt2.pose", mt2.pose);
+                Logger.recordOutput("mt2.posex", mt2.pose.getX());
+                Logger.recordOutput("mt2.posey", mt2.pose.getY());
+                odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
+                if (mt2.pose.getX() == 0.0 || mt2.pose.getY() == 0.0 || mt2.pose.getRotation().getDegrees() == 0.0){
+                    return;
+                }
+                resetOdometry(mt2.pose);
+                Logger.recordOutput("mt2.final", getPose());
+                Logger.recordOutput("mt2.finalx", getPose().getX());
+                Logger.recordOutput("mt2.finaly", getPose().getY());
             } else {
                 // Always set robot orientation before getting MegaTag2 measurement
                 LimelightHelpers.SetRobotOrientation(limelightName, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
