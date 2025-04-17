@@ -1,25 +1,20 @@
 package frc.robot.commands;
 
-import java.util.List;
-
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
-
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.Positions;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionGamePiece;
-import frc.robot.util.SwerveUtils;
+
+import java.util.List;
 
 public class SwerveJoystickDefaultCmd extends Command {
     private final SwerveSubsystem swerveSubsystem;
@@ -42,7 +37,7 @@ public class SwerveJoystickDefaultCmd extends Command {
     public void execute() {
         if (xbox.getLeftBumperButton()) {
             PathPlannerTrajectoryState trajectoryState = new PathPlannerTrajectoryState();
-            trajectoryState.pose = VisionGamePiece.visionTargetLocation;
+            trajectoryState.pose = VisionGamePiece.getFieldPose();
             swerveSubsystem.driveRobotRelative(
                     driveController.calculateRobotRelativeSpeeds(swerveSubsystem.getPose(), trajectoryState)
             );
@@ -58,7 +53,7 @@ public class SwerveJoystickDefaultCmd extends Command {
             // for example if driving relative to april tag do
             // targetRelativeDrive(Constants.AprilTags.aprilTags);
             // if for example driving relative to gamepiece do
-            // targetRelativeDrive(VisionGamePiece.visionTargetLocation);
+            // targetRelativeDrive(VisionGamePiece.getFieldPose());
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if trigger(booster) not pressed
             fieldRelative = true;
             swerveSubsystem.drive(
@@ -137,7 +132,7 @@ public class SwerveJoystickDefaultCmd extends Command {
         // The current heading (rotation) of the robot
         double currentHeading = currentPose.getRotation().getRadians();
         // So find the difference between current angle of the robot and the angle it should be facing to the center
-        double headingError = SwerveUtils.angleDifferenceSigned(angleToCenter, currentHeading);
+        double headingError = swerveSubsystem.angleDifferenceSigned(angleToCenter, currentHeading);
         // Now based on that difference we can run a simple P (proportional) based control
         // kRot is the P value (we need to fine tune this) to help with rotation
         // double kRot = Math.PI / 25.0;

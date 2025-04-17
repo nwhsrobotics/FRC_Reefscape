@@ -7,15 +7,14 @@ package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.util.ImprovedCanSpark;
+import frc.robot.util.RobotCANUtils.CANSparkMaxController;
+import frc.robot.util.RobotCANUtils.MotorKind;
 
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -26,13 +25,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final double kA = 0.0;
     // Create a new ElevatorFeedforward with gains kS, kG, kV, and kA
     ElevatorFeedforward feedforward = new ElevatorFeedforward(kS, kG, kV, kA);
-    private final SparkBaseConfig configEl = new SparkMaxConfig();
+    private final SparkMaxConfig configEl = new SparkMaxConfig();
 
     //Encoder absoluteEncoder = new Encoder(null, null);
     // Create ele(vator) motors
+    private final CANSparkMaxController leftElevatorMotor = new CANSparkMaxController(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, MotorKind.NEO, configEl, IdleMode.kBrake, 0.8, 0.0, 0.0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02 / ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
+    private final CANSparkMaxController rightElevatorMotor = new CANSparkMaxController(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, MotorKind.NEO, configEl, IdleMode.kBrake, 0.8, 0.0, 0.0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02 / ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
 
-    private final SparkMax leftElevatorMotor = new ImprovedCanSpark(CANAssignments.LEFT_ELEVATOR_MOTOR_ID, configEl, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake, 0.8, 0.0, 0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02 / ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
-    private final SparkMax rightElevatorMotor = new ImprovedCanSpark(CANAssignments.RIGHT_ELEVATOR_MOTOR_ID, configEl, ImprovedCanSpark.MotorKind.NEO, IdleMode.kBrake, 0.8, 0.0, 0, ElevatorConstants.MAX_VELOCITY_RPM, ElevatorConstants.MAX_ACCEL_RPM_S, 0.02 / ElevatorConstants.ELEVATOR_MOTOR_ENCODER_ROT2METER);
 
     SparkClosedLoopController leftElevatorController = leftElevatorMotor.getClosedLoopController();
     SparkClosedLoopController rightElevatorController = rightElevatorMotor.getClosedLoopController();

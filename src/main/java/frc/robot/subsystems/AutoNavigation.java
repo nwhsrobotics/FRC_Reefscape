@@ -189,15 +189,11 @@ public class AutoNavigation {
      * @return - scheduled pathfinding command.
      */
     public Command pathfindToPosition(Pose2d position) {
-        //Maybe use on the fly path? Less overhead
         Command command = AutoBuilder.pathfindToPose(
                 position,
                 AutoConstants.kPathfindingConstraints,
                 0.0 // Goal end velocity in meters/sec
         ).andThen(PosePIDCommand.create(swerve, position, Seconds.of(1)));
-        // .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
-        // .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
-        //.andThen(pathOnTheFlyToPosition(position));
 
         return command;
     }
@@ -228,9 +224,9 @@ public class AutoNavigation {
         return followPathCommand;
     }
 
-    public Command finalPreciseAllingment(boolean isGamePiece){
-        if (isGamePiece){
-            return pathOnTheFlyToPosition(VisionGamePiece.visionTargetLocation);
+    public Command finalPreciseAllingment(boolean isGamePiece) {
+        if (isGamePiece) {
+            return pathOnTheFlyToPosition(VisionGamePiece.getFieldPose());
         }
         return pathOnTheFlyToPosition(swerve.getPose().nearest(Constants.Positions.allAutoPositions));
     }

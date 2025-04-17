@@ -8,14 +8,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.AprilTags;
-import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.Positions;
-import frc.robot.util.LimelightHelpers.LimelightResults;
-import org.littletonrobotics.junction.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,9 +29,6 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        Logger.recordOutput(limelightName + ".aprilTag.straightLineDist", VisionAprilTag.straightLineZAprilTag(limelightName));
-        Logger.recordOutput(limelightName + ".aprilTag.horizontalDist", VisionAprilTag.horizontalOffsetXAprilTag(limelightName));
-
 
         // Logger.recordOutput("Crosshair", "----------------------------------X-----------------------------");
         for (int i = 0; i < AprilTags.aprilTags.size(); i++) {
@@ -56,7 +48,6 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
 
-
     public boolean isBlueAllianceReef(int id) {
         return id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22;
     }
@@ -66,7 +57,6 @@ public class VisionSubsystem extends SubsystemBase {
         return id == 6 || id == 7 || id == 8 || id == 9 || id == 10 || id == 11;
 
     }
-
 
 
     public Pose2d transformPosition(Pose2d aprilTagPos, double offsetDistance) {
@@ -137,8 +127,6 @@ public class VisionSubsystem extends SubsystemBase {
         return finalPose;
     }
 
-
-
     public Pose2d getNearestReef(Pose2d swervePos) {
         Pose2d closest = swervePos;
         double dist = Integer.MAX_VALUE;
@@ -154,45 +142,31 @@ public class VisionSubsystem extends SubsystemBase {
         return closest;
     }
 
-
     public int getNearestAprilTag(Pose2d swervePose) {
         Pose2d nearest = swervePose.nearest(AprilTags.aprilTags);
         int id = AprilTags.aprilTags.indexOf(nearest) + 1;
         return id;
     }
 
-    public Rotation2d getFakeAngle(Pose2d swervePos) {
-        LimelightResults llf = VisionAprilTag.isValid(limelightName);
-        if (llf != null) {
-            int aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
-            return getAprilTagPos(aprilTagId).getRotation();
-        }
-        return getNearestReef(swervePos).getRotation();
-    }
-
-
     public static double getStraightLineZDistance() {
-        LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
         double llToFrontOfRobot = 0.46;
         int aprilTagId = -1;
-        if (llf != null) {
-            aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
-        } else {
-            List<Pose2d> reefTags = IntStream.range(0, AprilTags.aprilTags.size())
-                    .filter(i -> {
-                        int id = i + 1;
-                        return id == 6 || id == 7 || id == 8 || id == 9 || id == 10 || id == 11 ||
-                                id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22;
-                    })
-                    .mapToObj(i -> AprilTags.aprilTags.get(i))
-                    .collect(Collectors.toList());
 
-            Pose2d nearest = SwerveSubsystem.currentPose.nearest(reefTags);
-            aprilTagId = AprilTags.aprilTags.indexOf(nearest) + 1;
+        List<Pose2d> reefTags = IntStream.range(0, AprilTags.aprilTags.size())
+                .filter(i -> {
+                    int id = i + 1;
+                    return id == 6 || id == 7 || id == 8 || id == 9 || id == 10 || id == 11 ||
+                            id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22;
+                })
+                .mapToObj(i -> AprilTags.aprilTags.get(i))
+                .collect(Collectors.toList());
 
-            // Pose2d nearest = SwerveSubsystem.currentPose.nearest(AprilTags.aprilTags);
-            // aprilTagId = AprilTags.aprilTags.indexOf(nearest) + 1;
-        }
+        Pose2d nearest = SwerveSubsystem.currentPose.nearest(reefTags);
+        aprilTagId = AprilTags.aprilTags.indexOf(nearest) + 1;
+
+        // Pose2d nearest = SwerveSubsystem.currentPose.nearest(AprilTags.aprilTags);
+        // aprilTagId = AprilTags.aprilTags.indexOf(nearest) + 1;
+
         // double distance = 0;
         // Pose2d relativePose = SwerveSubsystem.currentPose.relativeTo(AprilTags.aprilTags.get(aprilTagId-1));
         // if (relativePose.getTranslation().getY() < 0){
