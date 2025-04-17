@@ -1,4 +1,4 @@
-package frc.robot.autos;
+package frc.robot.commands;
 
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;

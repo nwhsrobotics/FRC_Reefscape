@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.autos.PosePIDCommand;
+import frc.robot.commands.PosePIDCommand;
 import org.littletonrobotics.junction.Logger;
 
 import java.util.List;
@@ -186,7 +186,7 @@ public class AutoNavigation {
             return e;
         } catch (Exception io) {
             io.printStackTrace();
-            Logger.recordOutput("errors.autobuilder", "pathFindThenFollowPath: " + io.toString());
+            Logger.recordOutput("errors.autobuilder", "pathFindThenFollowPath: " + io);
         }
         return new InstantCommand();
     }

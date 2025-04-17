@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -17,13 +16,11 @@ import frc.robot.Constants.AprilTags;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.TagOffset;
 import frc.robot.util.LimelightHelpers.LimelightResults;
+import org.littletonrobotics.junction.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import org.littletonrobotics.junction.Logger;
 
 public class VisionSubsystem extends SubsystemBase {
     /**
@@ -334,17 +331,17 @@ public class VisionSubsystem extends SubsystemBase {
             aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
         } else {
             List<Pose2d> reefTags = IntStream.range(0, AprilTags.aprilTags.size())
-                .filter(i -> {
-                    int id = i + 1;
-                    return id == 6 || id == 7 || id == 8 || id == 9 || id == 10 || id == 11 ||
-                        id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22;
-                })
-                .mapToObj(i -> AprilTags.aprilTags.get(i))
-                .collect(Collectors.toList());
+                    .filter(i -> {
+                        int id = i + 1;
+                        return id == 6 || id == 7 || id == 8 || id == 9 || id == 10 || id == 11 ||
+                                id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22;
+                    })
+                    .mapToObj(i -> AprilTags.aprilTags.get(i))
+                    .collect(Collectors.toList());
 
             Pose2d nearest = SwerveSubsystem.currentPose.nearest(reefTags);
             aprilTagId = AprilTags.aprilTags.indexOf(nearest) + 1;
-            
+
             // Pose2d nearest = SwerveSubsystem.currentPose.nearest(AprilTags.aprilTags);
             // aprilTagId = AprilTags.aprilTags.indexOf(nearest) + 1;
         }

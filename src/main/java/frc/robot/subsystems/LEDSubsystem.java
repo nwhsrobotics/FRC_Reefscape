@@ -1,18 +1,14 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Percent;
-import static edu.wpi.first.units.Units.Second;
-
-import com.revrobotics.spark.SparkBase.ControlType;
-
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.LEDPattern.GradientType;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.Elastic;
-import frc.robot.util.Elastic.Notification.NotificationLevel;
+
+import static edu.wpi.first.units.Units.Percent;
+import static edu.wpi.first.units.Units.Second;
 
 public class LEDSubsystem extends SubsystemBase {
 
@@ -29,35 +25,33 @@ public class LEDSubsystem extends SubsystemBase {
     //private final AddressableLEDBuffer elevatorLEDRight_Buffer = new AddressableLEDBuffer(elevatorLEDLengthRIGHT);
 
 
-
-
     //LED colors =====================================================
     private final Color orange = new Color(255, 40, 0);
 
 
     //LED patterns ===================================================
-    private final LEDPattern robotNotReady = LEDPattern.solid(Color.kRed); 
-    private final LEDPattern idleRoundRunning = LEDPattern.solid(orange); 
-    private final LEDPattern autoRunning = LEDPattern.solid(Color.kCoral); 
-    private final LEDPattern autoAlineRunning = LEDPattern.solid(Color.kPurple);  
-    private final LEDPattern eleDroping = LEDPattern.solid(Color.kGreen); 
+    private final LEDPattern robotNotReady = LEDPattern.solid(Color.kRed);
+    private final LEDPattern idleRoundRunning = LEDPattern.solid(orange);
+    private final LEDPattern autoRunning = LEDPattern.solid(Color.kCoral);
+    private final LEDPattern autoAlineRunning = LEDPattern.solid(Color.kPurple);
+    private final LEDPattern eleDroping = LEDPattern.solid(Color.kGreen);
 
 
     //broken orange gradient
     private final LEDPattern brokenGradientBase = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kBlack, Color.kBlack, orange, Color.kBlack, Color.kBlack, orange, Color.kBlack, Color.kBlack, orange);
-    private final LEDPattern idle = brokenGradientBase.scrollAtRelativeSpeed(Percent.per(Second).of(25));    
-    
+    private final LEDPattern idle = brokenGradientBase.scrollAtRelativeSpeed(Percent.per(Second).of(25));
+
     //EleUp 
     private final LEDPattern bacePattern = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kBlack, orange);
-    private final LEDPattern eleUp = bacePattern.mask(LEDPattern.progressMaskLayer(()-> ElevatorSubsystem.currentHeight/1.9));
+    private final LEDPattern eleUp = bacePattern.mask(LEDPattern.progressMaskLayer(() -> ElevatorSubsystem.currentHeight / 1.9));
 
 
     //setting LED length, should only be done on startup
     public LEDSubsystem() {
         elevatorLEDLeft.setLength(elevatorLEDLeft_Buffer.getLength());
         //elevatorLEDRight.setLength(elevatorLEDRight_Buffer.getLength());
-        
-        
+
+
     }
 
 
@@ -70,23 +64,23 @@ public class LEDSubsystem extends SubsystemBase {
         //pattern.applyTo(elevatorLEDRight_Buffer);
         //elevatorLEDRight.setData(elevatorLEDRight_Buffer);
         //elevatorLEDRight.start();
-        
+
     }
 
 
     //hadleing toggling difrent LED patterns
 
-    public static LEDState state = LEDState.ROBOTNOTREADY;       
+    public static LEDState state = LEDState.ROBOTNOTREADY;
 
-    public static enum LEDState {
-        
+    public enum LEDState {
+
         IDLE,
-        
+
         ELEDROPING,
-        
-        AUTOALINERUNNING, 
-        
-        AUTORUNNING,    
+
+        AUTOALINERUNNING,
+
+        AUTORUNNING,
 
         IDLEROUNDRUNNING,
 
@@ -100,29 +94,29 @@ public class LEDSubsystem extends SubsystemBase {
     public void periodic() {
         switch (state) {
             case IDLE:
-                setLED_Pattern(idle); 
+                setLED_Pattern(idle);
                 break;
             case ELEDROPING:
                 setLED_Pattern(eleDroping);
                 break;
             case AUTOALINERUNNING:
-                setLED_Pattern(autoAlineRunning); 
-                break; 
+                setLED_Pattern(autoAlineRunning);
+                break;
             case AUTORUNNING:
-                setLED_Pattern(autoRunning); 
-                break; 
+                setLED_Pattern(autoRunning);
+                break;
             case IDLEROUNDRUNNING:
-                setLED_Pattern(idleRoundRunning);  
+                setLED_Pattern(idleRoundRunning);
                 break;
             case ROBOTNOTREADY:
-                setLED_Pattern(robotNotReady);  
-            break;
+                setLED_Pattern(robotNotReady);
+                break;
             case ELEUP:
                 setLED_Pattern(eleUp);
             default:
                 break;
         }
 
-        
+
     }
 }

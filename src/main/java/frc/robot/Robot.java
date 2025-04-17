@@ -6,18 +6,14 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.CANAssignments;
-import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.util.ImprovedPowerDistribution;
-import frc.robot.util.LimelightHelpers;
 import frc.robot.util.LocalADStarAK;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -64,7 +60,7 @@ public class Robot extends LoggedRobot {
         Logger.recordOutput("auto.initialized", false);
         Pathfinding.setPathfinder(new LocalADStarAK());
         FollowPathCommand.warmupCommand().schedule();
-        PathfindingCommand.warmupCommand().andThen(new InstantCommand(() -> Logger.recordOutput("auto.initialized", true))) .schedule();
+        PathfindingCommand.warmupCommand().andThen(new InstantCommand(() -> Logger.recordOutput("auto.initialized", true))).schedule();
         //new WaitCommand(45).andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.IDLE))).schedule();
         //.andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)))).schedule();
         robotPD = new ImprovedPowerDistribution(CANAssignments.PDU_ID, Constants.PDU_TYPE);
@@ -136,7 +132,7 @@ public class Robot extends LoggedRobot {
     public void autonomousInit() {
         autonomousCommand = robotContainer.getAutonomousCommand();
 
-        LEDSubsystem.state=LEDSubsystem.LEDState.AUTORUNNING;
+        LEDSubsystem.state = LEDSubsystem.LEDState.AUTORUNNING;
         robotContainer.algaeArm.Homeposition();
         // schedule the autonomous command (example)
         if (autonomousCommand != null) {
@@ -154,7 +150,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void teleopInit() {
 
-        LEDSubsystem.state=LEDSubsystem.LEDState.IDLE;
+        LEDSubsystem.state = LEDSubsystem.LEDState.IDLE;
         robotContainer.intakeoutake.outtakeClose();
         robotContainer.algaeArm.Homeposition();
         // This makes sure that the autonomous stops running when
@@ -178,7 +174,7 @@ public class Robot extends LoggedRobot {
                     MathUtil.applyDeadband(robotContainer.driver.getRightX(), OIConstants.kDriveDeadband) != 0 ||
                     MathUtil.applyDeadband(robotContainer.driver.getRightY(), OIConstants.kDriveDeadband) != 0) {
                 robotContainer.swerveSubsystem.autonavigator.disable();
-                LEDSubsystem.state=LEDSubsystem.LEDState.IDLEROUNDRUNNING; 
+                LEDSubsystem.state = LEDSubsystem.LEDState.IDLEROUNDRUNNING;
             } else {
             }
         }

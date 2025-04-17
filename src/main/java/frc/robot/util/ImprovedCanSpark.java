@@ -76,6 +76,7 @@ public class ImprovedCanSpark extends SparkMax {
             configure(config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         }
     }
+
     public ImprovedCanSpark(int id, MotorKind motor, SparkBaseConfig config, IdleMode mode, double p, double i, double d) {
         super(id, MotorType.kBrushless);
         clearFaults();
@@ -87,14 +88,14 @@ public class ImprovedCanSpark extends SparkMax {
         }
 
         config
-        .closedLoop
-        .p(p)
-        .i(i)
-        .d(d)
-        .maxMotion
-        .maxVelocity(11844.0)
-        .maxAcceleration(11844.0)
-        .allowedClosedLoopError(0.6);
+                .closedLoop
+                .p(p)
+                .i(i)
+                .d(d)
+                .maxMotion
+                .maxVelocity(11844.0)
+                .maxAcceleration(11844.0)
+                .allowedClosedLoopError(0.6);
 
         if (DriverStation.isFMSAttached()) {
             configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
