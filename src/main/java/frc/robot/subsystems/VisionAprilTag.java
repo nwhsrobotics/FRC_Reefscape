@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.Constants.AprilTagOffsets;
 import frc.robot.util.LimelightHelpers;
 import frc.robot.util.LimelightHelpers.LimelightResults;
 import org.littletonrobotics.junction.Logger;
@@ -185,7 +184,7 @@ public class VisionAprilTag {
             }
             */
             // Use Z-axis distance to the target
-            return Math.abs(llr.targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ()) - AprilTagOffsets.getOffset((int) llr.targets_Fiducials[0].fiducialID).relative - llToFrontOfRobot;
+            return Math.abs(llr.targets_Fiducials[0].getTargetPose_CameraSpace().getTranslation().getZ()) - llToFrontOfRobot;
         }
         return 0.0;
     }
@@ -195,7 +194,7 @@ public class VisionAprilTag {
         if (llr != null) {
             double llToFrontOfRobot = 0.5;
             // Use Z-axis distance to the target
-            return Math.abs(llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getZ()) - AprilTagOffsets.getOffset((int) llr.targets_Fiducials[0].fiducialID).relative - llToFrontOfRobot;
+            return Math.abs(llr.targets_Fiducials[0].getRobotPose_TargetSpace().getTranslation().getZ()) - llToFrontOfRobot;
         }
         return 0.0;
     }

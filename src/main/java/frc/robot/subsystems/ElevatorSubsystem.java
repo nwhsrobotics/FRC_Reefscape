@@ -182,7 +182,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         currentPositionLeft = relativeEncoderLeft.getPosition();
         currentPositionRight = relativeEncoderRight.getPosition();
         // Logger.recordOutput("elevator_height", rotationsToMeters(setPointRotations));
-
         currentHeight = rotationsToMeters(currentPositionLeft);
 
     }
