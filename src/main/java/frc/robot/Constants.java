@@ -28,11 +28,6 @@ import java.util.stream.Collectors;
 
 public final class Constants {
 
-    public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
-    public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
-    public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-    public static final double MAX_SPEED  = Units.feetToMeters(14.5);
-
 
     public static final class CANAssignments {
         public static final int ALGAE_MOTOR_ID = 19;
@@ -158,42 +153,15 @@ public final class Constants {
         public static final double scaleFactor = 0.6;
         public static final double kTeleDriveMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond * scaleFactor;
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond * scaleFactor;
-        public static final double kDriveDeadband = 0.10;
+        public static final double kDriveDeadband = 0.05;
     }
 
     public static final class Positions {
-        //from driver perspective
-
-        public static final Pose2d LEFT_GROUND_START_PIECES = new Pose2d(1.219, 5.855, Rotation2d.fromDegrees(180));
-        public static final Pose2d MID_GROUND_START_PIECES = new Pose2d(1.219, 4.022, Rotation2d.fromDegrees(180));
-        public static final Pose2d RIGHT_GROUND_START_PIECES = new Pose2d(1.219, 2.189, Rotation2d.fromDegrees(180));
-
-        //These are the starting positions near the respective cages, they are on starting line, not in the cage itself
-        public static final Pose2d START_A = new Pose2d(7.584, 7.283, Rotation2d.fromDegrees(180));
-        public static final Pose2d START_B = new Pose2d(7.584, 6.185, Rotation2d.fromDegrees(180));
-        public static final Pose2d START_C = new Pose2d(7.584, 5.056, Rotation2d.fromDegrees(180));
-
-        public static final Pose2d BACK_LEFT_REEF = new Pose2d(3.645, 5.454, Rotation2d.fromDegrees(-60)); // POV_LEFT - Side 6
-        public static final Pose2d BACK_MID_REEF = new Pose2d(2.837, 4.029, Rotation2d.fromDegrees(0.01)); // A button - Side 5
-        public static final Pose2d BACK_RIGHT_REEF = new Pose2d(3.614, 2.613, Rotation2d.fromDegrees(60)); // POV_RIGHT - Side 4
-        public static final Pose2d FRONT_LEFT_REEF = new Pose2d(5.352, 5.444, Rotation2d.fromDegrees(-120)); // X button - Side 1
-        public static final Pose2d FRONT_MID_REEF = new Pose2d(6.152, 4.026, Rotation2d.fromDegrees(180)); // Y button - Side 2
-        public static final Pose2d FRONT_RIGHT_REEF = new Pose2d(5.310, 2.582, Rotation2d.fromDegrees(120)); // B button - Side 3
-
-        public static final Pose2d FRONT_REEF = new Pose2d(7, 4, Rotation2d.fromDegrees(180));
-        public static final Pose2d BACK_REEF = new Pose2d(2.5, 4, Rotation2d.fromDegrees(0.01));
-
-        public static final Pose2d STATION_LEFT = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(126)); //this is for the center of the source 
-        public static final Pose2d STATION_RIGHT = new Pose2d(1.149, 1.043, Rotation2d.fromDegrees(-126)); //this is for the center of the source 
-
-        public static final Pose2d PROCESSOR = new Pose2d(1.201, 7.018, Rotation2d.fromDegrees(-90));
-
 
         public static final Pose2d BLUE_REEF_CENTER = new Pose2d(4.5, 4.05, Rotation2d.fromDegrees(180));
         public static final Pose2d RED_REEF_CENTER = new Pose2d(13, 4.05, Rotation2d.fromDegrees(0));
 
         public static final List<Pose2d> REEF_CENTERS = new ArrayList<>(List.of(BLUE_REEF_CENTER, RED_REEF_CENTER));
-
 
         public static final List<Pose2d> allAutoPositions = new ArrayList<Pose2d>();
     }
@@ -231,7 +199,7 @@ public final class Constants {
         //https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/2025FieldDrawings-FieldLayoutAndMarking.pdf
         //https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/Apriltag_Images_and_User_Guide.pdf
         //NO 0 DEGREE rotation, pathpathplanner bugs, do 1 degree instead   
-    
+        //TODO: +-180 DEGREES?
         public static final List<Pose2d> aprilTags = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape).getTags().stream().map(tag -> tag.pose.toPose2d()).collect(Collectors.toCollection(ArrayList::new));
     }
 

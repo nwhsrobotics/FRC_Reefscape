@@ -14,7 +14,6 @@ import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.util.ImprovedPowerDistribution;
-import frc.robot.util.LocalADStarAK;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -58,11 +57,8 @@ public class Robot extends LoggedRobot {
         Logger.start();
         DriverStation.silenceJoystickConnectionWarning(true);
         Logger.recordOutput("auto.initialized", false);
-        Pathfinding.setPathfinder(new LocalADStarAK());
         FollowPathCommand.warmupCommand().schedule();
         PathfindingCommand.warmupCommand().andThen(new InstantCommand(() -> Logger.recordOutput("auto.initialized", true))).schedule();
-        //new WaitCommand(45).andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.IDLE))).schedule();
-        //.andThen(new InstantCommand(() -> SmartDashboard.putBoolean("auto.initialized", true)))).schedule();
         robotPD = new ImprovedPowerDistribution(CANAssignments.PDU_ID, Constants.PDU_TYPE);
 
         Logger.recordMetadata("version", LoggerConstants.RUNNING_UNDER);
@@ -117,9 +113,6 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
-        // System.out.println("heading: " + robotContainer.swerveSubsystem.getPose().getRotation());
-        // System.out.println("x: " + robotContainer.swerveSubsystem.getPose().getX());
-        // System.out.println("y: " + robotContainer.swerveSubsystem.getPose().getY());
     }
 
     /**
@@ -176,11 +169,6 @@ public class Robot extends LoggedRobot {
             } else {
             }
         }
-        //System.out.println(robotContainer.swerveSubsystem.getHeading());
-        // System.out.println("mt1: " + LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llFront).pose.getRotation());
-        // System.out.println("mt2: " + LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.llFront).pose.getRotation());
-
-
     }
 
     @Override

@@ -56,41 +56,17 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
 
-    public boolean isBlueAllianceCoralStation(int id) {
-        return id == 12 || id == 13;
-    }
-
-    public boolean isBlueAllianceProcessor(int id) {
-        return id == 3;
-    }
 
     public boolean isBlueAllianceReef(int id) {
         return id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22;
     }
 
-    public boolean isBlueAllianceBarge(int id) {
-        return id == 4 || id == 14;
-
-    }
-
-    public boolean isRedAllianceCoralStation(int id) {
-        return id == 1 || id == 2;
-
-    }
-
-    public boolean isRedAllianceProcessor(int id) {
-        return id == 16;
-
-    }
 
     public boolean isRedAllianceReef(int id) {
         return id == 6 || id == 7 || id == 8 || id == 9 || id == 10 || id == 11;
 
     }
 
-    public boolean isRedAllianceBarge(int id) {
-        return id == 5 || id == 15;
-    }
 
 
     public Pose2d transformPosition(Pose2d aprilTagPos, double offsetDistance) {
@@ -162,32 +138,6 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
 
-    public String getCurrentAlignment(Pose2d swervePose) {
-        int aprilTag = getCurrentDetectedAprilTag(swervePose);
-        Pose2d aprilTagPose = getAprilTagPos(aprilTag);
-        Pose2d relativePose = swervePose.relativeTo(aprilTagPose);
-        if (relativePose.getTranslation().getY() < 0) {
-            return "RIGHT";
-        }
-        return "LEFT";
-    }
-
-
-    public double getOffsetY(Pose2d swervePose) {
-        int aprilTag = getCurrentDetectedAprilTag(swervePose);
-        Pose2d aprilTagPose = getAprilTagPos(aprilTag);
-        Pose2d relativePose = swervePose.relativeTo(aprilTagPose);
-        return Math.abs(relativePose.getTranslation().getY());
-    }
-
-    public double getOffsetX(Pose2d swervePose) {
-        int aprilTag = getCurrentDetectedAprilTag(swervePose);
-        Pose2d aprilTagPose = getAprilTagPos(aprilTag);
-        Pose2d relativePose = swervePose.relativeTo(aprilTagPose);
-        return Math.abs(relativePose.getTranslation().getX());
-    }
-
-
 
     public Pose2d getNearestReef(Pose2d swervePos) {
         Pose2d closest = swervePos;
@@ -220,15 +170,6 @@ public class VisionSubsystem extends SubsystemBase {
         return getNearestReef(swervePos).getRotation();
     }
 
-
-    public int getCurrentDetectedAprilTag(Pose2d swervePos) {
-        LimelightResults llf = VisionAprilTag.isValid(limelightName);
-        if (llf != null) {
-            int aprilTagId = (int) llf.targets_Fiducials[0].fiducialID;
-            return aprilTagId;
-        }
-        return getNearestAprilTag(swervePos);
-    }
 
     public static double getStraightLineZDistance() {
         LimelightResults llf = VisionAprilTag.isValid(LimelightConstants.llFront);
