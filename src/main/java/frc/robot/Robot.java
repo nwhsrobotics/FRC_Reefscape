@@ -67,8 +67,6 @@ public class Robot extends LoggedRobot {
 
         Logger.recordMetadata("version", LoggerConstants.RUNNING_UNDER);
 
-        // if you want to stop the robot, use the boolean returned by this method.
-        CANAssignments.checkAssignments();
 
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
