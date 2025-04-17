@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.util.ImprovedCanSpark;
-import org.littletonrobotics.junction.Logger;
 
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -126,12 +125,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         setPointRotations = metersToRotations(elevatorHeights[4]);  //183cm >>  179.3cm  >>   1.793m
     }
 
-    public void elevator_zero(){
+    public void elevator_zero() {
         relativeEncoderLeft.setPosition(0.0);
         relativeEncoderRight.setPosition(0.0);
     }
 
-    public void elevator_top(){
+    public void elevator_top() {
         relativeEncoderLeft.setPosition(-metersToRotations(elevatorHeights[4]));
         relativeEncoderRight.setPosition(metersToRotations(elevatorHeights[4]));
     }
@@ -176,8 +175,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         //     leftElevatorController.setReference(-setPointRotations + -metersToRotations(VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35))), ControlType.kMAXMotionPositionControl);
         //     rightElevatorController.setReference(setPointRotations + metersToRotations(VisionSubsystem.getStraightLineZDistance() * Math.sin(Math.toRadians(35))), ControlType.kMAXMotionPositionControl);
         // }
-        
-        
+
+
         //leftElevatorController.setReference(-setPointRotations, ControlType.kMAXMotionPositionControl);
         //rightElevatorController.setReference(setPointRotations, ControlType.kMAXMotionPositionControl);
         currentPositionLeft = relativeEncoderLeft.getPosition();

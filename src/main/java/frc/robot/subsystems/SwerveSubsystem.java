@@ -165,7 +165,7 @@ public class SwerveSubsystem extends SubsystemBase {
                     .andThen(new RunCommand(() -> gyro.zeroYaw()));*/
         } catch (Exception e) {
             e.printStackTrace();
-            Logger.recordOutput("errors.autobuilder", "initializing: " + e.toString());
+            Logger.recordOutput("errors.autobuilder", "initializing: " + e);
             setpointGenerator = null;
         }
 
@@ -436,13 +436,10 @@ public class SwerveSubsystem extends SubsystemBase {
             if (!VisionAprilTag.isAprilTagPipeline(limelightName)) {
                 return;
             }
-            boolean useMegaTag2 = true; // Set to false to use the MegaTag1 branch if desired.
+            boolean useMegaTag2 = !RobotState.isDisabled(); // Set to false to use the MegaTag1 branch if desired.
             // we might use megatag1 when disabled to auto orient and megatag2 when enable
             // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78
-            if (RobotState.isDisabled()){
-                // If doing this, untick mark reset odometry in pathplanner
-                useMegaTag2 = false;
-            }
+            // If doing this, untick mark reset odometry in pathplanner
             boolean doRejectUpdate = false;
 
             if (!useMegaTag2) {
@@ -463,7 +460,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 //     odometer.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
                 LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
                 Pose2d currentPose = getPose();
-                if (mt1.pose.getRotation().getDegrees() == 0.0){
+                if (mt1.pose.getRotation().getDegrees() == 0.0) {
                     return;
                 }
                 Logger.recordOutput("mt1.rotation", mt1.pose.getRotation());
@@ -477,7 +474,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 Logger.recordOutput("mt2.posex", mt2.pose.getX());
                 Logger.recordOutput("mt2.posey", mt2.pose.getY());
                 odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
-                if (mt2.pose.getX() == 0.0 || mt2.pose.getY() == 0.0 || mt2.pose.getRotation().getDegrees() == 0.0){
+                if (mt2.pose.getX() == 0.0 || mt2.pose.getY() == 0.0 || mt2.pose.getRotation().getDegrees() == 0.0) {
                     return;
                 }
                 resetOdometry(mt2.pose);

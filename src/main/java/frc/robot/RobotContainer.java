@@ -20,13 +20,7 @@ import frc.robot.Constants.AprilTagOffsets;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.TagOffset;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
-import frc.robot.subsystems.AlgaeArm;
-import frc.robot.subsystems.CoralEjection;
-import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.IntakeOuttake;
-import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.*;
 import frc.robot.util.Buttons;
 import org.littletonrobotics.junction.Logger;
 
@@ -78,23 +72,23 @@ public class RobotContainer {
         //               .andThen(new InstantCommand(() -> recordAttempt()))
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
                 .andThen(new WaitCommand(0.7))
-                .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake))); 
+                .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
 
         autoChooser = AutoBuilder.buildAutoChooser("Straight Auto");
 
         // Control diagram: https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
         new POVButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> algaeArm.Homeposition(), algaeArm));
         new POVButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm));
-        new JoystickButton(gunner, Buttons.Y).onTrue(new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
-        new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
-        new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
+        new JoystickButton(gunner, Buttons.Y).onTrue(new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new InstantCommand(() -> LEDSubsystem.state = LEDSubsystem.LEDState.ELEUP)));
+        new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new InstantCommand(() -> LEDSubsystem.state = LEDSubsystem.LEDState.ELEUP)));
+        new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new InstantCommand(() -> LEDSubsystem.state = LEDSubsystem.LEDState.ELEUP)));
         new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
-        new POVButton(gunner, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> elevatorSubsystem.dynamic_L4_Preset(), elevatorSubsystem).andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.ELEUP)));
+        new POVButton(gunner, Buttons.POV_LEFT).onTrue(new InstantCommand(() -> elevatorSubsystem.dynamic_L4_Preset(), elevatorSubsystem).andThen(new InstantCommand(() -> LEDSubsystem.state = LEDSubsystem.LEDState.ELEUP)));
         new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
         new POVButton(gunner, Buttons.POV_LEFT).onTrue((NamedCommands.getCommand("L1CORAL")
-                                                                    .alongWith(new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm)))
-                                                                    .andThen(new InstantCommand(() -> algaeArm.Homeposition(), algaeArm))
-                                                                    .andThen(NamedCommands.getCommand("LoadStation")));
+                .alongWith(new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm)))
+                .andThen(new InstantCommand(() -> algaeArm.Homeposition(), algaeArm))
+                .andThen(NamedCommands.getCommand("LoadStation")));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(((new InstantCommand(() -> recordAttempt())).andThen(new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake))).onlyIf(() -> !intakeoutake.isIntakeOpen));
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake).andThen(
                 new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 1))
@@ -131,7 +125,7 @@ public class RobotContainer {
                     swerveSubsystem.autonavigator.navigateTo(target);
                 }).andThen(
                         new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 1))
-                                .andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.AUTOALINERUNNING))
+                                .andThen(new InstantCommand(() -> LEDSubsystem.state = LEDSubsystem.LEDState.AUTOALINERUNNING))
                                 .andThen(new WaitCommand(1))
                                 .andThen(new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 0)))
                 )
@@ -143,7 +137,7 @@ public class RobotContainer {
                     swerveSubsystem.autonavigator.navigateTo(target);
                 }).andThen(
                         new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 1))
-                                .andThen(new InstantCommand(()->LEDSubsystem.state=LEDSubsystem.LEDState.AUTOALINERUNNING))    
+                                .andThen(new InstantCommand(() -> LEDSubsystem.state = LEDSubsystem.LEDState.AUTOALINERUNNING))
                                 .andThen(new WaitCommand(1))
                                 .andThen(new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 0)))
                 )
