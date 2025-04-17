@@ -24,12 +24,8 @@ import org.littletonrobotics.junction.Logger;
 
 public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-    public int coralsAttempted = 0;
-    public int coralsScored = 0;
 
     public final AlgaeArm algaeArm = new AlgaeArm();
-
-    //public final CoralEjection coralEjection = new CoralEjection();
 
     public final IntakeOuttake intakeoutake = new IntakeOuttake();
 
@@ -60,6 +56,7 @@ public class RobotContainer {
             field.getObject("path").setPoses(poses);
         });
 
+        NamedCommands.registerCommand("finalPreciseAlignment", swerveSubsystem.autonavigator.finalPreciseAllingment(false));
         NamedCommands.registerCommand("L4CORAL", new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("L3CORAL", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("L2CORAL", new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
@@ -126,12 +123,10 @@ public class RobotContainer {
         );
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
-
         swerveSubsystem.setDefaultCommand(new SwerveJoystickDefaultCmd(swerveSubsystem, driver));
     }
 
     public Command getAutonomousCommand() {
-        //return new AlternativePathfindAprilTag(1, swerveSubsystem, limeLightForwards, "");
         return autoChooser.getSelected();
 
     }

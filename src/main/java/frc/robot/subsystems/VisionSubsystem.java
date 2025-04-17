@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.AprilTags;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.Positions;
 import frc.robot.util.LimelightHelpers.LimelightResults;
 import org.littletonrobotics.junction.Logger;
 
@@ -35,6 +36,18 @@ public class VisionSubsystem extends SubsystemBase {
     public void periodic() {
         Logger.recordOutput(limelightName + ".aprilTag.straightLineDist", VisionAprilTag.straightLineZAprilTag(limelightName));
         Logger.recordOutput(limelightName + ".aprilTag.horizontalDist", VisionAprilTag.horizontalOffsetXAprilTag(limelightName));
+
+
+        // Logger.recordOutput("Crosshair", "----------------------------------X-----------------------------");
+        for (int i = 0; i < AprilTags.aprilTags.size(); i++) {
+            Pose2d org = AprilTags.aprilTags.get(i);
+
+            Pose2d left = transformPosition(scootRight(org, 0.1251), 0.5445);
+            Pose2d right = transformPosition(scootLeft(org, 0.2051), 0.5445);
+
+            Positions.allAutoPositions.add(left);
+            Positions.allAutoPositions.add(right);
+        }
 
     }
 
