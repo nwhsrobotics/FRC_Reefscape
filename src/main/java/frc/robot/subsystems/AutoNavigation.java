@@ -10,6 +10,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.PosePIDCommand;
@@ -151,27 +152,17 @@ public class AutoNavigation {
 
     }
 
-    /**
-     * Finds a path and follows it based on the specified path name.
-     * Loads the path from a file, sets constraints, and uses AutoBuilder to create a pathfinding command.
-     *
-     * @param pathName The name of the path file to load and follow.
-     */
     public Command pathFindThenFollowPath(String pathName) {
         Command pathfindingCommand;
-        // Load the path we want to pathfind to and follow
         PathPlannerPath path;
         try {
             path = PathPlannerPath.fromPathFile(pathName);
 
-            // Create the constraints to use while pathfinding. The constraints defined in the path will only be used for the path.
             PathConstraints constraints = new PathConstraints(
                     DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 8.0, AutoConstants.kMaxAccelerationMetersPerSecondSquared / 8.0,
                     AutoConstants.kMaxAngularSpeedRadiansPerSecond, AutoConstants.kMaxAngularAccelerationRadiansPerSecondSquared / 2.0);
 
-            // What pathfinding does is pathfind to the start of a path and then continue along that path.
-            // If you don't want to continue along the path, you can make it pathfind to a specific location.
-            //Either use this (
+
             pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
                     path,
                     constraints
@@ -203,7 +194,7 @@ public class AutoNavigation {
                 position,
                 AutoConstants.kPathfindingConstraints,
                 0.0 // Goal end velocity in meters/sec
-        ).andThen(PosePIDCommand.create(swerve, position, Seconds.of(1 / 3)));
+        ).andThen(PosePIDCommand.create(swerve, position, Seconds.of(1)));
         // .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
         // .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
         //.andThen(pathOnTheFlyToPosition(position));
@@ -231,13 +222,17 @@ public class AutoNavigation {
 
         path.preventFlipping = true;
 
-        //Reduce PosePIDCommand time to 0.2s
         Command followPathCommand = AutoBuilder.followPath(path)
                 .andThen(PosePIDCommand.create(swerve, targetPose, Seconds.of(1)));
-        // .alongWith(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceBlink(LimelightConstants.llFront)))
-        // .andThen(new InstantCommand(() -> LimelightHelpers.setLEDMode_ForceOn(LimelightConstants.llFront)));
 
         return followPathCommand;
+    }
+
+    public Command finalPreciseAllingment(boolean isGamePiece){
+        if (isGamePiece){
+            return pathOnTheFlyToPosition(VisionGamePiece.visionTargetLocation);
+        }
+        return pathOnTheFlyToPosition(swerve.getPose().nearest(Constants.Positions.allAutoPositions));
     }
 
     public Rotation2d getPathVelocityHeading(ChassisSpeeds cs, Pose2d target) {

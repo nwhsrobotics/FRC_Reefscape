@@ -195,8 +195,7 @@ public final class Constants {
         public static final List<Pose2d> REEF_CENTERS = new ArrayList<>(List.of(BLUE_REEF_CENTER, RED_REEF_CENTER));
 
 
-        public static final List<Pose2d> allNotes = new ArrayList<Pose2d>();
-        // get rid of temp fix
+        public static final List<Pose2d> allAutoPositions = new ArrayList<Pose2d>();
     }
 
     public static final class ElevatorConstants {
