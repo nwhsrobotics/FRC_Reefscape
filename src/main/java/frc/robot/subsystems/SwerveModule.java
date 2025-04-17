@@ -2,17 +2,17 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkFlexConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
-import frc.robot.util.ImprovedCanSpark;
+import frc.robot.util.RobotCANUtils.CANSparkFlexController;
+import frc.robot.util.RobotCANUtils.MotorKind;
 
 /**
  * Represents a swerve module with independent drive and turning motors.
@@ -24,11 +24,11 @@ public class SwerveModule {
     //private final SparkFlex turningMotor;
 
     // 2024 robot
-    private final SparkMax driveMotor;
-    private final SparkMax turningMotor;
+    private final SparkFlex driveMotor;
+    private final SparkFlex turningMotor;
 
-    private final SparkBaseConfig driveMotorConfig;
-    private final SparkBaseConfig turningMotorConfig;
+    private final SparkFlexConfig driveMotorConfig;
+    private final SparkFlexConfig turningMotorConfig;
 
     // Encoders
     private final RelativeEncoder driveEncoder;
@@ -67,29 +67,18 @@ public class SwerveModule {
 
         // Set the inversion of the drive and turning motors based on the given values
 
-        //2025 robot
-        //driveMotorConfig = new SparkFlexConfig();
-        //driveMotor = new ImprovedCanSparkFlex(driveMotorId, ImprovedCanSparkFlex.MotorKind.NEO, driveMotorConfig, IdleMode.kBrake);
 
-        // 2024 robot
-        driveMotorConfig = new SparkMaxConfig();
+        driveMotorConfig = new SparkFlexConfig();
         driveMotorConfig.inverted(driveMotorReversed);
         driveMotorConfig.encoder.positionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
         driveMotorConfig.encoder.velocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
-        driveMotor = new ImprovedCanSpark(driveMotorId, ImprovedCanSpark.MotorKind.NEO, driveMotorConfig, IdleMode.kBrake);
-        //driveMotor.configure(driveMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+        driveMotor = new CANSparkFlexController(driveMotorId, MotorKind.NEO, driveMotorConfig, IdleMode.kBrake, 0);
 
-        //2025 robot
-        //turningMotorConfig = new SparkFlexConfig();
-        //turningMotor = new ImprovedCanSparkFlex(turningMotorId, ImprovedCanSparkFlex.MotorKind.NEO, turningMotorConfig, IdleMode.kBrake);
-
-        // 2024 robot
-        turningMotorConfig = new SparkMaxConfig();
+        turningMotorConfig = new SparkFlexConfig();
         turningMotorConfig.inverted(turningMotorReversed);
         turningMotorConfig.encoder.positionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad);
         turningMotorConfig.encoder.velocityConversionFactor(ModuleConstants.kTurningEncoderRPM2RadPerSec);
-        turningMotor = new ImprovedCanSpark(turningMotorId, ImprovedCanSpark.MotorKind.NEO, turningMotorConfig, IdleMode.kBrake);
-        //turningMotor.configure(driveMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+        turningMotor = new CANSparkFlexController(turningMotorId, MotorKind.NEO, turningMotorConfig, IdleMode.kBrake, 0);
 
         // Initialize the drive and turning encoders
         driveEncoder = driveMotor.getEncoder();

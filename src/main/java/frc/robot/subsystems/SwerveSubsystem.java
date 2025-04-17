@@ -2,9 +2,6 @@ package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.util.DriveFeedforwards;
-import com.pathplanner.lib.util.swerve.SwerveSetpoint;
-import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 import edu.wpi.first.math.VecBuilder;
@@ -28,7 +25,6 @@ import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.util.LimelightHelpers;
-import frc.robot.util.SwerveUtils;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -43,8 +39,6 @@ public class SwerveSubsystem extends SubsystemBase {
     // because that is the forwards direction relative to the field.
     private boolean isFieldRelative = true;
 
-    private SwerveSetpointGenerator setpointGenerator;
-    private SwerveSetpoint previousSetpoint;
 
     public AutoNavigation autonavigator;
 
@@ -153,20 +147,9 @@ public class SwerveSubsystem extends SubsystemBase {
             // Calculate sysid MOI for swerve/pathplanner constants, swerve setpoint generator, and elastic notifications
             //gyro.reset();
             Commands.waitUntil(() -> !gyro.isCalibrating()).andThen(new InstantCommand(() -> gyro.zeroYaw()));
-            setpointGenerator = new SwerveSetpointGenerator(
-                    config, // The robot configuration. This is the same config used for generating trajectories and running path following commands.
-                    Units.rotationsToRadians(10.0) // The max rotation velocity of a swerve module in radians per second. This should probably be stored in your Constants file
-            );
-            // Initialize the previous setpoint to the robot's current speeds & module states
-            ChassisSpeeds currentSpeeds = getSpeeds(); // Method to get current robot-relative chassis speeds
-            SwerveModuleState[] currentStates = getModuleStates(); // Method to get the current swerve module states
-            previousSetpoint = new SwerveSetpoint(currentSpeeds, currentStates, DriveFeedforwards.zeros(config.numModules));
-            /*Commands.waitSeconds(0.5)
-                    .andThen(new RunCommand(() -> gyro.zeroYaw()));*/
         } catch (Exception e) {
             e.printStackTrace();
             Logger.recordOutput("errors.autobuilder", "initializing: " + e);
-            setpointGenerator = null;
         }
 
 
@@ -210,17 +193,6 @@ public class SwerveSubsystem extends SubsystemBase {
      * @param robotRelativeSpeeds The desired robot-relative speeds.
      */
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-        // Note: it is important to not discretize speeds before or after
-        // using the setpoint generator, as it will discretize them for you
-        // swerve setpoint generator (uncomment this)
-        // previousSetpoint = setpointGenerator.generateSetpoint(
-        //     previousSetpoint, // The previous setpoint
-        //     robotRelativeSpeeds, // The desired target speeds
-        //     0.02 // The loop time of the robot code, in seconds
-        // );
-        // setModuleStates(previousSetpoint.moduleStates()); // Method that will drive the robot given target module states
-
-        // earlier code
         ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
         SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
         setModuleStates(targetStates);
@@ -352,28 +324,6 @@ public class SwerveSubsystem extends SubsystemBase {
         Logger.recordOutput("swerve.drive.back.left.velocity", backLeft.getDriveVelocity());
         Logger.recordOutput("swerve.drive.back.right.velocity", backRight.getDriveVelocity());
 
-        // Below code is just to test elastic dashboard custom widget
-        //    SmartDashboard.putData("Swerve Drive", new Sendable() {
-        //         @Override
-        //         public void initSendable(SendableBuilder builder) {
-        //             builder.setSmartDashboardType("SwerveDrive");
-
-        //             builder.addDoubleProperty("Front Left Angle", () -> frontLeft.getTurningPosition(), null);
-        //             builder.addDoubleProperty("Front Left Velocity", () -> frontLeft.getDriveVelocity(), null);
-
-        //             builder.addDoubleProperty("Front Right Angle", () -> frontRight.getTurningPosition(), null);
-        //             builder.addDoubleProperty("Front Right Velocity", () -> frontRight.getDriveVelocity(), null);
-
-        //             builder.addDoubleProperty("Back Left Angle", () -> backLeft.getTurningPosition(), null);
-        //             builder.addDoubleProperty("Back Left Velocity", () -> backLeft.getDriveVelocity(), null);
-
-        //             builder.addDoubleProperty("Back Right Angle", () -> backRight.getTurningPosition(), null);
-        //             builder.addDoubleProperty("Back Right Velocity", () -> backRight.getDriveVelocity(), null);
-
-        //             builder.addDoubleProperty("Robot Angle", () -> gyro.getAngle(), null);
-        //         }
-        //         });
-
     }
 
     /**
@@ -433,9 +383,6 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     private void addVisionMeasurement(String limelightName, double stdX, double stdY, double stdTheta) {
         try {
-            if (!VisionAprilTag.isAprilTagPipeline(limelightName)) {
-                return;
-            }
             boolean useMegaTag2 = !RobotState.isDisabled(); // Set to false to use the MegaTag1 branch if desired.
             // we might use megatag1 when disabled to auto orient and megatag2 when enable
             // here: https://www.chiefdelphi.com/t/introducing-megatag2-by-limelight-vision/461243/78
@@ -443,44 +390,20 @@ public class SwerveSubsystem extends SubsystemBase {
             boolean doRejectUpdate = false;
 
             if (!useMegaTag2) {
-                // LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
-                // if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
-                //     if (mt1.rawFiducials[0].ambiguity > 0.7) {
-                //         doRejectUpdate = true;
-                //     }
-                //     if (mt1.rawFiducials[0].distToCamera > 3) {
-                //         doRejectUpdate = true;
-                //     }
-                // }
-                // if (mt1.tagCount == 0) {
-                //     doRejectUpdate = true;
-                // }
-                // if (!doRejectUpdate) {
-                //     odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
-                //     odometer.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
                 LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
                 Pose2d currentPose = getPose();
                 if (mt1.pose.getRotation().getDegrees() == 0.0) {
                     return;
                 }
-                Logger.recordOutput("mt1.rotation", mt1.pose.getRotation());
                 Pose2d finalPoseRotated = new Pose2d(currentPose.getX(), currentPose.getY(), mt1.pose.getRotation());
                 resetOdometry(finalPoseRotated);
-                Logger.recordOutput("mt1.pose", finalPoseRotated);
-                Logger.recordOutput("mt1.poseReset", getPose());
                 LimelightHelpers.SetRobotOrientation(limelightName, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
                 LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
-                Logger.recordOutput("mt2.pose", mt2.pose);
-                Logger.recordOutput("mt2.posex", mt2.pose.getX());
-                Logger.recordOutput("mt2.posey", mt2.pose.getY());
                 odometer.setVisionMeasurementStdDevs(VecBuilder.fill(stdX, stdY, stdTheta));
                 if (mt2.pose.getX() == 0.0 || mt2.pose.getY() == 0.0 || mt2.pose.getRotation().getDegrees() == 0.0) {
                     return;
                 }
                 resetOdometry(mt2.pose);
-                Logger.recordOutput("mt2.final", getPose());
-                Logger.recordOutput("mt2.finalx", getPose().getX());
-                Logger.recordOutput("mt2.finaly", getPose().getY());
             } else {
                 // Always set robot orientation before getting MegaTag2 measurement
                 LimelightHelpers.SetRobotOrientation(limelightName, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
@@ -533,20 +456,20 @@ public class SwerveSubsystem extends SubsystemBase {
 
             double currentTime = WPIUtilJNI.now() * 1e-6;
             double elapsedTime = currentTime - prevTime;
-            double angleDif = SwerveUtils.AngleDifference(inputTranslationDir, currentTranslationDir);
+            double angleDif = AngleDifference(inputTranslationDir, currentTranslationDir);
             if (angleDif < 0.45 * Math.PI) {
-                currentTranslationDir = SwerveUtils.StepTowardsCircular(currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
+                currentTranslationDir = StepTowardsCircular(currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
                 currentTranslationMag = magLimiter.calculate(inputTranslationMag);
             } else if (angleDif > 0.85 * Math.PI) {
                 if (currentTranslationMag > 1e-4) { //some small number to avoid floating-point errors with equality checking
                     // keep currentTranslationDir unchanged
                     currentTranslationMag = magLimiter.calculate(0.0);
                 } else {
-                    currentTranslationDir = SwerveUtils.WrapAngle(currentTranslationDir + Math.PI);
+                    currentTranslationDir = WrapAngle(currentTranslationDir + Math.PI);
                     currentTranslationMag = magLimiter.calculate(inputTranslationMag);
                 }
             } else {
-                currentTranslationDir = SwerveUtils.StepTowardsCircular(currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
+                currentTranslationDir = StepTowardsCircular(currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
                 currentTranslationMag = magLimiter.calculate(0.0);
             }
             prevTime = currentTime;
@@ -582,24 +505,140 @@ public class SwerveSubsystem extends SubsystemBase {
      * It is RECOMMENDED to stand still and be close to the April tag when resetting this way as it solely relies on vision
      * Use Megatag 2 if gryo rotation is accurate, otherwise use megatag 1 to also fix gyro rotation.
      */
-    public void resetOdometryWithVision(boolean useMegaTag2) {
-        String name = LimelightConstants.llFront;
-        int pipeline = (int) LimelightHelpers.getCurrentPipelineIndex(name);
-        //set the pipeline index to the high resolution april tag (less fps but high accuracy)
-        LimelightHelpers.setPipelineIndex(name, 0);
-        LimelightHelpers.SetRobotOrientation(LimelightConstants.llFront, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.llFront);
-        LimelightHelpers.PoseEstimate llmtg1Measurement = LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.llFront);
-        odometer.setVisionMeasurementStdDevs(VecBuilder.fill(0, 0, Units.degreesToRadians(0)));
-
-        //megatag 1, will also fix gyro rotation
-        if (!useMegaTag2) {
-            odometer.addVisionMeasurement(llmtg1Measurement.pose, llmtg1Measurement.timestampSeconds);
-        } else {
-            //megatag 2 (assume already accurate gyro rotation)
-            odometer.addVisionMeasurement(limelightMeasurement.pose, limelightMeasurement.timestampSeconds);
+    public void resetOdometryWithVision() {
+        String limelightName = LimelightConstants.llFront;
+        LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
+        Pose2d currentPose = getPose();
+        if (mt1.pose.getRotation().getDegrees() == 0.0) {
+            return;
         }
-        //set back to normal april tag pipeline
-        LimelightHelpers.setPipelineIndex(name, pipeline);
+        Pose2d finalPoseRotated = new Pose2d(currentPose.getX(), currentPose.getY(), mt1.pose.getRotation());
+        resetOdometry(finalPoseRotated);
+        LimelightHelpers.SetRobotOrientation(limelightName, odometer.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+        if (mt2.pose.getX() == 0.0 || mt2.pose.getY() == 0.0 || mt2.pose.getRotation().getDegrees() == 0.0) {
+            return;
+        }
+        resetOdometry(mt2.pose);
+    }
+
+    /**
+     * Steps a value towards a target with a specified step size.
+     *
+     * @param _current  The current or starting value.  Can be positive or negative.
+     * @param _target   The target value the algorithm will step towards.  Can be positive or negative.
+     * @param _stepsize The maximum step size that can be taken.
+     * @return The new value for {@code _current} after performing the specified step towards the specified target.
+     */
+    public double StepTowards(double _current, double _target, double _stepsize) {
+        if (Math.abs(_current - _target) <= _stepsize) {
+            return _target;
+        } else if (_target < _current) {
+            return _current - _stepsize;
+        } else {
+            return _current + _stepsize;
+        }
+    }
+
+    /**
+     * Steps a value (angle) towards a target (angle) taking the shortest path with a specified step size.
+     *
+     * @param _current  The current or starting angle (in radians).  Can lie outside the 0 to 2*PI range.
+     * @param _target   The target angle (in radians) the algorithm will step towards.  Can lie outside the 0 to 2*PI range.
+     * @param _stepsize The maximum step size that can be taken (in radians).
+     * @return The new angle (in radians) for {@code _current} after performing the specified step towards the specified target.
+     * This value will always lie in the range 0 to 2*PI (exclusive).
+     */
+    public double StepTowardsCircular(double _current, double _target, double _stepsize) {
+        _current = WrapAngle(_current);
+        _target = WrapAngle(_target);
+
+        double stepDirection = Math.signum(_target - _current);
+        double difference = Math.abs(_current - _target);
+
+        if (difference <= _stepsize) {
+            return _target;
+        } else if (difference > Math.PI) { //does the system need to wrap over eventually?
+            //handle the special case where you can reach the target in one step while also wrapping
+            if (_current + 2 * Math.PI - _target < _stepsize || _target + 2 * Math.PI - _current < _stepsize) {
+                return _target;
+            } else {
+                return WrapAngle(_current - stepDirection * _stepsize); //this will handle wrapping gracefully
+            }
+
+        } else {
+            return _current + stepDirection * _stepsize;
+        }
+    }
+
+    /**
+     * Finds the (unsigned) minimum difference between two angles including calculating across 0.
+     *
+     * @param _angleA An angle (in radians).
+     * @param _angleB An angle (in radians).
+     * @return The (unsigned) minimum difference between the two angles (in radians).
+     */
+    public double AngleDifference(double _angleA, double _angleB) {
+        double difference = Math.abs(_angleA - _angleB);
+        return difference > Math.PI ? (2 * Math.PI) - difference : difference;
+    }
+
+    /**
+     * Wraps an angle until it lies within the range from 0 to 2*PI (exclusive).
+     *
+     * @param _angle The angle (in radians) to wrap.  Can be positive or negative and can lie multiple wraps outside the output range.
+     * @return An angle (in radians) from 0 and 2*PI (exclusive).
+     */
+    public double WrapAngle(double _angle) {
+        double twoPi = 2 * Math.PI;
+
+        if (_angle == twoPi) { // Handle this case separately to avoid floating point errors with the floor after the division in the case below
+            return 0.0;
+        } else if (_angle > twoPi) {
+            return _angle - twoPi * Math.floor(_angle / twoPi);
+        } else if (_angle < 0.0) {
+            return _angle + twoPi * (Math.floor((-_angle) / twoPi) + 1);
+        } else {
+            return _angle;
+        }
+    }
+
+
+    /**
+     * Returns a signed difference between 2 angles (in radians).
+     * The result is in (-pi, pi].
+     * <p>
+     * If result is positive, 'angleA' is ahead of 'angleB' in CCW sense.
+     * If result is negative, 'angleA' is behind 'angleB' in CCW sense.
+     */
+    public double angleDifferenceSigned(double angleA, double angleB) {
+        // Wrap angles so they lie within [-pi, pi)
+        double a = wrapToPi(angleA);
+        double b = wrapToPi(angleB);
+
+        double diff = a - b; // raw difference
+        // Now ensure diff is in (-pi, +pi]
+        if (diff > Math.PI) {
+            diff -= 2.0 * Math.PI;
+        } else if (diff <= -Math.PI) {
+            diff += 2.0 * Math.PI;
+        }
+        return diff;
+    }
+
+    /**
+     * Wrap an angle (in radians) to the range [-pi, pi).
+     */
+    public double wrapToPi(double angle) {
+        // shift everything by +pi, mod 2π, shift back
+        // or handle directly:
+        double wrapped = ((angle + Math.PI) % (2.0 * Math.PI)) - Math.PI;
+        // in Java, % can yield negative for negative inputs, so we might do:
+        // wrapped = wrapped < -Math.PI ? wrapped + 2.0*Math.PI : wrapped;
+        // or something to force into [-pi, pi)
+        if (wrapped <= -Math.PI) {
+            wrapped += 2.0 * Math.PI;
+        }
+        return wrapped;
     }
 }

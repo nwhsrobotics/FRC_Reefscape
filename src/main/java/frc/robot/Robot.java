@@ -2,7 +2,6 @@ package frc.robot;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathfindingCommand;
-import com.pathplanner.lib.pathfinding.Pathfinding;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -13,7 +12,7 @@ import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.util.ImprovedPowerDistribution;
+import frc.robot.util.RobotCANUtils.PowerDistributionManager;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -25,7 +24,7 @@ public class Robot extends LoggedRobot {
 
     private Command autonomousCommand;
     public RobotContainer robotContainer;
-    public ImprovedPowerDistribution robotPD;
+    public PowerDistributionManager robotPD;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -59,7 +58,7 @@ public class Robot extends LoggedRobot {
         Logger.recordOutput("auto.initialized", false);
         FollowPathCommand.warmupCommand().schedule();
         PathfindingCommand.warmupCommand().andThen(new InstantCommand(() -> Logger.recordOutput("auto.initialized", true))).schedule();
-        robotPD = new ImprovedPowerDistribution(CANAssignments.PDU_ID, Constants.PDU_TYPE);
+        robotPD = new PowerDistributionManager(CANAssignments.PDU_ID, Constants.PDU_TYPE);
 
         Logger.recordMetadata("version", LoggerConstants.RUNNING_UNDER);
 

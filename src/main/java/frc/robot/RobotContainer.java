@@ -16,11 +16,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Constants.Buttons;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
 import frc.robot.subsystems.*;
-import frc.robot.Constants.*;
-import org.littletonrobotics.junction.Logger;
 
 public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
@@ -93,8 +92,9 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> elevatorSubsystem.elevator_zero()));
         // don't need reset odometry with vision because you can fake angle it (for rotation) + the april tag corrects odometry live
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
-        new POVButton(driver, Buttons.POV_DOWN).onTrue(new InstantCommand(()
-                -> swerveSubsystem.resetOdometry(new Pose2d(swerveSubsystem.getPose().getX(), swerveSubsystem.getPose().getY(), limeLightForwards.getFakeAngle(swerveSubsystem.getPose())))));
+        // new POVButton(driver, Buttons.POV_DOWN).onTrue(new InstantCommand(()
+        //         -> swerveSubsystem.resetOdometry(new Pose2d(swerveSubsystem.getPose().getX(), swerveSubsystem.getPose().getY(), limeLightForwards.getFakeAngle(swerveSubsystem.getPose())))));
+        new POVButton(driver, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> swerveSubsystem.resetOdometryWithVision()));
         // new POVButton(driver, Buttons.POV_UP).onTrue(new InstantCommand(()
         //         -> swerveSubsystem.resetOdometry(new Pose2d(3.829, 5.143, Rotation2d.fromDegrees(-60)))));
 
