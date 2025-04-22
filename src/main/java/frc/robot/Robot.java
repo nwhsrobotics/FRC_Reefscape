@@ -11,8 +11,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.Positions;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.util.RobotCANUtils.PowerDistributionManager;
+
+import org.ironmaple.simulation.SimulatedArena;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -57,11 +60,11 @@ public class Robot extends LoggedRobot {
         DriverStation.silenceJoystickConnectionWarning(true);
         Logger.recordOutput("auto.initialized", false);
         FollowPathCommand.warmupCommand().schedule();
-        PathfindingCommand.warmupCommand().andThen(new InstantCommand(() -> Logger.recordOutput("auto.initialized", true))).schedule();
+        PathfindingCommand.warmupCommand().schedule();
         robotPD = new PowerDistributionManager(CANAssignments.PDU_ID, Constants.PDU_TYPE);
 
         Logger.recordMetadata("version", LoggerConstants.RUNNING_UNDER);
-
+        
 
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
@@ -77,6 +80,12 @@ public class Robot extends LoggedRobot {
 
 
     }
+
+        @Override
+    public void simulationPeriodic() {
+    SimulatedArena.getInstance().simulationPeriodic();
+    }
+
 
     /**
      * This function is called every robot packet, no matter the mode. Use this for
