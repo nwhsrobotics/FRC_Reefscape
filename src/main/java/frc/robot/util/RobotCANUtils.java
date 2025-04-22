@@ -24,7 +24,7 @@ public final class RobotCANUtils {
     }
 
     public enum MotorKind {
-        NEO(30), NEO550(20), VORTEX(80);
+        NEO30AMP(30), NEO80AMP(80), NEO550(20), VORTEX(80);
         final int limit;
 
         MotorKind(int l) {
@@ -64,6 +64,7 @@ public final class RobotCANUtils {
             this(id, kind, new SparkMaxConfig(), mode, voltage);
         }
 
+
         public CANSparkMaxController(int id, MotorKind kind, SparkMaxConfig cfg,
                                      IdleMode mode, double p, double i, double d,
                                      double maxVel, double maxAccel, double err) {
@@ -76,26 +77,31 @@ public final class RobotCANUtils {
                     .maxVelocity(maxVel)
                     .maxAcceleration(maxAccel)
                     .allowedClosedLoopError(err);
-            cfg.voltageCompensation(11);
+            finishConfigure(this, cfg);
+        }
+
+        public CANSparkMaxController(int id, MotorKind kind, SparkMaxConfig cfg,
+                                     IdleMode mode, double p, double i, double d,
+                                     double maxVel, double maxAccel, double err, double voltage) {
+            super(id, MotorType.kBrushless);
+            clearFaults();
+            applySettings(cfg, kind, mode, voltage);
+            cfg.closedLoop
+                    .p(p).i(i).d(d)
+                    .maxMotion
+                    .maxVelocity(maxVel)
+                    .maxAcceleration(maxAccel)
+                    .allowedClosedLoopError(err);
             finishConfigure(this, cfg);
         }
     }
 
     public static class CANSparkFlexController extends SparkFlex {
-        public CANSparkFlexController(int id, MotorKind kind, SparkFlexConfig cfg, IdleMode mode, double voltage) {
+        public CANSparkFlexController(int id, MotorKind kind, SparkFlexConfig cfg, IdleMode mode) {
             super(id, MotorType.kBrushless);
             clearFaults();
-            applySettings(cfg, kind, mode, voltage);
+            applySettings(cfg, kind, mode, 0);
             finishConfigure(this, cfg);
-        }
-
-
-        public CANSparkFlexController(int id, MotorKind kind, IdleMode mode) {
-            this(id, kind, new SparkFlexConfig(), mode, 0);
-        }
-
-        public CANSparkFlexController(int id, MotorKind kind, IdleMode mode, double voltage) {
-            this(id, kind, new SparkFlexConfig(), mode, voltage);
         }
     }
 

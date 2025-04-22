@@ -72,13 +72,13 @@ public class SwerveModule {
         driveMotorConfig.inverted(driveMotorReversed);
         driveMotorConfig.encoder.positionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
         driveMotorConfig.encoder.velocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
-        driveMotor = new CANSparkFlexController(driveMotorId, MotorKind.NEO, driveMotorConfig, IdleMode.kBrake, 0);
+        driveMotor = new CANSparkFlexController(driveMotorId, MotorKind.VORTEX, driveMotorConfig, IdleMode.kBrake);
 
         turningMotorConfig = new SparkFlexConfig();
         turningMotorConfig.inverted(turningMotorReversed);
         turningMotorConfig.encoder.positionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad);
         turningMotorConfig.encoder.velocityConversionFactor(ModuleConstants.kTurningEncoderRPM2RadPerSec);
-        turningMotor = new CANSparkFlexController(turningMotorId, MotorKind.NEO, turningMotorConfig, IdleMode.kBrake, 0);
+        turningMotor = new CANSparkFlexController(turningMotorId, MotorKind.VORTEX, turningMotorConfig, IdleMode.kBrake);
 
         // Initialize the drive and turning encoders
         driveEncoder = driveMotor.getEncoder();
