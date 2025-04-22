@@ -1,6 +1,8 @@
 package frc.robot;
 
 
+import javax.security.auth.callback.NameCallback;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -20,102 +22,71 @@ import frc.robot.Constants.Buttons;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.LEDSubsystem.LEDState;
 
 public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-
     public final AlgaeArm algaeArm = new AlgaeArm();
-
     public final IntakeOuttake intakeoutake = new IntakeOuttake();
-
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-
-    //public final LEDSubsystem led_sybsystem = new LEDSubsystem();
-
     public final VisionSubsystem limeLightForwards = new VisionSubsystem(LimelightConstants.llFront);
-
     public final VisionSubsystem limeLightBackwards = new VisionSubsystem(LimelightConstants.llBack);
-
     private final Field2d field;
     private final SendableChooser<Command> autoChooser;
 
-    public XboxController driver = new XboxController(0);
-    public static XboxController gunner = new XboxController(1);
+    public final XboxController driver = new XboxController(0);
+    public static final XboxController gunner = new XboxController(1);
 
     public RobotContainer() {
         field = new Field2d();
         SmartDashboard.putData("Field", field);
-        PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
-            field.setRobotPose(pose);
-        });
-        PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
-            field.getObject("target pose").setPose(pose);
-        });
-        PathPlannerLogging.setLogActivePathCallback((poses) -> {
-            field.getObject("path").setPoses(poses);
-        });
 
-        NamedCommands.registerCommand("finalPreciseAlignment", swerveSubsystem.autonavigator.finalPreciseAllingment(false));
-        NamedCommands.registerCommand("L4CORAL", new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
-        NamedCommands.registerCommand("L3CORAL", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
-        NamedCommands.registerCommand("L2CORAL", new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
-        NamedCommands.registerCommand("L1CORAL", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
-        NamedCommands.registerCommand("LoadStation", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
+        PathPlannerLogging.setLogCurrentPoseCallback(pose -> field.setRobotPose(pose));
+        PathPlannerLogging.setLogTargetPoseCallback(pose -> field.getObject("target pose").setPose(pose));
+        PathPlannerLogging.setLogActivePathCallback(poses -> field.getObject("path").setPoses(poses));
+
+        NamedCommands.registerCommand("LEDEleup", new InstantCommand(() -> LEDSubsystem.setStateWaitUntilBoolean(LEDState.ELEUP, elevatorSubsystem::isNearTargetPosition)));
+        NamedCommands.registerCommand("LEDEledrop", new InstantCommand(() -> LEDSubsystem.setStateWaitUntilBoolean(LEDState.ELEDROPING, elevatorSubsystem::isNearTargetPosition)));
+        NamedCommands.registerCommand("LEDAutoAlign", new InstantCommand(() -> LEDSubsystem.setState(LEDState.AUTOALINERUNNING)));
+        NamedCommands.registerCommand("FPA", swerveSubsystem.autonavigator.finalPreciseAllingment(false));
+        NamedCommands.registerCommand("ElevatorWait", NamedCommands.getCommand("LEDEleup").andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
+        NamedCommands.registerCommand("L4CORAL", new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(NamedCommands.getCommand("ElevatorWait")));
+        NamedCommands.registerCommand("L3CORAL", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(NamedCommands.getCommand("ElevatorWait")));
+        NamedCommands.registerCommand("L2CORAL", new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(NamedCommands.getCommand("ElevatorWait")));
+        NamedCommands.registerCommand("L1CORAL", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(NamedCommands.getCommand("ElevatorWait")));
+        NamedCommands.registerCommand("LoadStation", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem).andThen(NamedCommands.getCommand("LEDEledrop")));
         NamedCommands.registerCommand("Intake", new WaitCommand(1));
-        //               .andThen(new InstantCommand(() -> recordAttempt()))
-        NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
-                .andThen(new WaitCommand(0.7))
-                .andThen(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake)));
-
-        autoChooser = AutoBuilder.buildAutoChooser("Straight Auto");
-
-        // Control diagram: https://docs.google.com/drawings/d/1NsJOx6fb6KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
-        new POVButton(gunner, Buttons.POV_UP).onTrue(new InstantCommand(() -> algaeArm.Homeposition(), algaeArm));
-        new POVButton(gunner, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm));
-        new JoystickButton(gunner, Buttons.Y).onTrue(new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new InstantCommand(() -> LEDSubsystem.state = LEDSubsystem.LEDState.ELEUP)));
-        new JoystickButton(gunner, Buttons.B).onTrue(new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new InstantCommand(() -> LEDSubsystem.state = LEDSubsystem.LEDState.ELEUP)));
-        new JoystickButton(gunner, Buttons.A).onTrue(new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(new InstantCommand(() -> LEDSubsystem.state = LEDSubsystem.LEDState.ELEUP)));
-        new JoystickButton(gunner, Buttons.X).onTrue(new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem));
-        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
-        new POVButton(gunner, Buttons.POV_LEFT).onTrue((NamedCommands.getCommand("L1CORAL")
-                .alongWith(new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm)))
-                .andThen(new InstantCommand(() -> algaeArm.Homeposition(), algaeArm))
-                .andThen(NamedCommands.getCommand("LoadStation")));
-        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(((new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake))).onlyIf(() -> !intakeoutake.isIntakeOpen));
-        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake).andThen(
-                new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 1))
-                        .andThen(new WaitCommand(1))
-                        .andThen(new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 0)))
-        ));
+        NamedCommands.registerCommand("OuttakeOpen", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake));
+        NamedCommands.registerCommand("OuttakeClose", new InstantCommand(() -> intakeoutake.outtakeClose(), intakeoutake));
+        NamedCommands.registerCommand("Outtake", NamedCommands.getCommand("OuttakeOpen").andThen(new WaitCommand(0.7)).andThen(NamedCommands.getCommand("OuttakeClose")));
+        NamedCommands.registerCommand("VibrateON", new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 1)));
+        NamedCommands.registerCommand("VibrateOFF", new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 0)));
+        NamedCommands.registerCommand("Vibration", new InstantCommand(() -> NamedCommands.getCommand("VibrateON").andThen(new WaitCommand(1)).andThen(NamedCommands.getCommand("VibrateOFF"))));
+        NamedCommands.registerCommand("AlgaeHome", new InstantCommand(() -> algaeArm.Homeposition(), algaeArm));
+        NamedCommands.registerCommand("AlgaeKnockout", new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm));
+        NamedCommands.registerCommand("AlgaeRemovalAuto", NamedCommands.getCommand("L1CORAL").alongWith(NamedCommands.getCommand("AlgaeKnockout")).andThen(NamedCommands.getCommand("AlgaeHome")).andThen(NamedCommands.getCommand("LoadStation")));
+        NamedCommands.registerCommand("LeftReefAuto", new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(limeLightForwards.leftReef(swerveSubsystem.getPose()))).alongWith(NamedCommands.getCommand("LEDAutoAlign")));
+        NamedCommands.registerCommand("RightReefAuto", new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(limeLightForwards.rightReef(swerveSubsystem.getPose()))).alongWith(NamedCommands.getCommand("LEDAutoAlign")));
+        
+        // Control diagram: https://docs.google.com/drawings/d/1NsJOx6fb6   KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
+        new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("AlgaeHome"));
+        new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("AlgaeKnockout"));
+        new JoystickButton(gunner, Buttons.Y).onTrue(NamedCommands.getCommand("L1CORAL"));
+        new JoystickButton(gunner, Buttons.B).onTrue(NamedCommands.getCommand("L2CORAL"));
+        new JoystickButton(gunner, Buttons.A).onTrue(NamedCommands.getCommand("L3CORAL"));
+        new JoystickButton(gunner, Buttons.X).onTrue(NamedCommands.getCommand("L4CORAL"));
+        new JoystickButton(gunner, Buttons.RIGHT_STICK_BUTTON).onTrue(NamedCommands.getCommand("LoadStation"));
+        new POVButton(gunner, Buttons.POV_LEFT).onTrue(NamedCommands.getCommand("AlgaeRemovalAuto"));
+        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).whileTrue(NamedCommands.getCommand("OuttakeOpen").onlyIf(() -> !intakeoutake.isIntakeOpen));
+        new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(NamedCommands.getCommand("OuttakeClose").andThen(NamedCommands.getCommand("Vibration")));
         new POVButton(gunner, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> elevatorSubsystem.elevator_top()));
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> elevatorSubsystem.elevator_zero()));
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
         new POVButton(driver, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> swerveSubsystem.resetOdometryWithVision()));
+        new JoystickButton(driver, Buttons.X).onTrue(NamedCommands.getCommand("LeftReefAuto").andThen(NamedCommands.getCommand("Vibration")));
+        new JoystickButton(driver, Buttons.B).onTrue(NamedCommands.getCommand("RightReefAuto").andThen(NamedCommands.getCommand("Vibration")));
 
-        new JoystickButton(driver, Buttons.X).onTrue(
-                new InstantCommand(() -> {
-                    Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
-                    swerveSubsystem.autonavigator.navigateTo(target);
-                }).andThen(
-                        new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 1))
-                                .andThen(new InstantCommand(() -> LEDSubsystem.state = LEDSubsystem.LEDState.AUTOALINERUNNING))
-                                .andThen(new WaitCommand(1))
-                                .andThen(new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 0)))
-                )
-        );
-
-        new JoystickButton(driver, Buttons.B).onTrue(
-                new InstantCommand(() -> {
-                    Pose2d target = limeLightForwards.rightReef(swerveSubsystem.getPose());
-                    swerveSubsystem.autonavigator.navigateTo(target);
-                }).andThen(
-                        new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 1))
-                                .andThen(new InstantCommand(() -> LEDSubsystem.state = LEDSubsystem.LEDState.AUTOALINERUNNING))
-                                .andThen(new WaitCommand(1))
-                                .andThen(new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 0)))
-                )
-        );
-
+        autoChooser = AutoBuilder.buildAutoChooser("Straight Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
         swerveSubsystem.setDefaultCommand(new SwerveJoystickDefaultCmd(swerveSubsystem, driver));
     }

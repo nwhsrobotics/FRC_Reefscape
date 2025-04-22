@@ -13,6 +13,7 @@ import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.Positions;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.LEDSubsystem.LEDState;
 import frc.robot.util.RobotCANUtils.PowerDistributionManager;
 
 import org.ironmaple.simulation.SimulatedArena;
@@ -131,7 +132,7 @@ public class Robot extends LoggedRobot {
     public void autonomousInit() {
         autonomousCommand = robotContainer.getAutonomousCommand();
 
-        LEDSubsystem.state = LEDSubsystem.LEDState.AUTORUNNING;
+        LEDSubsystem.setState(LEDState.AUTORUNNING);
         robotContainer.algaeArm.Homeposition();
         // schedule the autonomous command (example)
         if (autonomousCommand != null) {
@@ -173,7 +174,6 @@ public class Robot extends LoggedRobot {
                     MathUtil.applyDeadband(robotContainer.driver.getRightX(), OIConstants.kDriveDeadband) != 0 ||
                     MathUtil.applyDeadband(robotContainer.driver.getRightY(), OIConstants.kDriveDeadband) != 0) {
                 robotContainer.swerveSubsystem.autonavigator.disable();
-                LEDSubsystem.state = LEDSubsystem.LEDState.IDLEROUNDRUNNING;
             } else {
             }
         }
