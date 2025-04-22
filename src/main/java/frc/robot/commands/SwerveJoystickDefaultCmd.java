@@ -14,6 +14,7 @@ import frc.robot.Constants.Positions;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionGamePiece;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SwerveJoystickDefaultCmd extends Command {
@@ -38,22 +39,17 @@ public class SwerveJoystickDefaultCmd extends Command {
         if (xbox.getLeftBumperButton()) {
             PathPlannerTrajectoryState trajectoryState = new PathPlannerTrajectoryState();
             trajectoryState.pose = VisionGamePiece.getFieldPose();
-            swerveSubsystem.driveRobotRelative(
-                    driveController.calculateRobotRelativeSpeeds(swerveSubsystem.getPose(), trajectoryState)
-            );
+            swerveSubsystem.driveRobotRelative(driveController.calculateRobotRelativeSpeeds(swerveSubsystem.getPose(), trajectoryState));
         } else if (xbox.getRightBumperButton()) {
-            fieldRelative = false;
             PathPlannerTrajectoryState trajectoryState = new PathPlannerTrajectoryState();
             trajectoryState.pose = swerveSubsystem.getPose().nearest(Constants.AprilTags.aprilTags);
-            swerveSubsystem.driveRobotRelative(
-                    driveController.calculateRobotRelativeSpeeds(swerveSubsystem.getPose(), trajectoryState)
-            );
+            swerveSubsystem.driveRobotRelative(driveController.calculateRobotRelativeSpeeds(swerveSubsystem.getPose(), trajectoryState));
         } else if (xbox.getLeftTriggerAxis() > 0.1) {  //if reef (target) relative mode pressed
-            targetRelativeDrive(Positions.REEF_CENTERS);
+            swerveSubsystem.targetRelativeDrive(Positions.REEF_CENTERS, xbox.getLeftY(), xbox.getLeftX());
             // for example if driving relative to april tag do
-            // targetRelativeDrive(Constants.AprilTags.aprilTags);
+            // swerveSubsystem.targetRelativeDrive(Constants.AprilTags.aprilTags, xbox.getLeftY(), xbox.getLeftX());
             // if for example driving relative to gamepiece do
-            // targetRelativeDrive(VisionGamePiece.getFieldPose());
+            // swerveSubsystem.targetRelativeDrive(new ArrayList<>(List.of(VisionGamePiece.getFieldPose())), xbox.getLeftY(), xbox.getLeftX());
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if trigger(booster) not pressed
             fieldRelative = true;
             swerveSubsystem.drive(
@@ -91,61 +87,6 @@ public class SwerveJoystickDefaultCmd extends Command {
             }
         }
         return num;
-    }
-
-    private void targetRelativeDrive(List<Pose2d> targets) {
-        // I would need to explain what this does so I will just write it out here
-        Pose2d currentPose = swerveSubsystem.getPose();
-        // From the current position it gets the nearest reef (either blue or red alliance)
-        Pose2d nearestReef = currentPose.nearest(targets);
-        double robotX = currentPose.getX();
-        double robotY = currentPose.getY();
-        double centerX = nearestReef.getX();
-        double centerY = nearestReef.getY();
-        // What dx and dy represent is the difference/delta between the robot's center x,y coordinate and reef's x,y coordinate
-        double dx = centerX - robotX;
-        double dy = centerY - robotY;
-        // Now if you have the x and the y, remember SOHCAHTOA you would need to do inverse tangent (thats what atan2 method does) to find the theta to center of reef from robot
-        // NOTE: atan2 always returns the right coordinate quadrant (-pi, pi) unlike actual inverse tangent (atan method) that is just limited to two quadrants (-pi/2, pi/2)
-        double angleToCenter = Math.atan2(dy, dx);
-        // Remember with reef relative driving, forward is towards the reef's center and backwards is away
-        // Left would be moving clockwise in a circle around reef and right is counterclockwise
-        // These get the current controller values (from -1 to 1) to determine % speed of max and direction 
-        double forwardVal = -xbox.getLeftY();
-        double sidewaysVal = xbox.getLeftX();
-        // Remember SOHCAHTOA again, we can get the x component with cos and y with sin (these components are for helping go forward or backwards relative to the reef)
-        double forwardUnitX = Math.cos(angleToCenter);
-        double forwardUnitY = Math.sin(angleToCenter);
-        // Remember since we are moving in a circle, you are essentially constant moving tangentially to the angle it current is to the center (circular motion basics, tangential velocity)
-        // We calculate the tangential angle by adding 90 degrees (pi/2) to the angle to center
-        double sidewaysTangentialAngle = angleToCenter + (Math.PI / 2.0);
-        // Again the x, y components using SOHCAHTOA (these componenets are for helping go counterclockwise or clockwise around the reef)
-        double sidewaysUnitX = Math.cos(sidewaysTangentialAngle);
-        double sidewaysUnitY = Math.sin(sidewaysTangentialAngle);
-        // Finally you combine all componenets together to get a reef relative mode
-        // Let me explain how this works
-        // Forward and sideway values are supplied by controllers and they are the % of max speed to go
-        // Since we are doing reef relative, we need to convert it into field x and y axis (0,0 at reef center) so you can get the moving forward/backward relative to reef (radialUnit/forwardUnit) and moving in a circle (sidewaysUnit/tangentialUnit) and combine their x and y's to get final x and y units
-        // With speed limits from controllers
-        double fieldX = forwardVal * forwardUnitX + sidewaysVal * sidewaysUnitX;
-        double fieldY = forwardVal * forwardUnitY + sidewaysVal * sidewaysUnitY;
-        // The current heading (rotation) of the robot
-        double currentHeading = currentPose.getRotation().getRadians();
-        // So find the difference between current angle of the robot and the angle it should be facing to the center
-        double headingError = swerveSubsystem.angleDifferenceSigned(angleToCenter, currentHeading);
-        // Now based on that difference we can run a simple P (proportional) based control
-        // kRot is the P value (we need to fine tune this) to help with rotation
-        // double kRot = Math.PI / 25.0;
-        // Using this, we can essentially run a P based control where you just multiply the error diff by P to get the speed it should be going as a %
-        // double rotCmd = kRot * headingError;
-
-        // profiledRotController.setGoal(angleToCenter);
-        // double rotCmd = profiledRotController.calculate(currentHeading) / DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
-
-        double kRot = Math.PI / 25.0;
-        double rotCmd = kRot * headingError;
-
-        swerveSubsystem.drive(fieldX, fieldY, rotCmd, true, true);
     }
 
 

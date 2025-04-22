@@ -61,7 +61,6 @@ public class RobotContainer {
         NamedCommands.registerCommand("L2CORAL", new InstantCommand(() -> elevatorSubsystem.L2_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("L1CORAL", new InstantCommand(() -> elevatorSubsystem.L1_Preset(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("LoadStation", new InstantCommand(() -> elevatorSubsystem.loadStation_Preset(), elevatorSubsystem));
-        NamedCommands.registerCommand("Boost", new InstantCommand(() -> elevatorSubsystem.boost(), elevatorSubsystem).andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("Intake", new WaitCommand(1));
         //               .andThen(new InstantCommand(() -> recordAttempt()))
         NamedCommands.registerCommand("Outtake", new InstantCommand(() -> intakeoutake.outtakeOpen(), intakeoutake)
@@ -90,13 +89,8 @@ public class RobotContainer {
         ));
         new POVButton(gunner, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> elevatorSubsystem.elevator_top()));
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> elevatorSubsystem.elevator_zero()));
-        // don't need reset odometry with vision because you can fake angle it (for rotation) + the april tag corrects odometry live
         new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
-        // new POVButton(driver, Buttons.POV_DOWN).onTrue(new InstantCommand(()
-        //         -> swerveSubsystem.resetOdometry(new Pose2d(swerveSubsystem.getPose().getX(), swerveSubsystem.getPose().getY(), limeLightForwards.getFakeAngle(swerveSubsystem.getPose())))));
         new POVButton(driver, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> swerveSubsystem.resetOdometryWithVision()));
-        // new POVButton(driver, Buttons.POV_UP).onTrue(new InstantCommand(()
-        //         -> swerveSubsystem.resetOdometry(new Pose2d(3.829, 5.143, Rotation2d.fromDegrees(-60)))));
 
         new JoystickButton(driver, Buttons.X).onTrue(
                 new InstantCommand(() -> {
