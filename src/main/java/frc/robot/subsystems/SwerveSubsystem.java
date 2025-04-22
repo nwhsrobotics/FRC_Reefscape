@@ -96,9 +96,6 @@ public class SwerveSubsystem extends SubsystemBase {
             new Pose2d(),
             VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(1)),
             VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(5)));
-    //The default standard deviations of the module states are 0.1 meters for x, 0.1 meters for y, and 0.1 radians for heading. 
-    //The default standard deviations of the vision measurements are 0.9 meters for x, 0.9 meters for y, and 0.9 radians for heading.
-    //Decrease standard deviations to trust the data more (right now the vision is mostly insignificant compared to module state)
 
     // Slew rate filter variables for controlling lateral acceleration
     private double currentRotation = 0.0;

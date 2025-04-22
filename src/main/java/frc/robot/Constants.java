@@ -7,11 +7,13 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -187,9 +189,23 @@ public final class Constants {
         //it is tagDegree + 180
         //https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/2025FieldDrawings-FieldLayoutAndMarking.pdf
         //https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/Apriltag_Images_and_User_Guide.pdf
-        //NO 0 DEGREE rotation, pathpathplanner bugs, do 1 degree instead   
-        //TODO: +-180 DEGREES?
-        public static final List<Pose2d> aprilTags = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape).getTags().stream().map(tag -> tag.pose.toPose2d()).collect(Collectors.toCollection(ArrayList::new));
+        public static final List<Pose2d> aprilTags =
+            AprilTagFieldLayout
+            .loadField(AprilTagFields.k2025Reefscape)
+            .getTags()
+            .stream()
+            .map(tag ->
+                tag.pose
+                    .toPose2d()
+                    .transformBy(
+                    new Transform2d(
+                        new Translation2d(), 
+                        Rotation2d.fromDegrees(180)
+                    )
+                    )
+            )
+            .collect(Collectors.toCollection(ArrayList::new));
+
     }
 
     public static final class LimelightConstants {

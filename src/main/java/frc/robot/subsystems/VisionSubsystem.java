@@ -4,11 +4,14 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AprilTags;
 import frc.robot.Constants.Positions;
 
@@ -24,13 +27,6 @@ public class VisionSubsystem extends SubsystemBase {
 
     public VisionSubsystem(String limelightName) {
         this.limelightName = limelightName;
-    }
-
-
-    @Override
-    public void periodic() {
-
-        // Logger.recordOutput("Crosshair", "----------------------------------X-----------------------------");
         for (int i = 0; i < AprilTags.aprilTags.size(); i++) {
             Pose2d org = AprilTags.aprilTags.get(i);
 
@@ -40,7 +36,13 @@ public class VisionSubsystem extends SubsystemBase {
             Positions.allAutoPositions.add(left);
             Positions.allAutoPositions.add(right);
         }
+    }
 
+
+    @Override
+    public void periodic() {
+        System.out.println(AprilTags.aprilTags);
+        
     }
 
     public String getLimelightName() {
@@ -62,7 +64,7 @@ public class VisionSubsystem extends SubsystemBase {
     public Pose2d transformPosition(Pose2d aprilTagPos, double offsetDistance) {
         Transform2d dist = new Transform2d(
                 new Translation2d(-offsetDistance, 0.0),
-                new Rotation2d(180.0)
+                new Rotation2d(0.0)
         );
         return aprilTagPos.transformBy(dist);
     }
