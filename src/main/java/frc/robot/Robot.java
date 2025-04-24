@@ -116,12 +116,14 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void disabledInit() {
+        LEDSubsystem.setState(LEDSubsystem.LEDState.IDLE);
         robotContainer.swerveSubsystem.autonavigator.disable();
 
     }
 
     @Override
     public void disabledPeriodic() {
+        LEDSubsystem.setState(LEDSubsystem.LEDState.IDLE);
     }
 
     /**
@@ -150,7 +152,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void teleopInit() {
 
-        LEDSubsystem.state = LEDSubsystem.LEDState.IDLE;
+        LEDSubsystem.setState(LEDSubsystem.LEDState.IDLE);
         robotContainer.intakeoutake.outtakeClose();
         robotContainer.algaeArm.Homeposition();
         // This makes sure that the autonomous stops running when

@@ -18,16 +18,20 @@ import java.util.function.BooleanSupplier;
 public class LEDSubsystem extends SubsystemBase {
 
     //LED strip lengths
-    private static final int elevatorLEDLengthLEFT = 49;
+    private static final int elevatorLEDLengthLEFT = 20;
     //private final int elevatorLEDLengthRIGHT = 10;
 
     //LED objects
-    private static final AddressableLED elevatorLEDLeft = new AddressableLED(8);
+    private static final AddressableLED elevatorLEDLeft = new AddressableLED(9);
     //private final AddressableLED elevatorLEDRight = new AddressableLED(7); 
 
     //LED buffers
     private static final AddressableLEDBuffer elevatorLEDLeft_Buffer = new AddressableLEDBuffer(elevatorLEDLengthLEFT);
     //private final AddressableLEDBuffer elevatorLEDRight_Buffer = new AddressableLEDBuffer(elevatorLEDLengthRIGHT);
+
+    static {
+        elevatorLEDLeft.setLength(elevatorLEDLeft_Buffer.getLength());
+    }
 
 
     //LED colors =====================================================
@@ -53,9 +57,20 @@ public class LEDSubsystem extends SubsystemBase {
 
     //setting LED length, should only be done on startup
     public LEDSubsystem() {
-        elevatorLEDLeft.setLength(elevatorLEDLeft_Buffer.getLength());
         //elevatorLEDRight.setLength(elevatorLEDRight_Buffer.getLength());
-
+        /*﻿﻿﻿﻿﻿﻿﻿﻿ERROR ﻿﻿ 1 ﻿﻿ Unhandled exception: edu.wpi.first.hal.util.UncleanStatusException:  Code: -1028. Data length must be less than or equal to 1. 20 was requested ﻿﻿ frc.robot.subsystems.LEDSubsystem.setLED_Pattern(LEDSubsystem.java:66) ﻿﻿﻿
+﻿﻿﻿﻿﻿﻿ Error at frc.robot.subsystems.LEDSubsystem.setLED_Pattern(LEDSubsystem.java:66): Unhandled exception: edu.wpi.first.hal.util.UncleanStatusException:  Code: -1028. Data length must be less than or equal to 1. 20 was requested ﻿
+﻿﻿﻿﻿﻿﻿ 	at edu.wpi.first.hal.AddressableLEDJNI.setData(Native Method) ﻿
+﻿﻿﻿﻿﻿﻿ 	at edu.wpi.first.wpilibj.AddressableLED.setData(AddressableLED.java:67) ﻿
+﻿﻿﻿﻿﻿﻿ 	at frc.robot.subsystems.LEDSubsystem.setLED_Pattern(LEDSubsystem.java:66) ﻿
+﻿﻿﻿﻿﻿﻿ 	at frc.robot.subsystems.LEDSubsystem.setState(LEDSubsystem.java:111) ﻿
+﻿﻿﻿﻿﻿﻿ 	at frc.robot.Robot.disabledPeriodic(Robot.java:126) ﻿
+﻿﻿﻿﻿﻿﻿ 	at edu.wpi.first.wpilibj.IterativeRobotBase.loopFunc(IterativeRobotBase.java:377) ﻿
+﻿﻿﻿﻿﻿﻿ 	at org.littletonrobotics.junction.LoggedRobot.startCompetition(LoggedRobot.java:117) ﻿
+﻿﻿﻿﻿﻿﻿ 	at edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:419) ﻿
+﻿﻿﻿﻿﻿﻿ 	at edu.wpi.first.wpilibj.RobotBase.startRobot(RobotBase.java:510) ﻿
+﻿﻿﻿﻿﻿﻿ 	at frc.robot.Main.main(Main.java:24) ﻿
+ */
 
     }
 
