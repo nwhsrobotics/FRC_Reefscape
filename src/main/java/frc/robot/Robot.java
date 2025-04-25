@@ -16,7 +16,6 @@ import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LEDSubsystem.LEDState;
 import frc.robot.util.RobotCANUtils.PowerDistributionManager;
 
-import org.ironmaple.simulation.SimulatedArena;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -84,7 +83,7 @@ public class Robot extends LoggedRobot {
 
         @Override
     public void simulationPeriodic() {
-    SimulatedArena.getInstance().simulationPeriodic();
+    //SimulatedArena.getInstance().simulationPeriodic();
     }
 
 
