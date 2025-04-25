@@ -39,15 +39,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     // setpoint
     public double setPointRotations = 0.0;
 
-    //Current Elevator Level
-    int currentElevatorLevel = 0;
-
-    //Evevator presets (prob should go to constants)
-    double loadStationPreset = 0.0;
-    double L1Preset = 0.224;
-    double L2Preset = 0.7973;
-    double L3Preset = 1.1973;
-    double L4Preset = 1.8173;
 
     public double[] elevatorHeights = new double[]{
             0.0, //loadSttion

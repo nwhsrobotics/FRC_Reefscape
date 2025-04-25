@@ -15,9 +15,16 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AprilTags;
 import frc.robot.Constants.Positions;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import com.navsight.VisionGP;
+
+
 
 public class VisionSubsystem extends SubsystemBase {
     /**
@@ -25,43 +32,33 @@ public class VisionSubsystem extends SubsystemBase {
      */
     private final String limelightName;
 
+    private static final Set<Integer> BLUE_REEFS = Set.of(17, 18, 19, 20, 21, 22);
+    private static final Set<Integer> RED_REEFS  = Set.of(6,  7,  8,  9,  10, 11);
+    private static final Set<Integer> ALL_REEFS  =
+        Stream.concat(BLUE_REEFS.stream(), RED_REEFS.stream())
+              .collect(Collectors.toUnmodifiableSet());
+
     public VisionSubsystem(String limelightName) {
         this.limelightName = limelightName;
         for (int i = 0; i < AprilTags.aprilTags.size(); i++) {
             Pose2d org = AprilTags.aprilTags.get(i);
 
-            Pose2d left = transformPosition(scootRight(org, 0.1251), 0.5445);
-            Pose2d right = transformPosition(scootLeft(org, 0.2051), 0.5445);
+            Pose2d left = scootBack(scootRight(org, 0.1251), 0.5445);
+            Pose2d right = scootBack(scootLeft(org, 0.2051), 0.5445);
 
             Positions.allAutoPositions.add(left);
             Positions.allAutoPositions.add(right);
         }
+        
     }
 
 
     @Override
     public void periodic() {
-        System.out.println(AprilTags.aprilTags);
-        
-    }
-
-    public String getLimelightName() {
-        return limelightName;
     }
 
 
-    public boolean isBlueAllianceReef(int id) {
-        return id == 17 || id == 18 || id == 19 || id == 20 || id == 21 || id == 22;
-    }
-
-
-    public boolean isRedAllianceReef(int id) {
-        return id == 6 || id == 7 || id == 8 || id == 9 || id == 10 || id == 11;
-
-    }
-
-
-    public Pose2d transformPosition(Pose2d aprilTagPos, double offsetDistance) {
+    public Pose2d scootBack(Pose2d aprilTagPos, double offsetDistance) {
         Transform2d dist = new Transform2d(
                 new Translation2d(-offsetDistance, 0.0),
                 new Rotation2d(0.0)
@@ -109,13 +106,8 @@ public class VisionSubsystem extends SubsystemBase {
     public Pose2d leftReef(Pose2d swervePos) {
         Pose2d finalPose = getNearestReef(swervePos);
         finalPose = scootLeft(finalPose, 0.2051);
-        finalPose = transformPosition(finalPose, 0.5445);
+        finalPose = scootBack(finalPose, 0.5445);
         return finalPose;
-    }
-
-
-    public Pose2d getAprilTagPos(int id) {
-        return AprilTags.aprilTags.get(id - 1);
     }
 
 
@@ -125,29 +117,19 @@ public class VisionSubsystem extends SubsystemBase {
     public Pose2d rightReef(Pose2d swervePos) {
         Pose2d finalPose = getNearestReef(swervePos);
         finalPose = scootRight(finalPose, 0.1251);
-        finalPose = transformPosition(finalPose, 0.5445);
+        finalPose = scootBack(finalPose, 0.5445);
         return finalPose;
     }
 
     public Pose2d getNearestReef(Pose2d swervePos) {
-        Pose2d closest = swervePos;
-        double dist = Integer.MAX_VALUE;
-        for (int i = 0; i < AprilTags.aprilTags.size(); i++) {
-            double targetDist = swervePos.getTranslation().getDistance(AprilTags.aprilTags.get(i).getTranslation());
-            if (targetDist < dist) {
-                if (isBlueAllianceReef(i + 1) || isRedAllianceReef(i + 1)) {
-                    closest = AprilTags.aprilTags.get(i);
-                    dist = targetDist;
-                }
-            }
-        }
-        return closest;
-    }
-
-    public int getNearestAprilTag(Pose2d swervePose) {
-        Pose2d nearest = swervePose.nearest(AprilTags.aprilTags);
-        int id = AprilTags.aprilTags.indexOf(nearest) + 1;
-        return id;
+        List<Pose2d> tags = AprilTags.aprilTags;
+        return IntStream.range(0, tags.size())
+                .filter(i -> ALL_REEFS.contains(i + 1))
+                .mapToObj(tags::get)
+                .min(Comparator.comparingDouble(
+                    tag -> tag.getTranslation().getDistance(swervePos.getTranslation())
+                ))
+                .orElse(swervePos);
     }
 
 }
