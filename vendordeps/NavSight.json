@@ -1,7 +1,7 @@
 {
     "fileName": "NavSight.json",
     "name": "NavSight",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "frcYear": "2025",
     "uuid": "357c1db7-eca0-4134-8998-37b088d23541",
   
@@ -14,7 +14,7 @@
       {
         "groupId": "com.github.NewAmazingPVP",
         "artifactId": "NavSight",   
-        "version": "0.0.9"          
+        "version": "0.0.10"          
       }
     ],
   

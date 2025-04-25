@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.navsight.VisionGP;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.*;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -226,7 +227,7 @@ public class AutoNavigation {
 
     public Command finalPreciseAllingment(boolean isGamePiece) {
         if (isGamePiece) {
-            return pathOnTheFlyToPosition(VisionGamePiece.getFieldPose());
+            return pathOnTheFlyToPosition(VisionGP.getFieldPose());
         }
         return pathOnTheFlyToPosition(swerve.getPose().nearest(Constants.Positions.allAutoPositions));
     }

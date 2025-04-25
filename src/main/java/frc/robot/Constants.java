@@ -208,34 +208,13 @@ public final class Constants {
 
     }
 
+    
     public static final class LimelightConstants {
-        // 3.8cm or 0.038m base height of robot (add to all heights)
-        //Forward Limelight
-        public static final double mountHeightForwards = 0.625; //in meters
-        public static final double mountAngleForwards = 17.5; //in degrees with straight being 0 up being 90 and down being -90
-        public static final double horizontalOffsetForwards = 0.0; //in meters, this offset is how far left or right LL3 is mounted from center (negative is left, positive right)
-        //this might not be needed but doesn't hurt us
-        public static final double distanceFromCenterForwards = 0.0387; //in meters, straight distance to the camera from middle
-        public static final double hypotenuseDistanceForwards = Math.hypot(horizontalOffsetForwards, distanceFromCenterForwards); // actual distance in 2d from middle
-        public static final double thethaFromCenterForwards = -32; //this might be needed for angle offset
-        public static String llObjectDetectionNameForwards = "limelight-llf";
+        
         public static String llFront = "limelight-llf";
-        public static double targetHeightForwards = 0;
-
-        //Rear Limelight
-        public static final double mountHeightBackwards = 0.8814; //in meters
-        public static final double mountAngleBackwards = 0.0; //in degrees with straight being 0 up being 90 and down being -90
-        public static final double horizontalOffsetBackwards = 0; //in meters, this offset is how far left or right LL3 is mounted from center (negative is left, positive right)
-        //this might not be needed but doesn't hurt us
-        public static final double distanceFromCenterBackwards = 0.0317; //in meters, straight distance to the camera from middle
-        public static final double hypotenuseDistanceBackwards = Math.hypot(horizontalOffsetBackwards, distanceFromCenterBackwards); // actual distance in 2d from middle
-        public static final double thethaFromCenterBackwards = -32; //this might be needed for angle offset
-        public static String llObjectDetectionNameBackwards = "limelight-llb";
         public static String llBack = "limelight-llb";
-        public static double targetHeightBackwards = 0;
-        //Fix ll name
-
     }
+
 
     public enum RuntimeEnvironment {
         /**
