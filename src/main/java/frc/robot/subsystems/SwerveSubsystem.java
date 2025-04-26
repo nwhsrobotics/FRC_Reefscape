@@ -4,6 +4,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -41,9 +43,6 @@ public class SwerveSubsystem extends SubsystemBase {
     // holding forwards will move the robot away from the driver station,
     // because that is the forwards direction relative to the field.
     private boolean isFieldRelative = true;
-
-
-    public AutoNavigation autonavigator;
 
     // 4 instances of SwerveModule to represent each wheel module with the constants
     private final SwerveModule frontLeft = new SwerveModule(
@@ -139,8 +138,6 @@ public class SwerveSubsystem extends SubsystemBase {
                     this
 
             );
-
-            this.autonavigator = new AutoNavigation(this);
 
             // Pause for 500 milliseconds to allow the gyro to stabilize.
             // Set the yaw of the gyro to 0 afterwards (hardware offset).
@@ -642,58 +639,39 @@ public class SwerveSubsystem extends SubsystemBase {
         return wrapped;
     }
 
-        public void targetRelativeDrive(List<Pose2d> targets, double leftY, double leftX) {
-        // I would need to explain what this does so I will just write it out here
-        Pose2d currentPose = getPose();
-        // From the current position it gets the nearest reef (either blue or red alliance)
-        Pose2d nearestReef = currentPose.nearest(targets);
-        double robotX = currentPose.getX();
-        double robotY = currentPose.getY();
-        double centerX = nearestReef.getX();
-        double centerY = nearestReef.getY();
-        // What dx and dy represent is the difference/delta between the robot's center x,y coordinate and reef's x,y coordinate
-        double dx = centerX - robotX;
-        double dy = centerY - robotY;
-        // Now if you have the x and the y, remember SOHCAHTOA you would need to do inverse tangent (thats what atan2 method does) to find the theta to center of reef from robot
-        // NOTE: atan2 always returns the right coordinate quadrant (-pi, pi) unlike actual inverse tangent (atan method) that is just limited to two quadrants (-pi/2, pi/2)
-        double angleToCenter = Math.atan2(dy, dx);
-        // Remember with reef relative driving, forward is towards the reef's center and backwards is away
-        // Left would be moving clockwise in a circle around reef and right is counterclockwise
-        // These get the current controller values (from -1 to 1) to determine % speed of max and direction 
-        double forwardVal = -leftY;
-        double sidewaysVal = leftX;
-        // Remember SOHCAHTOA again, we can get the x component with cos and y with sin (these components are for helping go forward or backwards relative to the reef)
-        double forwardUnitX = Math.cos(angleToCenter);
-        double forwardUnitY = Math.sin(angleToCenter);
-        // Remember since we are moving in a circle, you are essentially constant moving tangentially to the angle it current is to the center (circular motion basics, tangential velocity)
-        // We calculate the tangential angle by adding 90 degrees (pi/2) to the angle to center
-        double sidewaysTangentialAngle = angleToCenter + (Math.PI / 2.0);
-        // Again the x, y components using SOHCAHTOA (these componenets are for helping go counterclockwise or clockwise around the reef)
-        double sidewaysUnitX = Math.cos(sidewaysTangentialAngle);
-        double sidewaysUnitY = Math.sin(sidewaysTangentialAngle);
-        // Finally you combine all componenets together to get a reef relative mode
-        // Let me explain how this works
-        // Forward and sideway values are supplied by controllers and they are the % of max speed to go
-        // Since we are doing reef relative, we need to convert it into field x and y axis (0,0 at reef center) so you can get the moving forward/backward relative to reef (radialUnit/forwardUnit) and moving in a circle (sidewaysUnit/tangentialUnit) and combine their x and y's to get final x and y units
-        // With speed limits from controllers
-        double fieldX = forwardVal * forwardUnitX + sidewaysVal * sidewaysUnitX;
-        double fieldY = forwardVal * forwardUnitY + sidewaysVal * sidewaysUnitY;
-        // The current heading (rotation) of the robot
-        double currentHeading = currentPose.getRotation().getRadians();
-        // So find the difference between current angle of the robot and the angle it should be facing to the center
-        double headingError = angleDifferenceSigned(angleToCenter, currentHeading);
-        // Now based on that difference we can run a simple P (proportional) based control
-        // kRot is the P value (we need to fine tune this) to help with rotation
-        // double kRot = Math.PI / 25.0;
-        // Using this, we can essentially run a P based control where you just multiply the error diff by P to get the speed it should be going as a %
-        // double rotCmd = kRot * headingError;
-
-        // profiledRotController.setGoal(angleToCenter);
-        // double rotCmd = profiledRotController.calculate(currentHeading) / DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
-
-        double kRot = Math.PI / 25.0;
-        double rotCmd = kRot * headingError;
-
-        drive(fieldX, fieldY, rotCmd, true, true);
+public void targetRelativeDrive(List<Pose2d> targets, double rawLeftY, double rawLeftX) {
+    double leftY = rawLeftY;
+    double leftX = rawLeftX;
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+        leftY = -rawLeftY;
+        leftX = -rawLeftX;
     }
+
+    Pose2d currentPose = getPose();
+    Pose2d nearest = currentPose.nearest(targets);
+
+    double dx = nearest.getX() - currentPose.getX();
+    double dy = nearest.getY() - currentPose.getY();
+    double dist = Math.hypot(dx, dy);
+    if (dist < 0.05) dy = 1e-3;
+
+    double theta = Math.atan2(dy, dx);
+
+    double fwd = -leftY;
+    double str =  leftX;
+
+    double fieldX = fwd * Math.cos(theta) + str * Math.cos(theta + Math.PI / 2.0);
+    double fieldY = fwd * Math.sin(theta) + str * Math.sin(theta + Math.PI / 2.0);
+
+    double scale = MathUtil.clamp(dist / 1.0, 0.0, 1.0);
+    fieldX *= scale;
+    fieldY *= scale;
+
+    double headingErr = angleDifferenceSigned(theta, currentPose.getRotation().getRadians());
+    double rotCmd = MathUtil.clamp((Math.PI / 20.0) * headingErr, -1.0, 1.0);
+
+    drive(fieldX, fieldY, rotCmd, true, true);
+}
+
 }

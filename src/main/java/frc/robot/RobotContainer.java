@@ -3,6 +3,7 @@ package frc.robot;
 
 import javax.security.auth.callback.NameCallback;
 
+import com.navsight.AutoNavigator;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -29,8 +30,6 @@ public class RobotContainer {
     public final AlgaeArm algaeArm = new AlgaeArm();
     public final IntakeOuttake intakeoutake = new IntakeOuttake();
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-    public final VisionSubsystem limeLightForwards = new VisionSubsystem(LimelightConstants.llFront);
-    public final VisionSubsystem limeLightBackwards = new VisionSubsystem(LimelightConstants.llBack);
     private final Field2d field;
     private final SendableChooser<Command> autoChooser;
 
@@ -38,6 +37,7 @@ public class RobotContainer {
     public static final XboxController gunner = new XboxController(1);
 
     public RobotContainer() {
+        AutoAlign.init(swerveSubsystem);
         field = new Field2d();
         SmartDashboard.putData("Field", field);
 
@@ -45,10 +45,10 @@ public class RobotContainer {
         PathPlannerLogging.setLogTargetPoseCallback(pose -> field.getObject("target pose").setPose(pose));
         PathPlannerLogging.setLogActivePathCallback(poses -> field.getObject("path").setPoses(poses));
 
-        NamedCommands.registerCommand("LEDEleup", new InstantCommand(() -> LEDSubsystem.setStateWaitUntilBoolean(LEDState.ELEUP, elevatorSubsystem::isNearTargetPosition)));
-        NamedCommands.registerCommand("LEDEledrop", new InstantCommand(() -> LEDSubsystem.setStateWaitUntilBoolean(LEDState.ELEDROPING, elevatorSubsystem::isNearTargetPosition)));
-        NamedCommands.registerCommand("LEDAutoAlign", new InstantCommand(() -> LEDSubsystem.setState(LEDState.AUTOALINERUNNING)));
-        NamedCommands.registerCommand("FPA", swerveSubsystem.autonavigator.finalPreciseAllingment(false));
+        NamedCommands.registerCommand("LEDEleup", new InstantCommand(() -> LEDSubsystem.setStateUntil(LEDState.ELEUP, elevatorSubsystem::isNearTargetPosition)));
+        NamedCommands.registerCommand("LEDEledrop", new InstantCommand(() -> LEDSubsystem.setStateUntil(LEDState.ELEDROPPING, elevatorSubsystem::isNearTargetPosition)));
+        NamedCommands.registerCommand("LEDAutoAlign", new InstantCommand(() -> LEDSubsystem.setState(LEDState.AUTOALIGNRUNNING)));
+        //NamedCommands.registerCommand("FPA", swerveSubsystem.autonavigator.finalPreciseAllingment(false));
         NamedCommands.registerCommand("ElevatorWait", NamedCommands.getCommand("LEDEleup").andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("L4CORAL", new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(NamedCommands.getCommand("ElevatorWait")));
         NamedCommands.registerCommand("L3CORAL", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(NamedCommands.getCommand("ElevatorWait")));
@@ -65,8 +65,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("AlgaeHome", new InstantCommand(() -> algaeArm.Homeposition(), algaeArm));
         NamedCommands.registerCommand("AlgaeKnockout", new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm));
         NamedCommands.registerCommand("AlgaeRemovalAuto", NamedCommands.getCommand("L1CORAL").alongWith(NamedCommands.getCommand("AlgaeKnockout")).andThen(NamedCommands.getCommand("AlgaeHome")).andThen(NamedCommands.getCommand("LoadStation")));
-        NamedCommands.registerCommand("LeftReefAuto", new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(limeLightForwards.leftReef(swerveSubsystem.getPose()))).alongWith(NamedCommands.getCommand("LEDAutoAlign")));
-        NamedCommands.registerCommand("RightReefAuto", new InstantCommand(() -> swerveSubsystem.autonavigator.navigateTo(limeLightForwards.rightReef(swerveSubsystem.getPose()))).alongWith(NamedCommands.getCommand("LEDAutoAlign")));
+        NamedCommands.registerCommand("LeftReefAuto", new InstantCommand(() -> AutoNavigator.navigateTo(AutoAlign.leftReef(swerveSubsystem.getPose()))).alongWith(NamedCommands.getCommand("LEDAutoAlign")));
+        NamedCommands.registerCommand("RightReefAuto", new InstantCommand(() -> AutoNavigator.navigateTo(AutoAlign.rightReef(swerveSubsystem.getPose()))).alongWith(NamedCommands.getCommand("LEDAutoAlign")));
         
         // Control diagram: https://docs.google.com/drawings/d/1NsJOx6fb6   KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
         new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("AlgaeHome"));

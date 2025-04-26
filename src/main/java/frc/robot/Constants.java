@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.navsight.ISwerveDrive;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
@@ -9,8 +10,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,6 +60,15 @@ public final class Constants {
         //public static final double kPTolerance = 2.5 * (Math.PI/180);
         public static final double kITurning = 0.;
     }
+
+    public static class SwerveDriveAdapter implements ISwerveDrive {
+    private final SwerveSubsystem s;
+    public SwerveDriveAdapter(SwerveSubsystem ss){s=ss;}
+    @Override public Pose2d        getPose(){return s.getPose();}
+    @Override public ChassisSpeeds getSpeeds(){return s.getSpeeds();}
+    @Override public void driveRobotRelative(ChassisSpeeds sp){s.driveRobotRelative(sp);}
+    @Override public void stopModules(){s.stopModules();}
+}
 
     public final class Buttons {
         public static final int A = 1;
