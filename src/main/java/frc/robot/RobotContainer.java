@@ -125,7 +125,7 @@ public class RobotContainer {
         // new POVButton(driver, Buttons.POV_UP).onTrue(new InstantCommand(()
         //         -> swerveSubsystem.resetOdometry(new Pose2d(3.829, 5.143, Rotation2d.fromDegrees(-60)))));
 
-        new JoystickButton(driver, Buttons.X).onTrue(
+/*      new JoystickButton(driver, Buttons.X).onTrue(
                 new InstantCommand(() -> {
                     Pose2d target = limeLightForwards.leftReef(swerveSubsystem.getPose());
                     swerveSubsystem.autonavigator.navigateTo(target);
@@ -147,7 +147,7 @@ public class RobotContainer {
                                 .andThen(new WaitCommand(1))
                                 .andThen(new InstantCommand(() -> gunner.setRumble(RumbleType.kBothRumble, 0)))
                 )
-        );
+        );*/
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
