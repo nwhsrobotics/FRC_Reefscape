@@ -4,11 +4,9 @@ import com.navsight.*;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.Constants.SwerveDriveAdapter;
 import edu.wpi.first.math.geometry.Pose2d;
 import java.util.*;
 import java.util.stream.*;
-import frc.robot.Constants.SwerveDriveAdapter;
 
 public final class AutoAlign {
     private static boolean ready=false;
@@ -19,7 +17,9 @@ public final class AutoAlign {
     public static void init(SwerveSubsystem swerve){
         if(ready)return;
 
-        NavSight.init(new SwerveDriveAdapter(swerve),
+        AutoNavigator.init(swerve);
+
+        NavSight.init(swerve,
                       new AutoConfig(Constants.AutoConstants.pathFollowerConfig,
                                      Constants.AutoConstants.kPathfindingConstraints));
 

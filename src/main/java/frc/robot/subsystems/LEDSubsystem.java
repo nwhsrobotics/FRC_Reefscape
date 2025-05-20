@@ -16,9 +16,14 @@ import static edu.wpi.first.units.Units.Second;
 
 public class LEDSubsystem extends SubsystemBase {
 
-    private static final int LED_LENGTH = 20;
-    private static final AddressableLED strip = new AddressableLED(9);
+    private static final int LED_LENGTH = 300;
+    private static final AddressableLED strip = new AddressableLED(8);
     private static final AddressableLEDBuffer buffer = new AddressableLEDBuffer(LED_LENGTH);
+
+    static {
+        strip.setLength(buffer.getLength());
+        strip.start();
+    }
 
     private static final Color ORANGE = new Color(255, 40, 0);
 
@@ -45,8 +50,7 @@ public class LEDSubsystem extends SubsystemBase {
     private static LEDState state = LEDState.ROBOTNOTREADY;
 
     public LEDSubsystem() {
-        strip.setLength(buffer.getLength());
-        strip.start();
+        
     }
 
     public static void setState(LEDState newState) {

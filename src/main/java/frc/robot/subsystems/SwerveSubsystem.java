@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.navsight.ISwerveDrive;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.studica.frc.AHRS;
@@ -35,7 +36,7 @@ import org.littletonrobotics.junction.Logger;
 /**
  * Represents the swerve drive subsystem, managing four swerve modules and handling overall robot control.
  */
-public class SwerveSubsystem extends SubsystemBase {
+public class SwerveSubsystem extends SubsystemBase implements ISwerveDrive {
     // when the robot is set to "field relative,"
     // linear movement will be relative to the field.
     //

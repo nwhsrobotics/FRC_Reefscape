@@ -61,15 +61,6 @@ public final class Constants {
         public static final double kITurning = 0.;
     }
 
-    public static class SwerveDriveAdapter implements ISwerveDrive {
-    private final SwerveSubsystem s;
-    public SwerveDriveAdapter(SwerveSubsystem ss){s=ss;}
-    @Override public Pose2d        getPose(){return s.getPose();}
-    @Override public ChassisSpeeds getSpeeds(){return s.getSpeeds();}
-    @Override public void driveRobotRelative(ChassisSpeeds sp){s.driveRobotRelative(sp);}
-    @Override public void stopModules(){s.stopModules();}
-}
-
     public final class Buttons {
         public static final int A = 1;
         public static final int B = 2;

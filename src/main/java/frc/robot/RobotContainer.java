@@ -48,7 +48,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("LEDEleup", new InstantCommand(() -> LEDSubsystem.setStateUntil(LEDState.ELEUP, elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("LEDEledrop", new InstantCommand(() -> LEDSubsystem.setStateUntil(LEDState.ELEDROPPING, elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("LEDAutoAlign", new InstantCommand(() -> LEDSubsystem.setState(LEDState.AUTOALIGNRUNNING)));
-        //NamedCommands.registerCommand("FPA", swerveSubsystem.autonavigator.finalPreciseAllingment(false));
+        //NamedCommands.registerCommand("FPA", AutoNavigator.navigateTo(swerveSubsystem.getPose().nearest(Constants.Positions.allAutoPositions)));
         NamedCommands.registerCommand("ElevatorWait", NamedCommands.getCommand("LEDEleup").andThen(new WaitUntilCommand(elevatorSubsystem::isNearTargetPosition)));
         NamedCommands.registerCommand("L4CORAL", new InstantCommand(() -> elevatorSubsystem.L4_Preset(), elevatorSubsystem).andThen(NamedCommands.getCommand("ElevatorWait")));
         NamedCommands.registerCommand("L3CORAL", new InstantCommand(() -> elevatorSubsystem.L3_Preset(), elevatorSubsystem).andThen(NamedCommands.getCommand("ElevatorWait")));
