@@ -1,128 +1,90 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Percent;
-import static edu.wpi.first.units.Units.Second;
-
-import com.revrobotics.spark.SparkBase.ControlType;
-
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.LEDPattern.GradientType;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.Elastic;
-import frc.robot.util.Elastic.Notification.NotificationLevel;
+import java.util.function.BooleanSupplier;
+import static edu.wpi.first.units.Units.Percent;
+import static edu.wpi.first.units.Units.Second;
 
 public class LEDSubsystem extends SubsystemBase {
 
-    //LED strip lengths
-    private final int elevatorLEDLengthLEFT = 49;
-    //private final int elevatorLEDLengthRIGHT = 10;
+    private static final int LED_LENGTH = 300;
+    private static final AddressableLED strip = new AddressableLED(8);
+    private static final AddressableLEDBuffer buffer = new AddressableLEDBuffer(LED_LENGTH);
 
-    //LED objects
-    private final AddressableLED elevatorLEDLeft = new AddressableLED(8);
-    //private final AddressableLED elevatorLEDRight = new AddressableLED(7); 
-
-    //LED buffers
-    private final AddressableLEDBuffer elevatorLEDLeft_Buffer = new AddressableLEDBuffer(elevatorLEDLengthLEFT);
-    //private final AddressableLEDBuffer elevatorLEDRight_Buffer = new AddressableLEDBuffer(elevatorLEDLengthRIGHT);
-
-
-
-
-    //LED colors =====================================================
-    private final Color orange = new Color(255, 40, 0);
-
-
-    //LED patterns ===================================================
-    private final LEDPattern robotNotReady = LEDPattern.solid(Color.kRed); 
-    private final LEDPattern idleRoundRunning = LEDPattern.solid(orange); 
-    private final LEDPattern autoRunning = LEDPattern.solid(Color.kCoral); 
-    private final LEDPattern autoAlineRunning = LEDPattern.solid(Color.kPurple);  
-    private final LEDPattern eleDroping = LEDPattern.solid(Color.kGreen); 
-
-
-    //broken orange gradient
-    private final LEDPattern brokenGradientBase = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kBlack, Color.kBlack, orange, Color.kBlack, Color.kBlack, orange, Color.kBlack, Color.kBlack, orange);
-    private final LEDPattern idle = brokenGradientBase.scrollAtRelativeSpeed(Percent.per(Second).of(25));    
-    
-    //EleUp 
-    private final LEDPattern bacePattern = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kBlack, orange);
-    private final LEDPattern eleUp = bacePattern.mask(LEDPattern.progressMaskLayer(()-> ElevatorSubsystem.currentHeight/1.9));
-
-
-    //setting LED length, should only be done on startup
-    public LEDSubsystem() {
-        elevatorLEDLeft.setLength(elevatorLEDLeft_Buffer.getLength());
-        //elevatorLEDRight.setLength(elevatorLEDRight_Buffer.getLength());
-        
-        
+    static {
+        strip.setLength(buffer.getLength());
+        strip.start();
     }
 
+    private static final Color ORANGE = new Color(255, 40, 0);
 
-    //Set LEDs to a pattern
-    private void setLED_Pattern(LEDPattern pattern) {
-        pattern.applyTo(elevatorLEDLeft_Buffer);
-        elevatorLEDLeft.setData(elevatorLEDLeft_Buffer);
-        elevatorLEDLeft.start();
-
-        //pattern.applyTo(elevatorLEDRight_Buffer);
-        //elevatorLEDRight.setData(elevatorLEDRight_Buffer);
-        //elevatorLEDRight.start();
-        
-    }
-
-
-    //hadleing toggling difrent LED patterns
-
-    public static LEDState state = LEDState.ROBOTNOTREADY;       
+    private static final LEDPattern ROBOT_NOT_READY = LEDPattern.solid(Color.kRed);
+    private static final LEDPattern IDLE_ROUND_RUNNING = LEDPattern.solid(ORANGE);
+    private static final LEDPattern AUTO_RUNNING = LEDPattern.solid(Color.kCoral);
+    private static final LEDPattern AUTO_ALIGN_RUNNING = LEDPattern.solid(Color.kPurple);
+    private static final LEDPattern ELE_DROPPING = LEDPattern.solid(Color.kGreen);
+    private static final LEDPattern BROKEN_GRADIENT_BASE = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kBlack, Color.kBlack, ORANGE, Color.kBlack, Color.kBlack, ORANGE, Color.kBlack, Color.kBlack, ORANGE);
+    private static final LEDPattern IDLE = BROKEN_GRADIENT_BASE.scrollAtRelativeSpeed(Percent.per(Second).of(25));
+    private static final LEDPattern BASE_PATTERN = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kBlack, ORANGE);
+    private static final LEDPattern ELE_UP = BASE_PATTERN.mask(LEDPattern.progressMaskLayer(() -> ElevatorSubsystem.currentHeight / 1.9));
 
     public static enum LEDState {
-        
         IDLE,
-        
-        ELEDROPING,
-        
-        AUTOALINERUNNING, 
-        
-        AUTORUNNING,    
-
+        ELEDROPPING,
+        AUTOALIGNRUNNING,
+        AUTORUNNING,
         IDLEROUNDRUNNING,
-
         ROBOTNOTREADY,
-
-        ELEUP,
+        ELEUP
     }
 
+    private static LEDState state = LEDState.ROBOTNOTREADY;
+
+    public LEDSubsystem() {
+        
+    }
+
+    public static void setState(LEDState newState) {
+        state = newState;
+        switch (state) {
+            case IDLE -> setPattern(IDLE);
+            case ELEDROPPING -> setPattern(ELE_DROPPING);
+            case AUTOALIGNRUNNING -> setPattern(AUTO_ALIGN_RUNNING);
+            case AUTORUNNING -> setPattern(AUTO_RUNNING);
+            case IDLEROUNDRUNNING -> setPattern(IDLE_ROUND_RUNNING);
+            case ROBOTNOTREADY -> setPattern(ROBOT_NOT_READY);
+            case ELEUP -> setPattern(ELE_UP);
+        }
+    }
+
+    public static void setStateUntil(LEDState tempState, BooleanSupplier bool) {
+        LEDState previous = state;
+        tempCommand(tempState, new WaitUntilCommand(bool), previous).schedule();
+    }
+
+    public static void setStateFor(LEDState tempState, double seconds) {
+        LEDState previous = state;
+        tempCommand(tempState, new WaitCommand(seconds), previous).schedule();
+    }
+
+    private static void setPattern(LEDPattern pattern) {
+        pattern.applyTo(buffer);
+        strip.setData(buffer);
+    }
+
+    private static Command tempCommand(LEDState enter, Command wait, LEDState endState) {
+        return new InstantCommand(() -> setState(enter)).andThen(wait).andThen(new InstantCommand(() -> setState(endState)));
+    }
 
     @Override
-    public void periodic() {
-        switch (state) {
-            case IDLE:
-                setLED_Pattern(idle); 
-                break;
-            case ELEDROPING:
-                setLED_Pattern(eleDroping);
-                break;
-            case AUTOALINERUNNING:
-                setLED_Pattern(autoAlineRunning); 
-                break; 
-            case AUTORUNNING:
-                setLED_Pattern(autoRunning); 
-                break; 
-            case IDLEROUNDRUNNING:
-                setLED_Pattern(idleRoundRunning);  
-                break;
-            case ROBOTNOTREADY:
-                setLED_Pattern(robotNotReady);  
-            break;
-            case ELEUP:
-                setLED_Pattern(eleUp);
-            default:
-                break;
-        }
-
-        
-    }
+    public void periodic() {}
 }

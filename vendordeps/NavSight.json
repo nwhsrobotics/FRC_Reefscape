@@ -1,0 +1,24 @@
+{
+    "fileName": "NavSight.json",
+    "name": "NavSight",
+    "version": "0.0.13",
+    "frcYear": "2025",
+    "uuid": "357c1db7-eca0-4134-8998-37b088d23541",
+  
+    "mavenUrls": [
+      "https://jitpack.io"
+    ],
+    "jsonUrl": "https://raw.githubusercontent.com/NewAmazingPVP/NavSight/main/NavSight.json",
+  
+    "javaDependencies": [
+      {
+        "groupId": "com.github.NewAmazingPVP",
+        "artifactId": "NavSight",   
+        "version": "0.0.13"          
+      }
+    ],
+  
+    "cppDependencies": [],
+    "jniDependencies": []
+  }
+  
