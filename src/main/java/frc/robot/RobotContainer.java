@@ -1,13 +1,9 @@
 package frc.robot;
 
 
-import javax.security.auth.callback.NameCallback;
-
-import com.navsight.AutoNavigator;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -20,13 +16,13 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.Buttons;
-import frc.robot.Constants.LimelightConstants;
 import frc.robot.commands.SwerveJoystickDefaultCmd;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.LEDSubsystem.LEDState;
 
 public class RobotContainer {
     public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+    public final AutoAlign autoAlign = new AutoAlign(swerveSubsystem);
     public final AlgaeArm algaeArm = new AlgaeArm();
     public final IntakeOuttake intakeoutake = new IntakeOuttake();
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
@@ -37,7 +33,6 @@ public class RobotContainer {
     public static final XboxController gunner = new XboxController(1);
 
     public RobotContainer() {
-        AutoAlign.init(swerveSubsystem);
         field = new Field2d();
         SmartDashboard.putData("Field", field);
 
@@ -65,9 +60,9 @@ public class RobotContainer {
         NamedCommands.registerCommand("AlgaeHome", new InstantCommand(() -> algaeArm.Homeposition(), algaeArm));
         NamedCommands.registerCommand("AlgaeKnockout", new InstantCommand(() -> algaeArm.knockoutAlgae(), algaeArm));
         NamedCommands.registerCommand("AlgaeRemovalAuto", NamedCommands.getCommand("L1CORAL").alongWith(NamedCommands.getCommand("AlgaeKnockout")).andThen(NamedCommands.getCommand("AlgaeHome")).andThen(NamedCommands.getCommand("LoadStation")));
-        NamedCommands.registerCommand("LeftReefAuto", new InstantCommand(() -> AutoNavigator.navigateTo(AutoAlign.leftReef(swerveSubsystem.getPose()))).alongWith(NamedCommands.getCommand("LEDAutoAlign")));
-        NamedCommands.registerCommand("RightReefAuto", new InstantCommand(() -> AutoNavigator.navigateTo(AutoAlign.rightReef(swerveSubsystem.getPose()))).alongWith(NamedCommands.getCommand("LEDAutoAlign")));
-        
+        NamedCommands.registerCommand("LeftReefAuto", new InstantCommand(() -> autoAlign.navigateTo(autoAlign.leftReef(swerveSubsystem.getPose()))).alongWith(NamedCommands.getCommand("LEDAutoAlign")));
+        NamedCommands.registerCommand("RightReefAuto", new InstantCommand(() -> autoAlign.navigateTo(autoAlign.rightReef(swerveSubsystem.getPose()))).alongWith(NamedCommands.getCommand("LEDAutoAlign")));
+
         // Control diagram: https://docs.google.com/drawings/d/1NsJOx6fb6   KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
         new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("AlgaeHome"));
         new POVButton(gunner, Buttons.POV_DOWN).onTrue(NamedCommands.getCommand("AlgaeKnockout"));

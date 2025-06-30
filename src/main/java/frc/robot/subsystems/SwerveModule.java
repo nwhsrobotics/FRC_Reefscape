@@ -18,10 +18,6 @@ import frc.robot.util.RobotCANUtils.MotorKind;
  * Represents a swerve module with independent drive and turning motors.
  */
 public class SwerveModule {
-    // Drive and Turning Motors
-    // 2025 robot
-    //private final SparkFlex driveMotor;
-    //private final SparkFlex turningMotor;
 
     // 2024 robot
     private final SparkFlex driveMotor;

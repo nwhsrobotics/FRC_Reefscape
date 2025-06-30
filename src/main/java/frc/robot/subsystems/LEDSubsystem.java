@@ -5,12 +5,10 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.LEDPattern.GradientType;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
+
 import java.util.function.BooleanSupplier;
+
 import static edu.wpi.first.units.Units.Percent;
 import static edu.wpi.first.units.Units.Second;
 
@@ -37,7 +35,7 @@ public class LEDSubsystem extends SubsystemBase {
     private static final LEDPattern BASE_PATTERN = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kBlack, ORANGE);
     private static final LEDPattern ELE_UP = BASE_PATTERN.mask(LEDPattern.progressMaskLayer(() -> ElevatorSubsystem.currentHeight / 1.9));
 
-    public static enum LEDState {
+    public enum LEDState {
         IDLE,
         ELEDROPPING,
         AUTOALIGNRUNNING,
@@ -50,7 +48,7 @@ public class LEDSubsystem extends SubsystemBase {
     private static LEDState state = LEDState.ROBOTNOTREADY;
 
     public LEDSubsystem() {
-        
+
     }
 
     public static void setState(LEDState newState) {
@@ -86,5 +84,6 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
+    }
 }
