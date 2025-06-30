@@ -1,11 +1,9 @@
 package frc.robot.subsystems;
 
-import com.navsight.ISwerveDrive;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -28,15 +26,14 @@ import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.util.LimelightHelpers;
+import org.littletonrobotics.junction.Logger;
 
 import java.util.List;
-
-import org.littletonrobotics.junction.Logger;
 
 /**
  * Represents the swerve drive subsystem, managing four swerve modules and handling overall robot control.
  */
-public class SwerveSubsystem extends SubsystemBase implements ISwerveDrive {
+public class SwerveSubsystem extends SubsystemBase {
     // when the robot is set to "field relative,"
     // linear movement will be relative to the field.
     //
@@ -640,39 +637,39 @@ public class SwerveSubsystem extends SubsystemBase implements ISwerveDrive {
         return wrapped;
     }
 
-public void targetRelativeDrive(List<Pose2d> targets, double rawLeftY, double rawLeftX) {
-    double leftY = rawLeftY;
-    double leftX = rawLeftX;
-    var alliance = DriverStation.getAlliance();
-    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-        leftY = -rawLeftY;
-        leftX = -rawLeftX;
+    public void targetRelativeDrive(List<Pose2d> targets, double rawLeftY, double rawLeftX) {
+        double leftY = rawLeftY;
+        double leftX = rawLeftX;
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+            leftY = -rawLeftY;
+            leftX = -rawLeftX;
+        }
+
+        Pose2d currentPose = getPose();
+        Pose2d nearest = currentPose.nearest(targets);
+
+        double dx = nearest.getX() - currentPose.getX();
+        double dy = nearest.getY() - currentPose.getY();
+        double dist = Math.hypot(dx, dy);
+        if (dist < 0.05) dy = 1e-3;
+
+        double theta = Math.atan2(dy, dx);
+
+        double fwd = -leftY;
+        double str = leftX;
+
+        double fieldX = fwd * Math.cos(theta) + str * Math.cos(theta + Math.PI / 2.0);
+        double fieldY = fwd * Math.sin(theta) + str * Math.sin(theta + Math.PI / 2.0);
+
+        double scale = MathUtil.clamp(dist, 0.0, 1.0);
+        fieldX *= scale;
+        fieldY *= scale;
+
+        double headingErr = angleDifferenceSigned(theta, currentPose.getRotation().getRadians());
+        double rotCmd = MathUtil.clamp((Math.PI / 20.0) * headingErr, -1.0, 1.0);
+
+        drive(fieldX, fieldY, rotCmd, true, true);
     }
-
-    Pose2d currentPose = getPose();
-    Pose2d nearest = currentPose.nearest(targets);
-
-    double dx = nearest.getX() - currentPose.getX();
-    double dy = nearest.getY() - currentPose.getY();
-    double dist = Math.hypot(dx, dy);
-    if (dist < 0.05) dy = 1e-3;
-
-    double theta = Math.atan2(dy, dx);
-
-    double fwd = -leftY;
-    double str =  leftX;
-
-    double fieldX = fwd * Math.cos(theta) + str * Math.cos(theta + Math.PI / 2.0);
-    double fieldY = fwd * Math.sin(theta) + str * Math.sin(theta + Math.PI / 2.0);
-
-    double scale = MathUtil.clamp(dist / 1.0, 0.0, 1.0);
-    fieldX *= scale;
-    fieldY *= scale;
-
-    double headingErr = angleDifferenceSigned(theta, currentPose.getRotation().getRadians());
-    double rotCmd = MathUtil.clamp((Math.PI / 20.0) * headingErr, -1.0, 1.0);
-
-    drive(fieldX, fieldY, rotCmd, true, true);
-}
 
 }

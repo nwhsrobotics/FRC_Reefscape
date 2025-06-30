@@ -1,11 +1,8 @@
 package frc.robot.commands;
 
-
-import com.navsight.VisionGP;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,9 +11,6 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.Positions;
 import frc.robot.subsystems.SwerveSubsystem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SwerveJoystickDefaultCmd extends Command {
     private final SwerveSubsystem swerveSubsystem;
@@ -39,7 +33,7 @@ public class SwerveJoystickDefaultCmd extends Command {
     public void execute() {
         if (xbox.getLeftBumperButton()) {
             PathPlannerTrajectoryState trajectoryState = new PathPlannerTrajectoryState();
-            trajectoryState.pose = VisionGP.getFieldPose();
+            //trajectoryState.pose = VisionGP.getFieldPose();
             swerveSubsystem.driveRobotRelative(driveController.calculateRobotRelativeSpeeds(swerveSubsystem.getPose(), trajectoryState));
         } else if (xbox.getRightBumperButton()) {
             PathPlannerTrajectoryState trajectoryState = new PathPlannerTrajectoryState();

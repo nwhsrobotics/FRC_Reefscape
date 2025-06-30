@@ -7,15 +7,12 @@ import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.CANAssignments;
 import frc.robot.Constants.LoggerConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.Positions;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LEDSubsystem.LEDState;
 import frc.robot.util.RobotCANUtils.PowerDistributionManager;
-
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -64,7 +61,7 @@ public class Robot extends LoggedRobot {
         robotPD = new PowerDistributionManager(CANAssignments.PDU_ID, Constants.PDU_TYPE);
 
         Logger.recordMetadata("version", LoggerConstants.RUNNING_UNDER);
-        
+
 
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
@@ -81,9 +78,9 @@ public class Robot extends LoggedRobot {
 
     }
 
-        @Override
+    @Override
     public void simulationPeriodic() {
-    //SimulatedArena.getInstance().simulationPeriodic();
+        //SimulatedArena.getInstance().simulationPeriodic();
     }
 
 
@@ -169,15 +166,12 @@ public class Robot extends LoggedRobot {
     @Override
     public void teleopPeriodic() {
 
-        // if (robotContainer.swerveSubsystem.autonavigator.isEnabled()) {
-        //     if (MathUtil.applyDeadband(robotContainer.driver.getLeftX(), OIConstants.kDriveDeadband) != 0 ||
-        //             MathUtil.applyDeadband(robotContainer.driver.getLeftY(), OIConstants.kDriveDeadband) != 0 ||
-        //             MathUtil.applyDeadband(robotContainer.driver.getRightX(), OIConstants.kDriveDeadband) != 0 ||
-        //             MathUtil.applyDeadband(robotContainer.driver.getRightY(), OIConstants.kDriveDeadband) != 0) {
-        //         robotContainer.swerveSubsystem.autonavigator.disable();
-        //     } else {
-        //     }
-        // }
+        if (MathUtil.applyDeadband(robotContainer.driver.getLeftX(), OIConstants.kDriveDeadband) != 0 ||
+                MathUtil.applyDeadband(robotContainer.driver.getLeftY(), OIConstants.kDriveDeadband) != 0 ||
+                MathUtil.applyDeadband(robotContainer.driver.getRightX(), OIConstants.kDriveDeadband) != 0 ||
+                MathUtil.applyDeadband(robotContainer.driver.getRightY(), OIConstants.kDriveDeadband) != 0) {
+            robotContainer.autoAlign.disable();
+        }
     }
 
     @Override

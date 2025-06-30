@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.navsight.ISwerveDrive;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
@@ -10,13 +9,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -126,7 +122,6 @@ public final class Constants {
 
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
         public static final double kMaxAngularSpeedRadiansPerSecond = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
         public static final double kMaxAccelerationMetersPerSecondSquared = 5;
         public static final double kMaxAngularAccelerationRadiansPerSecondSquared = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
@@ -145,8 +140,6 @@ public final class Constants {
 
     public static final class OIConstants {
         public static final double scaleFactor = 0.6;
-        public static final double kTeleDriveMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond * scaleFactor;
-        public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond * scaleFactor;
         public static final double kDriveDeadband = 0.05;
     }
 
@@ -156,15 +149,11 @@ public final class Constants {
         public static final Pose2d RED_REEF_CENTER = new Pose2d(13, 4.05, Rotation2d.fromDegrees(0));
 
         public static final List<Pose2d> REEF_CENTERS = new ArrayList<>(List.of(BLUE_REEF_CENTER, RED_REEF_CENTER));
-
-        public static final List<Pose2d> allAutoPositions = new ArrayList<Pose2d>();
     }
 
     public static final class ElevatorConstants {
         // Elevator Limits
         //units are most likely in roatations
-        public static final double MAX_Elevator_HEIGHT = 100.0; // Adjust as needed
-        public static final double MIN_Elevator_HEIGHT = 0.0;
         public static final double ELEVATOR_GEAR_RATIO = 1.0 / 12.0; //3:1, change later to 12:1
 
         public static final double SPROCKET_TEETH = 22.0;
@@ -193,27 +182,17 @@ public final class Constants {
         //https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/2025FieldDrawings-FieldLayoutAndMarking.pdf
         //https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/Apriltag_Images_and_User_Guide.pdf
         public static final List<Pose2d> aprilTags =
-            AprilTagFieldLayout
-            .loadField(AprilTagFields.k2025Reefscape)
-            .getTags()
-            .stream()
-            .map(tag ->
-                tag.pose
-                    .toPose2d()
-                    .transformBy(
-                    new Transform2d(
-                        new Translation2d(), 
-                        Rotation2d.fromDegrees(180)
-                    )
-                    )
-            )
-            .collect(Collectors.toCollection(ArrayList::new));
-
+                AprilTagFieldLayout
+                        .loadField(AprilTagFields.k2025Reefscape)
+                        .getTags()
+                        .stream()
+                        .map(tag -> tag.pose.toPose2d().transformBy(new Transform2d(new Translation2d(), Rotation2d.fromDegrees(180))))
+                        .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    
+
     public static final class LimelightConstants {
-        
+
         public static String llFront = "limelight-llf";
         public static String llBack = "limelight-llb";
     }
