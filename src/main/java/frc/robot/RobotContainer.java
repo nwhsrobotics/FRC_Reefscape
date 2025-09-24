@@ -76,7 +76,7 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.RIGHT_BUMPER).onFalse(NamedCommands.getCommand("OuttakeClose").andThen(NamedCommands.getCommand("Vibration")));
         new POVButton(gunner, Buttons.POV_RIGHT).onTrue(new InstantCommand(() -> elevatorSubsystem.elevator_top()));
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> elevatorSubsystem.elevator_zero()));
-        new JoystickButton(driver, Buttons.VIEW).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
+        new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
         new POVButton(driver, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> swerveSubsystem.resetOdometryWithVision()));
         new JoystickButton(driver, Buttons.X).onTrue(NamedCommands.getCommand("LeftReefAuto").andThen(NamedCommands.getCommand("Vibration")));
         new JoystickButton(driver, Buttons.B).onTrue(NamedCommands.getCommand("RightReefAuto").andThen(NamedCommands.getCommand("Vibration")));
