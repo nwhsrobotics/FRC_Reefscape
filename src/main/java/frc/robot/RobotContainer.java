@@ -28,6 +28,7 @@ public class RobotContainer {
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
     private final Field2d field;
     private final SendableChooser<Command> autoChooser;
+    //private final GroundIntakeSubsystem groundIntakeSubsystem = new GroundIntakeSubsystem();
 
     public final XboxController driver = new XboxController(0);
     public static final XboxController gunner = new XboxController(1);
@@ -62,6 +63,10 @@ public class RobotContainer {
         NamedCommands.registerCommand("AlgaeRemovalAuto", NamedCommands.getCommand("L1CORAL").alongWith(NamedCommands.getCommand("AlgaeKnockout")).andThen(NamedCommands.getCommand("AlgaeHome")).andThen(NamedCommands.getCommand("LoadStation")));
         NamedCommands.registerCommand("LeftReefAuto", new InstantCommand(() -> autoAlign.navigateTo(autoAlign.leftReef(swerveSubsystem.getPose()))).alongWith(NamedCommands.getCommand("LEDAutoAlign")));
         NamedCommands.registerCommand("RightReefAuto", new InstantCommand(() -> autoAlign.navigateTo(autoAlign.rightReef(swerveSubsystem.getPose()))).alongWith(NamedCommands.getCommand("LEDAutoAlign")));
+        
+       // NamedCommands.registerCommand("GroundIntake", new InstantCommand(() -> groundIntakeSubsystem.Intake(), groundIntakeSubsystem));
+        //NamedCommands.registerCommand("GroundOuttake", new InstantCommand(() -> groundIntakeSubsystem.Outtake(), groundIntakeSubsystem));
+
 
         // Control diagram: https://docs.google.com/drawings/d/1NsJOx6fb6   KYHW6L8ZeuNtpK3clnQnIA9CD2kQHFL0P0/edit?usp=sharing
         new POVButton(gunner, Buttons.POV_UP).onTrue(NamedCommands.getCommand("AlgaeHome"));
@@ -78,8 +83,16 @@ public class RobotContainer {
         new JoystickButton(gunner, Buttons.LEFT_BUMPER).onTrue(new InstantCommand(() -> elevatorSubsystem.elevator_zero()));
         new JoystickButton(driver, Buttons.MENU).onTrue(new InstantCommand(swerveSubsystem::switchFR, swerveSubsystem));
         new POVButton(driver, Buttons.POV_DOWN).onTrue(new InstantCommand(() -> swerveSubsystem.resetOdometryWithVision()));
-        new JoystickButton(driver, Buttons.X).onTrue(NamedCommands.getCommand("LeftReefAuto").andThen(NamedCommands.getCommand("Vibration")));
-        new JoystickButton(driver, Buttons.B).onTrue(NamedCommands.getCommand("RightReefAuto").andThen(NamedCommands.getCommand("Vibration")));
+        // new JoystickButton(driver, Buttons.X).onTrue(NamedCommands.getCommand("LeftReefAuto").andThen(NamedCommands.getCommand("Vibration")));
+        // new JoystickButton(driver, Buttons.B).onTrue(NamedCommands.getCommand("RightReefAuto").andThen(NamedCommands.getCommand("Vibration")));
+        new JoystickButton(driver, Buttons.X).onTrue(new InstantCommand(() -> autoAlign.navigateTo(autoAlign.rightReef(swerveSubsystem.getPose())), swerveSubsystem));
+        new JoystickButton(driver, Buttons.B).onTrue(new InstantCommand(() -> autoAlign.navigateTo(autoAlign.rightReef(swerveSubsystem.getPose())), swerveSubsystem));
+
+
+        //new JoystickButton(gunner, Buttons.).whileTrue(NamedCommands.getCommand("GroundIntake")); ADD THE BUTTON
+        //new JoystickButton(gunner, Buttons.).whileTrue(NamedCommands.getCommand("GroundOuttake")); ADD THE BUTTON
+
+
 
         autoChooser = AutoBuilder.buildAutoChooser("Straight Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);

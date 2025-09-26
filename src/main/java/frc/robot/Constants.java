@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
 import java.util.ArrayList;
@@ -39,6 +40,10 @@ public final class Constants {
 
         public static final int LEFT_ELEVATOR_MOTOR_ID = 13;
         public static final int RIGHT_ELEVATOR_MOTOR_ID = 14;
+
+        public static final int LEFT_GROUND_INTAKE_MOTOR_ID = 0; // CHANGE THE MOTOR ID!!
+        public static final int RIGHT_GROUND_INTAKE_MOTOR_ID = 0;// CHANGE THE MOTOR ID!!
+        public static final int GROUND_PIVOT_MOTOR_ID = 0;//CHANGE THE MOTOR ID!!
 
 
         public static final int PDU_ID = 24;
@@ -134,7 +139,15 @@ public final class Constants {
         );
 
         public static final PathConstraints kPathfindingConstraints = new PathConstraints(
+<<<<<<< Updated upstream
                 DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.2,
+=======
+<<<<<<< HEAD
+                DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.1,
+=======
+                DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.2,
+>>>>>>> 90245c6dadfdc517a561a15ef84624261c81f8de
+>>>>>>> Stashed changes
                 AutoConstants.kMaxAngularSpeedRadiansPerSecond, AutoConstants.kMaxAngularAccelerationRadiansPerSecondSquared);
     }
 
@@ -167,7 +180,7 @@ public final class Constants {
         public static final double ELEVATOR_MOTOR_ENCODER_ROT2METER = ELEVATOR_GEAR_RATIO * SPROCKET_TEETH * CHAIN_PITCH_INCH * METERS_PER_INCH * ELEVATOR_STAGES;
         public static final double ELEVATOR_ENCODER_METER_PER_SECONDS = ELEVATOR_MOTOR_ENCODER_ROT2METER / 60;
 
-        public static final double MAX_VELOCITY_M_S = 2.0;
+        public static final double MAX_VELOCITY_M_S = 4.0;
 
         public static final double MAX_ACCEL_M_S2 = 2.0;
 
