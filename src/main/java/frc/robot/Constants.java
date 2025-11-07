@@ -139,15 +139,7 @@ public final class Constants {
         );
 
         public static final PathConstraints kPathfindingConstraints = new PathConstraints(
-<<<<<<< Updated upstream
-                DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.2,
-=======
-<<<<<<< HEAD
-                DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.1,
-=======
-                DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.2,
->>>>>>> 90245c6dadfdc517a561a15ef84624261c81f8de
->>>>>>> Stashed changes
+                DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.25,
                 AutoConstants.kMaxAngularSpeedRadiansPerSecond, AutoConstants.kMaxAngularAccelerationRadiansPerSecondSquared);
     }
 
