@@ -48,9 +48,21 @@ public class SwerveJoystickDefaultCmd extends Command {
         } else if (!(xbox.getRightTriggerAxis() > 0.1)) {  //if trigger(booster) not pressed
             fieldRelative = true;
             swerveSubsystem.drive(
+<<<<<<< Updated upstream
                     -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftY(), 2), xbox.getLeftY())) * 0.5, OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftX(), 2), xbox.getLeftX())) * 0.5, OIConstants.kDriveDeadband),
                     -MathUtil.applyDeadband((xbox.getRightX()) * 0.3, OIConstants.kDriveDeadband),
+=======
+<<<<<<< HEAD
+                    -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftY(), 2), xbox.getLeftY())), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftX(), 2), xbox.getLeftX())), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband((xbox.getRightX()) * 0.1, OIConstants.kDriveDeadband),
+=======
+                    -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftY(), 2), xbox.getLeftY())) * 0.5, OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(invertIfRed(Math.copySign(Math.pow(xbox.getLeftX(), 2), xbox.getLeftX())) * 0.5, OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband((xbox.getRightX()) * 0.3, OIConstants.kDriveDeadband),
+>>>>>>> 90245c6dadfdc517a561a15ef84624261c81f8de
+>>>>>>> Stashed changes
                     swerveSubsystem.isFieldRelative() && fieldRelative, true);
         } else {
             // fast mode (or can be booster too) has no slew rate/rate limit
