@@ -134,7 +134,7 @@ public final class Constants {
         );
 
         public static final PathConstraints kPathfindingConstraints = new PathConstraints(
-                DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.2,
+                DriveConstants.kPhysicalMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.3,
                 AutoConstants.kMaxAngularSpeedRadiansPerSecond, AutoConstants.kMaxAngularAccelerationRadiansPerSecondSquared);
     }
 
@@ -183,8 +183,7 @@ public final class Constants {
         //https://firstfrc.blob.core.windows.net/frc2025/FieldAssets/Apriltag_Images_and_User_Guide.pdf
         public static final List<Pose2d> aprilTags =
                 AprilTagFieldLayout
-                        .loadField(AprilTagFields.k2025ReefscapeAndyMark)
-                        //.loadField((AprilTagFields.k2025Reefscape))
+                        .loadField(AprilTagFields.k2025Reefscape)
                         .getTags()
                         .stream()
                         .map(tag -> tag.pose.toPose2d().transformBy(new Transform2d(new Translation2d(), Rotation2d.fromDegrees(180))))
