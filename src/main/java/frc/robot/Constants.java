@@ -167,9 +167,9 @@ public final class Constants {
         public static final double ELEVATOR_MOTOR_ENCODER_ROT2METER = ELEVATOR_GEAR_RATIO * SPROCKET_TEETH * CHAIN_PITCH_INCH * METERS_PER_INCH * ELEVATOR_STAGES;
         public static final double ELEVATOR_ENCODER_METER_PER_SECONDS = ELEVATOR_MOTOR_ENCODER_ROT2METER / 60;
 
-        public static final double MAX_VELOCITY_M_S = 2.0;
+        public static final double MAX_VELOCITY_M_S = 4.0;
 
-        public static final double MAX_ACCEL_M_S2 = 2.0;
+        public static final double MAX_ACCEL_M_S2 = 2.5;
 
         public static final double MAX_VELOCITY_RPM = ((MAX_VELOCITY_M_S) / ELEVATOR_MOTOR_ENCODER_ROT2METER) * 60.0;
 
