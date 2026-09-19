@@ -313,6 +313,9 @@ public class SwerveSubsystem extends SubsystemBase {
         Logger.recordOutput("swerve.steer.back.left.absraw", backLeft.getAbsoluteEncoderRadRaw());
         Logger.recordOutput("swerve.steer.back.right.absraw", backRight.getAbsoluteEncoderRadRaw());
 
+
+        
+
         // Log travel velocity.
         Logger.recordOutput("swerve.drive.front.left.velocity", frontLeft.getDriveVelocity());
         Logger.recordOutput("swerve.drive.front.right.velocity", frontRight.getDriveVelocity());

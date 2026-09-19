@@ -56,6 +56,14 @@ public final class RobotCANUtils {
             finishConfigure(this, cfg);
         }
 
+        public CANSparkMaxController(int id, MotorKind kind, SparkMaxConfig cfg, IdleMode mode) {
+            super(id, MotorType.kBrushless);
+            clearFaults();
+            applySettings(cfg, kind, mode, 0);
+            finishConfigure(this, cfg);
+        }
+
+
         public CANSparkMaxController(int id, MotorKind kind, IdleMode mode) {
             this(id, kind, new SparkMaxConfig(), mode, 0);
         }
